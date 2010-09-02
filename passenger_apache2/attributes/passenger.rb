@@ -1,0 +1,16 @@
+default[:passenger] = {}
+default[:passenger][:version] = '2.2.11'
+default[:passenger][:root_path] = "#{languages[:ruby][:gems_dir]}/gems/passenger-#{passenger[:version]}"
+default[:passenger][:module_path] = languages[:ruby][:ruby_bin]
+default[:passenger][:ruby_bin] = "/usr/local/bin/ruby"
+default[:passenger][:ruby_wrapper_bin] = "/usr/local/bin/ruby_gc_wrapper.sh"
+default[:passenger][:gem_bin] = "/usr/local/bin/gem"
+default[:passenger][:stat_throttle_rate] = 5
+default[:passenger][:rails_framework_spawner_idle_time] = 0
+default[:passenger][:rails_app_spawner_idle_time] = 0
+default[:passenger][:pool_idle_time] = 14400 # 4 hours
+default[:passenger][:max_instances_per_app] = 0
+default[:passenger][:max_requests] = 0
+default[:passenger][:high_performance_mode] = 'off'
+default[:passenger][:rails_spawn_method] = 'smart-lv2'
+default[:passenger][:max_pool_size] = 8 # usually will be set by Scalarium directy. Override if you need a custom size

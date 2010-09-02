@@ -1,0 +1,3 @@
+<% node[:scalarium_initial_setup][:sysctl].each do |systcl, value| %>
+  <%= systcl %>=<%= value %>
+<% end %>

@@ -1,0 +1,1 @@
+# Do nothing, just a default to be able to include the recipe and get the attributes for free.

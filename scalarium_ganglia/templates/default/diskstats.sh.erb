@@ -1,0 +1,56 @@
+#!/bin/bash
+
+STATS_DIR='/tmp/iostats/<%= @disk %>'
+PREVIOUS_FILE="$STATS_DIR/previous"
+CURRENT_FILE="$STATS_DIR/current"
+DISK_TO_MONITOR='<%= @disk %>'
+
+if [ ! -d $STATS_DIR ]; then
+	mkdir -p $STATS_DIR
+fi
+
+if [ ! -e $PREVIOUS_FILE ]; then
+        iostat -d -k | grep $DISK_TO_MONITOR > $CURRENT_FILE
+        cp $CURRENT_FILE $PREVIOUS_FILE
+else
+        cp $CURRENT_FILE $PREVIOUS_FILE
+        iostat -d -k | grep $DISK_TO_MONITOR > $CURRENT_FILE
+fi
+
+CURRENT_TPS=`cat ${CURRENT_FILE} | awk '{print $2}'`
+PREVIOUS_TPS=`cat ${PREVIOUS_FILE} | awk '{print $2}'`
+
+CURRENT_BLK_READ_PER_S=`cat ${CURRENT_FILE} | awk '{print $3}'`
+PREVIOUS_BLK_READ_PER_S=`cat ${PREVIOUS_FILE} | awk '{print $3}'`
+
+CURRENT_BLK_WRITE_PER_S=`cat ${CURRENT_FILE} | awk '{print $4}'`
+PREVIOUS_BLK_WRITE_PER_S=`cat ${PREVIOUS_FILE} | awk '{print $4}'`
+
+CURRENT_BLK_READ=`cat ${CURRENT_FILE} | awk '{print $5}'`
+PREVIOUS_BLK_READ=`cat ${PREVIOUS_FILE} | awk '{print $5}'`
+
+CURRENT_BLK_WRITE=`cat ${CURRENT_FILE} | awk '{print $6}'`
+PREVIOUS_BLK_WRITE=`cat ${PREVIOUS_FILE} | awk '{print $6}'`
+
+BLK_READ=`echo "$CURRENT_BLK_READ - $PREVIOUS_BLK_READ" | bc`
+BLK_WRITE=`echo "$CURRENT_BLK_WRITE - $PREVIOUS_BLK_WRITE" | bc`
+
+TOTAL_READS=`cat ${CURRENT_FILE} | awk '{print $5}'`
+TOTAL_WRITES=`cat ${CURRENT_FILE} | awk '{print $5}'`
+
+
+echo -e "Transactions: ${CURRENT_TPS}/s"
+echo -e "Writes/s: ${CURRENT_BLK_WRITE_PER_S} KB/s"
+echo -e "Writes since last check: ${BLK_WRITE} KB"
+echo -e "Writes total: ${TOTAL_WRITES} KB"
+echo -e "Reads/s: ${CURRENT_BLK_READ_PER_S} KB/s"
+echo -e "Reads since last check: ${BLK_READ} KB"
+echo -e "Reads total: ${TOTAL_READS} KB"
+
+gmetric -tuint8 -x180 -n"<%= @disk %>_transactions_per_second" -v$CURRENT_TPS
+gmetric -tfloat -x180 -uKilobytes -n"<%= @disk %>_writes_per_second" -v$CURRENT_BLK_WRITE_PER_S
+gmetric -tfloat -x180 -uKilobytes -n"<%= @disk %>_reads_per_second" -v$CURRENT_BLK_READ_PER_S
+gmetric -tfloat -x180 -uKilobytes -n"<%= @disk %>_writes" -v$BLK_WRITE
+gmetric -tfloat -x180 -uKilobytes -n"<%= @disk %>_reads" -v$BLK_READ
+gmetric -tfloat -x180 -uKilobytes -n"<%= @disk %>_total_writes" -v$TOTAL_WRITES
+gmetric -tfloat -x180 -uKilobytes -n"<%= @disk %>_total_reads" -v$TOTAL_READS

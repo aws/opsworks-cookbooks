@@ -1,0 +1,85 @@
+<VirtualHost *:80>
+  ServerName <%= @params[:server_name] %>
+  <% if @params[:server_aliases] && !@params[:server_aliases].empty? -%>
+  ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>
+  <% end -%>
+  DocumentRoot <%= @params[:docroot] %>
+
+  <Directory <%= @params[:docroot] %>>
+    Options FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+  </Directory>
+  
+  <Directory ~ "\.svn">
+    Order allow,deny
+    Deny from all
+  </Directory>
+  
+  <Directory ~ "\.git">
+    Order allow,deny
+    Deny from all
+  </Directory>
+
+  LogLevel info
+  ErrorLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log
+  CustomLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-access.log combined
+  CustomLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-ganglia.log ganglia
+
+  RewriteEngine On
+  RewriteLog <%= @node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
+  RewriteLogLevel 0
+  
+  <% if @params[:mounted_at] -%>
+  AliasMatch ^<%= @params[:mounted_at] %>/(.*)$ <%= @params[:docroot] %>$1
+  <% end -%>
+
+</VirtualHost>
+
+<% if @node[:deploy][@application_name][:ssl_support] -%>
+<VirtualHost *:443>
+  ServerName <%= @params[:server_name] %>
+  <% if @params[:server_aliases] && !@params[:server_aliases].empty? -%>
+  ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>
+  <% end -%>
+  DocumentRoot <%= @params[:docroot] %>
+  
+  SSLEngine on
+  SSLProxyEngine on
+  SSLCertificateFile /etc/apache2/ssl/<%= @params[:server_name] %>.crt
+  SSLCertificateKeyFile /etc/apache2/ssl/<%= @params[:server_name] %>.key
+  SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown downgrade-1.0 force-response-1.0
+  
+  <Directory <%= @params[:docroot] %>>
+    Options FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+  </Directory>
+  
+  <Directory ~ "\.svn">
+    Order allow,deny
+    Deny from all
+  </Directory>
+  
+  <Directory ~ "\.git">
+    Order allow,deny
+    Deny from all
+  </Directory>
+
+  LogLevel info
+  ErrorLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log
+  CustomLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-access.log combined
+  CustomLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-ganglia.log ganglia
+
+  RewriteEngine On
+  RewriteLog <%= @node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
+  RewriteLogLevel 0
+  
+  <% if @params[:mounted_at] -%>
+  AliasMatch ^<%= @params[:mounted_at] %>/(.*)$ <%= @params[:docroot] %>$1
+  <% end -%>
+  
+</VirtualHost>
+<% end -%>

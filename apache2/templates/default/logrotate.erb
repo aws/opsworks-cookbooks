@@ -1,0 +1,15 @@
+/var/log/apache2/*.log {
+        <%= node[:apache][:logrotate][:schedule] %>
+        missingok
+        rotate <%= node[:apache][:logrotate][:rotate] %>
+        compress
+        delaycompress
+        notifempty
+        create 640 root adm
+        sharedscripts
+        postrotate
+                if [ -f "`. /etc/apache2/envvars ; echo ${APACHE_PID_FILE:-/var/run/apache2.pid}`" ]; then
+                        /etc/init.d/apache2 reload > /dev/null
+                fi
+        endscript
+}
