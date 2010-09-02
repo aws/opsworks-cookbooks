@@ -5,5 +5,5 @@ end
 
 cron "Ganglia File Descriptors and Sockets in use" do
   minute "*/2"
-  command "/etc/ganglia/scripts/fd-and-sockets"
+  command "/etc/ganglia/scripts/fd-and-sockets > /dev/null"
 end

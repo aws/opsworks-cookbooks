@@ -10,10 +10,10 @@ end
 
 cron "Ganglia Passenger Memory" do
   minute "*/2"
-  command "/etc/ganglia/scripts/passenger-memory-stats"
+  command "/etc/ganglia/scripts/passenger-memory-stats > /dev/null"
 end
 
 cron "Ganglia Passenger Status" do
   minute "*/2"
-  command "/etc/ganglia/scripts/passenger-status"
+  command "/etc/ganglia/scripts/passenger-status > /dev/null"
 end

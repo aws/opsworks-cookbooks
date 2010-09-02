@@ -22,6 +22,6 @@ disks.each do |device_id|
 
   cron "Ganglia Disk stats for #{device_id}" do
     minute "*/2"
-    command "/etc/ganglia/scripts/diskstats-#{device_id}"
+    command "/etc/ganglia/scripts/diskstats-#{device_id} > /dev/null"
   end
 end
