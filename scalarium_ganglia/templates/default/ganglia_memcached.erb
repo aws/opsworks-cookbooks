@@ -117,6 +117,8 @@ my $fill_ratio = 0;
 my $evictions = 0;
 my $bytes_read = 0;
 my $bytes_written = 0;
+my $cmd_get = 0;
+my $cmd_set = 0;
 my $new_time = time;
 
 foreach my $host ( keys %{ $stats{ 'hosts' } } ) {
@@ -130,6 +132,8 @@ foreach my $host ( keys %{ $stats{ 'hosts' } } ) {
   $evictions = $stats { 'hosts' }{ $host }{ 'misc' }->{ 'evictions' };
   $bytes_read = $stats { 'hosts' }{ $host }{ 'misc' }->{ 'bytes_read' };
   $bytes_written = $stats { 'hosts' }{ $host }{ 'misc' }->{ 'bytes_written' };
+  $cmd_get = $stats { 'hosts' }{ $host }{ 'misc' }->{ 'cmd_get' };
+  $cmd_set = $stats { 'hosts' }{ $host }{ 'misc' }->{ 'cmd_set' };
 }
 
 
@@ -142,6 +146,8 @@ if ( $debug == 0 ) {
 print 'memcache_fill_ratio: ' . substr( ( ( $fill_ratio ) ) * 100, 0, 5 ) . "%\n";
 print "memcache_items: " . $curr_items . "\n";
 print "memcache_curr_conn: " . $curr_connections . "\n";
+print "memcache_gets (total): " . $cmd_get . "\n";
+print "memcache_sets (total): " . $cmd_set . "\n";
 
 sub write_stats_file () {
 
@@ -150,6 +156,8 @@ sub write_stats_file () {
 	print NEWSTATUS "evictions=" . $evictions . "\n";
 	print NEWSTATUS "bytes_read=" .$bytes_read . "\n";
 	print NEWSTATUS "bytes_written=" . $bytes_written . "\n";
+	print NEWSTATUS "cmd_get=" . $cmd_get . "\n";
+	print NEWSTATUS "cmd_set=" . $cmd_set . "\n";
  	
 	close(NEWSTATUS);
 
@@ -187,6 +195,10 @@ if ( ! -f $tmp_stats_file ) {
 	      system($gmetric_command . " -u number -tuint32 -n memcache_evictions".$metric_suffix." -v " . eval($evictions - $old_stats{'evictions'}) );
 	      system($gmetric_command . " -u bytes/s -tfloat -n memcache_bytes_read".$metric_suffix." -v " . eval ( ($bytes_read - $old_stats{'bytes_read'}) / $time_diff)  );
 	      system($gmetric_command . " -u bytes/s -tfloat -n memcache_bytes_written".$metric_suffix." -v " . eval( ($bytes_written - $old_stats{'bytes_written'}) / $time_diff ) );
+	      system($gmetric_command . " -u req -tint32 -n memcache_gets".$metric_suffix." -v " . eval( ($cmd_get - $old_stats{'cmd_get'}) / $time_diff ) );
+        system($gmetric_command . " -u req -tint32 -n memcache_sets".$metric_suffix." -v " . eval( ($cmd_set - $old_stats{'cmd_set'}) / $time_diff ) );
+        print "memcache_gets " . eval( ($cmd_get - $old_stats{'cmd_get'}) / $time_diff ) . "\n";
+        print "memcache_sets " . eval( ($cmd_set - $old_stats{'cmd_set'}) / $time_diff ) . "\n";
 	    } 
 	    write_stats_file;
 
