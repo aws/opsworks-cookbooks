@@ -50,10 +50,10 @@ end
 apache[:document_root] = "/var/www" unless apache.has_key?(:document_root)
 apache[:listen_ports] = [ "80","443" ]     unless apache.has_key?(:listen_ports)
 apache[:contact] = "ops@example.com" unless apache.has_key?(:contact)
-apache[:timeout] = 300               unless apache.has_key?(:timeout)
-apache[:keepalive] = "On"            unless apache.has_key?(:keepalive)
+apache[:timeout] = 120               unless apache.has_key?(:timeout)
+apache[:keepalive] = "Off"           unless apache.has_key?(:keepalive)
 apache[:keepaliverequests] = 100     unless apache.has_key?(:keepaliverequests)
-apache[:keepalivetimeout] = 5        unless apache.has_key?(:keepalivetimeout)
+apache[:keepalivetimeout] = 3        unless apache.has_key?(:keepalivetimeout)
 
 # Security
 apache[:servertokens] = "Prod"  unless apache.has_key?(:servertokens)
