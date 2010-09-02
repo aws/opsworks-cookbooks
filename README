@@ -3,3 +3,6 @@ These are the standard Chef cookbooks used by Scalarium.
 If you want to override any template (like the Rails database.yml or the Apache vhost definition), this is the place to look for the originals.
 
 See also http://support.scalarium.com
+
+LICENSE: Unless otherwise stated, cookbooks/recipes originated by Peritor/Scalarium are licensed under the Apache 2.0 license.
+See the LICENSE file. Some files are just imported and authored by others. Their license will of course apply.
