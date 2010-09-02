@@ -3,7 +3,7 @@ These are the standard Chef cookbooks used by Scalarium.
 If you want to override any template (like the Rails database.yml or the Apache vhost definition), this is the
 place to look for the originals.
 
-See also http://support.scalarium.com
+See also <http://support.scalarium.com>
 
 Some of these cookbooks rely on functionality included in our [fork of
 Chef](http://github.com/peritor/chef/tree/scalarium-0.8-stable). That involves either changes already merged in
