@@ -32,20 +32,17 @@ node[:deploy].each do |application, deploy|
     revision deploy[:scm][:revision]
     migrate deploy[:migrate]
     migration_command deploy[:migrate_command]
-    environment "RAILS_ENV" => deploy[:rails_env],
-                "RUBYOPT" => "",
-                "RACK_ENV" => deploy[:rails_env],
-                "HOME" => deploy[:home]
+    environment deploy[:environment]
     symlink_before_migrate deploy[:symlink_before_migrate]
     action deploy[:action]
     restart_command "sleep #{deploy[:sleep_before_restart]} && #{deploy[:restart_command]}"
     case deploy[:scm][:scm_type].to_s
     when 'git'
-      scm_provider Chef::Provider::Git
+      scm_provider :git
       enable_submodules deploy[:enable_submodules]
-      shallow_clone true
+      shallow_clone deploy[:shallow_clone]
     when 'svn'
-      scm_provider Chef::Provider::Subversion
+      scm_provider :subversion
       svn_username deploy[:scm][:user]
       svn_password deploy[:scm][:password]
       svn_arguments "--no-auth-cache --non-interactive --trust-server-cert"
