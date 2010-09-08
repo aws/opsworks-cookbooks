@@ -32,7 +32,10 @@ node[:deploy].each do |application, deploy|
     revision deploy[:scm][:revision]
     migrate deploy[:migrate]
     migration_command deploy[:migrate_command]
-    environment "RAILS_ENV" => deploy[:rails_env], "RUBYOPT" => "", "RACK_ENV" => deploy[:rails_env]
+    environment "RAILS_ENV" => deploy[:rails_env],
+                "RUBYOPT" => "",
+                "RACK_ENV" => deploy[:rails_env],
+                "HOME" => deploy[:home]
     symlink_before_migrate deploy[:symlink_before_migrate]
     action deploy[:action]
     restart_command "sleep #{deploy[:sleep_before_restart]} && #{deploy[:restart_command]}"
