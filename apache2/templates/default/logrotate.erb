@@ -3,7 +3,9 @@
         missingok
         rotate <%= node[:apache][:logrotate][:rotate] %>
         compress
+        <% if node[:apache][:logrotate][:delaycompress] -%>
         delaycompress
+        <% end -%>
         notifempty
         create 640 root adm
         sharedscripts

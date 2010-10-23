@@ -80,5 +80,6 @@ apache[:worker][:maxrequestsperchild] = 10000 unless apache[:worker].has_key?(:m
 
 # logrotate
 apache[:logrotate] = Mash.new unless apache.has_key?(:logrotate)
-apache[:logrotate][:schedule] = 'weekly'
-apache[:logrotate][:rotate] = '52'
+apache[:logrotate][:schedule] = 'daily'
+apache[:logrotate][:rotate] = '30'
+apache[:logrotate][:delaycompress] = true
