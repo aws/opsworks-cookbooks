@@ -6,7 +6,4 @@
     'cluster' => node[:scalarium][:cluster].to_hash
   } 
 %>
-<% node[:scalarium][:instance][:roles].each do |role| %>
-  <% state['roles'][role]['instances'][node[:scalarium][:instance][:hostname]] = {'public_dns_name' => node[:scalarium][:instance][:public_dns_name], 'private_dns_name' => node[:scalarium][:instance][:private_dns_name], 'ip' => node[:scalarium][:instance][:ip], 'private_ip' => node[:scalarium][:instance][:private_ip], 'instance_type' => node[:scalarium][:instance][:instance_type]}%>
-<% end %>
 <%= JSON.pretty_generate(state) %>
