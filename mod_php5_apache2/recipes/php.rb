@@ -1,5 +1,3 @@
-include_recipe "mod_php5_apache2"
-
 # setup Apache virtual host
 node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'php'
