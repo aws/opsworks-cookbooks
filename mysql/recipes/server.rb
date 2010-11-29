@@ -17,6 +17,7 @@ when "debian","ubuntu"
 
   template "/var/cache/local/preseeding/mysql-server.seed" do
     source "mysql-server.seed.erb"
+    backup false
     owner "root"
     group "root"
     mode "0600"
@@ -30,10 +31,19 @@ when "debian","ubuntu"
 
   template "/var/cache/local/preseeding/percona-server.seed" do
     source "percona-server.seed.erb"
+    backup false
     owner "root"
     group "root"
     mode "0600"
     notifies :run, resources(:execute => "preseed percona-server"), :immediately
+  end
+  
+  template "/etc/mysql/debian.cnf" do
+    source "debian.cnf.erb"
+    backup false
+    owner "root"
+    group "root"
+    mode "0600"
   end
 end
 
@@ -64,6 +74,7 @@ end
 # allow MySQL to read /sys/devices/system/cpu/*
 template "/etc/apparmor.d/usr.sbin.mysqld" do
   source "apparmor.mysql.erb"
+  backup false
   owner 'root'
   group 'root'
   mode '0644'
@@ -122,6 +133,7 @@ end
 
 template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/etc/my.cnf"}, "default" => "/etc/mysql/my.cnf") do
   source "my.cnf.erb"
+  backup false
   owner "root"
   group "root"
   mode "0644"

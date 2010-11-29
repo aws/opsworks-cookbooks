@@ -1,51 +1,59 @@
 require 'openssl'
 
-pw = String.new
-
-while pw.length < 20
-  pw << OpenSSL::Random.random_bytes(1).gsub(/\W/, '')
+root_pw = String.new
+while root_pw.length < 20
+  root_pw << OpenSSL::Random.random_bytes(1).gsub(/\W/, '')
 end
 
-set_unless[:mysql][:server_root_password] = pw
-set_unless[:mysql][:bind_address]         = '0.0.0.0'
-set_unless[:mysql][:datadir]              = "/var/lib/mysql"
+default[:mysql][:server_root_password] = root_pw
+
+debian_pw = String.new
+while debian_pw.length < 20
+  debian_pw << OpenSSL::Random.random_bytes(1).gsub(/\W/, '')
+end
+
+default[:mysql][:debian_sys_maintainer_user]     = 'debian-sys-maint'
+default[:mysql][:debian_sys_maintainer_password] = debian_pw
+
+default[:mysql][:bind_address]         = '0.0.0.0'
+default[:mysql][:datadir]              = "/var/lib/mysql"
 
 if attribute?(:ec2)
-  set_unless[:mysql][:ec2_path]    = "/mnt/mysql"
+  default[:mysql][:ec2_path]    = "/mnt/mysql"
 end
 
 # Tunables
 
 # InnoDB
-set_unless[:mysql][:tunable][:innodb_buffer_pool_size]         = "1200M"
-set_unless[:mysql][:tunable][:innodb_additional_mem_pool_size] = "20M"
-set_unless[:mysql][:tunable][:innodb_flush_log_at_trx_commit]  = "2"
-set_unless[:mysql][:tunable][:innodb_lock_wait_timeout]        = "50"
+default[:mysql][:tunable][:innodb_buffer_pool_size]         = "1200M"
+default[:mysql][:tunable][:innodb_additional_mem_pool_size] = "20M"
+default[:mysql][:tunable][:innodb_flush_log_at_trx_commit]  = "2"
+default[:mysql][:tunable][:innodb_lock_wait_timeout]        = "50"
 
 # query cache
-set_unless[:mysql][:tunable][:query_cache_type]    = "1"
-set_unless[:mysql][:tunable][:query_cache_size]    = "128M"
-set_unless[:mysql][:tunable][:query_cache_limit]   = "2M"
+default[:mysql][:tunable][:query_cache_type]    = "1"
+default[:mysql][:tunable][:query_cache_size]    = "128M"
+default[:mysql][:tunable][:query_cache_limit]   = "2M"
 
 # MyISAM & general
-set_unless[:mysql][:tunable][:max_allowed_packet]  = "32M"
-set_unless[:mysql][:tunable][:thread_stack]        = "192K"
-set_unless[:mysql][:tunable][:thread_cache_size]   = "8"
-set_unless[:mysql][:tunable][:key_buffer]          = "250M"
-set_unless[:mysql][:tunable][:max_connections]     = "1024"
-set_unless[:mysql][:tunable][:wait_timeout]        = "180"
-set_unless[:mysql][:tunable][:net_read_timeout]    = "30"
-set_unless[:mysql][:tunable][:net_write_timeout]   = "30"
-set_unless[:mysql][:tunable][:back_log]            = "128"
-set_unless[:mysql][:tunable][:table_cache]         = "1024"
-set_unless[:mysql][:tunable][:max_heap_table_size] = "32M"
-set_unless[:mysql][:clients] = []
+default[:mysql][:tunable][:max_allowed_packet]  = "32M"
+default[:mysql][:tunable][:thread_stack]        = "192K"
+default[:mysql][:tunable][:thread_cache_size]   = "8"
+default[:mysql][:tunable][:key_buffer]          = "250M"
+default[:mysql][:tunable][:max_connections]     = "1024"
+default[:mysql][:tunable][:wait_timeout]        = "180"
+default[:mysql][:tunable][:net_read_timeout]    = "30"
+default[:mysql][:tunable][:net_write_timeout]   = "30"
+default[:mysql][:tunable][:back_log]            = "128"
+default[:mysql][:tunable][:table_cache]         = "1024"
+default[:mysql][:tunable][:max_heap_table_size] = "32M"
+default[:mysql][:clients] = []
 
 # Percona XtraDB
-set_unless[:mysql][:use_percona_xtradb] = false
-set_unless[:scalarium][:instance][:architecture] = `dpkg --print-architecture`.chomp
+default[:mysql][:use_percona_xtradb] = false
+default[:scalarium][:instance][:architecture] = `dpkg --print-architecture`.chomp
 
-set_unless[:percona] = {}
-set_unless[:percona][:tmp_dir] = '/tmp/percona-server'
-set_unless[:percona][:version] = '5.1.47-11.2-53'
-set_unless[:percona][:url_base] = "http://peritor-assets.s3.amazonaws.com/percona"
+default[:percona] = {}
+default[:percona][:tmp_dir] = '/tmp/percona-server'
+default[:percona][:version] = '5.1.47-11.2-53'
+default[:percona][:url_base] = "http://peritor-assets.s3.amazonaws.com/percona"

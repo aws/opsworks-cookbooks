@@ -1,0 +1,11 @@
+[client]
+host     = localhost
+user     = <%= node[:mysql][:debian_sys_maintainer_user] %>
+password = <%= node[:mysql][:debian_sys_maintainer_password] %>
+socket   = /var/run/mysqld/mysqld.sock
+[mysql_upgrade]
+host     = localhost
+user     = <%= node[:mysql][:debian_sys_maintainer_user] %>
+password = <%= node[:mysql][:debian_sys_maintainer_password] %>
+socket   = /var/run/mysqld/mysqld.sock
+basedir  = /usr
