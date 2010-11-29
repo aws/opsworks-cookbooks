@@ -1,8 +1,8 @@
-<% (@node[:mysql][:clients] - @hosts).each do |client| -%>
-grant all privileges on <%= @settings[:database] %>.* to root@<%= client %> identified by '<%= @node[:mysql][:server_root_password] %>';
+<% (node[:mysql][:clients] - @hosts).each do |client| -%>
+grant all privileges on <%= @settings[:database] %>.* to root@'<%= Resolv.getaddress(client) %>' identified by '<%= node[:mysql][:server_root_password] %>';
 <% end -%>
 <%# Remove non-existing servers -%>
-<% (@hosts - @node[:mysql][:clients]).each do |client| -%>
+<% (@hosts - node[:mysql][:clients]).each do |client| -%>
 <% next if client == '%' -%>
-revoke all privileges on <%= @settings[:database] %>.* from root@<%= client %>;
+revoke all privileges on <%= @settings[:database] %>.* from root@'<%= Resolv.getaddress(client) %>';
 <% end -%>
