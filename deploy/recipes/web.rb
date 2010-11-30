@@ -1,13 +1,21 @@
-include_recipe "deploy::user"
 include_recipe "nginx::service"
-include_recipe 'deploy::source'
 
 node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'static'
     Chef::Log.debug("Skipping deploy::web application #{application} as it is not an static HTML app")
     next
   end
+
+  scalarium_deploy_user do
+    app application
+    deploy_data deploy
+  end
   
+  scalarium_deploy do
+    app application
+    deploy_data deploy
+  end
+
   template "#{node[:nginx][:dir]}/sites-available/#{application}" do
     source "site.erb"
     cookbook "nginx"
