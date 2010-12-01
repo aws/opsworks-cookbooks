@@ -1,3 +1,5 @@
+require 'resolv'
+
 include_recipe "mysql::client"
 
 case node[:platform]

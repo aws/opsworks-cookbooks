@@ -1,6 +1,6 @@
 default[:deploy] = {}
 deploy.each do |application, deploy|
-  default[:deploy][application] = Mash.new
+  default[:deploy][application] = {}
   default[:deploy][application][:deploy_to] = "/srv/www/#{application}"
   default[:deploy][application][:scm] = {}
   default[:deploy][application][:scm][:scm_type] = "git"
@@ -41,8 +41,13 @@ deploy.each do |application, deploy|
   default[:deploy][application][:sleep_before_restart] = 0
   default[:deploy][application][:restart_command] = "touch tmp/restart.txt"
   default[:deploy][application][:enable_submodules] = true
+  default[:deploy][application][:shallow_clone] = true
   default[:deploy][application][:symlink_before_migrate] = {"config/database.yml" => "config/database.yml"}
   
+  default[:deploy][application][:environment] = {"RAILS_ENV" => deploy[:rails_env],
+                                                 "RUBYOPT" => "",
+                                                 "RACK_ENV" => deploy[:rails_env],
+                                                 "HOME" => deploy[:home]}
   default[:deploy][application][:ssl_support] = false
 end
 
