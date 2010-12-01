@@ -4,7 +4,6 @@
 #
 
 include_recipe "deploy::user"
-include_recipe "mod_php5_apache2"
 include_recipe "mod_php5_apache2::php"
 
 node[:deploy].each do |application, deploy|
