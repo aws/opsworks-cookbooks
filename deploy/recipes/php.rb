@@ -3,7 +3,6 @@
 # Recipe:: php
 #
 
-include_recipe "deploy::user"
 include_recipe "mod_php5_apache2"
 include_recipe "mod_php5_apache2::php"
 
@@ -24,6 +23,14 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  scalarium_deploy_user do
+    deploy_data deploy
+    app application
+  end
+
+  scalarium_deploy do
+    deploy_data deploy
+    app application
+  end
 end
 
-include_recipe "deploy::source"

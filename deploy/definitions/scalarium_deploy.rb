@@ -2,17 +2,6 @@ define :scalarium_deploy do
   application = params[:app]
   deploy = params[:deploy_data]
 
-  group deploy[:group]
-
-  user deploy[:user] do
-    action :create
-    comment "deploy user"
-    gid deploy[:group]
-    home deploy[:home]
-    supports :manage_home => true
-    shell "/bin/zsh"
-  end
-
   directory "#{deploy[:deploy_to]}" do
     group deploy[:group]
     owner deploy[:user]
