@@ -43,7 +43,7 @@ function graph_haproxy_requests_report ( &$rrdtool_graph ) {
     } else {
        # If there are no Passenger metrics put something so that the report doesn't barf
        $series  = "DEF:'cpu_num'='${rrd_dir}/cpu_num.rrd':'sum':AVERAGE ";
-	     $series .= "LINE2:'cpu_num'#$mem_swapped_color:'Passenger metrics not collected' ";
+	     $series .= "LINE2:'cpu_num'#$mem_swapped_color:'HAProxy metrics not collected' ";
     }
 
     $rrdtool_graph['series'] = $series;

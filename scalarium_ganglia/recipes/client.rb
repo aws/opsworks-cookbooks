@@ -32,3 +32,4 @@ include_recipe "scalarium_ganglia::monitor-mysql" if node[:scalarium][:instance]
 include_recipe "scalarium_ganglia::monitor-haproxy" if node[:scalarium][:instance][:roles].include?('lb')
 include_recipe "scalarium_ganglia::monitor-passenger" if node[:scalarium][:instance][:roles].include?('rails-app')
 include_recipe "scalarium_ganglia::monitor-apache" if node[:scalarium][:instance][:roles].any?{|role| ['rails-app', 'php-app'].include?(role) }
+include_recipe "scalarium_ganglia::monitor-nginx" if node[:scalarium][:instance][:roles].include?('web')
