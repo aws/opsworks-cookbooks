@@ -46,4 +46,4 @@ define :scalarium_rails do
       deploy[:mounted_at]
     end
   end
- 
+end 
