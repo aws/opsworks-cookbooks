@@ -13,11 +13,11 @@ module Scalarium
     end
     
     def new_gem_version_available?(name)
-      ::Gem::Version.new(gem_provider(name).candidate_version) > ::Gem::Version.new(current_gem_version(name))
+      Chef::VERSION > "0.9" || ::Gem::Version.new(gem_provider(name).candidate_version) > ::Gem::Version.new(current_gem_version(name))
     end
     
     def gem_available?(name)
-      !gem_provider(name).candidate_version.nil?
+      Chef::VERSION > "0.9" || !gem_provider(name).candidate_version.nil?
     end
   end
 end

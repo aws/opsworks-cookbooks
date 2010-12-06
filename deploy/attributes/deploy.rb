@@ -1,13 +1,19 @@
 default[:deploy] = {}
-deploy.each do |application, deploy|
+
+if Chef::VERSION == '0.9.8'
+  deploy = node.instance_variable_get("@json_attrib_for_expansion")['deploy']
+end
+
+Chef::Log.info("#{node[:deploy].inspect}")
+node[:deploy].each do |application, deploy|
   default[:deploy][application] = {}
   default[:deploy][application][:deploy_to] = "/srv/www/#{application}"
   default[:deploy][application][:scm] = {}
   default[:deploy][application][:scm][:scm_type] = "git"
   default[:deploy][application][:scm][:revision] = "HEAD"
   default[:deploy][application][:release] = Time.now.utc.strftime("%Y%m%d%H%M%S")
-  default[:deploy][application][:release_path] = "#{deploy[:deploy_to]}/releases/#{deploy[:release]}"
-  default[:deploy][application][:current_path] = "#{deploy[:deploy_to]}/current"
+  default[:deploy][application][:release_path] = "#{node[:deploy][application][:deploy_to]}/releases/#{node[:deploy][application][:release]}"
+  default[:deploy][application][:current_path] = "#{node[:deploy][application][:deploy_to]}/current"
   default[:deploy][application][:document_root] = ""
   if deploy[:document_root]
     default[:deploy][application][:absolute_document_root] = "#{default[:deploy][application][:current_path]}/#{deploy[:document_root]}/"

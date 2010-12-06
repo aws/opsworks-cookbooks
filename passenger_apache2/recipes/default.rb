@@ -43,7 +43,7 @@ gem_package "passenger" do
   version node[:passenger][:version]
   gem_binary node[:passenger][:gem_bin]
   only_if do
-    new_gem_version_available?('passenger')
+    Chef::VERSION >= "0.9" || new_gem_version_available?('passenger')
   end
 end
 
@@ -51,7 +51,7 @@ execute "passenger_module" do
   command 'echo -en "\n\n\n\n" | passenger-install-apache2-module'
   creates node[:passenger][:module_path]
   only_if do
-    new_gem_version_available?('passenger')
+    Chef::VERSION >= "0.9" || new_gem_version_available?('passenger')
   end
 end
 

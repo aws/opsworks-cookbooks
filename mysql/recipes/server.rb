@@ -12,7 +12,7 @@ when "debian","ubuntu"
     recursive true
   end
 
-  execute "preseed mysql-server" do
+  execute "preseed-mysql-server" do
     command "debconf-set-selections /var/cache/local/preseeding/mysql-server.seed"
     action :nothing
   end
@@ -23,10 +23,10 @@ when "debian","ubuntu"
     owner "root"
     group "root"
     mode "0600"
-    notifies :run, resources(:execute => "preseed mysql-server"), :immediately
+    notifies :run, resources(:execute => "preseed-mysql-server"), :immediately
   end
   
-  execute "preseed percona-server" do
+  execute "preseed-percona-server" do
     command "debconf-set-selections /var/cache/local/preseeding/percona-server.seed"
     action :nothing
   end
@@ -37,7 +37,7 @@ when "debian","ubuntu"
     owner "root"
     group "root"
     mode "0600"
-    notifies :run, resources(:execute => "preseed percona-server"), :immediately
+    notifies :run, resources(:execute => "preseed-percona-server"), :immediately
   end
   
   template "/etc/mysql/debian.cnf" do
@@ -71,6 +71,7 @@ end
 service "apparmor" do
   supports :status => true, :restart => true, :reload => true
   action :nothing
+  ignore_failure true
 end
 
 # allow MySQL to read /sys/devices/system/cpu/*
@@ -81,7 +82,7 @@ template "/etc/apparmor.d/usr.sbin.mysqld" do
   group 'root'
   mode '0644'
   only_if do
-    File.exists?("/etc/apparmor.d/usr.sbin.mysqld")
+    system("service apparmor status") && File.exists?("/etc/apparmor.d/usr.sbin.mysqld")
   end
   notifies :restart, resources(:service => "apparmor"), :immediately
 end
@@ -89,12 +90,24 @@ end
 service "mysql" do
   service_name value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "mysqld"}, "default" => "mysql")
 
+  case node[:platform]
+  when "ubuntu"
+    if node[:platform_version].to_f >= 9.10
+      provider Chef::Provider::Service::Upstart
+    end
+  end
   supports :status => true, :restart => true, :reload => true
   action :enable
 end
 
 service "mysql" do
   action :stop
+  case node[:platform]
+  when "ubuntu"
+    if node[:platform_version].to_f >= 9.10
+      provider Chef::Provider::Service::Upstart
+    end
+  end
 end
 
 if (node[:ec2] && ! FileTest.directory?(node[:mysql][:ec2_path]))
@@ -143,5 +156,12 @@ template value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "/et
 end
 
 service "mysql" do
+  case node[:platform]
+  when "ubuntu"
+    if node[:platform_version].to_f >= 9.10
+      provider Chef::Provider::Service::Upstart
+    end
+  end
+  
   action :start
 end

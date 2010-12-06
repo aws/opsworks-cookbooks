@@ -4,7 +4,7 @@ else
   package "mysql-devel" do
     package_name value_for_platform(
       [ "centos", "redhat", "suse" ] => { "default" => "mysql-devel" },
-      "default" => 'libmysqlclient15-dev'
+      "ubuntu" => {'9.10' => 'libmysqlclient15-dev', '10.04' => 'libmysqlclient16-dev'}
     )
     action :install
   end

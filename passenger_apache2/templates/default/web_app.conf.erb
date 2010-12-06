@@ -31,12 +31,12 @@
   </Directory>
 
   LogLevel info
-  ErrorLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log
-  CustomLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-access.log combined
-  CustomLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-ganglia.log ganglia
+  ErrorLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log
+  CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-access.log combined
+  CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-ganglia.log ganglia
 
   RewriteEngine On
-  RewriteLog <%= @node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
+  RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
   RewriteLogLevel 0
   
   # Canonical host
@@ -50,7 +50,7 @@
   
 </VirtualHost>
 
-<% if @node[:deploy][@application_name][:ssl_support] -%>
+<% if node[:deploy][@application_name][:ssl_support] -%>
 <VirtualHost *:443>
   ServerName <%= @params[:server_name] %>
   <% if @params[:server_aliases] && !@params[:server_aliases].empty? -%>
@@ -94,12 +94,12 @@
   </Directory>
 
   LogLevel info
-  ErrorLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-error.log
-  CustomLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-access.log combined
-  CustomLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-ganglia.log ganglia
+  ErrorLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-error.log
+  CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-access.log combined
+  CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-ganglia.log ganglia
 
   RewriteEngine On
-  RewriteLog <%= @node[:apache][:log_dir] %>/<%= @application_name %>-ssl-rewrite.log
+  RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-ssl-rewrite.log
   RewriteLogLevel 0
   
   # Canonical host

@@ -2,7 +2,7 @@ define :passenger_web_app do
   deploy = params[:deploy]
   application = params[:application]
 
-  ruby_block do
+  ruby_block 'Determine Passenger application type' do
     inner_deploy = deploy
     inner_application = application
     block do
