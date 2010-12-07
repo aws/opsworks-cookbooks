@@ -1,10 +1,5 @@
 default[:deploy] = {}
 
-if Chef::VERSION == '0.9.8'
-  deploy = node.instance_variable_get("@json_attrib_for_expansion")['deploy']
-end
-
-Chef::Log.info("#{node[:deploy].inspect}")
 node[:deploy].each do |application, deploy|
   default[:deploy][application] = {}
   default[:deploy][application][:deploy_to] = "/srv/www/#{application}"
