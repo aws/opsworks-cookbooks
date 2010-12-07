@@ -1,3 +1,2 @@
-rails Mash.new unless attribute?("rails")
-
-rails[:version] = nil unless rails.has_key?(:version)
+default[:rails] = {}
+default[:rails][:version] = "2.3.5"
