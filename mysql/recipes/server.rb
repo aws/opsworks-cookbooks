@@ -92,7 +92,7 @@ service "mysql" do
 
   case node[:platform]
   when "ubuntu"
-    if node[:platform_version].to_f >= 9.10
+    if node[:platform_version].to_f >= 10.04
       provider Chef::Provider::Service::Upstart
     end
   end
@@ -104,7 +104,7 @@ service "mysql" do
   action :stop
   case node[:platform]
   when "ubuntu"
-    if node[:platform_version].to_f >= 9.10
+    if node[:platform_version].to_f >= 10.04
       provider Chef::Provider::Service::Upstart
     end
   end
@@ -158,7 +158,7 @@ end
 service "mysql" do
   case node[:platform]
   when "ubuntu"
-    if node[:platform_version].to_f >= 9.10
+    if node[:platform_version].to_f >= 10.04
       provider Chef::Provider::Service::Upstart
     end
   end
