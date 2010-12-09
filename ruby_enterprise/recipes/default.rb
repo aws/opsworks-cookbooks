@@ -50,4 +50,4 @@ template "/usr/local/bin/ruby_gc_wrapper.sh" do
   group "root"
 end
 
-include_recipe("ruby_enterprise::gems")
+include_recipe("bundler")

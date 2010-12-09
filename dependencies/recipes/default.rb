@@ -5,8 +5,6 @@
 
 include_recipe "packages"
 include_recipe "gem_support"
-include_recipe "ruby_enterprise"
-
 
 node[:dependencies][:debs].each do |deb, version|
   Chef::Log.info("preparing installation of dependency: dpkg #{deb.inspect}")

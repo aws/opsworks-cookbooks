@@ -29,7 +29,3 @@ default[:ruby_enterprise][:gc][:heap_slots_increment]     = 250000
 default[:ruby_enterprise][:gc][:heap_slots_growth_factor] = 1
 default[:ruby_enterprise][:gc][:malloc_limit]             = 50000000
 default[:ruby_enterprise][:gc][:heap_free_min]            = 4096
-default[:ruby_enterprise][:gems] = {}
-default[:ruby_enterprise][:gems][:version] = '1.3.7'
-default[:ruby_enterprise][:bundler] = {}
-default[:ruby_enterprise][:bundler][:version] = '1.0.7'

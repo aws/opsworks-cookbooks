@@ -1,6 +1,7 @@
 default[:passenger] = {}
 default[:passenger][:version] = '2.2.11'
-default[:passenger][:root_path] = "/usr/local/lib/ruby/gems/1.8/gems/passenger-#{passenger[:version]}"
+default[:passenger][:gems_path] = "/usr/local/lib/ruby/gems/#{node[:scalarium][:ruby_version] > "1.9" ? "1.9.1" : "1.8"}/gems"
+default[:passenger][:root_path] = "#{node[:passenger][:gems_path]}/passenger-#{passenger[:version]}"
 default[:passenger][:module_path] = "#{passenger[:root_path]}/ext/apache2/mod_passenger.so"
 default[:passenger][:ruby_bin] = "/usr/local/bin/ruby"
 default[:passenger][:ruby_wrapper_bin] = "/usr/local/bin/ruby_gc_wrapper.sh"
