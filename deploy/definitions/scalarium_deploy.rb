@@ -20,7 +20,9 @@ define :scalarium_deploy do
                         
   prepare_svn_checkouts(:user => deploy[:user], 
                         :group => deploy[:group], 
-                        :home => deploy[:home]) if deploy[:scm][:scm_type].to_s == 'svn'
+                        :home => deploy[:home],
+                        :deploy => deploy,
+                        :application => application) if deploy[:scm][:scm_type].to_s == 'svn'
 
   Chef::Log.debug("Checking out source code of application #{application} with type #{deploy[:application_type]}")
   
@@ -50,6 +52,7 @@ define :scalarium_deploy do
       svn_username deploy[:scm][:user]
       svn_password deploy[:scm][:password]
       svn_arguments "--no-auth-cache --non-interactive --trust-server-cert"
+      svn_info_args "--no-auth-cache --non-interactive --trust-server-cert"
     else
       raise "unsupported SCM type #{deploy[:scm][:scm_type].inspect}"
     end
