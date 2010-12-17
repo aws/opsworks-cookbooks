@@ -1,6 +1,4 @@
-default[:scalarium] = {}
 default[:scalarium][:ruby_stack] = 'ruby_enterprise'
-default[:scalarium][:ruby_version] = '1.8'
 default[:scalarium_initial_setup][:sysctl] = Mash.new
 default[:scalarium_initial_setup][:sysctl]['net.core.somaxconn'] = 1024           # 128
 default[:scalarium_initial_setup][:sysctl]['net.core.netdev_max_backlog'] = 3072  # 1000
