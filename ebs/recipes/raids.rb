@@ -1,0 +1,66 @@
+package "mdadm"
+package "lvm2"
+
+execute "Load device mapper kernel module" do
+  command "modprobe dm-mod"
+end
+
+node[:ebs][:raids].each do |raid_device, options|
+  lvm_device = BlockDevice.lvm_device(raid_device)
+  
+  Chef::Log.info("Waiting for individual disks of RAID #{options[:mount_point]}")
+  options[:disks].each do |disk_device|
+    BlockDevice::wait_for(disk_device)
+  end
+
+  ruby_block "Create or resume RAID array #{raid_device}" do
+    block do
+      if BlockDevice.existing_raid_at?(raid_device)
+        if BlockDevice.assembled_raid_at?(raid_device)
+          Chef::Log.info "Skipping RAID array at #{raid_device} - already assembled and probably mounted at #{options[:mount_point]}"
+        else
+          BlockDevice.assemble_raid(raid_device, options)
+        end
+      else
+        BlockDevice.create_raid(raid_device, options.update(:chunk_size => node[:ebs][:mdadm_chunk_size]))
+      end
+    end
+  end
+
+  ruby_block "Create or attach LVM volume out of #{raid_device}" do
+    block do
+      #unless BlockDevice.existing_lvm_at?(lvm_device)
+        BlockDevice.create_lvm(raid_device, options)
+      #end
+    end
+  end
+
+  execute "mkfs" do
+    command "mkfs -t #{options[:fstype]} #{lvm_device}"
+    
+    not_if do
+      # check volume filesystem
+      system("blkid -s TYPE -o value #{lvm_device}")
+    end    
+  end
+  
+  directory options[:mount_point] do
+    recursive true
+    action :create
+    mode "0755"
+  end
+  
+  mount options[:mount_point] do
+    fstype options[:fstype]
+    device lvm_device
+    options "noatime"
+  end
+  
+  mount options[:mount_point] do
+    action :enable
+    fstype options[:fstype]
+    device lvm_device
+    options "noatime"
+  end
+  
+end
