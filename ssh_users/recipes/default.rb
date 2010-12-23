@@ -4,7 +4,7 @@ node[:ssh_users].each do |username, public_key|
   user username do
     action :create
     comment "Scalarium user #{username}"
-    gid 'scalarium-users'
+    gid 'scalarium'
     home "/home/#{username}"
     supports :manage_home => true
     shell '/bin/zsh'
