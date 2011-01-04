@@ -111,7 +111,7 @@ module BlockDevice
   def self.lvm_volume_exits?(raid_device)
     lvscan = `lvscan`
     if lvscan.match(lvm_device(raid_device))
-      Chef::Log.debug("Checking for existing LVM volume for #{lvm_device(raid_device)}: #{lvscan}")
+      Chef::Log.debug("Checking for existing LVM volume disk for #{lvm_device(raid_device)}: #{lvscan}")
       Chef::Log.debug("Checking for existing LVM volume disk for #{lvm_device(raid_device)}: true")
       true
     else
