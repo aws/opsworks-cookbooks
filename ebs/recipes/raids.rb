@@ -7,7 +7,7 @@ end
 
 node[:ebs][:raids].each do |raid_device, options|
   lvm_device = BlockDevice.lvm_device(raid_device)
-  
+
   Chef::Log.info("Waiting for individual disks of RAID #{options[:mount_point]}")
   options[:disks].each do |disk_device|
     BlockDevice::wait_for(disk_device)
@@ -29,38 +29,49 @@ node[:ebs][:raids].each do |raid_device, options|
 
   ruby_block "Create or attach LVM volume out of #{raid_device}" do
     block do
-      #unless BlockDevice.existing_lvm_at?(lvm_device)
-        BlockDevice.create_lvm(raid_device, options)
-      #end
+      BlockDevice.create_lvm(raid_device, options)
     end
   end
 
   execute "mkfs" do
     command "mkfs -t #{options[:fstype]} #{lvm_device}"
-    
+
     not_if do
       # check volume filesystem
       system("blkid -s TYPE -o value #{lvm_device}")
-    end    
+    end
   end
-  
+
   directory options[:mount_point] do
     recursive true
     action :create
     mode "0755"
   end
-  
+
   mount options[:mount_point] do
     fstype options[:fstype]
     device lvm_device
     options "noatime"
   end
-  
+
   mount options[:mount_point] do
     action :enable
     fstype options[:fstype]
     device lvm_device
     options "noatime"
   end
-  
+
+  template "/etc/mdadm/mdadm.conf" do
+    source "mdadm.conf.erb"
+    mode 0644
+    owner 'root'
+    group 'root'
+  end
+
+  template "/etc/rc.local" do
+    source "rc.local.erb"
+    mode 0755
+    owner 'root'
+    group 'root'
+  end
 end
