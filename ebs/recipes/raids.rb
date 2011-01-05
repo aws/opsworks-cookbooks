@@ -24,6 +24,8 @@ node[:ebs][:raids].each do |raid_device, options|
       else
         BlockDevice.create_raid(raid_device, options.update(:chunk_size => node[:ebs][:mdadm_chunk_size]))
       end
+
+      BlockDevice.set_read_ahead(raid_device, node[:ebs][:md_read_ahead])
     end
   end
 
