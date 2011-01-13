@@ -44,6 +44,10 @@ module Scalarium
 
     def teardown_user(name)
       Chef::Log.info("tearing down user #{name}")
+      execute "kill all processes of user #{name}" do
+        command "pkill -u #{name}; true"
+      end
+
       user name do
         action :remove
         supports :manage_home => true
