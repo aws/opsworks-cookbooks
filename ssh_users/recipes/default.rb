@@ -17,3 +17,13 @@ node[:ssh_users].each do |id, ssh_user|
   end
   set_public_key(ssh_user)
 end
+
+template '/etc/sudoers' do
+  backup false
+  cookbook 'ssh_users'
+  source 'sudoers.erb'
+  owner 'root'
+  group 'root'
+  mode 0440
+  variables :sudoers => node[:sudoers]
+end

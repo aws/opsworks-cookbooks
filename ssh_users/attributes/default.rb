@@ -5,3 +5,7 @@ Etc.group do |entry|
     default[:scalarium_gid] = entry.gid
   end
 end
+
+if node[:ssh_users]
+  default[:sudoers] = node[:ssh_users].values.select {|user| user[:sudoer]}
+end
