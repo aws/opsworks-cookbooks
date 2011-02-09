@@ -38,6 +38,10 @@ end
   end
 end
 
+if node[:passenger][:version] >= '3.0.0'
+  package 'libcurl4-openssl-dev'
+end
+
 gem_package "passenger" do
   retries 2
   version node[:passenger][:version]
