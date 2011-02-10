@@ -24,6 +24,7 @@
 
 include_recipe "packages"
 include_recipe "gem_support"
+include_recipe 'apache2::service'
 
 if platform?("centos","redhat") and dist_only?
   # just the gem, we'll install the apache module within apache2
@@ -57,5 +58,6 @@ execute "passenger_module" do
   only_if do
     Chef::VERSION >= "0.9" || new_gem_version_available?('passenger')
   end
+  notifies :restart, resources(:service => 'apache2')
 end
 
