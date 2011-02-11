@@ -1,4 +1,4 @@
-ensure_scm_package_installed(node[:scalarium_custom_cookbooks][:scm][:type])
+ensure_scm_package_installed(node[:scalarium_custom_cookbooks][:scm][:type]) unless node[:scalarium_custom_cookbooks][:scm][:type].nil?
 
 prepare_git_checkouts(:user => node[:scalarium_custom_cookbooks][:user],
                       :group => node[:scalarium_custom_cookbooks][:group],

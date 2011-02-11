@@ -1,18 +1,15 @@
 ruby_block "Execute the new cookbooks" do
   block do
-    if ::File.directory?(node[:scalarium_custom_cookbooks][:destination])
-      
-      @cookbook_loader = node.cookbook_loader # needed for include_recipe to work
-      reload_definitions
-      
-      node[:scalarium_custom_cookbooks][:recipes].each do |r|
-        begin
-          Chef::Log.info("Executing custom recipe: #{r}")
-          include_recipe r
-        rescue Exception => e
-          Chef::Log.error("Caught exception during execution of custom recipe: #{r}: #{e} - #{e.backtrace.join("\n")}")
-          raise e
-        end
+    @cookbook_loader = node.cookbook_loader # needed for include_recipe to work
+    reload_definitions
+
+    node[:scalarium_custom_cookbooks][:recipes].each do |r|
+      begin
+        Chef::Log.info("Executing custom recipe: #{r}")
+        include_recipe r
+      rescue Exception => e
+        Chef::Log.error("Caught exception during execution of custom recipe: #{r}: #{e} - #{e.backtrace.join("\n")}")
+        raise e
       end
     end
   end
