@@ -21,7 +21,7 @@ module Scalarium
         gid 'scalarium'
         home "/home/#{params[:name]}"
         supports :manage_home => true
-        shell '/bin/zsh'
+        shell '/bin/bash'
       end
 
       directory "/home/#{params[:name]}/.ssh" do
