@@ -42,11 +42,16 @@ module Scalarium
       end
     end
 
-    def teardown_user(name)
-      Chef::Log.info("tearing down user #{name}")
+    def kill_user_processes(name)
+      Chef::Log.info("Killing all processes of user #{name}")
       execute "kill all processes of user #{name}" do
         command "pkill -u #{name}; true"
       end
+    end
+
+    def teardown_user(name)
+      Chef::Log.info("tearing down user #{name}")
+      kill_user_processes(name)
 
       user name do
         action :remove
@@ -55,6 +60,8 @@ module Scalarium
     end
 
     def rename_user(old_name, new_name)
+      kill_user_processes(old_name)
+
       Chef::Log.info("renaming user #{old_name} to #{new_name}")
       execute "rename user from #{old_name} to #{new_name}" do
         command "usermod -l #{new_name} -d /home/#{new_name} -m #{old_name}"
