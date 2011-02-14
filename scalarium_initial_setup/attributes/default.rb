@@ -9,6 +9,7 @@ default[:scalarium_initial_setup][:sysctl]['net.ipv4.tcp_tw_reuse'] = 1         
 
 default[:scalarium_initial_setup][:bind_mounts][:mounts] = {
   "/srv/www" => "/mnt/srv/www",
+  "/var/www" => "/mnt/var/www",
   "/var/log/apache2" => "/mnt/var/log/apache2",
   "/var/log/mysql" => "/mnt/var/log/mysql"
 }
