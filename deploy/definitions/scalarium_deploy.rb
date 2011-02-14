@@ -10,19 +10,20 @@ define :scalarium_deploy do
     recursive true
   end
 
-  ensure_scm_package_installed(deploy[:scm][:scm_type])
-  
-  
-  prepare_git_checkouts(:user => deploy[:user], 
-                        :group => deploy[:group], 
-                        :home => deploy[:home], 
-                        :ssh_key => deploy[:scm][:ssh_key]) if deploy[:scm][:scm_type].to_s == 'git'
-                        
-  prepare_svn_checkouts(:user => deploy[:user], 
-                        :group => deploy[:group], 
-                        :home => deploy[:home],
-                        :deploy => deploy,
-                        :application => application) if deploy[:scm][:scm_type].to_s == 'svn'
+  if deploy[:scm]
+    ensure_scm_package_installed(deploy[:scm][:scm_type])
+
+    prepare_git_checkouts(:user => deploy[:user],
+                          :group => deploy[:group],
+                          :home => deploy[:home],
+                          :ssh_key => deploy[:scm][:ssh_key]) if deploy[:scm][:scm_type].to_s == 'git'
+
+    prepare_svn_checkouts(:user => deploy[:user],
+                          :group => deploy[:group],
+                          :home => deploy[:home],
+                          :deploy => deploy,
+                          :application => application) if deploy[:scm][:scm_type].to_s == 'svn'
+  end
 
   Chef::Log.debug("Checking out source code of application #{application} with type #{deploy[:application_type]}")
   
@@ -32,37 +33,39 @@ define :scalarium_deploy do
   end
 
   # setup deployment & checkout
-  deploy deploy[:deploy_to] do
-    repository deploy[:scm][:repository]
-    user deploy[:user]
-    revision deploy[:scm][:revision]
-    migrate deploy[:migrate]
-    migration_command deploy[:migrate_command]
-    environment deploy[:environment]
-    symlink_before_migrate deploy[:symlink_before_migrate]
-    action deploy[:action]
-    restart_command "sleep #{deploy[:sleep_before_restart]} && #{deploy[:restart_command]}"
-    case deploy[:scm][:scm_type].to_s
-    when 'git'
-      scm_provider :git
-      enable_submodules deploy[:enable_submodules]
-      shallow_clone deploy[:shallow_clone]
-    when 'svn'
-      scm_provider :subversion
-      svn_username deploy[:scm][:user]
-      svn_password deploy[:scm][:password]
-      svn_arguments "--no-auth-cache --non-interactive --trust-server-cert"
-      svn_info_args "--no-auth-cache --non-interactive --trust-server-cert"
-    else
-      raise "unsupported SCM type #{deploy[:scm][:scm_type].inspect}"
-    end
-
-    before_migrate do
-      if deploy[:application_type] == 'rails' and File.exists?("#{release_path}/Gemfile")
-        Chef::Log.info("Gemfile detected. Running bundle install.")
-        run("cd #{release_path} && bundle install #{deploy[:home]}/.bundler/#{application} --without=test")
+  if deploy[:scm]
+    deploy deploy[:deploy_to] do
+      repository deploy[:scm][:repository]
+      user deploy[:user]
+      revision deploy[:scm][:revision]
+      migrate deploy[:migrate]
+      migration_command deploy[:migrate_command]
+      environment deploy[:environment]
+      symlink_before_migrate deploy[:symlink_before_migrate]
+      action deploy[:action]
+      restart_command "sleep #{deploy[:sleep_before_restart]} && #{deploy[:restart_command]}"
+      case deploy[:scm][:scm_type].to_s
+      when 'git'
+        scm_provider :git
+        enable_submodules deploy[:enable_submodules]
+        shallow_clone deploy[:shallow_clone]
+      when 'svn'
+        scm_provider :subversion
+        svn_username deploy[:scm][:user]
+        svn_password deploy[:scm][:password]
+        svn_arguments "--no-auth-cache --non-interactive --trust-server-cert"
+        svn_info_args "--no-auth-cache --non-interactive --trust-server-cert"
+      else
+        raise "unsupported SCM type #{deploy[:scm][:scm_type].inspect}"
       end
-      run_callback_from_file("#{release_path}/deploy/before_migrate.rb")
+
+      before_migrate do
+        if deploy[:application_type] == 'rails' and File.exists?("#{release_path}/Gemfile")
+          Chef::Log.info("Gemfile detected. Running bundle install.")
+          run("cd #{release_path} && bundle install #{deploy[:home]}/.bundler/#{application} --without=test")
+        end
+        run_callback_from_file("#{release_path}/deploy/before_migrate.rb")
+      end
     end
   end
 
