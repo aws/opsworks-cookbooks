@@ -23,6 +23,8 @@ define :scalarium_deploy do
                           :home => deploy[:home],
                           :deploy => deploy,
                           :application => application) if deploy[:scm][:scm_type].to_s == 'svn'
+
+    prepare_archive_checkouts(deploy) if deploy[:scm][:scm_type].to_s == 'archive'
   end
 
   Chef::Log.debug("Checking out source code of application #{application} with type #{deploy[:application_type]}")

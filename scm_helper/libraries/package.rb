@@ -12,6 +12,14 @@ module Scalarium
           end
         elsif scm_type == "svn"
           package "subversion"
+        elsif scm_type == 'archive'
+          case node[:platform]
+          when 'debian', 'ubuntu'
+            package 'git-core'
+          else
+            package 'git'
+          end
+          package 'unzip'
         else
           raise "unsupported SCM type #{scm_type}"
         end
