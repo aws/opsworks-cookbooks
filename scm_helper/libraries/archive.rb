@@ -1,29 +1,28 @@
+require 'tmpdir'
+
 module Scalarium
   module SCM
     module Archive
-      def prepare_archive_checkouts(deploy)
-        remote_file "#{deploy[:deploy_to]}/shared/archive" do
-          source deploy[:scm][:repository]
+      def prepare_archive_checkouts(archive_url)
+        tmpdir = Dir.mktmpdir('scalarium')
+        directory tmpdir do
+          mode 0755
         end
 
-        directory "#{deploy[:deploy_to]}/shared/archive.d" do
-          action :delete
-          recursive true
+        remote_file "#{tmpdir}/archive" do
+          source archive_url
         end
 
         execute 'extract files' do
-          command "/root/scalarium-agent/bin/extract #{deploy[:deploy_to]}/shared/archive"
+          command "/root/scalarium-agent/bin/extract #{tmpdir}/archive"
         end
 
         execute 'create git repository' do
-          cwd "#{deploy[:deploy_to]}/shared/archive.d"
+          cwd "#{tmpdir}/archive.d"
           command "git init; git add .; git commit -m 'Create temporary repository from downloaded contents.'"
         end
 
-        deploy[:scm] = {
-          :scm_type => 'git',
-          :repository => "#{deploy[:deploy_to]}/shared/archive.d"
-        }
+        "#{tmpdir}/archive.d"
       end
     end
   end

@@ -9,6 +9,14 @@ prepare_svn_checkouts(:user => node[:scalarium_custom_cookbooks][:user],
                       :group => node[:scalarium_custom_cookbooks][:group], 
                       :home => node[:scalarium_custom_cookbooks][:home]) if node[:scalarium_custom_cookbooks][:scm][:type].to_s == 'svn'
 
+if node[:scalarium_custom_cookbooks][:scm][:type].to_s == 'archive'
+  repository = prepare_archive_checkouts(node[:scalarium_custom_cookbooks][:scm][:repository])
+  node[:scalarium_custom_cookbooks][:scm] = {
+    :type => 'git',
+    :repository => repository
+  }
+end
+
 scm "Download Custom Cookbooks" do
   user node[:scalarium_custom_cookbooks][:user]
   group node[:scalarium_custom_cookbooks][:group]

@@ -1,3 +1,12 @@
+require 'tmpdir'
+
+ruby_block 'Remove temp directories' do
+  block do
+    Dir.glob(Dir.tmpdir + '/scalarium*').each do |tmpdir|
+      system("rm -rf #{tmpdir}")
+    end
+  end
+end
 
 ruby_block "Clean up old chef log files" do
   block do
