@@ -25,5 +25,5 @@ template '/etc/sudoers' do
   owner 'root'
   group 'root'
   mode 0440
-  variables :sudoers => node[:sudoers] || []
+  variables :sudoers => node[:sudoers]
 end
