@@ -12,6 +12,11 @@ node[:deploy].each do |application, deploy|
     next
   end
   
+  scalarium_deploy_user do
+    deploy_data deploy
+    app application
+  end
+
   # create shared/ directory structure
   %w(log config system pids).each do |dir_name|
     directory "#{deploy[:deploy_to]}/shared/#{dir_name}" do
@@ -21,11 +26,6 @@ node[:deploy].each do |application, deploy|
       action :create
       recursive true  
     end
-  end
-
-  scalarium_deploy_user do
-    deploy_data deploy
-    app application
   end
 
   scalarium_deploy do
