@@ -68,11 +68,12 @@
   
   <% if @params[:mounted_at] -%>
   DocumentRoot /var/www
-  RailsBaseURI <%= @params[:mounted_at]%>
+  <%= @params[:deploy][:passenger_handler] -%>BaseURI <%= @params[:mounted_at] %>
   <% else -%>
   DocumentRoot <%= @params[:docroot] %>
-  RailsBaseURI /
+  <%= @params[:deploy][:passenger_handler] -%>BaseURI /
   <% end -%>
+  <%= @params[:deploy][:passenger_handler] -%>Env <%= @params[:rails_env] %>
   
   RailsEnv <%= @params[:rails_env] %>
 
