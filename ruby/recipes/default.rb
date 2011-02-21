@@ -34,3 +34,4 @@ execute "Install Ruby #{node[:ruby][:full_version]}" do
   end
 end
 
+include_recipe('bundler')
