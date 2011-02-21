@@ -1,6 +1,5 @@
 default[:scalarium][:ruby_version] = '1.8'
 
-default[:passenger] = {}
 default[:passenger][:version] = '2.2.11'
 default[:passenger][:gems_path] = "/usr/local/lib/ruby/gems/#{node[:scalarium][:ruby_version] > "1.9" ? "1.9.1" : "1.8"}/gems"
 default[:passenger][:root_path] = "#{node[:passenger][:gems_path]}/passenger-#{passenger[:version]}"
