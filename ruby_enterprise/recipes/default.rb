@@ -50,4 +50,5 @@ template "/usr/local/bin/ruby_gc_wrapper.sh" do
   group "root"
 end
 
-include_recipe("bundler")
+include_recipe('scalarium_rubygems')
+include_recipe('scalarium_bundler')
