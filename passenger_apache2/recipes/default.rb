@@ -55,9 +55,6 @@ end
 execute "passenger_module" do
   command 'passenger-install-apache2-module -a'
   creates node[:passenger][:module_path]
-  only_if do
-    Chef::VERSION >= "0.9" || new_gem_version_available?('passenger')
-  end
   notifies :restart, resources(:service => 'apache2')
 end
 
