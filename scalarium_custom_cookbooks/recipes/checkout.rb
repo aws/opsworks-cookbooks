@@ -10,7 +10,7 @@ prepare_svn_checkouts(:user => node[:scalarium_custom_cookbooks][:user],
                       :home => node[:scalarium_custom_cookbooks][:home]) if node[:scalarium_custom_cookbooks][:scm][:type].to_s == 'svn'
 
 if node[:scalarium_custom_cookbooks][:scm][:type].to_s == 'archive'
-  repository = prepare_archive_checkouts(node[:scalarium_custom_cookbooks][:scm][:repository])
+  repository = prepare_archive_checkouts(node[:scalarium_custom_cookbooks][:scm])
   node[:scalarium_custom_cookbooks][:scm] = {
     :type => 'git',
     :repository => repository

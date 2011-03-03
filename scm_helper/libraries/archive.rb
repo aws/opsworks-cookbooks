@@ -3,7 +3,16 @@ require 'tmpdir'
 module Scalarium
   module SCM
     module Archive
-      def prepare_archive_checkouts(archive_url)
+      def prepare_archive_checkouts(scm_options)
+        unless scm_options[:user].blank? || scm_options[:password].blank?
+          archive_url = URI.parse(scm_options[:repository])
+          archive_url.user = scm_options[:user]
+          archive_url.password = scm_options[:password]
+          archive_url = archive_url.to_s
+        else
+          archive_url = scm_options[:repository]
+        end
+
         tmpdir = Dir.mktmpdir('scalarium')
         directory tmpdir do
           mode 0755

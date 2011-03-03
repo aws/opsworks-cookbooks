@@ -25,7 +25,7 @@ define :scalarium_deploy do
                           :application => application) if deploy[:scm][:scm_type].to_s == 'svn'
 
     if deploy[:scm][:scm_type].to_s == 'archive'
-      repository = prepare_archive_checkouts(deploy[:scm][:repository])
+      repository = prepare_archive_checkouts(deploy[:scm])
       deploy[:scm] = {
         :scm_type => 'git',
         :repository => repository
