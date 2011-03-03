@@ -18,6 +18,7 @@ module Scalarium
         end
 
         execute 'create git repository' do
+          creates "#{tmpdir}/archive.d/.git"
           cwd "#{tmpdir}/archive.d"
           command "git init; git add .; git commit -m 'Create temporary repository from downloaded contents.'"
         end
