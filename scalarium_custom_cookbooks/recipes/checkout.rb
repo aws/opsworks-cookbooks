@@ -1,12 +1,12 @@
-ensure_scm_package_installed(node[:scalarium_custom_cookbooks][:scm][:type])
+ensure_scm_package_installed(node[:scalarium_custom_cookbooks][:scm][:type]) unless node[:scalarium_custom_cookbooks][:scm][:type].nil?
 
-prepare_git_checkouts(:user => node[:scalarium_custom_cookbooks][:user], 
-                      :group => node[:scalarium_custom_cookbooks][:group], 
-                      :home => node[:scalarium_custom_cookbooks][:home], 
+prepare_git_checkouts(:user => node[:scalarium_custom_cookbooks][:user],
+                      :group => node[:scalarium_custom_cookbooks][:group],
+                      :home => node[:scalarium_custom_cookbooks][:home],
                       :ssh_key => node[:scalarium_custom_cookbooks][:scm][:ssh_key]) if node[:scalarium_custom_cookbooks][:scm][:type].to_s == 'git'
                       
-prepare_svn_checkouts(:user => node[:scalarium_custom_cookbooks][:user], 
-                      :group => node[:scalarium_custom_cookbooks][:group], 
+prepare_svn_checkouts(:user => node[:scalarium_custom_cookbooks][:user],
+                      :group => node[:scalarium_custom_cookbooks][:group],
                       :home => node[:scalarium_custom_cookbooks][:home]) if node[:scalarium_custom_cookbooks][:scm][:type].to_s == 'svn'
 
 if node[:scalarium_custom_cookbooks][:scm][:type].to_s == 'archive'

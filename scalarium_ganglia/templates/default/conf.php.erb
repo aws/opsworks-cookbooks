@@ -103,12 +103,12 @@ $jobstart_color = "ff3300";
 # Colors for the load ranks.
 #
 $load_colors = array(
-   "100+" => "FF1D25",
-   "75-100" =>"F7931E",
-   "50-75" => "FCEE21",
-   "25-50" => "D9E021",
-   "0-25" => "8CC63F",
-   "down" => "999999"
+   "100+" => "ff634f",
+   "75-100" =>"ffa15e",
+   "50-75" => "ffde5e",
+   "25-50" => "caff98",
+   "0-25" => "e2ecff",
+   "down" => "515151"
 );
 
 #
@@ -142,7 +142,6 @@ $strip_domainname = false;
 # Each value is the # of seconds in that range.
 #
 $time_ranges = array(
-   '20min'=>1200,
    'hour'=>3600,
    'day'=>86400,
    'week'=>604800,
@@ -201,5 +200,8 @@ $optional_graphs = array();
 <% end -%>
 <% if node[:scalarium][:roles].has_key?("rails-app") && !node[:scalarium][:roles]['rails-app']['instances'].empty? -%>
   array_push($optional_graphs, 'passenger_memory_stats', 'passenger_status');
+<% end -%>
+<% if node[:scalarium][:roles].has_key?("web") && !node[:scalarium][:roles]['web']['instances'].empty? -%>
+  array_push($optional_graphs, 'nginx_status');
 <% end -%>
 ?>

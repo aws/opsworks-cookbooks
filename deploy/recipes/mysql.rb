@@ -1,7 +1,4 @@
-#
-# Cookbook Name:: deploy
-# Recipe:: mysql
-#
+require 'resolv'
  
 node[:deploy].each do |application, deploy|
   mysql_command = "/usr/bin/mysql -u #{deploy[:database][:username]} #{node[:mysql][:server_root_password].blank? ? '' : "-p#{node[:mysql][:server_root_password]}"}"
@@ -33,7 +30,7 @@ node[:deploy].each do |application, deploy|
     owner 'root'
     group 'root'
     mode '0600'
-    variables :hosts => [], :settings => deploy[:database]
+    variables :hosts => [], :settings => deploy[:database], :cluster_clients => node[:mysql][:clients].select{|private_ip| Resolv.getaddress(private_ip) }
     cookbook "mysql"
     action :create
   end

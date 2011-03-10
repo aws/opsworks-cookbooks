@@ -1,6 +1,6 @@
 
 # delete old
-directory @node[:scalarium_custom_cookbooks][:destination] do
+directory node[:scalarium_custom_cookbooks][:destination] do
   action :delete
   recursive true
 end

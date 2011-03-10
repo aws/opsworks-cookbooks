@@ -17,3 +17,6 @@ while pw.length < 20
 end
 
 default[:ganglia][:web][:password] = pw
+
+
+default[:ganglia][:nginx][:status_url] = '/nginx_status'

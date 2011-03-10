@@ -50,6 +50,11 @@ remote_file "/usr/share/ganglia-webfrontend/graph.d/haproxy_requests_report.php"
   mode "0644"
 end
 
+remote_file "/usr/share/ganglia-webfrontend/graph.d/nginx_status_report.php" do
+  source "nginx_status_report.php"
+  mode "0644"
+end
+
 template "/usr/share/ganglia-webfrontend/conf.php" do
   source "conf.php.erb"
 end
@@ -84,15 +89,15 @@ end
 
 Chef::Log.info("Bindmounting RRDS directories for Ganglia")
 
-mount node[:ganglia][:datadir] do
-  device node[:ganglia][:origina_datadir]
+mount node[:ganglia][:origina_datadir] do
+  device node[:ganglia][:datadir]
   fstype "none"
   options "bind,rw"
   action :mount
 end
 
-mount node[:ganglia][:datadir] do
-  device node[:ganglia][:origina_datadir]
+mount node[:ganglia][:origina_datadir] do
+  device node[:ganglia][:datadir]
   fstype "none"
   options "bind,rw"
   action :enable

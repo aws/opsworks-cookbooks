@@ -10,6 +10,10 @@ service "memcached" do
   action :nothing
 end
 
+service "monit" do
+  action :nothing
+end
+
 template "/etc/memcached.conf" do
   source "memcached.conf.erb"
   owner "root"
@@ -29,4 +33,12 @@ template "/etc/default/memcached" do
   group "root"
   mode "0644"
   notifies :restart, resources(:service => "memcached"), :immediately
+end
+
+template "/etc/monit/conf.d/memcached.monitrc" do
+  source "memcached.monitrc.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  notifies :restart, resources(:service => "monit")
 end

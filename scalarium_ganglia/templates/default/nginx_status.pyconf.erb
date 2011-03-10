@@ -1,0 +1,45 @@
+modules {
+  module {
+    name = "nginx_status"
+    language = "python"
+    param RefreshRate {
+        value = 5
+    }
+    param Path {
+        value = "/<%= node[:ganglia][:nginx][:status_url] %>"
+    }
+  }
+}
+
+collection_group {
+  collect_every = 10
+  time_threshold = 20
+  metric {
+    name = "nginx_active_connections"
+    value_threshold = 1.0
+  }
+  metric {
+    name = "nginx_server_accepts"
+    value_threshold = 1.0
+  }
+  metric {
+    name = "nginx_server_handled"
+    value_threshold = 1.0
+  }
+  metric {
+    name = "nginx_server_requests"
+    value_threshold = 1.0
+  }
+  metric {
+    name = "nginx_reading"
+    value_threshold = 1.0
+  }
+  metric {
+    name = "nginx_writing"
+    value_threshold = 1.0
+  }
+  metric {
+    name = "nginx_waiting"
+    value_threshold = 1.0
+  }
+}
