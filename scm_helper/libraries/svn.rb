@@ -21,16 +21,6 @@ module Scalarium
           cookbook "scm_helper"
           source "subversion_servers.erb"
         end
-        
-        subversion "Init Subversion configuration for #{options[:application]}" do
-          repository deploy[:scm][:repository]
-          user deploy[:user]
-          group deploy[:group]
-          svn_username deploy[:scm][:user]
-          svn_password deploy[:scm][:password]
-          provider Chef::Provider::SubversionInit
-          action :sync
-        end
       end
     end
   end
