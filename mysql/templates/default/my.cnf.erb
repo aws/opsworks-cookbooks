@@ -12,7 +12,7 @@ pid-file        = /var/run/mysqld/mysqld.pid
 socket          = /var/run/mysqld/mysqld.sock
 port            = 3306
 basedir         = /usr
-datadir         = <%= @node[:mysql][:datadir] %>
+datadir         = <%= node[:mysql][:datadir] %>
 tmpdir          = /tmp
 
 character-set-server		= utf8
@@ -23,7 +23,7 @@ skip-external-locking
 skip-name-resolve
 skip-federated
 
-bind-address            = <%= @node[:mysql][:bind_address] %>
+bind-address            = <%= node[:mysql][:bind_address] %>
 
 #
 # * Fine Tuning
@@ -34,26 +34,26 @@ bind-address            = <%= @node[:mysql][:bind_address] %>
 myisam-recover          = BACKUP
 
 #thread_concurrency     = 10
-max_allowed_packet      = <%= @node[:mysql][:tunable][:max_allowed_packet] %>
-thread_stack            = <%= @node[:mysql][:tunable][:thread_stack] %>
-thread_cache_size       = <%= @node[:mysql][:tunable][:thread_cache_size] %>
-key_buffer              = <%= @node[:mysql][:tunable][:key_buffer] %>
-max_connections         = <%= @node[:mysql][:tunable][:max_connections] %>
-wait_timeout            = <%= @node[:mysql][:tunable][:wait_timeout] %>
-net_read_timeout        = <%= @node[:mysql][:tunable][:net_read_timeout] %>
-net_write_timeout       = <%= @node[:mysql][:tunable][:net_write_timeout] %>
-back_log                = <%= @node[:mysql][:tunable][:back_log] %>
-table_cache             = <%= @node[:mysql][:tunable][:table_cache] %>
-max_heap_table_size     = <%= @node[:mysql][:tunable][:max_heap_table_size] %>
+max_allowed_packet      = <%= node[:mysql][:tunable][:max_allowed_packet] %>
+thread_stack            = <%= node[:mysql][:tunable][:thread_stack] %>
+thread_cache_size       = <%= node[:mysql][:tunable][:thread_cache_size] %>
+key_buffer              = <%= node[:mysql][:tunable][:key_buffer] %>
+max_connections         = <%= node[:mysql][:tunable][:max_connections] %>
+wait_timeout            = <%= node[:mysql][:tunable][:wait_timeout] %>
+net_read_timeout        = <%= node[:mysql][:tunable][:net_read_timeout] %>
+net_write_timeout       = <%= node[:mysql][:tunable][:net_write_timeout] %>
+back_log                = <%= node[:mysql][:tunable][:back_log] %>
+table_cache             = <%= node[:mysql][:tunable][:table_cache] %>
+max_heap_table_size     = <%= node[:mysql][:tunable][:max_heap_table_size] %>
 
 #
 # * InnoDB Tuning
 #
 
-innodb_buffer_pool_size         = <%= @node[:mysql][:tunable][:innodb_buffer_pool_size] %>
-innodb_additional_mem_pool_size = <%= @node[:mysql][:tunable][:innodb_additional_mem_pool_size] %>
-innodb_flush_log_at_trx_commit  = <%= @node[:mysql][:tunable][:innodb_flush_log_at_trx_commit] %>
-innodb_lock_wait_timeout        = <%= @node[:mysql][:tunable][:innodb_lock_wait_timeout] %>
+innodb_buffer_pool_size         = <%= node[:mysql][:tunable][:innodb_buffer_pool_size] %>
+innodb_additional_mem_pool_size = <%= node[:mysql][:tunable][:innodb_additional_mem_pool_size] %>
+innodb_flush_log_at_trx_commit  = <%= node[:mysql][:tunable][:innodb_flush_log_at_trx_commit] %>
+innodb_lock_wait_timeout        = <%= node[:mysql][:tunable][:innodb_lock_wait_timeout] %>
 #innodb_log_file_size=250M
 #innodb_log_buffer_size=8M
 
@@ -63,9 +63,9 @@ innodb_lock_wait_timeout        = <%= @node[:mysql][:tunable][:innodb_lock_wait_
 #
 
 # Query Cache
-query_cache_limit      = <%= @node[:mysql][:tunable][:query_cache_limit] %>
-query_cache_size       = <%= @node[:mysql][:tunable][:query_cache_size] %>
-query_cache_type       = <%= @node[:mysql][:tunable][:query_cache_type] %>
+query_cache_limit      = <%= node[:mysql][:tunable][:query_cache_limit] %>
+query_cache_size       = <%= node[:mysql][:tunable][:query_cache_size] %>
+query_cache_type       = <%= node[:mysql][:tunable][:query_cache_type] %>
 
 
 #
@@ -102,4 +102,4 @@ key_buffer              = 16M
 # * IMPORTANT: Additional settings that can override those from this file!
 #   The files must end with '.cnf', otherwise they'll be ignored.
 #
-<%= "!includedir /etc/mysql/conf.d/" unless ["centos", "redhat","suse"].include?(@node[:platform]) %>
+<%= "!includedir /etc/mysql/conf.d/" unless ["centos", "redhat","suse"].include?(node[:platform]) %>

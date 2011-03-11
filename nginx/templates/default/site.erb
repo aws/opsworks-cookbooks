@@ -1,7 +1,7 @@
 server {
   listen   80;
-  server_name  <%= @application[:domains].join(" ") %> <%= @node[:hostname] %>;
-  access_log  <%= @node[:nginx][:log_dir] %>/<%= @application[:domains].first %>.access.log;
+  server_name  <%= @application[:domains].join(" ") %> <%= node[:hostname] %>;
+  access_log  <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>.access.log;
 
   location / {
     root   <%= @application[:absolute_document_root] %>;
@@ -30,8 +30,8 @@ server {
 <% if @application[:ssl_support] %>
 server {
   listen   443;
-  server_name  <%= @application[:domains].join(" ") %> <%= @node[:hostname] %>;
-  access_log  <%= @node[:nginx][:log_dir] %>/<%= @application[:domains].first %>-ssl.access.log;
+  server_name  <%= @application[:domains].join(" ") %> <%= node[:hostname] %>;
+  access_log  <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>-ssl.access.log;
   
   ssl on;
   ssl_certificate /etc/nginx/ssl/<%= @application[:domains].first %>.crt;

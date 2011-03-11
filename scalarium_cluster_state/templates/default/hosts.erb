@@ -7,8 +7,8 @@ ff00::0 ip6-mcastprefix
 ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 ff02::3 ip6-allhosts
-127.0.0.1 <%= @node[:scalarium][:instance][:hostname] %>.localdomain <%= @node[:scalarium][:instance][:hostname] %> localhost
-<% @node[:scalarium][:roles].each do |role_name, role_config| -%>
+127.0.0.1 <%= node[:scalarium][:instance][:hostname] %>.localdomain <%= node[:scalarium][:instance][:hostname] %> localhost
+<% node[:scalarium][:roles].each do |role_name, role_config| -%>
 <% role_config[:instances].each do |instance_name, instance_config| -%>
 <% if instance_config[:private_ip] -%>
 <%= Resolv.getaddress(instance_config[:private_ip]) %> <%= instance_name %>
