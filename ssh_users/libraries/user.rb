@@ -4,7 +4,7 @@ module Scalarium
       return {} unless node[:scalarium_gid]
 
       existing_ssh_users = {}
-      node[:passwd].each do |username, entry|
+      (node[:passwd] || node[:etc][:passwd]).each do |username, entry|
         if entry[:gid] == node[:scalarium_gid]
           existing_ssh_users[entry[:uid].to_s] = username
         end
