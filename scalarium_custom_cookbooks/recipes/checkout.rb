@@ -7,7 +7,8 @@ prepare_git_checkouts(:user => node[:scalarium_custom_cookbooks][:user],
                       
 prepare_svn_checkouts(:user => node[:scalarium_custom_cookbooks][:user],
                       :group => node[:scalarium_custom_cookbooks][:group],
-                      :home => node[:scalarium_custom_cookbooks][:home]) if node[:scalarium_custom_cookbooks][:scm][:type].to_s == 'svn'
+                      :home => node[:scalarium_custom_cookbooks][:home],
+                      :deploy => node[:scalarium_custom_cookbooks]) if node[:scalarium_custom_cookbooks][:scm][:type].to_s == 'svn'
 
 if node[:scalarium_custom_cookbooks][:scm][:type].to_s == 'archive'
   repository = prepare_archive_checkouts(node[:scalarium_custom_cookbooks][:scm])
