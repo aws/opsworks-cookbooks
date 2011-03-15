@@ -1,8 +1,5 @@
 ruby_block "Execute the new cookbooks" do
   block do
-    @cookbook_loader = node.cookbook_loader # needed for include_recipe to work
-    reload_definitions
-
     node[:scalarium_custom_cookbooks][:recipes].each do |r|
       begin
         Chef::Log.info("Executing custom recipe: #{r}")
