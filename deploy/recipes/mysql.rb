@@ -14,10 +14,10 @@ node[:deploy].each do |application, deploy|
  
   ruby_block "get hosts list" do
     block do 
-      # this is a bug, and should just be 'resources'
       if Chef::VERSION > "0.9"
         template = run_context.resource_collection.find(:template => "/tmp/grants.sql")
       else
+        # this is a bug, and should just be 'resources'
         template = @collection.resources(:template => "/tmp/grants.sql")
       end
       status, stdout, stderr = Chef::Mixin::Command.output_of_command("echo 'select host from db where db=\"#{deploy[:database][:database]}\" and user =\"root\"' | #{mysql_command} --skip-column-names mysql", {})
