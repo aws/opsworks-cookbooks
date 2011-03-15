@@ -3,7 +3,6 @@
 # Recipe:: php
 #
 
-include_recipe "deploy::user"
 include_recipe "mod_php5_apache2"
 include_recipe "mod_php5_apache2::php"
 
