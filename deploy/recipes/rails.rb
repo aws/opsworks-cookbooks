@@ -6,6 +6,12 @@
 include_recipe "rails"
 
 node[:deploy].each do |application, deploy|
+
+  if deploy[:application_type] != 'rails'
+    Chef::Log.debug("Skipping deploy::rails application #{application} as it is not an Rails app")
+    next
+  end
+
   scalarium_deploy_user do
     deploy_data deploy
     app application

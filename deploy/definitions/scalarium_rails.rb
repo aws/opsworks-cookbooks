@@ -1,11 +1,6 @@
 define :scalarium_rails do
   deploy = params[:deploy_data]
   application = params[:app]
-
-  if deploy[:application_type] != 'rails'
-    Chef::Log.debug("Skipping deploy::rails application #{application} as it is not an Rails app")
-    next
-  end
   
   include_recipe deploy[:stack][:recipe]
   # create shared/ directory structure
