@@ -40,7 +40,7 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:restart_command] = "touch tmp/restart.txt"
   default[:deploy][application][:enable_submodules] = true
   default[:deploy][application][:shallow_clone] = true
-  default[:deploy][application][:symlink_before_migrate] = {"config/database.yml" => "config/database.yml"}
+  default[:deploy][application][:symlink_before_migrate] = {}
   
   default[:deploy][application][:environment] = {"RAILS_ENV" => deploy[:rails_env],
                                                  "RUBYOPT" => "",

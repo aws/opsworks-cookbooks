@@ -11,21 +11,16 @@ node[:deploy].each do |application, deploy|
     Chef::Log.debug("Skipping deploy::php application #{application} as it is not an PHP app")
     next
   end
-  
+
   scalarium_deploy_user do
     deploy_data deploy
     app application
   end
 
-  # create shared/ directory structure
-  %w(log config system pids).each do |dir_name|
-    directory "#{deploy[:deploy_to]}/shared/#{dir_name}" do
-      group deploy[:group]
-      owner deploy[:user]
-      mode "0770"
-      action :create
-      recursive true  
-    end
+  scalarium_deploy_dir do
+    user deploy[:user]
+    group deploy[:group]
+    path deploy[:deploy_to]
   end
 
   scalarium_deploy do
