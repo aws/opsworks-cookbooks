@@ -1,1 +1,1 @@
-default[:scalarium_bundler][:version] = '1.0.7'
+default[:scalarium_bundler][:version] = '1.0.10'
