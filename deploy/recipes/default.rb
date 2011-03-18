@@ -1,1 +1,7 @@
-# Do nothing, just a default to be able to include the recipe and get the attributes for free.
+node[:deploy].each do |application, deploy|
+
+  scalarium_deploy_user do
+    deploy_data deploy
+  end
+
+end

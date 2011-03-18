@@ -1,5 +1,4 @@
 define :scalarium_deploy_user do
-  application = params[:app]
   deploy = params[:deploy_data]
 
   group deploy[:group]

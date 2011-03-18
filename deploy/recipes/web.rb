@@ -6,11 +6,6 @@ node[:deploy].each do |application, deploy|
     next
   end
 
-  scalarium_deploy_user do
-    app application
-    deploy_data deploy
-  end
-
   scalarium_deploy_dir do
     user deploy[:user]
     group deploy[:group]
