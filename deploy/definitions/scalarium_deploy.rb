@@ -76,7 +76,7 @@ define :scalarium_deploy do
       before_migrate do
         if deploy[:application_type] == 'rails' and deploy[:auto_bundle_on_deploy] and File.exists?("#{release_path}/Gemfile")
           Chef::Log.info("Gemfile detected. Running bundle install.")
-          run("cd #{release_path} && bundle install #{deploy[:home]}/.bundler/#{application} --without=test")
+          run("cd #{release_path} && bundle install #{deploy[:home]}/.bundler/#{application} --without=test development")
         end
         run_callback_from_file("#{release_path}/deploy/before_migrate.rb")
       end
