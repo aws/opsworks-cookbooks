@@ -1,0 +1,44 @@
+<?php
+class ScalariumDb {
+  public $adapter, $database, $encoding, $host, $username, $password, $reconnect;
+
+  public function __construct() {
+    $this->adapter = '<%= @database[:adapter] %>';
+    $this->database = '<%= @database[:database] %>';
+    $this->encoding = 'utf8';
+    $this->host = '<%= @database[:host] %>';
+    $this->username = '<%= @database[:username] %>';
+    $this->password = '<%= @database[:password] %>';
+    $this->reconnect = '<%= @database[:reconnect] ? 'true' : 'false' %>';
+  }
+}
+
+class ScalariumMemcached {
+  public $host, $port;
+
+  public function __construct() {
+    $this->host = '<%= @memcached[:host] %>';
+    $this->port = '<%= @memcached[:port] %>';
+  }
+}
+
+class Scalarium {
+  public $db;
+  public $memcached;
+  private $cluster_map;
+
+  public function __construct() {
+    $this->db = new ScalariumDb();
+    $this->memcached = new ScalariumMemcached();
+    $this->cluster_map = array(<%= @roles.map {|role_short_name, role| "'#{role_short_name}' => array(#{role['instances'].values.map {|instance| "'#{instance['private_ip']}'"}})"}.join(', ') %>);
+  }
+
+  public function roles() {
+    return array_keys($this->cluster_map);
+  }
+
+  public function hosts($role) {
+    return $this->cluster_map[$role];
+  }
+}
+?>
