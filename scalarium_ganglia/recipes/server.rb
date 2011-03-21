@@ -57,6 +57,7 @@ end
 
 template "/usr/share/ganglia-webfrontend/conf.php" do
   source "conf.php.erb"
+  mode "0644"
 end
 
 remote_file "/tmp/scalarium-ganglia-theme.tar.gz"  do
