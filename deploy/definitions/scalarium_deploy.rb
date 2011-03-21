@@ -40,6 +40,12 @@ define :scalarium_deploy do
     action :delete
   end
 
+  ruby_block "change HOME to #{deploy[:home]} for source checkout" do
+    block do
+      ENV['HOME'] = "#{deploy[:home]}"
+    end
+  end
+
   # setup deployment & checkout
   if deploy[:scm]
     deploy deploy[:deploy_to] do
@@ -74,6 +80,12 @@ define :scalarium_deploy do
         end
         run_callback_from_file("#{release_path}/deploy/before_migrate.rb")
       end
+    end
+  end
+
+  ruby_block "change HOME back to /root after source checkout" do
+    block do
+      ENV['HOME'] = "/root"
     end
   end
 
