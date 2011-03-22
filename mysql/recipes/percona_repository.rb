@@ -5,7 +5,7 @@ end
 
 execute "Download Percona XtraDB Server" do
   cwd node[:percona][:tmp_dir]
-  command "wget #{node[:percona][:url_base]}/#{node[:percona][:version]}/#{node[:scalarium][:instance][:architecture]}.tar.bzip2"
+  command "wget #{node[:percona][:url_base]}/#{node[:percona][:version]}/#{node[:lsb][:release]}_#{node[:scalarium][:instance][:architecture]}.tar.bzip2"
   not_if do
     File.exists?("#{node[:percona][:tmp_dir]}/#{node[:scalarium][:instance][:architecture]}.tar.bzip2")
   end

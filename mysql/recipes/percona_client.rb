@@ -6,6 +6,6 @@ package "libplrpc-perl"
 package "libnet-daemon-perl"
 
 execute "Install Percona XtraDB client libraries" do
-  cwd "#{node[:percona][:tmp_dir]}/#{node[:scalarium][:instance][:architecture]}"
+  cwd "#{node[:percona][:tmp_dir]}/#{node[:lsb][:release]}_#{node[:scalarium][:instance][:architecture]}"
   command "dpkg -i libmysqlclient16* libmysqlclient-dev* percona-server-client* percona-server-common*"
 end

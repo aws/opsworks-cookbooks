@@ -55,16 +55,18 @@ else
   package "mysql-server"
 end
 
-remote_file "/tmp/mysql_init.patch" do
-  source "mysql_init.patch"
-end
+if node[:platform] == 'ubuntu' && node[:platform_version].to_f < 10.04
+  remote_file "/tmp/mysql_init.patch" do
+    source "mysql_init.patch"
+  end
 
-execute "Fix MySQL init.d script to sleep longer - needed for instances with more RAM" do
-  cwd "/etc/init.d"
-  command "patch -p0 mysql < /tmp/mysql_init.patch"
-  action :run
-  only_if do
-    File.read("/etc/init.d/mysql").match(/sleep 1/)
+  execute "Fix MySQL init.d script to sleep longer - needed for instances with more RAM" do
+    cwd "/etc/init.d"
+    command "patch -p0 mysql < /tmp/mysql_init.patch"
+    action :run
+    only_if do
+      File.read("/etc/init.d/mysql").match(/sleep 1/)
+    end
   end
 end
 

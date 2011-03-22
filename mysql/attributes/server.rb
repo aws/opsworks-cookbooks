@@ -55,5 +55,5 @@ default[:scalarium][:instance][:architecture] = `dpkg --print-architecture`.chom
 
 default[:percona] = {}
 default[:percona][:tmp_dir] = '/tmp/percona-server'
-default[:percona][:version] = '5.1.47-11.2-53'
+default[:percona][:version] = '5.1.55-12.6'
 default[:percona][:url_base] = "http://peritor-assets.s3.amazonaws.com/percona"
