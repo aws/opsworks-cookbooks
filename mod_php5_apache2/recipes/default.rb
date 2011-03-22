@@ -9,7 +9,6 @@ packages = [
   'php5-gd',
   'php5-cli',
   'php5-sasl',
-  'php5-mhash',
   'php5-mysql',
   'php5-mcrypt',
   'php5-memcache',
@@ -19,6 +18,10 @@ packages = [
   'php-db',
   'php-mdb2',
   'php-html-common']
+
+if node[:platform] == 'ubuntu' && node[:lsb] && node[:lsb][:codename] == 'karmic'
+  packages << 'php5-mhash'
+end
 
 packages.each do |deb|
   package deb do
