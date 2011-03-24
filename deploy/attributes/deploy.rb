@@ -26,6 +26,7 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:action] = 'deploy'
   default[:deploy][application][:user] = 'deploy'
   default[:deploy][application][:group] = 'www-data'
+  default[:deploy][application][:shell] = '/bin/zsh'
   home = self[:passwd] && 
          self[:passwd][self[:deploy][application][:user]] &&
          self[:passwd][self[:deploy][application][:user]][:dir] || "/home/#{self[:deploy][application][:user]}"
