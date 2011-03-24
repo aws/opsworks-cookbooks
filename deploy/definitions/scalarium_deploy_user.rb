@@ -19,3 +19,4 @@ define :scalarium_deploy_user do
     end
   end
 end
+
