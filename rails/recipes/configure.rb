@@ -10,6 +10,20 @@ node[:deploy].each do |application, deploy|
     action :nothing
   end
   
+  ruby_block 'Determine database adapter' do
+    inner_deploy = deploy
+    inner_application = application
+    block do
+      inner_deploy[:database][:adapter] = if File.exists?("#{inner_deploy[:deploy_to]}/current/config/application.rb")
+        Chef::Log.info("Looks like #{inner_application} is a Rails 3 application")
+        'mysql2'
+      else
+        Chef::Log.info("No config/application.rb found, assuming #{inner_application} is a Rails 2 application")
+        'mysql'
+      end
+    end
+  end
+
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
     source "database.yml.erb"
     mode "0660"
