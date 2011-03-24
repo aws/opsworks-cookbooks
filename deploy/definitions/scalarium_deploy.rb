@@ -90,6 +90,30 @@ define :scalarium_deploy do
   end
 
   if deploy[:application_type] == 'rails' && node[:scalarium][:instance][:roles].include?('rails-app')
+    ruby_block 'Determine database adapter' do
+      inner_deploy = deploy
+      inner_application = application
+      block do
+        inner_deploy[:database][:adapter] = if File.exists?("#{inner_deploy[:deploy_to]}/current/config/application.rb")
+          Chef::Log.info("Looks like #{inner_application} is a Rails 3 application")
+          'mysql2'
+        else
+          Chef::Log.info("No config/application.rb found, assuming #{inner_application} is a Rails 2 application")
+          'mysql'
+        end
+      end
+    end
+
+    # write out database.yml
+    template "#{deploy[:deploy_to]}/shared/config/database.yml" do
+      cookbook "rails"
+      source "database.yml.erb"
+      mode "0660"
+      owner deploy[:user]
+      group deploy[:group]
+      variables(:database => deploy[:database], :environment => deploy[:rails_env])
+    end
+
     passenger_web_app do
       application application
       deploy deploy
