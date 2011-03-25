@@ -9,6 +9,7 @@ class Chef::Resource::RubyBlock
     
     run_context = self.is_a?(Chef::RunContext) ? self : self.run_context
     run_context.instance_variable_set("@cookbook_collection", new_cookbook_collection)
+    run_context.load
     
     node.load_attributes
   end
