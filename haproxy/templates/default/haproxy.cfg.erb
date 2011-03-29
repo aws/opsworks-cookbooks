@@ -114,9 +114,9 @@ frontend http-in
   # all domains of Rails applications
   <% node[:haproxy][:rails_applications].each do |app_name, app_config| -%>
     <% app_config['domains'].each do |domain| -%>
-  acl rails_application_<%= app_name %>_domain_<%= domain %> hdr_end(host) -i <%= domain %>
+  acl rails_application_<%= app_name %>_domain_<%= domain.gsub(/[^\w.:-]/, '_') %> hdr_end(host) -i <%= domain %>
       <% if app_config['mounted_at'] -%>
-  acl rails_application_<%= app_name %>_domain_<%= domain %>_path path_beg <%= app_config['mounted_at'] %>
+  acl rails_application_<%= app_name %>_domain_<%= domain.gsub(/[^\w.:-]/, '_') %>_path path_beg <%= app_config['mounted_at'] %>
       <% end -%>
     <% end -%>
   <% end -%>
@@ -124,9 +124,9 @@ frontend http-in
   # all domains of PHP applications
   <% node[:haproxy][:php_applications].each do |app_name, app_config| -%>
     <% app_config['domains'].each do |domain| -%>
-  acl php_application_<%= app_name %>_domain_<%= domain %> hdr_end(host) -i <%= domain %>
+  acl php_application_<%= app_name %>_domain_<%= domain.gsub(/[^\w.:-]/, '_') %> hdr_end(host) -i <%= domain %>
       <% if app_config['mounted_at'] -%>
-  acl php_application_<%= app_name %>_domain_<%= domain %>_path path_beg <%= app_config['mounted_at'] %>
+  acl php_application_<%= app_name %>_domain_<%= domain.gsub(/[^\w.:-]/, '_') %>_path path_beg <%= app_config['mounted_at'] %>
       <% end -%>
     <% end -%>
   <% end -%>
@@ -134,9 +134,9 @@ frontend http-in
   # all domains of static applications
   <% node[:haproxy][:static_applications].each do |app_name, app_config| -%>
     <% app_config['domains'].each do |domain| -%>
-  acl static_application_<%= app_name %>_domain_<%= domain %> hdr_end(host) -i <%= domain %>
+  acl static_application_<%= app_name %>_domain_<%= domain.gsub(/[^\w.:-]/, '_') %> hdr_end(host) -i <%= domain %>
       <% if app_config['mounted_at'] -%>
-  acl static_application_<%= app_name %>_domain_<%= domain %>_path path_beg <%= app_config['mounted_at'] %>
+  acl static_application_<%= app_name %>_domain_<%= domain.gsub(/[^\w.:-]/, '_') %>_path path_beg <%= app_config['mounted_at'] %>
       <% end -%>
     <% end -%>
   <% end -%>
@@ -146,9 +146,9 @@ frontend http-in
     <% node[:haproxy][:static_applications].each do |app_name, app_config| -%>
       <% app_config['domains'].each do |domain| -%>
         <% if app_config['mounted_at'] -%>
-  use_backend static_servers if static_application_<%= app_name %>_domain_<%= domain %> static_application_<%= app_name %>_domain_<%= domain %>_path
+  use_backend static_servers if static_application_<%= app_name %>_domain_<%= domain.gsub(/[^\w.:-]/, '_') %> static_application_<%= app_name %>_domain_<%= domain %>_path
         <% else -%>
-  use_backend static_servers if static_application_<%= app_name %>_domain_<%= domain %>
+  use_backend static_servers if static_application_<%= app_name %>_domain_<%= domain.gsub(/[^\w.:-]/, '_') %>
         <% end -%>
       <% end -%>
     <% end -%>
@@ -158,9 +158,9 @@ frontend http-in
     <% node[:haproxy][:php_applications].each do |app_name, app_config| -%>
       <% app_config['domains'].each do |domain| -%>
         <% if app_config['mounted_at'] -%>
-  use_backend php_app_servers if php_application_<%= app_name %>_domain_<%= domain %> php_application_<%= app_name %>_domain_<%= domain %>_path
+  use_backend php_app_servers if php_application_<%= app_name %>_domain_<%= domain.gsub(/[^\w.:-]/, '_') %> php_application_<%= app_name %>_domain_<%= domain %>_path
         <% else -%>
-  use_backend php_app_servers if php_application_<%= app_name %>_domain_<%= domain %>
+  use_backend php_app_servers if php_application_<%= app_name %>_domain_<%= domain.gsub(/[^\w.:-]/, '_') %>
         <% end -%>
       <% end -%>
     <% end -%>
@@ -170,9 +170,9 @@ frontend http-in
     <% node[:haproxy][:rails_applications].each do |app_name, app_config| -%>
       <% app_config['domains'].each do |domain| -%>
         <% if app_config['mounted_at'] -%>
-  use_backend rails_app_servers if rails_application_<%= app_name %>_domain_<%= domain %> rails_application_<%= app_name %>_domain_<%= domain %>_path
+  use_backend rails_app_servers if rails_application_<%= app_name %>_domain_<%= domain.gsub(/[^\w.:-]/, '_') %> rails_application_<%= app_name %>_domain_<%= domain %>_path
         <% else -%>
-  use_backend rails_app_servers if rails_application_<%= app_name %>_domain_<%= domain %>
+  use_backend rails_app_servers if rails_application_<%= app_name %>_domain_<%= domain.gsub(/[^\w.:-]/, '_') %>
         <% end -%>
       <% end -%>
     <% end -%>
