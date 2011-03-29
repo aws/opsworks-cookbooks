@@ -15,7 +15,7 @@ defaults
   option          httplog
   option          dontlognull
   retries         <%= node[:haproxy][:retries] %>
-  redispatch
+  option          redispatch
   maxconn        <%= node[:haproxy][:default_max_connections] %>
   timeout client <%= node[:haproxy][:client_timeout] %>             # Client and server timeout must match the longest
   timeout server <%= node[:haproxy][:server_timeout] %>             # time we may wait for a response from the server.
