@@ -1,7 +1,7 @@
 desc 'check literal recipe includes'
 task :validate_literal_includes do
   Dir['**/*.rb'].each do |file|
-    recipes = File.read(file).scan(/(?:include_recipe\s+(['"])(\w+)\1)/).reject {|candidate| candidate.last.include?('#{}')}.map(&:last)
+    recipes = File.read(file).scan(/(?:include_recipe\s+(['"])([\w:]+)\1)/).reject {|candidate| candidate.last.include?('#{}')}.map(&:last)
     recipes.each do |recipe|
       recipe_file = recipe.include?('::') ? recipe.sub('::', '/recipes/') + '.rb' : recipe + '/recipes/default.rb'
       unless File.exists?(recipe_file)
