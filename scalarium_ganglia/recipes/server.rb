@@ -16,6 +16,7 @@ service "gmetad" do
 end
 
 template "/etc/ganglia/gmetad.conf" do
+  mode '644'
   source "gmetad.conf.erb"
   variables :cluster_name => node[:scalarium][:cluster][:name]
 end
@@ -77,6 +78,10 @@ end
 
 execute "Untar scalarium layout templates for Ganglia" do
   command "tar -xzf /tmp/scalarium-ganglia-theme.tar.gz && mv /tmp/scalarium /usr/share/ganglia-webfrontend/templates/"
+end
+
+execute "fix permissions on ganglia webfrontend" do
+  command "chmod -R a+r /usr/share/ganglia-webfrontend/"
 end
 
 execute "fix permissions on ganglia directory" do
