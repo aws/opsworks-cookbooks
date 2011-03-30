@@ -7,12 +7,14 @@ end
 
 template "/etc/ganglia/gmetad.conf" do
   source "gmetad.conf.erb"
+  mode '0644'
   variables :cluster_name => node[:scalarium][:cluster][:name]
   notifies :restart, resources(:service => "gmetad")
 end
 
 template "/usr/share/ganglia-webfrontend/conf.php" do
   source "conf.php.erb"
+  mode '0644'
 end
 
 execute "Update htpasswd secret" do
