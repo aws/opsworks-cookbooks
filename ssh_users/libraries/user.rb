@@ -67,9 +67,24 @@ module Scalarium
         command "usermod -l #{new_name} -d /home/#{new_name} -m #{old_name}"
       end
     end
+
+    def next_free_uid(starting_from = 4000)
+      candidate = starting_from
+      existing_uids = []
+      (node[:passwd] || node[:etc][:passwd]).each do |username, entry|
+        existing_uids << entry[:uid]
+      end
+      while existing_uids.include?(candidate) do
+        candidate += 1
+      end
+      candidate
+    end
   end
 end
 
 class Chef::Recipe
+  include Scalarium::User
+end
+class Chef::Resource::User
   include Scalarium::User
 end
