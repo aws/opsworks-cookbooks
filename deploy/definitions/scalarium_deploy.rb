@@ -126,6 +126,7 @@ define :scalarium_deploy do
   template "/etc/logrotate.d/scalarium_apps" do
     backup false
     source "logrotate.erb"
+    cookbook 'deploy'
     owner "root"
     group "root"
     mode 0644

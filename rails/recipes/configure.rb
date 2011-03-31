@@ -26,6 +26,7 @@ node[:deploy].each do |application, deploy|
 
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
     source "database.yml.erb"
+    cookbook 'rails'
     mode "0660"
     group deploy[:group]
     owner deploy[:user]
@@ -42,6 +43,7 @@ node[:deploy].each do |application, deploy|
   
   template "#{deploy[:deploy_to]}/shared/config/memcached.yml" do
     source "memcached.yml.erb"
+    cookbook 'rails'
     mode "0660"
     group deploy[:group]
     owner deploy[:user]
