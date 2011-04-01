@@ -19,7 +19,7 @@ packages = [
   'php-mdb2',
   'php-html-common']
 
-if node[:platform] == 'ubuntu' && node[:lsb] && node[:lsb][:codename] == 'karmic'
+if node[:platform] == 'ubuntu' && node[:platform_version] == '9.10'
   packages << 'php5-mhash'
 end
 
