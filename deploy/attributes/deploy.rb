@@ -1,7 +1,4 @@
-default[:deploy] = {}
-
 node[:deploy].each do |application, deploy|
-  default[:deploy][application] = {}
   default[:deploy][application][:deploy_to] = "/srv/www/#{application}"
   default[:deploy][application][:release] = Time.now.utc.strftime("%Y%m%d%H%M%S")
   default[:deploy][application][:release_path] = "#{node[:deploy][application][:deploy_to]}/releases/#{node[:deploy][application][:release]}"
@@ -32,7 +29,6 @@ node[:deploy].each do |application, deploy|
          self[:passwd][self[:deploy][application][:user]][:dir] || "/home/#{self[:deploy][application][:user]}"
 
   default[:deploy][application][:home] = home
-  default[:deploy][application][:stack] = {}
   default[:deploy][application][:stack][:recipe] = "passenger_apache2::rails"
   default[:deploy][application][:stack][:needs_reload] = true
   default[:deploy][application][:stack][:service] = 'apache2'
