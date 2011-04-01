@@ -42,7 +42,7 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:environment] = {"RAILS_ENV" => deploy[:rails_env],
                                                  "RUBYOPT" => "",
                                                  "RACK_ENV" => deploy[:rails_env],
-                                                 "HOME" => deploy[:home]}
+                                                 "HOME" => home}
   default[:deploy][application][:ssl_support] = false
 end
 
