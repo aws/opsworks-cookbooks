@@ -1,3 +1,4 @@
+default[:deploy] = {}
 node[:deploy].each do |application, deploy|
   default[:deploy][application][:deploy_to] = "/srv/www/#{application}"
   default[:deploy][application][:release] = Time.now.utc.strftime("%Y%m%d%H%M%S")
@@ -46,6 +47,5 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:ssl_support] = false
 end
 
-default[:logrotate] = {}
 default[:logrotate][:rotate] = 30
 default[:logrotate][:dateformat] = false # set to '-%Y%m%d' to have date formatted logs
