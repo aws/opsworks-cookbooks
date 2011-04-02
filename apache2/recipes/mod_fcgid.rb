@@ -29,7 +29,7 @@ elsif platform?("centos", "redhat", "fedora")
     backup false 
   end
 elsif platform?("suse")
-  apache_lib_path = node[:architecture] == "i386" ? "/usr/lib/httpd" : "/usr/lib64/httpd"
+  apache_lib_path = RUBY_PLATFORM.match(/64/) ? "/usr/lib64/httpd" : "/usr/lib/httpd"
   package "httpd-devel"
   bash "install-fcgid" do
     code <<-EOH

@@ -2,7 +2,6 @@
 include_recipe "deploy"
 
 node[:deploy].each do |application, deploy|
-  include_recipe "#{deploy[:stack][:service]}::service" if deploy[:stack][:service]
   
   execute "restart Rails app #{application}" do
     cwd deploy[:current_path]
@@ -37,7 +36,7 @@ node[:deploy].each do |application, deploy|
     end
   
     only_if do
-      File.exists?("#{deploy[:deploy_to]}") && File.exists?("#{deploy[:deploy_to]}/shared/config/database.yml")
+      File.exists?("#{deploy[:deploy_to]}") && File.exists?("#{deploy[:deploy_to]}/shared/config/")
     end
   end
   
@@ -54,7 +53,7 @@ node[:deploy].each do |application, deploy|
     end
   
     only_if do
-      File.exists?("#{deploy[:deploy_to]}") && File.exists?("#{deploy[:deploy_to]}/shared/config/memcached.yml")
+      File.exists?("#{deploy[:deploy_to]}") && File.exists?("#{deploy[:deploy_to]}/shared/config/")
     end
   end
 end
