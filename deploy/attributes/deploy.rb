@@ -12,7 +12,7 @@ node[:deploy].each do |application, deploy|
   end
   
   if File.exists?("/usr/local/bin/rake")
-    # Ruby Enterprise Edition rake is installed
+    # local Ruby rake is installed
     default[:deploy][application][:rake] = "/usr/local/bin/rake"
   else
     # use default Rake/ruby
