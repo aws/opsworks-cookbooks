@@ -74,8 +74,6 @@
   <%= @params[:deploy][:passenger_handler] -%>BaseURI /
   <% end -%>
   <%= @params[:deploy][:passenger_handler] -%>Env <%= @params[:rails_env] %>
-  
-  RailsEnv <%= @params[:rails_env] %>
 
   <Directory <%= @params[:docroot] %>>
     Options FollowSymLinks
