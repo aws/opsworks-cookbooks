@@ -44,3 +44,4 @@ include_recipe "mysql::config"
 service "mysql" do
   action :start
 end
+
