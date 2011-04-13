@@ -116,7 +116,7 @@ if (node[:ec2] && ! FileTest.directory?(node[:mysql][:ec2_path]))
   Chef::Log.info("Setting up the MySQL bind-mount to EBS")
 
   execute "install-mysql" do
-    command "mv #{node[:mysql][:datadir]} #{node[:mysql][:ec2_path]} && mkdir -p #{node[:mysql][:datadir]}"
+    command "mv #{node[:mysql][:datadir]} #{node[:mysql][:ec2_path]} && mkdir -p #{node[:mysql][:datadir]} && rm -f #{node[:mysql][:ec2_path]}/ib_logfile*"
     not_if do FileTest.directory?(node[:mysql][:ec2_path]) end
   end
 
