@@ -28,6 +28,9 @@
   CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-ganglia.log ganglia
 
   RewriteEngine On
+  <% if @params[:rewrite_config] %>
+  Include <%= @params[:rewrite_config] %>
+  <% end %>
   RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
   RewriteLogLevel 0
   
@@ -35,6 +38,9 @@
   AliasMatch ^<%= @params[:mounted_at] %>/(.*)$ <%= @params[:docroot] %>$1
   <% end -%>
 
+  <% if @params[:local_config] %>
+  Include <%= @params[:local_config] %>
+  <% end %>
 </VirtualHost>
 
 <% if node[:deploy][@application_name][:ssl_support] -%>
