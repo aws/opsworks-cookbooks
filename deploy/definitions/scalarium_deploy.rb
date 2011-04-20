@@ -77,7 +77,14 @@ define :scalarium_deploy do
         run_symlinks_before_migrate
         if deploy[:application_type] == 'rails' and deploy[:auto_bundle_on_deploy] and File.exists?("#{release_path}/Gemfile")
           Chef::Log.info("Gemfile detected. Running bundle install.")
-          run("cd #{release_path} && bundle install #{deploy[:home]}/.bundler/#{application} --without=test development")
+          before_migrate_code = "`sudo su deploy -c 'cd #{release_path} && bundle install #{deploy[:home]}/.bundler/#{application} --without=test development'`"
+          if File.exists?("#{release_path}/deploy/before_migrate.rb")
+            before_migrate_code += "\n" + File.read("#{release_path}/deploy/before_migrate.rb")
+          end
+          FileUtils.mkdir_p "#{release_path}/deploy"
+          File.open("#{release_path}/deploy/before_migrate.rb", 'w') do |file|
+            file.puts before_migrate_code
+          end
         end
         run_callback_from_file("#{release_path}/deploy/before_migrate.rb")
       end
