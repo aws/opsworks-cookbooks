@@ -47,7 +47,7 @@ backend rails_app_servers
   option forwardfor
   option httpchk <%= node[:haproxy][:health_check_method] %> <%= node[:haproxy][:health_check_url] %>
   <% node[:haproxy][:rails_backends].each do |backend| -%>
-  server <%= backend['name'] %> <%= backend['ip'] %>:80 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] || 10 %> check inter <%= node[:haproxy][:check_interval] %>
+  server <%= backend['name'] %> <%= backend['ip'] %>:80 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] * 1 %> check inter <%= node[:haproxy][:check_interval] %>
   <% end -%>
 <% end -%>
 
@@ -58,7 +58,7 @@ backend rails_app_servers_ssl
   option redispatch
   option ssl-hello-chk
   <% node[:haproxy][:rails_backends].each do |backend| -%>
-  server <%= backend['name'] %> <%= backend['ip'] %>:443 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] || 10 %> check inter <%= node[:haproxy][:check_interval] %>
+  server <%= backend['name'] %> <%= backend['ip'] %>:443 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] * 1 %> check inter <%= node[:haproxy][:check_interval] %>
   <% end -%>
 <% end -%>
   
@@ -70,7 +70,7 @@ backend php_app_servers
   option forwardfor
   option httpchk <%= node[:haproxy][:health_check_method] %> <%= node[:haproxy][:health_check_url] %>
   <% node[:haproxy][:php_backends].each do |backend| -%>
-  server <%= backend['name'] %> <%= backend['ip'] %>:80 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] || 10 %> check inter <%= node[:haproxy][:check_interval] %>
+  server <%= backend['name'] %> <%= backend['ip'] %>:80 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] * 2 %> check inter <%= node[:haproxy][:check_interval] %>
   <% end -%>  
 <% end -%>
 
@@ -81,7 +81,7 @@ backend php_app_servers_ssl
   option redispatch
   option ssl-hello-chk
   <% node[:haproxy][:php_backends].each do |backend| -%>
-  server <%= backend['name'] %> <%= backend['ip'] %>:443 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] || 10 %> check inter <%= node[:haproxy][:check_interval] %>
+  server <%= backend['name'] %> <%= backend['ip'] %>:443 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] * 2 %> check inter <%= node[:haproxy][:check_interval] %>
   <% end -%>  
 <% end -%>
   
@@ -93,7 +93,7 @@ backend static_servers
   option forwardfor
   option httpchk GET <%= node[:haproxy][:health_check_url] %> # Nginx doesn't understand OPTIONS
   <% node[:haproxy][:static_backends].each do |backend| -%>
-  server <%= backend['name'] %> <%= backend['ip'] %>:80 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] || 10 %> check inter <%= node[:haproxy][:check_interval] %> 
+  server <%= backend['name'] %> <%= backend['ip'] %>:80 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] * 3 %> check inter <%= node[:haproxy][:check_interval] %> 
   <% end -%>
 <% end -%>
 
@@ -104,7 +104,7 @@ backend static_servers_ssl
   option redispatch
   option ssl-hello-chk
   <% node[:haproxy][:static_backends].each do |backend| -%>
-  server <%= backend['name'] %> <%= backend['ip'] %>:443 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] || 10 %> check inter <%= node[:haproxy][:check_interval] %> 
+  server <%= backend['name'] %> <%= backend['ip'] %>:443 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] * 3 %> check inter <%= node[:haproxy][:check_interval] %> 
   <% end -%>
 <% end -%>
   
