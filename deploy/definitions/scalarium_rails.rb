@@ -4,6 +4,16 @@ define :scalarium_rails do
   
   include_recipe deploy[:stack][:recipe]
 
+  # write out database.yml
+  template "#{deploy[:deploy_to]}/shared/config/database.yml" do
+    cookbook "rails"
+    source "database.yml.erb"
+    mode "0660"
+    owner deploy[:user]
+    group deploy[:group]
+    variables(:database => deploy[:database], :environment => deploy[:rails_env])
+  end
+
   # write out memcached.yml
   template "#{deploy[:deploy_to]}/shared/config/memcached.yml" do
     cookbook "rails"
