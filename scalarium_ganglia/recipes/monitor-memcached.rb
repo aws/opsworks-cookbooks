@@ -10,5 +10,5 @@ end
 
 cron "Ganglia Memcached stats" do
   minute "*/2"
-  command "/etc/ganglia/scripts/memcached > /dev/null"
+  command "/etc/ganglia/scripts/memcached > /dev/null 2>&1"
 end

@@ -7,5 +7,5 @@ end
 
 cron "Ganglia HAProxy" do
   minute "*/1"
-  command "/etc/ganglia/scripts/haproxy > /dev/null"
+  command "/etc/ganglia/scripts/haproxy > /dev/null 2>&1"
 end
