@@ -23,7 +23,6 @@
 # Set to one of:  Full | OS | Minimal | Minor | Major | Prod
 # where Full conveys the most information, and Prod the least.
 #
-#ServerTokens Minimal
 ServerTokens <%= node[:apache][:servertokens] %> 
 
 #
@@ -34,7 +33,6 @@ ServerTokens <%= node[:apache][:servertokens] %>
 # Set to "EMail" to also include a mailto: link to the ServerAdmin.
 # Set to one of:  On | Off | EMail
 #
-#ServerSignature Off
 ServerSignature <%= node[:apache][:serversignature] %> 
 
 #
@@ -45,6 +43,5 @@ ServerSignature <%= node[:apache][:serversignature] %>
 #
 # Set to one of:  On | Off | extended
 #
-#TraceEnable Off
 TraceEnable <%= node[:apache][:traceenable] %> 
 

@@ -27,6 +27,8 @@
   CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-access.log combined
   CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-ganglia.log ganglia
 
+  FileETag none
+
   RewriteEngine On
   <% if @params[:rewrite_config] %>
   Include <%= @params[:rewrite_config] %>
@@ -81,6 +83,8 @@
   ErrorLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log
   CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-access.log combined
   CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-ganglia.log ganglia
+
+  FileETag none
 
   RewriteEngine On
   RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
