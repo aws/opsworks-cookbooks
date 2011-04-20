@@ -120,4 +120,3 @@ define :scalarium_deploy do
     variables( :log_dirs => ["#{deploy[:deploy_to]}/shared/log" ] )
   end
 end
-
