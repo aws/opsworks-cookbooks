@@ -76,14 +76,7 @@ define :scalarium_deploy do
       before_migrate do
         if deploy[:application_type] == 'rails' and deploy[:auto_bundle_on_deploy] and File.exists?("#{release_path}/Gemfile")
           Chef::Log.info("Gemfile detected. Running bundle install.")
-          before_migrate_code = "`sudo su deploy -c 'cd #{release_path} && bundle install #{deploy[:home]}/.bundler/#{application} --without=test development'`"
-          if File.exists?("#{release_path}/deploy/before_migrate.rb")
-            before_migrate_code += "\n" + File.read("#{release_path}/deploy/before_migrate.rb")
-          end
-          FileUtils.mkdir_p "#{release_path}/deploy"
-          File.open("#{release_path}/deploy/before_migrate.rb", 'w') do |file|
-            file.puts before_migrate_code
-          end
+          run("cd #{release_path} && bundle install #{deploy[:home]}/.bundler/#{application} --without=test development")
         end
         run_callback_from_file("#{release_path}/deploy/before_migrate.rb")
       end
@@ -101,23 +94,12 @@ define :scalarium_deploy do
       inner_deploy = deploy
       inner_application = application
       block do
-        bundle_list = `cd #{inner_deploy[:deploy_to]}/current; bundle list`
-        if bundle_list.empty?
-          inner_deploy[:database][:adapter] = if File.exists?("#{inner_deploy[:deploy_to]}/current/config/application.rb")
-            Chef::Log.info("Looks like #{inner_application} is a Rails 3 application, defaulting to mysql2")
-            'mysql2'
-          else
-            Chef::Log.info("No config/application.rb found, assuming #{inner_application} is a Rails 2 application, defaulting to mysql")
-            'mysql'
-          end
+        inner_deploy[:database][:adapter] = if File.exists?("#{inner_deploy[:deploy_to]}/current/config/application.rb")
+          Chef::Log.info("Looks like #{inner_application} is a Rails 3 application")
+          'mysql2'
         else
-          inner_deploy[:database][:adapter] = if bundle_list.include?('mysql2')
-            Chef::Log.info("Looks like #{inner_application} uses mysql2")
-            'mysql2'
-          else
-            Chef::Log.info("Gem mysql2 not found in the bundle of #{inner_application}, defaulting to mysql")
-            'mysql'
-          end
+          Chef::Log.info("No config/application.rb found, assuming #{inner_application} is a Rails 2 application")
+          'mysql'
         end
       end
     end
