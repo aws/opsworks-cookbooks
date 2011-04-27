@@ -2,26 +2,15 @@
 include_recipe "deploy"
 
 node[:deploy].each do |application, deploy|
-  
+  deploy = node[:deploy][application]
+
   execute "restart Rails app #{application}" do
     cwd deploy[:current_path]
     command "touch tmp/restart.txt"
     action :nothing
   end
-  
-  ruby_block 'Determine database adapter' do
-    inner_deploy = deploy
-    inner_application = application
-    block do
-      inner_deploy[:database][:adapter] = if File.exists?("#{inner_deploy[:deploy_to]}/current/config/application.rb")
-        Chef::Log.info("Looks like #{inner_application} is a Rails 3 application")
-        'mysql2'
-      else
-        Chef::Log.info("No config/application.rb found, assuming #{inner_application} is a Rails 2 application")
-        'mysql'
-      end
-    end
-  end
+
+  node[:deploy][application][:database][:adapter] = Scalarium::RailsConfiguration.determine_database_adapter(application, node[:deploy][application], "#{node[:deploy][application][:deploy_to]}/current")
 
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
     source "database.yml.erb"
