@@ -75,17 +75,23 @@ define :scalarium_deploy do
 
       before_migrate do
         run_symlinks_before_migrate
-        if deploy[:application_type] == 'rails' and deploy[:auto_bundle_on_deploy] and File.exists?("#{release_path}/Gemfile")
-          Chef::Log.info("Gemfile detected. Running bundle install.")
-          before_migrate_code = "`sudo su deploy -c 'cd #{release_path} && bundle install #{deploy[:home]}/.bundler/#{application} --without=test development'`"
-          if File.exists?("#{release_path}/deploy/before_migrate.rb")
-            before_migrate_code += "\n" + File.read("#{release_path}/deploy/before_migrate.rb")
+        if deploy[:application_type] == 'rails'
+          if deploy[:auto_bundle_on_deploy]
+            Scalarium::RailsConfiguration.bundle(application, node[:deploy][application], release_path)
           end
-          FileUtils.mkdir_p "#{release_path}/deploy"
-          File.open("#{release_path}/deploy/before_migrate.rb", 'w') do |file|
-            file.puts before_migrate_code
-          end
+
+          node[:deploy][application][:database][:adapter] = Scalarium::RailsConfiguration.determine_database_adapter(application, node[:deploy][application], release_path)
+          template "#{node[:deploy][application][:deploy_to]}/shared/config/database.yml" do
+            cookbook "rails"
+            source "database.yml.erb"
+            mode "0660"
+            owner node[:deploy][application][:user]
+            group node[:deploy][application][:group]
+            variables(:database => node[:deploy][application][:database], :environment => node[:deploy][application][:rails_env])
+          end.run_action(:create)
         end
+
+        # run user provided callback file
         run_callback_from_file("#{release_path}/deploy/before_migrate.rb")
       end
     end
