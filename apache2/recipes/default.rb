@@ -166,6 +166,7 @@ include_recipe "apache2::mod_negotiation"
 include_recipe "apache2::mod_setenvif"
 include_recipe "apache2::mod_log_config" if platform?("centos", "redhat", "suse")
 include_recipe "apache2::mod_ssl"
+include_recipe "apache2::mod_expires"
 include_recipe "apache2::logrotate"
 
 # uncomment to get working example site on centos/redhat/fedora

@@ -35,7 +35,12 @@
   CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-access.log combined
   CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-ganglia.log ganglia
 
+  FileETag none
+
   RewriteEngine On
+  <% if @params[:rewrite_config] %>
+  Include <%= @params[:rewrite_config] %>
+  <% end %>
   RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
   RewriteLogLevel 0
   
@@ -48,6 +53,9 @@
   RewriteCond %{SCRIPT_FILENAME} !maintenance.html
   RewriteRule ^.*$ /system/maintenance.html [L]
   
+  <% if @params[:local_config] %>
+  Include <%= @params[:local_config] %>
+  <% end %>
 </VirtualHost>
 
 <% if node[:deploy][@application_name][:ssl_support] -%>
@@ -96,6 +104,8 @@
   ErrorLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-error.log
   CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-access.log combined
   CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-ganglia.log ganglia
+
+  FileETag none
 
   RewriteEngine On
   RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-ssl-rewrite.log
