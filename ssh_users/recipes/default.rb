@@ -15,7 +15,6 @@ node[:ssh_users].each do |id, ssh_user|
   else
     setup_user(ssh_user.update(:uid => id))
   end
-  set_public_key(ssh_user)
 end
 
 template '/etc/sudoers' do

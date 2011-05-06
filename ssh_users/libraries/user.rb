@@ -12,22 +12,37 @@ module Scalarium
       existing_ssh_users
     end
 
-    def setup_user(params)
-      Chef::Log.info("setting up user #{params[:name]}")
-      user params[:name] do
-        action :create
-        comment "Scalarium user #{params[:name]}"
-        uid params[:uid]
-        gid 'scalarium'
-        home "/home/#{params[:name]}"
-        supports :manage_home => true
-        shell '/bin/bash'
+    def load_existing_users
+      existing_users = {}
+      (node[:passwd] || node[:etc][:passwd]).each do |username, entry|
+        existing_users[entry[:uid].to_s] = username
       end
+      existing_users
+    end
 
-      directory "/home/#{params[:name]}/.ssh" do
-        owner params[:name]
-        group 'scalarium'
-        mode 0700
+    def setup_user(params)
+      existing_users = load_existing_users
+      if existing_users.include?(params[:uid])
+        Chef::Log.info("UID #{params[:uid]} is taken, not setting up user #{params[:name]}")
+      else
+        Chef::Log.info("setting up user #{params[:name]}")
+        user params[:name] do
+          action :create
+          comment "Scalarium user #{params[:name]}"
+          uid params[:uid]
+          gid 'scalarium'
+          home "/home/#{params[:name]}"
+          supports :manage_home => true
+          shell '/bin/bash'
+        end
+
+        directory "/home/#{params[:name]}/.ssh" do
+          owner params[:name]
+          group 'scalarium'
+          mode 0700
+        end
+
+        set_public_key(params)
       end
     end
 
