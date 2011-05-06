@@ -18,7 +18,7 @@ globals {
  * of a <CLUSTER> tag.  If you do not specify a cluster tag, then all <HOSTS> will 
  * NOT be wrapped inside of a <CLUSTER> tag. */ 
 cluster { 
-  name = "<%= @cluster_name %>" 
+  name = "<%= @cluster_name.gsub(/[\(\)\[\]]/,'') %>"
   owner = "Scalarium" 
   latlong = "unspecified" 
   url = "unspecified" 
