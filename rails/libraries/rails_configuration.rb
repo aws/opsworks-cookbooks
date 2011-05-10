@@ -1,7 +1,7 @@
 module Scalarium
   module RailsConfiguration
-    def self.determine_database_adapter(app_name, app_config, app_root_path)
-      if app_config[:database][:adapter].blank?
+    def self.determine_database_adapter(app_name, app_config, app_root_path, force)
+      if force || app_config[:database][:adapter].blank?
         Chef::Log.info("No database adapter specified for #{app_name}, guessing")
         adapter = ''
 

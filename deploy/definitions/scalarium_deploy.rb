@@ -80,7 +80,7 @@ define :scalarium_deploy do
             Scalarium::RailsConfiguration.bundle(application, node[:deploy][application], release_path)
           end
 
-          node[:deploy][application][:database][:adapter] = Scalarium::RailsConfiguration.determine_database_adapter(application, node[:deploy][application], release_path)
+          node[:deploy][application][:database][:adapter] = Scalarium::RailsConfiguration.determine_database_adapter(application, node[:deploy][application], release_path, node[:force_database_adapter_detection])
           template "#{node[:deploy][application][:deploy_to]}/shared/config/database.yml" do
             cookbook "rails"
             source "database.yml.erb"
