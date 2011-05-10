@@ -19,11 +19,11 @@ module Scalarium
             'mysql'
           end
         else # no Gemfile - guess adapter by Rails version
-          adapter = if File.exists?("#{app_root_path}/config/app_name.rb")
-            Chef::Log.info("Looks like #{app_name} is a Rails 3 app_name, defaulting to mysql2")
+          adapter = if File.exists?("#{app_root_path}/config/application.rb")
+            Chef::Log.info("Looks like #{app_name} is a Rails 3 application, defaulting to mysql2")
             'mysql2'
           else
-            Chef::Log.info("No config/app_name.rb found, assuming #{app_name} is a Rails 2 app_name, defaulting to mysql")
+            Chef::Log.info("No config/application.rb found, assuming #{app_name} is a Rails 2 application, defaulting to mysql")
             'mysql'
           end
         end
