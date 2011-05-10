@@ -1,11 +1,15 @@
 module Scalarium
   module RailsConfiguration
-    def self.determine_database_adapter(app_name, app_config, app_root_path, force, consult_gemfile)
-      if force || app_config[:database][:adapter].blank?
+    def self.determine_database_adapter(app_name, app_config, app_root_path, options = {})
+      options = {
+        :consult_gemfile => true,
+        :force => false
+      }.update(options)
+      if options[:force] || app_config[:database][:adapter].blank?
         Chef::Log.info("No database adapter specified for #{app_name}, guessing")
         adapter = ''
 
-        if consult_gemfile and File.exists?("#{app_root_path}/Gemfile")
+        if options[:consult_gemfile] and File.exists?("#{app_root_path}/Gemfile")
           bundle_list = `cd #{app_root_path}; bundle list`
           adapter = if bundle_list.include?('mysql2')
             Chef::Log.info("Looks like #{app_name} uses mysql2 in its Gemfile")
