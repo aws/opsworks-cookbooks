@@ -9,6 +9,6 @@ execute "Install node.js #{node[:scalarium_nodejs][:version]}" do
 
   not_if do
     ::File.exists?("/usr/local/bin/node") &&
-    system("/usr/local/bin/ruby -v | grep -q '#{node[:scalarium_nodejs][:version]}'")
+    system("/usr/local/bin/node -v | grep -q '#{node[:scalarium_nodejs][:version]}'")
   end
 end
