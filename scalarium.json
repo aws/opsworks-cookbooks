@@ -20,7 +20,7 @@
   },
   "mysql": {
     "debian_sys_maintainer_user": "root",
-    "debian_sys_maintainer_password": "ldyr59e14z",
+    "debian_sys_maintainer_password": "XXXXXXXX",
     "ec2_path": "/vol/mysql/data",
     "use_percona_xtradb": false,
     "tunable": {
@@ -29,7 +29,7 @@
     "clients": [
 
     ],
-    "server_root_password": "ldyz59e14r"
+    "server_root_password": "XXXXXXXXX"
   },
   "passenger": {
     "max_pool_size": 8,
@@ -99,7 +99,7 @@
         "username": "root",
         "database": "photopoll",
         "host": "localhost",
-        "password": "ldyz59e14r"
+        "password": "XXXXXXXXXXX"
       },
       "mounted_at": null,
       "rails_env": "production",
