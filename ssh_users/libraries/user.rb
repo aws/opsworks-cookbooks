@@ -22,8 +22,10 @@ module Scalarium
 
     def setup_user(params)
       existing_users = load_existing_users
-      if existing_users.include?(params[:uid])
+      if existing_users.has_key?(params[:uid])
         Chef::Log.info("UID #{params[:uid]} is taken, not setting up user #{params[:name]}")
+      elsif existing_users.has_value?(params[:name])
+        Chef::Log.info("Username #{params[:name]} is taken, not setting up user #{params[:name]}")
       else
         Chef::Log.info("setting up user #{params[:name]}")
         user params[:name] do
