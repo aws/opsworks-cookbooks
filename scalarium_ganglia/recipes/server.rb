@@ -56,6 +56,11 @@ remote_file "/usr/share/ganglia-webfrontend/graph.d/nginx_status_report.php" do
   mode "0644"
 end
 
+remote_file "/usr/share/ganglia-webfrontend/graph.d/apache_response_time_report.php" do
+  source "apache_response_time_report.php"
+  mode "0644"
+end
+
 template "/usr/share/ganglia-webfrontend/conf.php" do
   source "conf.php.erb"
   mode "0644"

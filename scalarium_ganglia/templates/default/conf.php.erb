@@ -196,7 +196,7 @@ $optional_graphs = array();
   array_push($optional_graphs, 'mysql_query');
 <% end -%>
 <% if (node[:scalarium][:roles].has_key?("rails-app") && !node[:scalarium][:roles]['rails-app']['instances'].empty? ) ||  (node[:scalarium][:roles].has_key?("php-app") && !node[:scalarium][:roles]['php-app']['instances'].empty? ) -%>
-  array_push($optional_graphs, 'apache', 'apache_worker');
+  array_push($optional_graphs, 'apache', 'apache_worker', 'apache_response_time');
 <% end -%>
 <% if node[:scalarium][:roles].has_key?("rails-app") && !node[:scalarium][:roles]['rails-app']['instances'].empty? -%>
   array_push($optional_graphs, 'passenger_memory_stats', 'passenger_status');
