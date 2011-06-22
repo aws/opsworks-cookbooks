@@ -55,5 +55,11 @@ default[:scalarium][:instance][:architecture] = `dpkg --print-architecture`.chom
 
 default[:percona] = {}
 default[:percona][:tmp_dir] = '/tmp/percona-server'
-default[:percona][:version] = '5.1.55-12.6'
+
+if node[:platform] == 'ubuntu' && node[:platform_version].to_f < 10.04
+  # this is the latest version with packages for Karmic
+  default[:percona][:version] = '5.1.55-12.6'
+else
+  default[:percona][:version] = '5.1.57-12.8'
+end
 default[:percona][:url_base] = "http://peritor-assets.s3.amazonaws.com/percona"
