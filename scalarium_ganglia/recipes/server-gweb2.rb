@@ -1,5 +1,5 @@
 execute "Get newest version of ganglia web interface from github" do
-  command "cd tmp && git clone git://github.com/vvuksan/ganglia-misc.git"
+  command "cd /tmp && git clone git://github.com/vvuksan/ganglia-misc.git"
 end
 
 template "/tmp/ganglia-misc/ganglia-web/Makefile" do
