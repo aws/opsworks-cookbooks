@@ -8,6 +8,6 @@ template "/tmp/ganglia-misc/ganglia-web/Makefile" do
 end
 
 execute "Execute make install" do
-  command "make install"
+  command "/tmp/ganglia-misc/ganglia-web/make install"
 end
 
