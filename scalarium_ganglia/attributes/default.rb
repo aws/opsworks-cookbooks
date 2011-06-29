@@ -20,3 +20,13 @@ default[:ganglia][:web][:password] = pw
 
 
 default[:ganglia][:nginx][:status_url] = '/nginx_status'
+
+# gweb2 config
+default[:ganglia][:gweb2][:url] = '/ganglia2'
+default[:ganglia][:gweb2][:destdir] = '/var/www/ganglia2'
+default[:ganglia][:gweb2][:apache_user] = 'www-data'
+default[:ganglia][:gweb2][:major_version] = 2
+default[:ganglia][:gweb2][:minor_version] = 1
+default[:ganglia][:gweb2][:micro_version] = 2
+default[:ganglia][:gweb2][:svn] = 'no'
+

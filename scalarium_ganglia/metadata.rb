@@ -1,7 +1,7 @@
 maintainer "Peritor GmbH"
 maintainer_email "scalarium@peritor.com"
 description "Installs Ganglia Server & Client"
-version "0.1"
+version "0.2"
 supports "ubuntu"
 
 recipe "scalarium_ganglia::server", "Ganglia server"
@@ -14,3 +14,4 @@ recipe "scalarium_ganglia::monitor-mysql", "Monitor MySQL"
 recipe "scalarium_ganglia::monitor-fd-and-sockets", "Monitor File Descriptors and Sockets"
 recipe "scalarium_ganglia::monitor-disk", "Monitor Disk Stats"
 recipe "scalarium_ganglia::monitor-apache", "Monitor Apache Stats"
+
