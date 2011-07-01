@@ -1,7 +1,7 @@
 <?php
 
-$template_name = "default";
-$metriccols = 4;
+$conf['template_name'] = 'default';
+$conf['metriccols'] = 4;
 
 $optional_graphs = array();
 <% if node[:scalarium][:roles].has_key?("lb") && !node[:scalarium][:roles]['lb']['instances'].empty? -%>
