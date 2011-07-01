@@ -51,3 +51,8 @@ remote_file "/var/www/ganglia2/graph.d/apache_response_time_report.php" do
   mode "0644"
 end
 
+template "/var/www/ganglia2/conf.php" do
+  source "conf-gweb2.php.erb"
+  mode "0644"
+end
+
