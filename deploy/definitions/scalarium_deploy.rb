@@ -89,6 +89,10 @@ define :scalarium_deploy do
             group node[:deploy][application][:group]
             variables(:database => node[:deploy][application][:database], :environment => node[:deploy][application][:rails_env])
           end.run_action(:create)
+        elsif deploy[:application_type] == 'nodejs'
+          if deploy[:auto_npm_install_on_deploy]
+            Scalarium::NodejsConfiguration.npm_install(application, node[:deploy][application], release_path)
+          end
         end
 
         # run user provided callback file

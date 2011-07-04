@@ -45,6 +45,7 @@ node[:deploy].each do |application, deploy|
                                                  "RACK_ENV" => deploy[:rails_env],
                                                  "HOME" => home}
   default[:deploy][application][:ssl_support] = false
+  default[:deploy][application][:auto_npm_install_on_deploy] = true
 end
 
 default[:logrotate][:rotate] = 30
