@@ -3,6 +3,7 @@ package "lvm2"
 
 execute "Load device mapper kernel module" do
   command "modprobe dm-mod"
+  ignore_failure true
 end
 
 node[:ebs][:raids].each do |raid_device, options|

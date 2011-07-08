@@ -137,4 +137,19 @@ module BlockDevice
       false
     end
   end
+
+  def self.translate_device_names(devices, skip = 0)
+    if on_kvm? && devices.size > 0
+      Chef::Log.info("Running on QEMU/KVM: Starting at /dev/sdb skipping #{skip}")
+      new_devices = ('b'..'z').to_a[0 + skip, devices.size].each_with_index.map {|char, index| [ devices[index], "/dev/sd#{char}" ]  }
+      Chef::Log.info("Running on QEMU/KVM: Translated EBS devices #{devices.inspect} to #{new_devices.map{|d| d[1]}.inspect}")
+      new_devices
+    else
+      devices
+    end
+  end
+
+  def self.on_kvm?
+    `cat /proc/cpuinfo`.match(/QEMU/)
+  end
 end
