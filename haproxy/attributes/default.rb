@@ -9,8 +9,8 @@ default[:haproxy][:server_timeout] = '60s'
 default[:haproxy][:queue_timeout] = '120s'
 default[:haproxy][:connect_timeout] = '10s'
 default[:haproxy][:http_request_timeout] = '30s'
-default[:haproxy][:global_max_connections] = '10000'
-default[:haproxy][:default_max_connections] = '9600'
+default[:haproxy][:global_max_connections] = '80000'
+default[:haproxy][:default_max_connections] = '80000'
 default[:haproxy][:retries] = '3'
 
 def random_haproxy_pw
