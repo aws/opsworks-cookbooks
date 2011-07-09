@@ -1,4 +1,3 @@
-default[:haproxy] = {}
 default[:haproxy][:stats_url] = '/haproxy?stats'
 default[:haproxy][:stats_user] = 'scalarium'
 default[:haproxy][:health_check_url] = '/'
