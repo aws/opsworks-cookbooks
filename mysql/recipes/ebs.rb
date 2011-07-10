@@ -1,4 +1,4 @@
-if (node[:ec2] && ! FileTest.directory?(node[:mysql][:ec2_path]))
+if (node[:mysql][:ec2_path] && ! FileTest.directory?(node[:mysql][:ec2_path]))
   Chef::Log.info("Setting up the MySQL bind-mount to EBS")
 
   execute "Copy MySQL data to EBS for first init" do
