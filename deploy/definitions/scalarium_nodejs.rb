@@ -32,6 +32,6 @@ define :scalarium_nodejs do
       :application_name => application,
       :monitored_script => "#{deploy[:deploy_to]}/current/server.js"
     )
-    notifies :restart, resources(:service => 'monit')
+    notifies :restart, resources(:service => 'monit'), :immediately
   end
 end

@@ -7,6 +7,6 @@ node[:deploy].each do |application, deploy|
   end
 
   execute "restart node.js application #{application} via monit" do
-    command "monit restart node_web_app_#{application}"
+    command node[:deploy][application][:nodejs][:restart_command]
   end
 end

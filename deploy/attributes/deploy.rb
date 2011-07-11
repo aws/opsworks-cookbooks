@@ -46,6 +46,9 @@ node[:deploy].each do |application, deploy|
                                                  "HOME" => home}
   default[:deploy][application][:ssl_support] = false
   default[:deploy][application][:auto_npm_install_on_deploy] = true
+
+  # nodejs
+  default[:deploy][application][:nodejs][:restart_command] = "monit restart node_web_app_#{application}"
 end
 
 default[:logrotate][:rotate] = 30
