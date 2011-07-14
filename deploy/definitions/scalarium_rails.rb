@@ -11,7 +11,7 @@ define :scalarium_rails do
     mode "0660"
     owner deploy[:user]
     group deploy[:group]
-    variables(:memcached => deploy[:memcached], :environment => deploy[:rails_env])
+    variables(:memcached => (deploy[:memcached] || {}), :environment => deploy[:rails_env])
   end
   
   execute "symlinking subdir mount if necessary" do
