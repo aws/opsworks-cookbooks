@@ -1,4 +1,3 @@
-default[:scalarium_nodejs] = {}
 default[:scalarium_nodejs][:version] = '0.4.7'
 default[:scalarium_nodejs][:npm_version] = '1.0.13'
 default[:scalarium_nodejs][:pkgrelease] = '1'
