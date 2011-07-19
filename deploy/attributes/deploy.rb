@@ -19,7 +19,11 @@ node[:deploy].each do |application, deploy|
     default[:deploy][application][:rake] = "rake"
   end
   default[:deploy][application][:migrate] = false
-  default[:deploy][application][:migrate_command] = "#{default[:deploy][application][:rake]} db:migrate"
+  if default[:deploy][application][:auto_bundle_on_deploy]
+    default[:deploy][application][:migrate_command] = "if [ -f Gemfile ]; then echo 'Scalarium: Gemfile found - running migration with bundle exec' && bundle exec #{default[:deploy][application][:rake]} db:migrate; else echo 'Scalarium: no Gemfile - running plain migrations' && #{default[:deploy][application][:rake]} db:migrate; fi"
+  else
+    default[:deploy][application][:migrate_command] = "#{default[:deploy][application][:rake]} db:migrate"
+  end
   default[:deploy][application][:rails_env] = 'production'
   default[:deploy][application][:action] = 'deploy'
   default[:deploy][application][:user] = 'deploy'
