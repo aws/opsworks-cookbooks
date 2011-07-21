@@ -56,6 +56,9 @@ module Scalarium
         owner params[:name]
         group 'scalarium'
         variables(:public_key => params[:public_key])
+        only_if do
+          File.exists?("/home/#{params[:name]}/.ssh")
+        end
       end
     end
 
