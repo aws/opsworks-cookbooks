@@ -24,7 +24,7 @@ define :passenger_web_app do
       deploy[:ssl_support]
     end
   end
-  
+
   template "/etc/apache2/ssl/#{deploy[:domains].first}.key" do
     mode '0600'
     source "ssl.key.erb"
@@ -33,7 +33,7 @@ define :passenger_web_app do
       deploy[:ssl_support]
     end
   end
-  
+
   template "/etc/apache2/ssl/#{deploy[:domains].first}.ca" do
     mode '0600'
     source "ssl.key.erb"
@@ -47,8 +47,8 @@ define :passenger_web_app do
   execute "mv away default virtual host" do
     action :run
     command "mv /etc/apache2/sites-enabled/000-default /etc/apache2/sites-enabled/zzz-default"
-    only_if do 
-      File.exists?("#{node[:apache][:dir]}/sites-enabled/000-default") 
+    only_if do
+      File.exists?("#{node[:apache][:dir]}/sites-enabled/000-default")
     end
   end
 

@@ -6,7 +6,7 @@ node[:deploy].each do |application, deploy|
     Chef::Log.debug("Skipping unicorn::rails application #{application} as it is not an Rails app")
     next
   end
-  
+
   template "#{deploy[:deploy_to]}/shared/scripts/unicorn" do
     mode '0755'
     owner deploy[:user]
@@ -14,7 +14,7 @@ node[:deploy].each do |application, deploy|
     source "unicorn.service.erb"
     variables(:deploy => deploy, :application => application)
   end
-  
+
   service "unicorn_#{application}" do
     start_command "#{deploy[:deploy_to]}/shared/scripts/unicorn start"
     stop_command "#{deploy[:deploy_to]}/shared/scripts/unicorn stop"
@@ -22,7 +22,7 @@ node[:deploy].each do |application, deploy|
     status_command "#{deploy[:deploy_to]}/shared/scripts/unicorn status"
     action :nothing
   end
-  
+
   template "#{deploy[:deploy_to]}/shared/config/unicorn.conf" do
     mode '0644'
     owner deploy[:user]

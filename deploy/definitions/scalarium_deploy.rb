@@ -34,7 +34,7 @@ define :scalarium_deploy do
   end
 
   Chef::Log.debug("Checking out source code of application #{application} with type #{deploy[:application_type]}")
-  
+
   directory "#{deploy[:deploy_to]}/shared/cached-copy" do
     recursive true
     action :delete
@@ -121,7 +121,7 @@ define :scalarium_deploy do
         application application
         deploy deploy
       end
-      
+
     else
       raise "Unsupport Rails stack"
     end
