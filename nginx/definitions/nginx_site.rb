@@ -1,4 +1,4 @@
-define :nginx_web_app, :template => "site.erb", :enable => true do
+define :nginx_site, :template => "site.erb", :enable => true do
   application = params[:application]
   application_name = params[:name]
 
