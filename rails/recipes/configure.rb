@@ -1,10 +1,10 @@
-
 include_recipe "deploy"
 
 node[:deploy].each do |application, deploy|
   deploy = node[:deploy][application]
 
   execute "restart Rails app #{application}" do
+    # TODO: Add stack specific restart
     cwd deploy[:current_path]
     command "touch tmp/restart.txt"
     action :nothing
@@ -20,10 +20,8 @@ node[:deploy].each do |application, deploy|
     owner deploy[:user]
     variables(:database => deploy[:database], :environment => deploy[:rails_env])
   
-    if deploy[:stack][:needs_reload]
-      notifies :run, resources(:execute => "restart Rails app #{application}")
-    end
-  
+    notifies :run, resources(:execute => "restart Rails app #{application}")
+    
     only_if do
       File.exists?("#{deploy[:deploy_to]}") && File.exists?("#{deploy[:deploy_to]}/shared/config/")
     end
@@ -37,9 +35,7 @@ node[:deploy].each do |application, deploy|
     owner deploy[:user]
     variables(:memcached => deploy[:memcached], :environment => deploy[:rails_env])
   
-    if deploy[:stack][:needs_reload]
-      notifies :run, resources(:execute => "restart Rails app #{application}")
-    end
+    notifies :run, resources(:execute => "restart Rails app #{application}")
   
     only_if do
       File.exists?("#{deploy[:deploy_to]}") && File.exists?("#{deploy[:deploy_to]}/shared/config/")

@@ -2,8 +2,8 @@ define :scalarium_rails do
   deploy = params[:deploy_data]
   application = params[:app]
   
-  include_recipe deploy[:stack][:recipe]
-
+  include_recipe node[:scalarium][:rails_stack][:recipe]
+  
   # write out memcached.yml
   template "#{deploy[:deploy_to]}/shared/config/memcached.yml" do
     cookbook "rails"

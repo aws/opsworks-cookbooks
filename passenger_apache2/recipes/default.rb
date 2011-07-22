@@ -43,12 +43,9 @@ if node[:passenger][:version] >= '3.0.0'
   package 'libcurl4-openssl-dev'
 end
 
-gem_package "passenger" do
-  retries 2
-  version node[:passenger][:version]
-  gem_binary node[:passenger][:gem_bin]
-  only_if do
-    Chef::VERSION >= "0.9" || new_gem_version_available?('passenger')
+ruby_block "ensure only our passenger version is installed by deinstalling any other version" do
+  block do
+    ensure_only_gem_version('passenger', node[:passenger][:version])
   end
 end
 

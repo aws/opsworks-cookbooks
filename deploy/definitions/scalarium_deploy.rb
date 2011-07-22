@@ -57,7 +57,7 @@ define :scalarium_deploy do
       environment deploy[:environment]
       symlink_before_migrate deploy[:symlink_before_migrate]
       action deploy[:action]
-      restart_command "sleep #{deploy[:sleep_before_restart]} && #{deploy[:restart_command]}"
+      restart_command "sleep #{deploy[:sleep_before_restart]} && #{node[:scalarium][:rails_stack][:restart_command]}"
       case deploy[:scm][:scm_type].to_s
       when 'git'
         scm_provider :git
@@ -107,10 +107,25 @@ define :scalarium_deploy do
     end
   end
 
-  if deploy[:application_type] == 'rails' && node[:scalarium][:instance][:roles].include?('rails-app')
-    passenger_web_app do
-      application application
-      deploy deploy
+  # Need to be uncommented in production
+  # XXX
+  if deploy[:application_type] == 'rails'# && node[:scalarium][:instance][:roles].include?('rails-app')
+    case node[:scalarium][:rails_stack][:name]
+
+    when 'apache_passenger'
+      passenger_web_app do
+        application application
+        deploy deploy
+      end
+
+    when 'nginx_unicorn'
+      unicorn_web_app do
+        application application
+        deploy deploy
+      end
+      
+    else
+      raise "Unsupport Rails stack"
     end
   end
 

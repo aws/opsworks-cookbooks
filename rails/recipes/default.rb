@@ -1,3 +1,1 @@
-package "rubygems"
-
-# rails will be installed by the user as a dependency
+Chef::Log.debug("The default recipe of the \"rails\" cookbook will be deprecated, please remove it and don't use it any more.")

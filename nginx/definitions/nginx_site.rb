@@ -1,37 +1,11 @@
-#
-# Cookbook Name:: nginx
-# Definition:: nginx_site
-# Author:: AJ Christensen <aj@junglist.gen.nz>
-#
-# Copyright 2008, OpsCode, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+define :nginx_web_app, :template => "site.erb", :enable => true do
+  application = params[:application]
+  application_name = params[:name]
 
-define :nginx_site, :enable => true do
-  include_recipe "nginx::service"
+  Chef::Log.debug("The \"nginx_site\" will be deprecated, please use nginx_web_app instead.")
 
-  if params[:enable]
-    execute "nxensite #{params[:name]}" do
-      command "/usr/sbin/nxensite #{params[:name]}"
-      notifies :reload, resources(:service => "nginx")
-      not_if do File.symlink?("#{node[:nginx][:dir]}/sites-enabled/#{params[:name]}") end
-    end
-  else
-    execute "nxdissite #{params[:name]}" do
-      command "/usr/sbin/nxdissite #{params[:name]}"
-      notifies :reload, resources(:service => "nginx")
-      only_if do File.symlink?("#{node[:nginx][:dir]}/sites-enabled/#{params[:name]}") end
-    end
+  nginx_web_app do
+    application application
+    application_name application_name
   end
 end

@@ -16,6 +16,42 @@ define :passenger_web_app do
     end
   end
 
+  template "/etc/apache2/ssl/#{deploy[:domains].first}.crt" do
+    mode '0600'
+    source "ssl.key.erb"
+    variables :key => deploy[:ssl_certificate]
+    only_if do
+      deploy[:ssl_support]
+    end
+  end
+  
+  template "/etc/apache2/ssl/#{deploy[:domains].first}.key" do
+    mode '0600'
+    source "ssl.key.erb"
+    variables :key => deploy[:ssl_certificate_key]
+    only_if do
+      deploy[:ssl_support]
+    end
+  end
+  
+  template "/etc/apache2/ssl/#{deploy[:domains].first}.ca" do
+    mode '0600'
+    source "ssl.key.erb"
+    variables :key => deploy[:ssl_certificate_ca]
+    only_if do
+      deploy[:ssl_support] && deploy[:ssl_certificate_ca]
+    end
+  end
+
+  # move away default virtual host so that the Rails app becomes the default virtual host
+  execute "mv away default virtual host" do
+    action :run
+    command "mv /etc/apache2/sites-enabled/000-default /etc/apache2/sites-enabled/zzz-default"
+    only_if do 
+      File.exists?("#{node[:apache][:dir]}/sites-enabled/000-default") 
+    end
+  end
+
   web_app deploy[:application] do
     docroot deploy[:absolute_document_root]
     server_name deploy[:domains].first
