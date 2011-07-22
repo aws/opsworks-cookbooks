@@ -107,9 +107,7 @@ define :scalarium_deploy do
     end
   end
 
-  # Need to be uncommented in production
-  # XXX
-  if deploy[:application_type] == 'rails'# && node[:scalarium][:instance][:roles].include?('rails-app')
+  if deploy[:application_type] == 'rails' && node[:scalarium][:instance][:roles].include?('rails-app')
     case node[:scalarium][:rails_stack][:name]
 
     when 'apache_passenger'
