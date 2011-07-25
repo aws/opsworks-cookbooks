@@ -111,16 +111,12 @@ define :scalarium_deploy do
     case node[:scalarium][:rails_stack][:name]
 
     when 'apache_passenger'
-      include_recipe "nginx::service"
-      notifies :stop, resources(:service => "nginx")
       passenger_web_app do
         application application
         deploy deploy
       end
 
     when 'nginx_unicorn'
-      include_recipe "apache2::service"
-      notifies :stop, resources(:service => "apache2")
       unicorn_web_app do
         application application
         deploy deploy

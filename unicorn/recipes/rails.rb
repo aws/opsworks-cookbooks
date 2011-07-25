@@ -1,3 +1,7 @@
+include_recipe "apache2::uninstall"
+include_recipe "nginx"
+include_recipe "unicorn"
+
 # setup Unicorn service per app
 node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'rails'
