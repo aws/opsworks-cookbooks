@@ -9,6 +9,16 @@ node[:deploy].each do |application, deploy|
     next
   end
 
+  scalarium_deploy_user do
+    deploy_data deploy
+  end
+
+  scalarium_deploy_dir do
+    user deploy[:user]
+    group deploy[:group]
+    path deploy[:deploy_to]
+  end
+
   template "#{deploy[:deploy_to]}/shared/scripts/unicorn" do
     mode '0755'
     owner deploy[:user]

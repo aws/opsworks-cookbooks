@@ -9,7 +9,7 @@ when "nginx_unicorn"
   default[:scalarium][:rails_stack][:recipe] = "unicorn::rails"
   default[:scalarium][:rails_stack][:needs_reload] = true
   default[:scalarium][:rails_stack][:service] = 'unicorn'
-  default[:scalarium][:rails_stack][:restart_command] = '../../shared/scripts/unicorn restart'
+  default[:scalarium][:rails_stack][:restart_command] = '../../shared/scripts/unicorn clean-restart'
 else
   raise "Unknown stack: #{node[:scalarium][:rails_stack][:name].inspect}"
 end
