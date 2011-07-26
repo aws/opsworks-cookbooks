@@ -24,6 +24,11 @@ remote_file "/tmp/#{node[:ruby][:deb]}" do
   action :create_if_missing
 end
 
+package "ruby-enterprise" do
+  action :remove
+  ignore_failure true
+end
+
 execute "Install Ruby #{node[:ruby][:full_version]}" do
   cwd "/tmp"
   command "dpkg -i /tmp/#{node[:ruby][:deb]}"
