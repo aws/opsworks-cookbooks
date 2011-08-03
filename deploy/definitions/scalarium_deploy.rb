@@ -89,6 +89,18 @@ define :scalarium_deploy do
             group node[:deploy][application][:group]
             variables(:database => node[:deploy][application][:database], :environment => node[:deploy][application][:rails_env])
           end.run_action(:create)
+        elsif deploy[:application_type] == 'php'
+          template "#{node[:deploy][application][:deploy_to]}/shared/config/scalarium.php" do
+            cookbook 'php'
+            source 'scalarium.php.erb'
+            mode '0660'
+            owner node[:deploy][application][:user]
+            group node[:deploy][application][:group]
+            variables(:database => node[:deploy][application][:database], :memcached => node[:deploy][application][:memcached], :roles => node[:scalarium][:roles])
+            only_if do
+              File.exists?("#{node[:deploy][application][:deploy_to]}/shared/config")
+            end
+          end
         elsif deploy[:application_type] == 'nodejs'
           if deploy[:auto_npm_install_on_deploy]
             Scalarium::NodejsConfiguration.npm_install(application, node[:deploy][application], release_path)
