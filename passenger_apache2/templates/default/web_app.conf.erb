@@ -38,9 +38,7 @@
   FileETag none
 
   RewriteEngine On
-  <% if @params[:rewrite_config] %>
-  Include <%= @params[:rewrite_config] %>
-  <% end %>
+  Include <%= @params[:rewrite_config] %>*
   RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
   RewriteLogLevel 0
   
@@ -53,9 +51,7 @@
   RewriteCond %{SCRIPT_FILENAME} !maintenance.html
   RewriteRule ^.*$ /system/maintenance.html [L]
   
-  <% if @params[:local_config] %>
-  Include <%= @params[:local_config] %>
-  <% end %>
+  Include <%= @params[:local_config] %>*
 </VirtualHost>
 
 <% if node[:deploy][@application_name][:ssl_support] -%>
