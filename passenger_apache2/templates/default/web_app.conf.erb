@@ -104,6 +104,7 @@
   FileETag none
 
   RewriteEngine On
+  Include <%= @params[:rewrite_config] %>-ssl*
   RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-ssl-rewrite.log
   RewriteLogLevel 0
   
@@ -116,5 +117,6 @@
   RewriteCond %{SCRIPT_FILENAME} !maintenance.html
   RewriteRule ^.*$ /system/maintenance.html [L]
 
+  Include <%= @params[:local_config] %>-ssl*
 </VirtualHost>
 <% end -%>

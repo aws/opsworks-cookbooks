@@ -83,6 +83,7 @@
   FileETag none
 
   RewriteEngine On
+  Include <%= @params[:rewrite_config] %>-ssl*
   RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
   RewriteLogLevel 0
   
@@ -90,5 +91,6 @@
   AliasMatch ^<%= @params[:mounted_at] %>/(.*)$ <%= @params[:docroot] %>$1
   <% end -%>
   
+  Include <%= @params[:local_config] %>-ssl*
 </VirtualHost>
 <% end -%>
