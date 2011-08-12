@@ -38,7 +38,7 @@ module Scalarium
       if File.exists?("#{app_root_path}/Gemfile")
         Chef::Log.info("Gemfile detected. Running bundle install.")
         Chef::Log.info("sudo su deploy -c 'cd #{app_root_path} && bundle install #{app_config[:home]}/.bundler/#{app_name} --without=test development'")
-        Chef::Log.info(`sudo su deploy -c 'cd #{app_root_path} && bundle install #{app_config[:home]}/.bundler/#{app_name} --without=test development'`)
+        Chef::Log.info(`sudo su deploy -c 'cd #{app_root_path} && bundle install #{app_config[:home]}/.bundler/#{app_name} --without=test development 2>&1'`)
       end
     end
   end
