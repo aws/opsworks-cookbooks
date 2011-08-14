@@ -38,9 +38,7 @@
   FileETag none
 
   RewriteEngine On
-  <% if @params[:rewrite_config] %>
-  Include <%= @params[:rewrite_config] %>
-  <% end %>
+  Include <%= @params[:rewrite_config] %>*
   RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
   RewriteLogLevel 0
   
@@ -49,13 +47,12 @@
   #RewriteCond %{HTTP_HOST}   !^$
   #RewriteRule ^/(.*)$        http://<%= @params[:server_name] %>/$1 [L,R=301]
 
+  RewriteCond %{REQUEST_URI} !\.(css|gif|jpg|jpeg|png)$
   RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
   RewriteCond %{SCRIPT_FILENAME} !maintenance.html
   RewriteRule ^.*$ /system/maintenance.html [L]
-  
-  <% if @params[:local_config] %>
-  Include <%= @params[:local_config] %>
-  <% end %>
+
+  Include <%= @params[:local_config] %>*
 </VirtualHost>
 
 <% if node[:deploy][@application_name][:ssl_support] -%>
@@ -108,6 +105,7 @@
   FileETag none
 
   RewriteEngine On
+  Include <%= @params[:rewrite_config] %>-ssl*
   RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-ssl-rewrite.log
   RewriteLogLevel 0
   
@@ -116,9 +114,11 @@
   #RewriteCond %{HTTP_HOST}   !^$
   #RewriteRule ^/(.*)$        http://<%= @params[:server_name] %>/$1 [L,R=301]
 
+  RewriteCond %{REQUEST_URI} !\.(css|gif|jpg|jpeg|png)$
   RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
   RewriteCond %{SCRIPT_FILENAME} !maintenance.html
   RewriteRule ^.*$ /system/maintenance.html [L]
 
+  Include <%= @params[:local_config] %>-ssl*
 </VirtualHost>
 <% end -%>

@@ -14,7 +14,12 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-  execute "restart node.js application #{application} via monit" do
-    command "monit restart node_web_app_#{application}"
+  ruby_block "restart node.js application #{application}" do
+    block do
+      Chef::Log.info("restart node.js via: #{node[:deploy][application][:nodejs][:restart_command]}")
+      Chef::Log.info(`#{node[:deploy][application][:nodejs][:restart_command]}`)
+      $? == 0
+    end
   end
+
 end

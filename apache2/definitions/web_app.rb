@@ -26,23 +26,9 @@ define :web_app, :template => "web_app.conf.erb" do
   include_recipe "apache2::mod_deflate"
   include_recipe "apache2::mod_headers"
   
-  ruby_block 'Detect includes for vhost' do
-    inner_params = params
-    inner_application_name = application_name
-    inner_node = node
-
-    block do
-      if File.exists?(local_config = "#{inner_node[:apache][:dir]}/sites-available/#{inner_application_name}.conf.d/local")
-        Chef::Log.info("local config for #{inner_application_name} detected")
-        inner_params[:local_config] = local_config
-      end
-
-      if File.exists?(rewrite_config = "#{inner_node[:apache][:dir]}/sites-available/#{inner_application_name}.conf.d/rewrite")
-        Chef::Log.info("rewrite config for #{inner_application_name} detected")
-        inner_params[:rewrite_config] = rewrite_config
-      end
-    end
-  end
+  directory "#{node[:apache][:dir]}/sites-available/#{application_name}.conf.d"
+  params[:rewrite_config] = "#{node[:apache][:dir]}/sites-available/#{application_name}.conf.d/rewrite"
+  params[:local_config] = "#{node[:apache][:dir]}/sites-available/#{application_name}.conf.d/local"
 
   template "#{node[:apache][:dir]}/sites-available/#{application_name}.conf" do
     Chef::Log.debug("Generating Apache site template for #{application_name.inspect}")
