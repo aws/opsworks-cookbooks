@@ -1,4 +1,4 @@
-include_recipes 'dependencies'
+include_recipe 'dependencies'
 
 node[:deploy].each do |application, deploy|
 
