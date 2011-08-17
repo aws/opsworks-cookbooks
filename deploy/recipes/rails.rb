@@ -1,10 +1,3 @@
-#
-# Cookbook Name:: deploy
-# Recipe:: rails
-#
-
-include_recipe "rails"
-
 node[:deploy].each do |application, deploy|
 
   if deploy[:application_type] != 'rails'
@@ -28,4 +21,3 @@ node[:deploy].each do |application, deploy|
     app application
   end
 end
-

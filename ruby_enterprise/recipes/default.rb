@@ -26,6 +26,11 @@ remote_file "/tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}" do
   not_if { ::File.exists?("/tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}") }
 end
 
+package "ruby1.9" do
+  action :remove
+  ignore_failure true
+end
+
 execute "Install Ruby Enterprise Edition" do
   cwd "/tmp"
   command "dpkg -i /tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}"

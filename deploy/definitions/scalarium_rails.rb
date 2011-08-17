@@ -1,8 +1,8 @@
 define :scalarium_rails do
   deploy = params[:deploy_data]
   application = params[:app]
-  
-  include_recipe deploy[:stack][:recipe]
+
+  include_recipe node[:scalarium][:rails_stack][:recipe]
 
   # write out memcached.yml
   template "#{deploy[:deploy_to]}/shared/config/memcached.yml" do
@@ -13,12 +13,5 @@ define :scalarium_rails do
     group deploy[:group]
     variables(:memcached => (deploy[:memcached] || {}), :environment => deploy[:rails_env])
   end
-  
-  execute "symlinking subdir mount if necessary" do
-    command "rm -f /var/www/#{deploy[:mounted_at]}; ln -s #{deploy[:deploy_to]}/current/public /var/www/#{deploy[:mounted_at]}"
-    action :run
-    only_if do
-      deploy[:mounted_at]
-    end
-  end
+
 end 

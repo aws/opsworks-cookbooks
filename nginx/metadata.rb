@@ -76,4 +76,3 @@ attribute "nginx/worker_connections",
 attribute "nginx/server_names_hash_bucket_size",
   :display_name => "Nginx Server Names Hash Bucket Size",
   :default => "64"
-

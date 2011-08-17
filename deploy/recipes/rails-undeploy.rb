@@ -10,40 +10,66 @@ node[:deploy].each do |application, deploy|
     Chef::Log.debug("Skipping deploy::rails-undeploy application #{application} as it is not an Rails app")
     next
   end
-  
-  include_recipe "#{deploy[:stack][:service]}::service" if deploy[:stack][:service]
 
-  link "/etc/apache2/sites-enabled/#{application}.conf" do
-    action :delete
-    only_if do 
-      File.exists?("/etc/apache2/sites-enabled/#{application}.conf")
+  case node[:scalarium][:rails_stack][:name]
+
+  when 'apache_passenger'
+    include_recipe "#{node[:scalarium][:rails_stack][:service]}::service" if node[:scalarium][:rails_stack][:service]
+
+    link "/etc/apache2/sites-enabled/#{application}.conf" do
+      action :delete
+      only_if do
+        File.exists?("/etc/apache2/sites-enabled/#{application}.conf")
+      end
+
+      notifies :restart, resources(:service => node[:scalarium][:rails_stack][:service])
     end
-    
-    if deploy[:stack][:needs_reload]
-      notifies :restart, resources(:service => deploy[:stack][:service])
+
+    file "/etc/apache2/sites-available/#{application}.conf" do
+      action :delete
+      only_if do
+        File.exists?("/etc/apache2/sites-available/#{application}.conf")
+      end
     end
+
+    notifies :restart, resources(:service => node[:scalarium][:rails_stack][:service])
+
+  when 'nginx_unicorn'
+    include_recipe "nginx::service"
+
+    link "/etc/nginx/sites-enabled/#{application}" do
+      action :delete
+      only_if do
+        File.exists?("/etc/nginx/sites-enabled/#{application}")
+      end
+
+      notifies :restart, resources(:service => "nginx")
+    end
+
+    file "/etc/nginx/sites-available/#{application}" do
+      action :delete
+      only_if do
+        File.exists?("/etc/nginx/sites-available/#{application}")
+      end
+    end
+
+    execute "stop unicorn and restart nginx" do
+      command "sleep #{deploy[:sleep_before_restart]} && /srv/www/#{application}/shared/scripts/unicorn stop"
+      notifies :restart, resources(:service => "nginx")
+      action :run
+    end
+
+  else
+    raise "Unsupport Rails stack"
   end
 
-  file "/etc/apache2/sites-available/#{application}.conf" do
-    action :delete
-    only_if do 
-      File.exists?("/etc/apache2/sites-available/#{application}.conf")
-    end
-  end
-  
   directory "#{deploy[:deploy_to]}" do
     recursive true
     action :delete
 
-    if deploy[:stack][:needs_reload]
-      notifies :restart, resources(:service => deploy[:stack][:service])
-    end
-
-    only_if do 
+    only_if do
       File.exists?("#{deploy[:deploy_to]}")
     end
   end
-  
+
 end
-
-
