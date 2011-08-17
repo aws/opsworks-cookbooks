@@ -3,8 +3,6 @@ define :scalarium_rails do
   application = params[:app]
   
   include_recipe deploy[:stack][:recipe]
-  include_recipe 'scalarium_rubygems'
-  include_recipe 'scalarium_bundler'
 
   # write out memcached.yml
   template "#{deploy[:deploy_to]}/shared/config/memcached.yml" do
