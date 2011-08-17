@@ -1,4 +1,3 @@
-default[:ruby] = {}
 default[:ruby][:major_version] = '1.9'
 default[:ruby][:full_version] = '1.9.2'
 default[:ruby][:patch] = 'p180'
