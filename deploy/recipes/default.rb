@@ -1,3 +1,5 @@
+include_recipes 'dependencies'
+
 node[:deploy].each do |application, deploy|
 
   scalarium_deploy_user do
