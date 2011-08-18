@@ -45,7 +45,7 @@ default[:mysql][:tunable][:wait_timeout]        = "180"
 default[:mysql][:tunable][:net_read_timeout]    = "30"
 default[:mysql][:tunable][:net_write_timeout]   = "30"
 default[:mysql][:tunable][:back_log]            = "128"
-default[:mysql][:tunable][:table_cache]         = "1024"
+default[:mysql][:tunable][:table_cache]         = "2048"
 default[:mysql][:tunable][:max_heap_table_size] = "32M"
 default[:mysql][:clients] = []
 
