@@ -52,7 +52,7 @@ end
 
 def restart_unicorn
 	if unicorn_running?
-		run_and_print_command "kill -HUP `cat #{PID_PATH}`"
+		run_and_print_command "kill -USR2 `cat #{PID_PATH}`"
 	else
 		start_unicorn
 	end
