@@ -7,5 +7,6 @@ define :nginx_site, :template => "site.erb", :enable => true do
   nginx_web_app do
     application application
     application_name application_name
+    cookbook "nginx"
   end
 end
