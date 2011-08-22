@@ -17,6 +17,7 @@ define :passenger_web_app do
   end
 
   template "/etc/apache2/ssl/#{deploy[:domains].first}.crt" do
+    cookbook 'passenger_apache2'
     mode '0600'
     source "ssl.key.erb"
     variables :key => deploy[:ssl_certificate]
@@ -26,6 +27,7 @@ define :passenger_web_app do
   end
 
   template "/etc/apache2/ssl/#{deploy[:domains].first}.key" do
+    cookbook 'passenger_apache2'
     mode '0600'
     source "ssl.key.erb"
     variables :key => deploy[:ssl_certificate_key]
@@ -35,6 +37,7 @@ define :passenger_web_app do
   end
 
   template "/etc/apache2/ssl/#{deploy[:domains].first}.ca" do
+    cookbook 'passenger_apache2'
     mode '0600'
     source "ssl.key.erb"
     variables :key => deploy[:ssl_certificate_ca]
