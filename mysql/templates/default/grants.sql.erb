@@ -1,9 +1,1 @@
-<% @cluster_clients = @cluster_clients.map{|client| Resolv.getaddress(client) } %>
-<% (@cluster_clients - @hosts).each do |client| -%>
-  grant all privileges on <%= @settings[:database] %>.* to root@'<%= client %>' identified by '<%= node[:mysql][:server_root_password] %>';
-<% end -%>
-<%# Remove non-existing servers -%>
-<% (@hosts - @cluster_clients).each do |client| -%>
-  <% next if client == '%' -%>
-  revoke all privileges on <%= @settings[:database] %>.* from root@'<%= client %>';
-<% end -%>
+grant all privileges on <%= @settings[:database] %>.* to root@`%` identified by '<%= node[:mysql][:server_root_password] %>';
