@@ -1,19 +1,20 @@
 require 'resolv'
- 
+
 node[:deploy].each do |application, deploy|
   mysql_command = "/usr/bin/mysql -u #{deploy[:database][:username]} #{node[:mysql][:server_root_password].blank? ? '' : "-p#{node[:mysql][:server_root_password]}"}"
- 
+
   execute "create mysql database" do
     command "#{mysql_command} -e 'CREATE DATABASE \'#{deploy[:database][:database]}\'' "
     action :run
-  
+
     not_if do
       system("#{mysql_command} -e 'SHOW DATABASES' | egrep -e '^#{deploy[:database][:database]}$'")
     end
   end
- 
+
+  # this is legacy and you should not rely on it
   ruby_block "get hosts list" do
-    block do 
+    block do
       if Chef::VERSION > "0.9"
         template = run_context.resource_collection.find(:template => "/tmp/grants.sql")
       else
@@ -24,7 +25,7 @@ node[:deploy].each do |application, deploy|
       template.variables[:hosts] = stdout.split("\n").delete_if{|host| host == '127.0.0.1' || host == 'localhost'}
     end
   end
- 
+
   template "/tmp/grants.sql" do
     source 'grants.sql.erb'
     owner 'root'
@@ -34,7 +35,7 @@ node[:deploy].each do |application, deploy|
     cookbook "mysql"
     action :create
   end
- 
+
   execute 'create grants' do
     command "#{mysql_command} < /tmp/grants.sql"
   end
