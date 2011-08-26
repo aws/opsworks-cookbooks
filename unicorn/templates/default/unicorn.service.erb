@@ -11,6 +11,11 @@ def run_and_print_command(command)
   system(command) || exit(1)
 end
 
+def run_and_ignore_exitcode_and_print_command(command)
+  puts command
+  system(command)
+end
+
 def unicorn_running?
   if File.exists?(PID_PATH) && (pid = File.read(PID_PATH).chomp) && system("ps aux | grep #{pid} | grep -v grep > /dev/null")
     pid
@@ -33,16 +38,16 @@ end
 def start_unicorn
   if File.exists?("#{ROOT_PATH}/current/Gemfile")
     puts "Scalarium: Gemfile detected - running Unicorn with bundle exec"
-    run_and_print_command "cd #{ROOT_PATH}/current && /usr/local/bin/bundle exec unicorn_rails --env <%= @deploy[:rails_env] %> --daemonize -c #{ROOT_PATH}/shared/config/unicorn.conf"
+    run_and_ignore_exitcode_and_print_command "cd #{ROOT_PATH}/current && /usr/local/bin/bundle exec unicorn_rails --env <%= @deploy[:rails_env] %> --daemonize -c #{ROOT_PATH}/shared/config/unicorn.conf"
   else
     puts "Scalarium: no Gemfile detected - running plain Unicorn"
-    run_and_print_command "cd #{ROOT_PATH}/current && unicorn_rails --env <%= @deploy[:rails_env] %> --daemonize -c #{ROOT_PATH}/shared/config/unicorn.conf"
+    run_and_ignore_exitcode_and_print_command "cd #{ROOT_PATH}/current && unicorn_rails --env <%= @deploy[:rails_env] %> --daemonize -c #{ROOT_PATH}/shared/config/unicorn.conf"
   end
 end
 
 def stop_unicorn
   if unicorn_running?
-    if run_and_print_command "kill -QUIT `cat #{PID_PATH}`"
+    if run_and_ignore_exitcode_and_print_command "kill -QUIT `cat #{PID_PATH}`"
       `rm #{PID_PATH}`
     end
   else
@@ -52,7 +57,7 @@ end
 
 def restart_unicorn
 	if unicorn_running?
-		run_and_print_command "kill -USR2 `cat #{PID_PATH}`"
+		run_and_ignore_exitcode_and_print_command "kill -USR2 `cat #{PID_PATH}`"
 	else
 		start_unicorn
 	end
