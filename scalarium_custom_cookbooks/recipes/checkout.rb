@@ -45,3 +45,7 @@ scm "Download Custom Cookbooks" do
     node[:scalarium_custom_cookbooks][:scm][:repository].blank? || ::File.directory?(node[:scalarium_custom_cookbooks][:destination])
   end
 end
+
+execute "ensure correct permissions of custom cookbooks" do
+  command "chmod -R go-rwx #{node[:scalarium_custom_cookbooks][:destination]}"
+end
