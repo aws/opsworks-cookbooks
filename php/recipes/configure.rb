@@ -11,7 +11,7 @@ node[:deploy].each do |application, deploy|
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
-    variables(:database => deploy[:database], :memcached => deploy[:memcached], :roles => node[:scalarium][:roles])
+    variables(:database => deploy[:database], :memcached => deploy[:memcached], :roles => node[:scalarium][:roles], :cluster_name => node[:scalarium][:cluster][:name])
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
     end
