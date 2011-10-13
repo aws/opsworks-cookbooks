@@ -48,7 +48,7 @@ end
 
 execute "ensure correct permissions of custom cookbooks" do
   command "chmod -R go-rwx #{node[:scalarium_custom_cookbooks][:destination]}"
-  not_if do
-    node[:scalarium_custom_cookbooks][:scm][:repository].blank?
+  only_if do
+    ::File.exists?(node[:scalarium_custom_cookbooks][:destination])
   end
 end
