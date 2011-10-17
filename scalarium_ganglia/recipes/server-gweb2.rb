@@ -1,5 +1,24 @@
-execute "Get newest version of ganglia web interface from github" do
-  command "cd /tmp && git clone git://github.com/vvuksan/ganglia-misc.git"
+remote_file "/tmp/gweb-2.1.8.tar.gz"  do
+  source "gweb-2.1.8.tar.gz"
+  mode 0755
+  owner "root"
+  group "root"
+end
+
+directory "/var/www/ganglia2" do
+  action :delete
+  recursive true
+  only_if do
+    File.exists?("/var/www/ganglia2")
+  end
+end
+
+execute "Untar ganglia webfrontend version 2" do
+  command "tar -xzf /tmp/gweb-2.1.8.tar.gz && mv /tmp/gweb-2.1.8 /var/www/ganglia2/"
+end
+
+execute "fix permissions on ganglia webfrontend version 2" do
+  command "chmod -R a+r /var/www/ganglia2/"
 end
 
 template "/tmp/ganglia-misc/ganglia-web/Makefile" do
@@ -8,7 +27,7 @@ template "/tmp/ganglia-misc/ganglia-web/Makefile" do
 end
 
 execute "Execute make install" do
-  command "cd /tmp/ganglia-misc/ganglia-web/ && make install"
+  command "cd /var/www/ganglia2/ && make install"
 end
 
 remote_file "/var/www/ganglia2/graph.d/mysql_query_report.php" do

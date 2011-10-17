@@ -4,9 +4,9 @@ DESTDIR = <%= node[:ganglia][:gweb2][:destdir] %>
 APACHE_USER = <%= node[:ganglia][:gweb2][:apache_user] %>
 
 # Gweb version
-GWEB_MAJOR_VERSION = <%= node[:ganglia][:gweb2][:major_version] %>
-GWEB_MINOR_VERSION = <%= node[:ganglia][:gweb2][:minor_version] %>
-GWEB_MICRO_VERSION = <%= node[:ganglia][:gweb2][:micro_version] %>
+GWEB_MAJOR_VERSION = 2
+GWEB_MINOR_VERSION = 1
+GWEB_MICRO_VERSION = 8
 
 # When set to "yes", GWEB_VERSION will include SVN revision
 SNAPSHOT = <%= node[:ganglia][:gweb2][:svn] %>
@@ -50,7 +50,7 @@ dist-dir:	default
 
 install:	dist-dir
 	mkdir -p $(DESTDIR) $(GWEB_DWOO) && \
-	rsync -a $(DIST_DIR)/conf/ $(GANGLIA_STATEDIR)/conf && \
+	rsync -x debian -a $(DIST_DIR)/conf/ $(GANGLIA_STATEDIR)/conf && \
 	cp -a $(DIST_DIR)/* $(DESTDIR) && \
 	chown -R $(APACHE_USER):$(APACHE_USER) $(GWEB_DWOO) $(GANGLIA_STATEDIR)/conf
 
@@ -62,4 +62,3 @@ dist-gzip:	dist-dir
 
 uninstall:
 	rm -rf $(DESTDIR) $(GWEB_DWOO) $(GANGLIA_STATEDIR)/conf
-
