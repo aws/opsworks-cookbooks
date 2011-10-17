@@ -19,4 +19,3 @@ $optional_graphs = array();
 <% if node[:scalarium][:roles].has_key?("web") && !node[:scalarium][:roles]['web']['instances'].empty? -%>
   array_push($optional_graphs, 'nginx_status');
 <% end -%>
-
