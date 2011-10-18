@@ -10,9 +10,8 @@ end
 
 ruby_block 'Create new events.json file for Ganglia' do
   block do
-    logs = Dir.glob(events_dir + '*.json').sort
-    logs.each do |log|
-      Chef::Log.info("processing #{log}")
+    File.open(node[:ganglia][:datadir] + '/conf/events.json', 'w') do |file|
+      file.puts '[' + Dir["#{events_dir}/*.json"].sort.map {|event| File.read(event)}.join(',') + ']'
     end
   end
 end
