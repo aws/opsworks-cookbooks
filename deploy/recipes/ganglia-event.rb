@@ -1,5 +1,5 @@
 events_dir = node[:ganglia][:datadir] + '/conf/events.json.d'
-event = events_dir + node[:scalarium][:sent_at] + '_event.json'
+event = events_dir + node[:scalarium][:sent_at].to_s + '_event.json'
 
 directory events_dir do
   mode '0755'
