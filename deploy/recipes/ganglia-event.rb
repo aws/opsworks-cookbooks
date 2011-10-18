@@ -5,13 +5,13 @@ directory events_dir do
   mode '0755'
   action :create
   recursive true
-  user 'www-data'
+  owner 'www-data'
 end
 
 template event do
   source 'event.json.erb'
   mode '0644'
-  user 'www-data'
+  owner 'www-data'
   variables(:scalarium => node[:scalarium])
 end
 
