@@ -21,7 +21,7 @@ execute "fix permissions on ganglia webfrontend version 2" do
   command "chmod -R a+r /var/www/ganglia2/"
 end
 
-template "/tmp/ganglia-misc/ganglia-web/Makefile" do
+template "/var/www/ganglia2/Makefile" do
   source "Makefile.erb"
   mode '0644'
 end
