@@ -3,6 +3,7 @@
 $conf['template_name'] = 'scalarium';
 $conf['metriccols'] = 4;
 
+# additional cluster view reports
 $conf['optional_graphs'] = array();
 <% if node[:scalarium][:roles].has_key?("lb") && !node[:scalarium][:roles]['lb']['instances'].empty? -%>
   array_push($conf['optional_graphs'], 'haproxy_requests');
@@ -22,5 +23,7 @@ $conf['optional_graphs'] = array();
 
 $conf['overlay_events'] = true;
 $conf['overlay_events_exclude_ranges'] = array("month", "year");
+
+$conf['auth_system'] = 'disabled';
 
 ?>
