@@ -1,0 +1,12 @@
+<% 
+  event = {
+    'event_id' => node[:scalarium][:deployment],
+    'start_time' => node[:scalarium][:sent_at],
+    'summary' => node[:scalarium][:activity],
+    'grid' => '*',
+    'cluster' => '*',
+    'host_regex' => '*',
+    'end_time' => Time.now.getutc.to_i
+  } 
+%>
+<%= JSON.pretty_generate(event) %>
