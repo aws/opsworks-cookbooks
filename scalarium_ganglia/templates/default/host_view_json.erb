@@ -6,7 +6,7 @@
   if @roles.include?("db-master")
    reports << 'mysql_query_report'
   end
-  if @roles.include?("rails-app") || @roles.include?('php-app')
+  if @roles.include?("rails-app") || @roles.include?('php-app') || @roles.include?('monitoring-master')
     reports << 'apache_report'
     reports << 'apache_worker_report'
     reports << 'apache_response_time_report'
