@@ -1,6 +1,7 @@
+instances = []
+
 ruby_block 'Create host view json config files for Ganglia' do
   block do
-    instances = []
     node[:scalarium][:roles].each do |role_name, role_config|
       role_config[:instances].each do |instance_name, instance_config|
         unless instances.include?(instance_name)
