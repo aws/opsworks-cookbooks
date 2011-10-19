@@ -26,4 +26,50 @@ $conf['overlay_events_exclude_ranges'] = array("month", "year");
 
 $conf['auth_system'] = 'disabled';
 
+$conf['graph_sizes'] = array(
+  'small'=>array(
+    'height'=>40,
+    'width'=>130,
+    'fudge_0'=>0,
+    'fudge_1'=>0,
+    'fudge_2'=>0
+  ),
+  'medium'=>array(
+    'height'=>75,
+    'width'=>300,
+    'fudge_0'=>0,
+    'fudge_1'=>14,
+    'fudge_2'=>28
+  ),
+  'large'=>array(
+    'height'=>150,
+    'width'=>480,
+    'fudge_0'=>0,
+    'fudge_1'=>0,
+    'fudge_2'=>0
+  ),
+  'xlarge'=>array(
+    'height'=>600,
+    'width'=>800,
+    'fudge_0'=>0,
+    'fudge_1'=>0,
+    'fudge_2'=>0
+  ),
+  'mobile'=>array(
+    'height'=>95,
+    'width'=>220,
+    'fudge_0'=>0,
+    'fudge_1'=>0,
+    'fudge_2'=>0
+  ),
+  # this was the default value when no other size was provided.
+  'default'=>array(
+    'height'=>100,
+    'width'=>400,
+    'fudge_0'=>0,
+    'fudge_1'=>0,
+    'fudge_2'=>0
+  )
+);
+
 ?>
