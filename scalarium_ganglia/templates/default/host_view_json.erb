@@ -1,22 +1,22 @@
-<% reports = [] -%>
-
-<% if node[:scalarium][:instance][:roles].has_key?("lb") -%>
-  <% reports << 'haproxy_requests' -%>
-<% end -%>
-<% if node[:scalarium][:instance][:roles].has_key?("db-master") -%>
-  <% reports << 'mysql_query' -%>
-<% end -%>
-<% if (node[:scalarium][:instance][:roles].has_key?("rails-app") || (node[:scalarium][:instance][:roles].has_key?("php-app") -%>
-  <% reports << 'apache' -%>
-  <% reports << 'apache_worker' -%>
-  <% reports << 'apache_response_time' -%>
-<% end -%>
-<% if node[:scalarium][:instance][:roles].has_key?("rails-app") -%>
-  <% reports << 'passenger_memory_stats' -%>
-  <% reports << 'passenger_status' -%>
-<% end -%>
-<% if node[:scalarium][:instance][:roles].has_key?("web") -%>
-  <% reports << 'nginx_status' -%>
-<% end -%>
-
+<% 
+  reports = []
+  if @roles.include?("lb")
+   reports << 'haproxy_requests_report'
+  end
+  if @roles.include?("db-master")
+   reports << 'mysql_query_report'
+  end
+  if @roles.include?("rails-app") || @roles.include?('php-app')
+    reports << 'apache_report'
+    reports << 'apache_worker_report'
+    reports << 'apache_response_time_report'
+  end
+  if @roles.include?("rails-app")
+    reports << 'passenger_memory_stats_report'
+    reports << 'passenger_status_report'
+  end
+  if @roles.include?("web")
+    reports << 'nginx_status_report'
+  end
+-%>
 <%= JSON.pretty_generate({:included_reports => reports}) %>
