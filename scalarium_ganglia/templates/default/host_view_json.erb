@@ -1,31 +1,22 @@
-reports = []
+<% reports = [] -%>
 
 <% if node[:scalarium][:instance][:roles].has_key?("lb") -%>
-  reports << 'optional_graphs'
-  reports.push('haproxy_requests')
+  <% reports << 'haproxy_requests' -%>
 <% end -%>
 <% if node[:scalarium][:instance][:roles].has_key?("db-master") -%>
-  reports.push('optional_graphs')
-  reports.push('mysql_query')
+  <% reports << 'mysql_query' -%>
 <% end -%>
 <% if (node[:scalarium][:instance][:roles].has_key?("rails-app") || (node[:scalarium][:instance][:roles].has_key?("php-app") -%>
-  reports.push('apache')
-  reports.push('apache_worker')
-  reports.push('apache_response_time')
+  <% reports << 'apache' -%>
+  <% reports << 'apache_worker' -%>
+  <% reports << 'apache_response_time' -%>
 <% end -%>
 <% if node[:scalarium][:instance][:roles].has_key?("rails-app") -%>
-  reports.push('optional_graphs')
-  reports.push('passenger_memory_stats')
-  reports.push('passenger_status')
+  <% reports << 'passenger_memory_stats' -%>
+  <% reports << 'passenger_status' -%>
 <% end -%>
 <% if node[:scalarium][:instance][:roles].has_key?("web") -%>
-  reports.push('optional_graphs')
-  reports.push('nginx_status')
+  <% reports << 'nginx_status' -%>
 <% end -%>
 
-<% 
-  included_reports = {
-    reports.join(', ')
-  }
-%>
-<%= JSON.pretty_generate(event) %>
+<%= JSON.pretty_generate({:included_reports => reports}) %>
