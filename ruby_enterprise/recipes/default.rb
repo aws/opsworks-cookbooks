@@ -41,6 +41,10 @@ execute "Install Ruby Enterprise Edition" do
   end
 end
 
+if node[:platform] == 'ubuntu' && node[:platform_version].to_f == 11.10
+  package 'libssl0.9.8'
+end
+
 template "/etc/environment" do
   source "environment.erb"
   mode "0644"
