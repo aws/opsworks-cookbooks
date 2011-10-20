@@ -1,4 +1,3 @@
-
 include_recipe "scalarium_ganglia::client"
 
 directory "#{node[:ganglia][:datadir]}/rrds" do
@@ -7,7 +6,6 @@ directory "#{node[:ganglia][:datadir]}/rrds" do
   mode "0775"
 end
 
-package "ganglia-webfrontend"
 package "gmetad"
 
 service "gmetad" do
@@ -21,70 +19,61 @@ template "/etc/ganglia/gmetad.conf" do
   variables :cluster_name => node[:scalarium][:cluster][:name]
 end
 
-remote_file "/usr/share/ganglia-webfrontend/graph.d/mysql_query_report.php" do
-  source "mysql_query_report.php"
+execute "Remove old Ganglia UI" do
+  command "rm -rf /usr/share/ganglia-webfrontend/*"
+end
+
+# put new UI in place
+remote_file "/tmp/scalarium-ganglia-gweb-2.1.8.tar.gz" do
+  source "scalarium-ganglia-gweb-2.1.8.tar.gz"
   mode "0644"
 end
 
-remote_file "/usr/share/ganglia-webfrontend/graph.d/apache_report.php" do
-  source "apache_report.php"
+execute "Untar scalarium reports for Ganglia" do
+  command "tar -xzf /tmp/scalarium-ganglia-gweb-2.1.8.tar.gz && mv /tmp/scalarium-ganglia-gweb-2.1.8/* /usr/share/ganglia-webfrontend/"
+end
+
+# replace default reports
+execute "Clean Ganglia reports folder" do
+  command "rm -rf /usr/share/ganglia-webfrontend/graph.d/*"
+end
+
+remote_file "/tmp/scalarium-ganglia-reports.tar.gz" do
+  source "scalarium-ganglia-reports.tar.gz"
   mode "0644"
 end
 
-remote_file "/usr/share/ganglia-webfrontend/graph.d/apache_worker_report.php" do
-  source "apache_worker_report.php"
+execute "Untar scalarium reports for Ganglia" do
+  command "tar -xzf /tmp/scalarium-ganglia-reports.tar.gz && mv /tmp/scalarium-ganglia-reports /usr/share/ganglia-webfrontend/graph.d/"
+end
+
+# add scalarium template
+remote_file "/tmp/scalarium-ganglia-templates.tar.gz"  do
+  source "scalarium-ganglia-templates.tar.gz"
   mode "0644"
 end
 
-remote_file "/usr/share/ganglia-webfrontend/graph.d/passenger_memory_stats_report.php" do
-  source "passenger_memory_stats_report.php"
-  mode "0644"
+execute "Untar scalarium layout templates for Ganglia" do
+  command "tar -xzf /tmp/scalarium-ganglia-templates.tar.gz && mv /tmp/scalarium-ganglia-templates /usr/share/ganglia-webfrontend/templates/"
 end
 
-remote_file "/usr/share/ganglia-webfrontend/graph.d/passenger_status_report.php" do
-  source "passenger_status_report.php"
-  mode "0644"
+# initialize new UI
+template "/usr/share/ganglia-webfrontend/Makefile" do
+  source "Makefile.erb"
+  mode '0644'
 end
 
-remote_file "/usr/share/ganglia-webfrontend/graph.d/haproxy_requests_report.php" do
-  source "haproxy_requests_report.php"
-  mode "0644"
+execute "Execute make install" do
+  command "cd /usr/share/ganglia-webfrontend/ && make install"
 end
 
-remote_file "/usr/share/ganglia-webfrontend/graph.d/nginx_status_report.php" do
-  source "nginx_status_report.php"
-  mode "0644"
-end
-
-remote_file "/usr/share/ganglia-webfrontend/graph.d/apache_response_time_report.php" do
-  source "apache_response_time_report.php"
-  mode "0644"
-end
-
+# add config overrides
 template "/usr/share/ganglia-webfrontend/conf.php" do
   source "conf.php.erb"
   mode "0644"
 end
 
-remote_file "/tmp/scalarium-ganglia-theme.tar.gz"  do
-  source "scalarium.tar.gz"
-  mode 0755
-  owner "root"
-  group "root"
-end
-
-directory "/usr/share/ganglia-webfrontend/templates/scalarium" do
-  action :delete
-  recursive true
-  only_if do
-    File.exists?("/usr/share/ganglia-webfrontend/templates/scalarium")
-  end
-end
-
-execute "Untar scalarium layout templates for Ganglia" do
-  command "tar -xzf /tmp/scalarium-ganglia-theme.tar.gz && mv /tmp/scalarium /usr/share/ganglia-webfrontend/templates/"
-end
-
+# fix permissions and clean tmp
 execute "fix permissions on ganglia webfrontend" do
   command "chmod -R a+r /usr/share/ganglia-webfrontend/"
 end
@@ -97,6 +86,9 @@ execute "fix permissions on ganglia rrds directory" do
   command "chown -R #{node[:ganglia][:rrds_user]}:#{node[:ganglia][:user]} #{node[:ganglia][:datadir]}/rrds"
 end
 
+execute "Untar scalarium reports for Ganglia" do
+  command "rm -rf /tmp/scalarium-ganglia*"
+end
 
 Chef::Log.info("Bindmounting RRDS directories for Ganglia")
 
@@ -113,7 +105,7 @@ mount node[:ganglia][:origina_datadir] do
   options "bind,rw"
   action :enable
 end
-  
+
 service "gmetad" do
   supports :status => false, :restart => true
   action [ :enable, :start ]

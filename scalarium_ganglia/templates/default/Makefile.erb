@@ -1,7 +1,7 @@
 # Location where gweb should be installed to
-DESTDIR = <%= node[:ganglia][:gweb2][:destdir] %>
+DESTDIR = <%= node[:ganglia][:web][:destdir] %>
 
-APACHE_USER = <%= node[:ganglia][:gweb2][:apache_user] %>
+APACHE_USER = <%= node[:ganglia][:web][:apache_user] %>
 
 # Gweb version
 GWEB_MAJOR_VERSION = 2
@@ -9,7 +9,7 @@ GWEB_MINOR_VERSION = 1
 GWEB_MICRO_VERSION = 8
 
 # When set to "yes", GWEB_VERSION will include SVN revision
-SNAPSHOT = <%= node[:ganglia][:gweb2][:svn] %>
+SNAPSHOT = <%= node[:ganglia][:web][:svn] %>
 
 # Gweb statedir (where RRD files, Dwoo templates are stored)
 GWEB_STATEDIR = /var/lib

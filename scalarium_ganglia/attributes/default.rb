@@ -8,6 +8,11 @@ default[:ganglia][:rrds_user] = 'nobody'
 default[:ganglia][:web][:url] = '/ganglia'
 default[:ganglia][:web][:user] = 'scalarium'
 
+# gweb2 Makefile config
+default[:ganglia][:web][:destdir] = '/usr/share/ganglia-webfrontend'
+default[:ganglia][:web][:apache_user] = 'www-data'
+default[:ganglia][:web][:svn] = 'no'
+
 pw = String.new
 
 while pw.length < 20
@@ -18,10 +23,3 @@ default[:ganglia][:web][:password] = pw
 
 
 default[:ganglia][:nginx][:status_url] = '/nginx_status'
-
-# gweb2 config
-default[:ganglia][:gweb2][:url] = '/ganglia2'
-default[:ganglia][:gweb2][:destdir] = '/var/www/ganglia2'
-default[:ganglia][:gweb2][:apache_user] = 'www-data'
-default[:ganglia][:gweb2][:svn] = 'no'
-
