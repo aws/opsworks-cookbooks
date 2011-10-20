@@ -1,5 +1,5 @@
 <% 
-  reports = []
+  reports = ['packet_report']
   if @roles.include?("lb")
    reports << 'haproxy_requests_report'
   end
