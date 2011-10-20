@@ -10,17 +10,3 @@ Alias <%= node[:ganglia][:web][:url] %> /usr/share/ganglia-webfrontend
     PassengerEnabled off
   </IfModule>
 </Location>
-
-Alias <%= node[:ganglia][:gweb2][:url] %> <%= node[:ganglia][:gweb2][:destdir] %>
-
-<Location '<%= node[:ganglia][:gweb2][:url] %>' >
-  AuthUserFile /etc/ganglia-webfrontend/htaccess
-  AuthType Basic
-  AuthName "Password Required"
-  require valid-user
-
-  <IfModule passenger_module>
-    PassengerEnabled off
-  </IfModule>
-</Location>
-
