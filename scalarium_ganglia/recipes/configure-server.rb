@@ -37,6 +37,27 @@ template "#{node[:apache][:document_root]}/index.html" do
   mode '0644'
 end
 
+instances = {}
+
+node[:scalarium][:roles].each do |role_name, role_config|
+  role_config[:instances].each do |instance_name, instance_config|
+    instances[instance_name] ||= []
+    instances[instance_name] << role_name
+  end
+end
+
+instances.keys.each do |instance_name|
+  template "#{node[:ganglia][:datadir]}/conf/host_#{instance_name}.json" do
+    source 'host_view_json.erb'
+    mode '0644'
+    variables({:roles => instances[instance_name]})
+  end
+end
+
+execute "ensure permissions on ganglia rrds directory" do
+  command "chown -R #{node[:ganglia][:rrds_user]}:#{node[:ganglia][:user]} #{node[:ganglia][:datadir]}/rrds"
+end
+
 execute "Restart gmetad if not running" do # can happen if ganglia role is shared?
   command "(sleep 60 && /etc/init.d/gmetad restart) &"
   not_if "pgrep gmetad"
