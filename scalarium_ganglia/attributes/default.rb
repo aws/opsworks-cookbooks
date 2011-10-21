@@ -1,5 +1,5 @@
 default[:ganglia][:datadir] = "/vol/ganglia"
-default[:ganglia][:origina_datadir] = "/var/lib/ganglia"
+default[:ganglia][:original_datadir] = "/var/lib/ganglia"
 default[:ganglia][:tcp_client_port] = 8649
 default[:ganglia][:udp_client_port] = 8666
 default[:ganglia][:user] = 'ganglia'
