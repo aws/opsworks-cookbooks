@@ -114,15 +114,15 @@ class HAProxyStatsParser
       puts "Servers DOWN: #{stats[:servers_down]}" unless backend == 'total'
       puts ""
       
-      `gmetric -tint32 -x60 -uKilobytes -n"#lb_{backend}_kbytes_in" -v#{bytes_in}`
+      `gmetric -tint32 -x60 -uKilobytes -n"lb_#{backend}_kbytes_in" -v#{bytes_in}`
       `gmetric -tint32 -x60 -uKilobytes -n"lb_#{backend}_kbytes_out" -v#{bytes_out}`
-      `gmetric -tuint8 -x60 -n"lb_#{backend}_req_per_s" -v#{stats[:request_rate_per_second]}`
-      `gmetric -tuint8 -x60 -n"lb_#{backend}_current_sess" -v#{stats[:current_sessions]}`
-      `gmetric -tuint8 -x60 -n"lb_#{backend}_sess_max" -v#{stats[:max_sessions]}`
-      `gmetric -tuint8 -x60 -n"lb_#{backend}_avg_sess_per_server" -v#{stats[:sessions].mean}` unless backend == 'total'
-      `gmetric -tuint8 -x60 -n"lb_#{backend}_max_sess_per_server" -v#{stats[:sessions].max}` unless backend == 'total'
-      `gmetric -tuint8 -x60 -n"lb_#{backend}_servers_up" -v#{stats[:servers_up]}` unless backend == 'total'
-      `gmetric -tuint8 -x60 -n"lb_#{backend}_servers_down" -v#{stats[:servers_down]}` unless backend == 'total'
+      `gmetric -tuint8 -x60 -u "req/s" -n"lb_#{backend}_req_per_s" -v#{stats[:request_rate_per_second]}`
+      `gmetric -tuint8 -x60 -u "sessions" -n"lb_#{backend}_current_sess" -v#{stats[:current_sessions]}`
+      `gmetric -tuint8 -x60 -u "max sessions" -n"lb_#{backend}_sess_max" -v#{stats[:max_sessions]}`
+      `gmetric -tuint8 -x60 -u "avg sessions/server" -n"lb_#{backend}_avg_sess_per_server" -v#{stats[:sessions].mean}` unless backend == 'total'
+      `gmetric -tuint8 -x60 -u "max sessions/server" -n"lb_#{backend}_max_sess_per_server" -v#{stats[:sessions].max}` unless backend == 'total'
+      `gmetric -tuint8 -x60 -u "servers up" -n"lb_#{backend}_servers_up" -v#{stats[:servers_up]}` unless backend == 'total'
+      `gmetric -tuint8 -x60 -u "servers down" -n"lb_#{backend}_servers_down" -v#{stats[:servers_down]}` unless backend == 'total'
     end
   end
   
