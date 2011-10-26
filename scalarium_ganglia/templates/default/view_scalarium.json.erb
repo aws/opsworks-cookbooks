@@ -133,7 +133,8 @@
       "vertical_label": "total requests \/ s",
       "title": "req \/ s"
     }
-    <% elsif @instances.keys.select{|nickname| !@instances[nickname].grep(/^db-master/).empty?} %>
+    <% end %>
+    <% if @instances.keys.select{|nickname| !@instances[nickname].grep(/^db-master/).empty?} %>
     ,
     {
       "aggregate_graph": "true",
@@ -215,7 +216,8 @@
       "vertical_label": "queries",
       "title": "MySQL delete"
     }
-    <% elsif @instances.keys.select{|nickname| !@instances[nickname].grep(/^rails-app|^php-app|^monitoring-master/).empty?} %>
+    <% end %>
+    <% if @instances.keys.select{|nickname| !@instances[nickname].grep(/^rails-app|^php-app|^monitoring-master/).empty?} %>
     ,
     {
       "aggregate_graph": "true",
