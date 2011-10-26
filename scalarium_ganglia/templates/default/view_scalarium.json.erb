@@ -71,7 +71,7 @@
       "aggregate_graph": "true",
       "metric_regex": [
         {
-          "regex": "bytes_out"
+          "regex": "^bytes_out"
         }
       ],
       "host_regex": [
@@ -82,6 +82,22 @@
       "graph_type": "line",
       "vertical_label": "Bytes/sec",
       "title": "Bytes sent"
+    },
+    {
+      "aggregate_graph": "true",
+      "metric_regex": [
+        {
+          "regex": "^bytes_in"
+        }
+      ],
+      "host_regex": [
+        {
+          "regex": "<%= @instances.keys.join('|') %>"
+        }
+      ],
+      "graph_type": "line",
+      "vertical_label": "Bytes/sec",
+      "title": "Bytes recieved"
     },
     {
       "aggregate_graph": "true",
