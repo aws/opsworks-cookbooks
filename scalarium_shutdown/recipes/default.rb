@@ -1,0 +1,1 @@
+include_recipe "scalarium-agent-monit::stop"

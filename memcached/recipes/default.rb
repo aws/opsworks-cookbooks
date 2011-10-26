@@ -6,9 +6,7 @@ package "libmemcache-dev" do
   action :upgrade
 end
 
-service "memcached" do
-  action :nothing
-end
+include_recipe "memcached::service"
 
 service "monit" do
   action :nothing

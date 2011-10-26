@@ -8,10 +8,7 @@ directory "/etc/monit/conf.d" do
   recursive true
 end
 
-service "monit" do
-  supports :status => false, :restart => true, :reload => true
-  action :nothing
-end
+include_recipe "scalarium-agent-monit::service"
 
 template "/etc/default/monit" do
   source "monit.erb"
