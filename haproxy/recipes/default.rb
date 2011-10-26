@@ -28,8 +28,9 @@ template "/etc/default/haproxy" do
   mode 0644
 end
 
+include_recipe "haproxy::service"
+
 service "haproxy" do
-  supports :restart => true, :status => true, :reload => true
   action [:enable, :start]
 end
 
