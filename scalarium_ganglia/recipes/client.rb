@@ -1,5 +1,5 @@
 if node[:platform] == 'ubuntu' && node[:platform_version].to_f == 11.10
-  cookbook_file '/tmp/ganglia-monitor.deb' do
+  remote_file '/tmp/ganglia-monitor.deb' do
     source "http://peritor-assets.s3.amazonaws.com/ubuntu/11.10/ganglia-monitor_3.1.7-2_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
     not_if { ::File.exists?('/tmp/ganglia-monitor.deb') }
   end
