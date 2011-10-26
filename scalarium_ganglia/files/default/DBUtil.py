@@ -31,9 +31,12 @@ import MySQLdb
 def longish(x):
 	if len(x):
 		try:
-			return long(x)
-		except ValueError:
-			return longish(x[:-1])
+			try:
+				return long(x)
+			except ValueError:
+				return longish(x[:-1])
+		except:
+			return int(x, 16)
 	else:
 		raise ValueError
 
