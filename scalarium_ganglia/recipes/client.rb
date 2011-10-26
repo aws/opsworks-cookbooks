@@ -1,4 +1,14 @@
-package "ganglia-monitor"
+if node[:platform] == 'ubuntu' && node[:platform_version].to_f == 11.10
+  cookbook_file '/tmp/ganglia-monitor.deb' do
+    source "http://peritor-assets.s3.amazonaws.com/ubuntu/11.10/ganglia-monitor_3.1.7-2_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
+    not_if { ::File.exists?('/tmp/ganglia-monitor.deb') }
+  end
+
+  execute 'apt-get install libapr1 libconfuse-common libconfuse0 libganglia1'
+  execute 'dpkg -i /tmp/ganglia-monitor.deb'
+else
+  package "ganglia-monitor"
+end
 
 execute "stop gmond with non-updated configuration" do
   command "/etc/init.d/ganglia-monitor stop"
