@@ -1,6 +1,6 @@
 package 'socat'
 
-remote_file "/etc/ganglia/scripts/haproxy" do
+cookbook_file "/etc/ganglia/scripts/haproxy" do
   source "haproxy.rb"
   mode "0755"
 end

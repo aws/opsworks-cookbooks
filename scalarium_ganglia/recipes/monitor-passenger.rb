@@ -1,9 +1,9 @@
-remote_file "/etc/ganglia/scripts/passenger-memory-stats" do
+cookbook_file "/etc/ganglia/scripts/passenger-memory-stats" do
   source "passenger_memory_stats.rb"
   mode "0755"
 end
 
-remote_file "/etc/ganglia/scripts/passenger-status" do
+cookbook_file "/etc/ganglia/scripts/passenger-status" do
   source "passenger_status.rb"
   mode "0755"
 end

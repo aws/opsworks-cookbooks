@@ -1,4 +1,4 @@
-remote_file "/etc/ganglia/scripts/fd-and-sockets" do
+cookbook_file "/etc/ganglia/scripts/fd-and-sockets" do
   source "fd-and-sockets.sh"
   mode "0755"
 end
