@@ -1,9 +1,5 @@
-include_recipe "apache2::service"
-
-service "gmetad" do
-  supports :status => false, :restart => true
-  action :nothing
-end
+include_recipe 'apache2::service'
+include_recipe 'scalarium_ganglia::service-gmetad'
 
 template "/etc/ganglia/gmetad.conf" do
   source "gmetad.conf.erb"
@@ -37,34 +33,7 @@ template "#{node[:apache][:document_root]}/index.html" do
   mode '0644'
 end
 
-instances = {}
-
-node[:scalarium][:roles].each do |role_name, role_config|
-  role_config[:instances].each do |instance_name, instance_config|
-    instances[instance_name] ||= []
-    instances[instance_name] << role_name
-  end
-end
-
-# generate individual server view json
-instances.keys.each do |instance_name|
-  template "#{node[:ganglia][:datadir]}/conf/host_#{instance_name}.json" do
-    source 'host_view_json.erb'
-    mode '0644'
-    variables({:roles => instances[instance_name]})
-  end
-end
-
-# generate scalarium view json for autorotation
-template "#{node[:ganglia][:datadir]}/conf/view_scalarium.json" do
-  source 'view_scalarium.json.erb'
-  mode '0644'
-  variables({:instances => instances})
-end
-
-execute "ensure permissions on ganglia rrds directory" do
-  command "chown -R #{node[:ganglia][:rrds_user]}:#{node[:ganglia][:user]} #{node[:ganglia][:datadir]}/rrds"
-end
+include_recipe 'scalarium_ganglia::views'
 
 execute "Restart gmetad if not running" do # can happen if ganglia role is shared?
   command "(sleep 60 && /etc/init.d/gmetad restart) &"
