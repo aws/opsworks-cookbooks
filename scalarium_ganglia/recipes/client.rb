@@ -31,5 +31,5 @@ include_recipe "scalarium_ganglia::monitor-memcached" if node[:scalarium][:insta
 include_recipe "scalarium_ganglia::monitor-mysql" if node[:scalarium][:instance][:roles].include?('db-master')
 include_recipe "scalarium_ganglia::monitor-haproxy" if node[:scalarium][:instance][:roles].include?('lb')
 include_recipe "scalarium_ganglia::monitor-passenger" if node[:scalarium][:instance][:roles].include?('rails-app')
-include_recipe "scalarium_ganglia::monitor-apache" if node[:scalarium][:instance][:roles].any?{|role| ['rails-app', 'php-app', 'monitor-master'].include?(role) }
+include_recipe "scalarium_ganglia::monitor-apache" if node[:scalarium][:instance][:roles].any?{|role| ['rails-app', 'php-app', 'monitoring-master'].include?(role) }
 include_recipe "scalarium_ganglia::monitor-nginx" if node[:scalarium][:instance][:roles].include?('web')

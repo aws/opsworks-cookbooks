@@ -28,7 +28,7 @@ if monitoring_master.nil?
   end
 end
 
-if node[:scalarium][:instance][:roles].any?{|role| ['rails-app', 'php-app'].include?(role) }
+if node[:scalarium][:instance][:roles].any?{|role| ['rails-app', 'php-app', 'monitoring-master'].include?(role) }
   Dir.glob("#{node[:apache][:log_dir]}/*ganglia*.log").each do |ganglia_log|
     cron "Ganglia Apache Monitoring #{ganglia_log}" do
       minute "*/2"
