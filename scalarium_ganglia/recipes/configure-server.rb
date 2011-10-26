@@ -46,12 +46,20 @@ node[:scalarium][:roles].each do |role_name, role_config|
   end
 end
 
+# generate individual server view json
 instances.keys.each do |instance_name|
   template "#{node[:ganglia][:datadir]}/conf/host_#{instance_name}.json" do
     source 'host_view_json.erb'
     mode '0644'
     variables({:roles => instances[instance_name]})
   end
+end
+
+# generate scalarium view json for autorotation
+template "#{node[:ganglia][:datadir]}/conf/view_scalarium.json" do
+  source 'view_scalarium.json.erb'
+  mode '0644'
+  variables({:instances => instances})
 end
 
 execute "ensure permissions on ganglia rrds directory" do
