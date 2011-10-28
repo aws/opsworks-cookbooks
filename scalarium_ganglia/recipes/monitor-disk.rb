@@ -7,7 +7,7 @@ if node[:ebs] && node[:ebs][:devices]
   disks = disks + node[:ebs][:devices].keys
 end
 
-disks = disks.flatten.map{|d| d.gsub('/dev/', '')}.uniq
+disks = disks.flatten.map{|d| d.sub('/dev/', '').sub(/(xvd.)(.*)/, "#{$1}p#{$2}")}.uniq
 
 disks.each do |device_id|
   Chef::Log.info("Installing Monitoring for disk #{device_id}")
