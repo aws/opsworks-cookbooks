@@ -9,11 +9,8 @@ if node[:platform] == 'ubuntu' && node[:platform_version].to_i == 11
   end
 
   execute 'apt-get -q -y install libapr1 libconfuse0'
-  if node[:platform] == 'ubuntu' && node[:platform_version].to_f == 11.10
-    execute 'libconfuse-common'
-  end
   if node[:platform] == 'ubuntu' && node[:platform_version].to_f == 11.04
-    execute 'libpython2.7'
+    execute 'apt-get -q -y install libpython2.7'
   end
   execute 'dpkg -i /tmp/libganglia1.deb'
   execute 'dpkg -i /tmp/ganglia-monitor.deb'
