@@ -1,6 +1,6 @@
 package "bc"
 
-disks = `mount | grep /dev/sd | awk '{print $1}'`.split("\n")
+disks = `mount | grep -E '/dev/sd|/dev/xvd' | awk '{print $1}'`.split("\n")
 
 if node[:ebs] && node[:ebs][:devices]
   Chef::Log.info("Adding EBS volumes #{node[:ebs][:devices].keys.inspect} to monitoring")
