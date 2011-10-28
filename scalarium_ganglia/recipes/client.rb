@@ -1,10 +1,21 @@
-if node[:platform] == 'ubuntu' && node[:platform_version].to_f == 11.10
+if node[:platform] == 'ubuntu' && node[:platform_version].to_i == 11
   remote_file '/tmp/ganglia-monitor.deb' do
-    source "http://peritor-assets.s3.amazonaws.com/ubuntu/11.10/ganglia-monitor_3.1.7-2_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
+    source "https://launchpad.net/~rufustfirefly/+archive/ganglia/+files/ganglia-monitor_3.2.0-7ubuntu1~natty_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
     not_if { ::File.exists?('/tmp/ganglia-monitor.deb') }
   end
+  remote_file '/tmp/libganglia1.deb' do
+    source "https://launchpad.net/~rufustfirefly/+archive/ganglia/+files/libganglia1_3.2.0-7ubuntu1~natty_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
+    not_if { ::File.exists?('/tmp/libganglia1.deb') }
+  end
 
-  execute 'apt-get install libapr1 libconfuse-common libconfuse0 libganglia1'
+  execute 'apt-get -q -y install libapr1 libconfuse0'
+  if node[:platform] == 'ubuntu' && node[:platform_version].to_f == 11.10
+    execute 'libconfuse-common'
+  end
+  if node[:platform] == 'ubuntu' && node[:platform_version].to_f == 11.04
+    execute 'libpython2.7'
+  end
+  execute 'dpkg -i /tmp/libganglia1.deb'
   execute 'dpkg -i /tmp/ganglia-monitor.deb'
 else
   package "ganglia-monitor"
