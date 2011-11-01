@@ -5,7 +5,7 @@ directory node[:ganglia][:events_dir] do
   owner 'www-data'
 end
 
-template "#{node[:ganglia][events_dir]}/#{node[:scalarium][:sent_at]}_event.json" do
+template "#{node[:ganglia][:events_dir]}/#{node[:scalarium][:sent_at]}_event.json" do
   source 'event.json.erb'
   mode '0644'
   owner 'www-data'
