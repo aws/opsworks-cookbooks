@@ -1,7 +1,16 @@
 include_recipe "scalarium_ganglia::client"
 
+if node[:platform] == 'ubuntu' && node[:platform_version].to_i == 11
+  remote_file '/tmp/gmetad.deb' do
+    source "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/gmetad_3.2.0-7_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
+    not_if { ::File.exists?('/tmp/gmetad.deb') }
+  end
 
-package "gmetad"
+  execute 'apt-get -q -y install librrd4'
+  execute 'dpkg -i /tmp/gmetad.deb'
+else
+  package 'gmetad'
+end
 
 # install old ganglia frontend to bring in all dependencies
 package "ganglia-webfrontend"
