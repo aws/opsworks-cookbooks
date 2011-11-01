@@ -53,8 +53,7 @@ execute "Execute make install" do
   command "cd /usr/share/ganglia-webfrontend/ && make install"
 end
 
-# enable events
-directory "#{node[:ganglia][:datadir]}/conf/events.json.d/" do
+directory node[:ganglia][:events_dir] do
   mode '0755'
   action :create
   recursive true

@@ -1,7 +1,11 @@
-events_dir = node[:ganglia][:datadir] + '/conf/events.json.d/'
-event = events_dir + node[:scalarium][:sent_at].to_s + '_event.json'
+directory node[:ganglia][:events_dir] do
+  mode '0755'
+  action :create
+  recursive true
+  owner 'www-data'
+end
 
-template event do
+template "#{node[:ganglia][events_dir]}/#{node[:scalarium][:sent_at]}_event.json" do
   source 'event.json.erb'
   mode '0644'
   owner 'www-data'
@@ -11,7 +15,7 @@ end
 ruby_block 'Create new events.json file for Ganglia' do
   block do
     ::File.open(node[:ganglia][:datadir] + '/conf/events.json', 'w') do |file|
-      file.puts '[' + Dir["#{events_dir}/*.json"].sort.map {|event| File.read(event)}.join(',') + ']'
+      file.puts '[' + Dir["#{node[:ganglia][:events_dir]}/*.json"].sort.map {|event| File.read(event)}.join(',') + ']'
     end
   end
 end
