@@ -12,8 +12,13 @@
     reports << 'apache_response_time_report'
   end
   if @roles.include?("rails-app")
-    reports << 'passenger_memory_stats_report'
-    reports << 'passenger_status_report'
+    if node[:scalarium][:rails_stack][:name] == 'apache_passenger'
+      reports << 'passenger_memory_stats_report'
+      reports << 'passenger_status_report'
+    elsif node[:scalarium][:rails_stack][:name] == 'nginx_unicorn'
+      reports << 'nginx_status_report'
+    else
+    end
   end
   if @roles.include?("web")
     reports << 'nginx_status_report'
