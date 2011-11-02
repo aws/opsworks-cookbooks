@@ -11,11 +11,14 @@ $conf['optional_graphs'] = array();
 <% if node[:scalarium][:roles].has_key?("db-master") && !node[:scalarium][:roles]['db-master']['instances'].empty? -%>
   array_push($conf['optional_graphs'], 'mysql_query');
 <% end -%>
-<% if (node[:scalarium][:roles].has_key?("rails-app") && !node[:scalarium][:roles]['rails-app']['instances'].empty? ) ||  (node[:scalarium][:roles].has_key?("php-app") && !node[:scalarium][:roles]['php-app']['instances'].empty? ) -%>
+<% if (node[:scalarium][:roles].has_key?("rails-app") && node[:scalarium][:rails_stack][:name] == 'apache_passenger' && !node[:scalarium][:roles]['rails-app']['instances'].empty? ) ||  (node[:scalarium][:roles].has_key?("php-app") && !node[:scalarium][:roles]['php-app']['instances'].empty? ) -%>
   array_push($conf['optional_graphs'], 'apache', 'apache_worker', 'apache_response_time');
 <% end -%>
-<% if node[:scalarium][:roles].has_key?("rails-app") && !node[:scalarium][:roles]['rails-app']['instances'].empty? -%>
+<% if (node[:scalarium][:roles].has_key?("rails-app") && node[:scalarium][:rails_stack][:name] == 'apache_passenger' && !node[:scalarium][:roles]['rails-app']['instances'].empty? ) -%>
   array_push($conf['optional_graphs'], 'passenger_memory_stats', 'passenger_status');
+<% end -%>
+<% if node[:scalarium][:roles].has_key?("rails-app") && node[:scalarium][:rails_stack][:name] == 'nginx_unicorn' && !node[:scalarium][:roles]['rails-app']['instances'].empty? -%>
+  array_push($conf['optional_graphs'], 'nginx_status');
 <% end -%>
 <% if node[:scalarium][:roles].has_key?("web") && !node[:scalarium][:roles]['web']['instances'].empty? -%>
   array_push($conf['optional_graphs'], 'nginx_status');
