@@ -12,6 +12,8 @@ instances.keys.each do |instance_name|
   template "#{node[:ganglia][:datadir]}/conf/host_#{instance_name}.json" do
     source 'host_view_json.erb'
     mode '0644'
+    owner 'www-data'
+    group 'www-data'
     variables({:roles => instances[instance_name]})
   end
 end
@@ -20,5 +22,7 @@ end
 template "#{node[:ganglia][:datadir]}/conf/view_overview.json" do
   source 'view_overview.json.erb'
   mode '0644'
+  owner 'www-data'
+  group 'www-data'
   variables({:instances => instances})
 end
