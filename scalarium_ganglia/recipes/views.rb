@@ -1,3 +1,10 @@
+directory node[:ganglia][:conf_dir] do
+  mode '0755'
+  action :create
+  recursive true
+  owner 'www-data'
+end
+
 instances = {}
 
 node[:scalarium][:roles].each do |role_name, role_config|
