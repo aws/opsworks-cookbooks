@@ -12,6 +12,9 @@ globals {
   cleanup_threshold = 500 /*secs */ 
   gexec = no             
   send_metadata_interval = 15
+  <% if node[:platform] == 'ubuntu' && node[:platform_version].to_f >= 11.00 %>
+  override_hostname = <%= node[:scalarium][:instance][:hostname] %>
+  <% end %>
 } 
 
 /* If a cluster attribute is specified, then all gmond hosts are wrapped inside 
