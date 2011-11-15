@@ -35,6 +35,7 @@ define :nginx_web_app, :template => "site.erb", :enable => true do
     mode '0600'
     source "ssl.key.erb"
     variables :key => application[:ssl_certificate]
+    notifies :restart, resources(:service => "nginx")
     only_if do
       application[:ssl_support]
     end
@@ -45,6 +46,7 @@ define :nginx_web_app, :template => "site.erb", :enable => true do
     mode '0600'
     source "ssl.key.erb"
     variables :key => application[:ssl_certificate_key]
+    notifies :restart, resources(:service => "nginx")
     only_if do
       application[:ssl_support]
     end
@@ -55,6 +57,7 @@ define :nginx_web_app, :template => "site.erb", :enable => true do
     mode '0600'
     source "ssl.key.erb"
     variables :key => application[:ssl_certificate_ca]
+    notifies :restart, resources(:service => "nginx")
     only_if do
       application[:ssl_support] && application[:ssl_certificate_ca]
     end
@@ -66,8 +69,6 @@ define :nginx_web_app, :template => "site.erb", :enable => true do
       File.exists?("#{node[:nginx][:dir]}/sites-enabled/default")
     end
   end
-
-  include_recipe "nginx::service"
 
   if params[:enable]
     execute "nxensite #{application_name}" do
