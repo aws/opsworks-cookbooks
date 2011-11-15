@@ -5,7 +5,7 @@
     'applications' => node[:scalarium][:applications],
     'cluster' => node[:scalarium][:cluster].to_hash,
     'client' => {
-      'valid_activities' => node[:scalarium][:valid_activities]
+      'valid_activities' => (node[:scalarium][:valid_activities] || [])
     }
   } 
 %>
