@@ -1,5 +1,7 @@
 # setup Apache virtual host
 node[:deploy].each do |application, deploy|
+  include_recipe "apache2::service"
+
   if deploy[:application_type] != 'php'
     Chef::Log.debug("Skipping mod_php5_apache2::php application #{application} as it is not an PHP app")
     next
@@ -17,6 +19,7 @@ node[:deploy].each do |application, deploy|
     mode '0600'
     source "ssl.key.erb"
     variables :key => deploy[:ssl_certificate]
+    notifies :restart, resources(:service => "apache2")
     only_if do
       deploy[:ssl_support]
     end
@@ -26,6 +29,7 @@ node[:deploy].each do |application, deploy|
     mode '0600'
     source "ssl.key.erb"
     variables :key => deploy[:ssl_certificate_key]
+    notifies :restart, resources(:service => "apache2")
     only_if do
       deploy[:ssl_support]
     end
@@ -35,6 +39,7 @@ node[:deploy].each do |application, deploy|
     mode '0600'
     source "ssl.key.erb"
     variables :key => deploy[:ssl_certificate_ca]
+    notifies :restart, resources(:service => "apache2")
     only_if do
       deploy[:ssl_support] && deploy[:ssl_certificate_ca]
     end
