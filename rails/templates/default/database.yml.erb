@@ -3,7 +3,7 @@
   adapter: <%= @database[:adapter] %>
   database: <%= @database[:database] %>
   encoding: utf8
-  host: <%= @database[:host] %>
+  host: <%= @database[:host] || 'localhost' %>
   username: <%= @database[:username] %>
   password: <%= @database[:password] %>
   reconnect: <%= @database[:reconnect] ? 'true' : 'false' %>
