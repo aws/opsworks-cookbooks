@@ -13,14 +13,14 @@ default[:haproxy][:default_max_connections] = '80000'
 default[:haproxy][:retries] = '3'
 
 # load factors for maxcon
-default[:haproxy][:maxcon_factor_rails_app] = '7'
-default[:haproxy][:maxcon_factor_rails_app_ssl] = '7'
-default[:haproxy][:maxcon_factor_php_app] = '10'
-default[:haproxy][:maxcon_factor_php_app_ssl] = '10'
-default[:haproxy][:maxcon_factor_nodejs_app] = '10'
-default[:haproxy][:maxcon_factor_nodejs_app_ssl] = '10'
-default[:haproxy][:maxcon_factor_static] = '15'
-default[:haproxy][:maxcon_factor_static_ssl] = '15'
+default[:haproxy][:maxcon_factor_rails_app] = 7
+default[:haproxy][:maxcon_factor_rails_app_ssl] = 7
+default[:haproxy][:maxcon_factor_php_app] = 10
+default[:haproxy][:maxcon_factor_php_app_ssl] = 10
+default[:haproxy][:maxcon_factor_nodejs_app] = 10
+default[:haproxy][:maxcon_factor_nodejs_app_ssl] = 10
+default[:haproxy][:maxcon_factor_static] = 15
+default[:haproxy][:maxcon_factor_static_ssl] = 15
 
 def random_haproxy_pw
   rand_array = []
