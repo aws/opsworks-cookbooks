@@ -1,10 +1,10 @@
 if node[:platform] == 'ubuntu' && node[:platform_version].to_i == 11
   remote_file '/tmp/ganglia-monitor.deb' do
-    source "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/ganglia-monitor_3.2.0-7_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
+    source "http://download-assets.scalarium.com/#{node[:platform]}/#{node[:platform_version]}/ganglia-monitor_3.2.0-7_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
     not_if { ::File.exists?('/tmp/ganglia-monitor.deb') }
   end
   remote_file '/tmp/libganglia1.deb' do
-    source "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/libganglia1_3.2.0-7_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
+    source "http://download-assets.scalarium.com/#{node[:platform]}/#{node[:platform_version]}/libganglia1_3.2.0-7_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
     not_if { ::File.exists?('/tmp/libganglia1.deb') }
   end
 

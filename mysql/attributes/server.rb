@@ -62,4 +62,4 @@ if node[:platform] == 'ubuntu' && node[:platform_version].to_f < 10.04
 else
   default[:percona][:version] = '5.1.57-12.8'
 end
-default[:percona][:url_base] = "http://peritor-assets.s3.amazonaws.com/percona"
+default[:percona][:url_base] = "http://download-assets.scalarium.com/percona"
