@@ -5,6 +5,7 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:release_path] = "#{node[:deploy][application][:deploy_to]}/releases/#{node[:deploy][application][:release]}"
   default[:deploy][application][:current_path] = "#{node[:deploy][application][:deploy_to]}/current"
   default[:deploy][application][:document_root] = ""
+  default[:deploy][application][:ignore_bundler_groups] = node[:rails][:ignore_bundler_groups]
   if deploy[:document_root]
     default[:deploy][application][:absolute_document_root] = "#{default[:deploy][application][:current_path]}/#{deploy[:document_root]}/"
   else
