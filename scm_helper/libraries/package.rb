@@ -12,12 +12,14 @@ module Scalarium
           end
         elsif scm_type == "svn"
           package "subversion"
-        elsif scm_type == 'archive'
+        elsif scm_type == 'archive' || scm_type == 's3'
           case node[:platform]
           when 'debian', 'ubuntu'
             package 'git-core'
+            package 'libdigest-hmac-perl'
           else
             package 'git'
+            package 'perl-Digest-HMAC'
           end
           package 'unzip'
         else

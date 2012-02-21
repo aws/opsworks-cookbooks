@@ -30,6 +30,12 @@ define :scalarium_deploy do
         :scm_type => 'git',
         :repository => repository
       }
+    elsif deploy[:scm][:scm_type].to_s == 's3'
+      repository = prepare_s3_checkouts(deploy[:scm])
+      deploy[:scm] = {
+        :scm_type => 'git',
+        :repository => repository
+      }
     end
   end
 
