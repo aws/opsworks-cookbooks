@@ -1,4 +1,4 @@
-template '/root/scalarium-agent/TARGET_VERSION' do
+template "#{node[:scalarium_agent_root]}/TARGET_VERSION" do
   cookbook 'agent_version'
   source 'TARGET_VERSION.erb'
   backup false
