@@ -1,5 +1,5 @@
 check process scalarium_agent
-  with pidfile "/root/scalarium-agent/pids/nanite.nanite-<%= node[:scalarium][:id] %>.pid"
+  with pidfile "<%= node[:scalarium_agent_root] %>/pids/nanite.nanite-<%= node[:scalarium][:id] %>.pid"
   start program = "/etc/init.d/scalarium-agent start"
   stop program = "/etc/init.d/scalarium-agent stop"
   group scalarium

@@ -23,7 +23,7 @@ module Scalarium
         end
 
         execute 'extract files' do
-          command "/root/scalarium-agent/bin/extract #{tmpdir}/archive"
+          command "#{node[:scalarium_agent_root]}/bin/extract #{tmpdir}/archive"
         end
 
         execute 'create git repository' do
