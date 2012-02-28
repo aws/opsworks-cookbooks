@@ -1,3 +1,7 @@
+default[:scalarium][:deploy_user][:shell] = '/bin/zsh'
+default[:scalarium][:deploy_user][:user] = 'deploy'
+default[:scalarium][:deploy_user][:group] = 'www-data'
+
 default[:deploy] = {}
 node[:deploy].each do |application, deploy|
   default[:deploy][application][:deploy_to] = "/srv/www/#{application}"
@@ -27,9 +31,9 @@ node[:deploy].each do |application, deploy|
   end
   default[:deploy][application][:rails_env] = 'production'
   default[:deploy][application][:action] = 'deploy'
-  default[:deploy][application][:user] = 'deploy'
-  default[:deploy][application][:group] = 'www-data'
-  default[:deploy][application][:shell] = '/bin/zsh'
+  default[:deploy][application][:user] = node[:scalarium][:deploy_user][:user]
+  default[:deploy][application][:group] = node[:scalarium][:deploy_user][:group]
+  default[:deploy][application][:shell] = node[:scalarium][:deploy_user][:shell]
   home = self[:passwd] && 
          self[:passwd][self[:deploy][application][:user]] &&
          self[:passwd][self[:deploy][application][:user]][:dir] || "/home/#{self[:deploy][application][:user]}"
