@@ -29,3 +29,7 @@ ubuntu  ALL=(ALL) NOPASSWD:ALL
 <% (@sudoers || []).each do |sudoer| %>
 <%= sudoer[:name] %>  ALL=(ALL) NOPASSWD:ALL
 <% end %>
+
+scalarium-agent ALL=NOPASSWD:/opt/scalarium-agent/bin/chef-solo
+Defaults:scalarium-agent !requiretty
+
