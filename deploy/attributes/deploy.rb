@@ -44,6 +44,7 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:stack][:needs_reload] = true
   default[:deploy][application][:enable_submodules] = true
   default[:deploy][application][:shallow_clone] = true
+  default[:deploy][application][:delete_cached_copy] = true
   default[:deploy][application][:symlink_before_migrate] = {}
   
   default[:deploy][application][:environment] = {"RAILS_ENV" => deploy[:rails_env],
