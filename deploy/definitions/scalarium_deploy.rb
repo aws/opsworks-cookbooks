@@ -44,6 +44,9 @@ define :scalarium_deploy do
   directory "#{deploy[:deploy_to]}/shared/cached-copy" do
     recursive true
     action :delete
+    only_if do
+      deploy[:delete_cached_copy]
+    end
   end
 
   ruby_block "change HOME to #{deploy[:home]} for source checkout" do
