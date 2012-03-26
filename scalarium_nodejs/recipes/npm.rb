@@ -1,5 +1,5 @@
 remote_file "/tmp/npm-#{node[:scalarium_nodejs][:npm_version]}.tgz" do
-  source "http://registry.npmjs.org/npm/-/npm-#{node[:scalarium_nodejs][:npm_version]}.tgz"
+  source "http://peritor-assets.s3.amazonaws.com/npm/npm-#{node[:scalarium_nodejs][:npm_version]}.tgz"
   action :create_if_missing
 end
 
