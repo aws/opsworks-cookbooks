@@ -16,6 +16,12 @@ if node[:scalarium_custom_cookbooks][:scm][:type].to_s == 'archive'
     :type => 'git',
     :repository => repository
   }
+elsif deploy[:scm][:scm_type].to_s == 's3'
+  repository = prepare_s3_checkouts(node[:scalarium_custom_cookbooks][:scm])
+  node[:scalarium_custom_cookbooks][:scm] = {
+   :scm_type => 'git',
+   :repository => repository
+  }
 end
 
 scm "Download Custom Cookbooks" do
