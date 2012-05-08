@@ -23,7 +23,7 @@ class MemcacheTest < MiniTest::Chef::TestCase
 
   def test_access_service  
     %w{127.0.0.1  localhost  #{node['instance']['private_ip']}}.each do |host|
-      m = Memcached.new(["#{host}:<%=port%>")]
+      m = Memcached.new(["#{host}:<%=port%>"])
       #test different types of data
       key1 = 'foo'
       key2 = 'bar'*50
