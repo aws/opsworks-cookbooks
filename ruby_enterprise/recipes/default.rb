@@ -33,7 +33,7 @@ end
 
 execute "Install Ruby Enterprise Edition" do
   cwd "/tmp"
-  command "dpkg -i /tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}"
+  command "dpkg -i /tmp/#{File.basename(node[:ruby_enterprise][:url][arch])} && (/usr/local/bin/gem uninstall -a bundler || echo '1')"
 
   not_if do
     ::File.exists?("/usr/local/bin/ruby") &&
