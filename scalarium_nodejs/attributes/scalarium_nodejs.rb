@@ -1,3 +1,5 @@
+include_attribute 'deploy'
+
 default[:scalarium_nodejs][:version] = '0.6.1'
 default[:scalarium_nodejs][:npm_version] = '1.0.105'
 default[:scalarium_nodejs][:pkgrelease] = '1'
