@@ -1,4 +1,5 @@
-default[:scalarium_custom_cookbooks] = {}
+include_attribute 'scalarium_cluster_state'
+
 default[:scalarium_custom_cookbooks][:enabled] = false
 default[:scalarium_custom_cookbooks][:user] = 'root'
 default[:scalarium_custom_cookbooks][:group] = 'root'

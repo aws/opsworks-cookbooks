@@ -1,3 +1,5 @@
+include_attribute 'rails::rails'
+
 default[:scalarium][:ruby_version] = '1.8'
 
 default[:passenger][:version] = '3.0.9'
