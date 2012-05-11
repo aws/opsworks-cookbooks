@@ -78,3 +78,6 @@ default[:apache][:worker][:maxrequestsperchild] = 10000
 default[:apache][:logrotate][:schedule] = 'daily'
 default[:apache][:logrotate][:rotate] = '30'
 default[:apache][:logrotate][:delaycompress] = true
+default[:apache][:logrotate][:mode] = '640'
+default[:apache][:logrotate][:owner] = 'root'
+default[:apache][:logrotate][:group] = 'adm'
