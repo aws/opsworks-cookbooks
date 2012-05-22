@@ -2,7 +2,7 @@ maintainer "Peritor GmbH"
 maintainer_email "scalarium@peritor.com"
 description "Installs Rails"
 version "0.1"
-supports "ubuntu", ">=  8.10"
+supports "ubuntu", ">= 8.10"
 
 recipe "rails::configure", "Re-configure a Rails application"
 
