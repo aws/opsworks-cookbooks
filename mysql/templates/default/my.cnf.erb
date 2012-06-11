@@ -1,6 +1,7 @@
 [client]
-port            = 3306
-socket          = /var/run/mysqld/mysqld.sock
+port                  = 3306
+socket                = /var/run/mysqld/mysqld.sock
+character_set_client  = utf8
 
 [mysqld_safe]
 socket          = /var/run/mysqld/mysqld.sock
@@ -16,7 +17,6 @@ datadir         = <%= node[:mysql][:datadir] %>
 tmpdir          = /tmp
 
 character-set-server		= utf8
-default-character-set		= utf8
 
 default-storage-engine=innodb
 skip-external-locking
