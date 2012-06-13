@@ -7,7 +7,7 @@
         delaycompress
         <% end -%>
         notifempty
-        create 640 root adm
+        create <%= node[:apache][:logrotate][:mode] %> <%= node[:apache][:logrotate][:owner] %> <%= node[:apache][:logrotate][:group] %>
         sharedscripts
         postrotate
                 if [ -f "`. /etc/apache2/envvars ; echo ${APACHE_PID_FILE:-/var/run/apache2.pid}`" ]; then
