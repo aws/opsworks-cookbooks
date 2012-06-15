@@ -41,7 +41,7 @@ execute "Install Ruby Enterprise Edition" do
   end
 end
 
-if node[:platform] == 'ubuntu' && node[:platform_version].to_f == 11.10
+if node[:platform].eql?('ubuntu') && ['11.10', '12.04'].include?("#{node[:platform_version]}")
   package 'libssl0.9.8'
 end
 

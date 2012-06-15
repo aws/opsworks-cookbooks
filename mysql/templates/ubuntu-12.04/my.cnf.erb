@@ -1,10 +1,20 @@
 [client]
 port                  = 3306
 socket                = /var/run/mysqld/mysqld.sock
+character_set_client  = utf8
 
 [mysqld_safe]
 socket          = /var/run/mysqld/mysqld.sock
 nice            = 0
+
+[mysqldump]
+quick
+quote-names
+max_allowed_packet      = 32M
+default-character-set   = utf8
+
+[mysql]
+default-character-set   = utf8
 
 [mysqld]
 user            = mysql
@@ -66,7 +76,6 @@ query_cache_limit      = <%= node[:mysql][:tunable][:query_cache_limit] %>
 query_cache_size       = <%= node[:mysql][:tunable][:query_cache_size] %>
 query_cache_type       = <%= node[:mysql][:tunable][:query_cache_type] %>
 
-
 #
 # * Slow Query Logging
 #
@@ -83,17 +92,6 @@ expire_logs_days        = 10
 max_binlog_size         = 100M
 #binlog_do_db           = include_database_name
 #binlog_ignore_db       = include_database_name
-
-
-
-[mysqldump]
-quick
-quote-names
-max_allowed_packet      = 32M
-default-character-set   = utf8
-
-[mysql]
-default-character-set   = utf8
 
 [isamchk]
 key_buffer              = 16M
