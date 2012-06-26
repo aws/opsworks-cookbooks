@@ -1,5 +1,9 @@
 include_recipe "mysql::percona_repository"
 
+if node[:percona][:version] =~ /^5\.5\..*/
+  package 'libaio1'
+end 
+
 execute "Install Percona XtraDB Server" do
   cwd "#{node[:percona][:tmp_dir]}/#{node[:lsb][:release]}_#{node[:scalarium][:instance][:architecture]}"
   command "dpkg -i percona-server-server-*"
