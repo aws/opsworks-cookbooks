@@ -11,6 +11,19 @@ module BlockDevice
     end
   end
 
+  def self.wait_for_logical_volumes
+    loop do
+      lvscan = `lvscan`
+      if lvscan.lines.all?{|line| line.include?('ACTIVE')}
+        Chef::Log.debug("dhdbg All LVM volume disks seem to be active:\n#{lvscan}")
+        break
+      else
+        Chef::Log.debug("dhdbg Not all LVM volume disks seem to be active, waiting 10 more seconds:\n#{lvscan}")
+        sleep 10
+      end
+    end
+  end
+
   def self.existing_raid_at?(device)
     raids = `mdadm --examine --scan`
     if raids.match(device) || raids.match(device.gsub(/md/, "md/"))
@@ -114,6 +127,7 @@ module BlockDevice
   end
 
   def self.lvm_volume_exits?(raid_device)
+    wait_for_logical_volumes
     lvscan = `lvscan`
     if lvscan.match(lvm_device(raid_device))
       Chef::Log.debug("Checking for existing LVM volume disk for #{lvm_device(raid_device)}: #{lvscan}")
