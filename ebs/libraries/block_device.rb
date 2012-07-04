@@ -15,10 +15,10 @@ module BlockDevice
     loop do
       lvscan = `lvscan`
       if lvscan.lines.all?{|line| line.include?('ACTIVE')}
-        Chef::Log.debug("dhdbg All LVM volume disks seem to be active:\n#{lvscan}")
+        Chef::Log.debug("All LVM volume disks seem to be active:\n#{lvscan}")
         break
       else
-        Chef::Log.debug("dhdbg Not all LVM volume disks seem to be active, waiting 10 more seconds:\n#{lvscan}")
+        Chef::Log.debug("Not all LVM volume disks seem to be active, waiting 10 more seconds:\n#{lvscan}")
         sleep 10
       end
     end
