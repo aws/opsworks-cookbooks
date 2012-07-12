@@ -32,3 +32,6 @@ default[:scalarium_initial_setup][:bind_mounts][:mounts] = {
   "/var/log/apache2" => "/mnt/var/log/apache2",
   "/var/log/mysql" => "/mnt/var/log/mysql"
 }
+
+# landscape removal
+default[:scalarium_initial_setup][:landscape][:packages_to_remove] = ['landscape-common', 'landscape-client']
