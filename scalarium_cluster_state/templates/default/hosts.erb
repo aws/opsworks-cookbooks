@@ -22,12 +22,3 @@ ff02::3 ip6-allhosts
 <% end -%>
 <% end -%>
 <% end -%>
-
-<% # Generate an entry to point to the couchdb master hostname. Used for SSL -%>
-<% if node[:scalarium][:roles].has_key?('couchdb-master') -%>
-<% if node['couchdb-ssl'].has_key?('domain') -%>
-<% node[:scalarium][:roles]['couchdb-master'][:instances].each do |instance,attr| -%>
-<%=attr[:private_ip]%> dbmaster.<%=node['couchdb-ssl']['domain']%>
-<% end -%>
-<% end -%>
-<% end -%>
