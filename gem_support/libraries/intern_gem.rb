@@ -1,0 +1,86 @@
+#
+# extend Chef::Recipe with a method to install gem in the bundler environment
+# and makes it possible to require them right away.
+
+# because chef run in the Bundler environment
+require 'bundler/setup'
+
+module Scalarium
+  module InternalGems
+
+   def self.internal_gem_package(name, options = {})
+     options = {
+       :version => nil
+     }.update(options)
+     if Scalarium::InternalGems.internal_gem_installed?(name, options[:version])
+       Chef::Log.info("Scalarium Gem #{name} is already installed - skipping")
+     else
+       Scalarium::InternalGems.install_internal_gem_package(name, options[:version])
+     end
+    refresh_ruby_load_path
+   end
+
+    def self.with_env(options = {})
+      old_env = {}
+      options.each do |k,v|
+        old_env[k] = ENV[k]
+        ENV[k] = v
+      end
+      result = yield
+      options.keys.each do |k|
+        ENV[k] = old_env[k]
+      end
+      result
+    end
+
+    def self.internal_gem_home
+      Bundler.bundle_path.to_s
+    end
+
+    def self.internal_gem_installed?(name, version=nil)
+      with_env 'GEM_HOME' => internal_gem_home do
+        installed = `/usr/bin/gem list #{name}`.chomp
+        if version
+          !installed.blank? && !installed.match(version).nil?
+        else
+          !installed.blank?
+        end
+      end
+    end
+
+    def self.install_internal_gem_package(name, version=nil)
+      version = "--version=#{version}" if version
+      with_env 'GEM_HOME' => internal_gem_home do
+        Chef::Log.info("Installing Scalarium Gem #{name}")
+        Chef::Log.info(`/usr/bin/gem install #{name} #{version} --no-rdoc --no-ri`)
+      end
+    end
+
+    def self.uninstall_internal_gem_package(name, version=nil)
+      unless internal_gem_installed?(name, version)
+        Chef::Log.info("Skipping uninstall of Scalarium gem #{name} as it is not installed")
+        return
+      end
+
+      if version
+        version = "--version=#{version}"
+      else
+        version = '-a'
+      end
+
+      with_env 'GEM_HOME' => internal_gem_home do
+        Chef::Log.info("Uninstalling gem #{name}")
+        Chef::Log.info(`/usr/bin/gem uninstall #{name} #{version}`)
+      end
+    end
+
+    def self.refresh_ruby_load_path
+      # extend LOAD_PATH, so that we can see this gem in a 'require'.
+      Dir.glob("#{internal_gem_home}/gems/*/lib").each do |path|
+        $LOAD_PATH  << path unless $LOAD_PATH.include?(path)
+      end
+    end
+
+  end
+end
+
