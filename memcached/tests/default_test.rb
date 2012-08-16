@@ -1,5 +1,9 @@
+#
 # test the memcached installation/service
+
+Scalarium::InternalGems.internal_gem_package "memcached"
 require 'memcached'
+
 include MiniTest::Chef::Assertions
 
 class MemcacheTest < MiniTest::Chef::TestCase
