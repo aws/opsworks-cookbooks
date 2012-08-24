@@ -1,4 +1,3 @@
-# 
 # setup environment for running cookbook tests
 #
 # This recipe uses "minitest-chef-handler" to facilitate cookbook testing.
@@ -14,7 +13,7 @@ Chef::Log.info("Enabling minitest-chef-handler as a report handler")
 handler = MiniTest::Chef::Handler.new({
   :verbose => true})
 
-Chef::Config.send("report_handlers").delete_if do |v| 
+Chef::Config.send("report_handlers").delete_if do |v|
   v.class.to_s.include? MiniTest::Chef::Handler
 end
 
