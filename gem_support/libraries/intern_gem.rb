@@ -20,24 +20,6 @@ module Scalarium
        refresh_ruby_load_path
      end
 
-     def self.uninstall_internal_gem_package(name, version=nil)
-       unless internal_gem_installed?(name, version)
-         Chef::Log.info("Skipping uninstall of Scalarium gem #{name} #{version} as it is not installed")
-         return
-       end
-
-       if version
-         with_version = "--version=#{version}"
-       else
-         with_version = '-a'
-       end
-
-       with_env 'GEM_HOME' => internal_gem_home do
-         Chef::Log.info("Uninstalling gem #{name} #{version}")
-         Chef::Log.info(`/usr/bin/gem uninstall #{name} #{with_version}`)
-       end
-     end
-
      private
 
      def self.with_env(options = {})
