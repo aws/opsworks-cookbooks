@@ -4,7 +4,7 @@
 #
 #  minitest-chef-handler project: https://github.com/calavera/minitest-chef-handler
 
-Scalarium::InternalGems.internal_gem_package "minitest-chef-handler", :version => "0.6.0"
+Scalarium::InternalGems.internal_gem_package "minitest-chef-handler", :version => "0.6.1"
 
 require "minitest-chef-handler"
 
