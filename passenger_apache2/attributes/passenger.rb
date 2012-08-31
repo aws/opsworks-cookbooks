@@ -1,9 +1,13 @@
 include_attribute 'rails::rails'
 
-default[:scalarium][:ruby_version] = '1.8'
+case node[:scalarium][:ruby_version]
+when /1.9/
+   default[:passenger][:gems_path] = "/usr/local/lib/ruby/gems/1.9.1/gems"
+when /1.8/
+   default[:passenger][:gems_path] = "/usr/local/lib/ruby/gems/1.8/gems"
+end
 
 default[:passenger][:version] = '3.0.9'
-default[:passenger][:gems_path] = "/usr/local/lib/ruby/gems/#{node[:scalarium][:ruby_version] > "1.9" ? "1.9.1" : "1.8"}/gems"
 default[:passenger][:root_path] = "#{node[:passenger][:gems_path]}/passenger-#{passenger[:version]}"
 default[:passenger][:module_path] = "#{passenger[:root_path]}/ext/apache2/mod_passenger.so"
 default[:passenger][:ruby_bin] = "/usr/local/bin/ruby"

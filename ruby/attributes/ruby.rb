@@ -5,7 +5,7 @@ when '1.9.2'
   default[:ruby][:full_version] = '1.9.2'
   default[:ruby][:patch] = 'p180'
   default[:ruby][:pkgrelease] = '3'
-when '1.9.3'
+else
   default[:ruby][:major_version] = '1.9'
   default[:ruby][:full_version] = '1.9.3'
   default[:ruby][:patch] = 'p194'
