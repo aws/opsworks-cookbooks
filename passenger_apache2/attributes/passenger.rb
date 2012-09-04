@@ -1,10 +1,10 @@
 include_attribute 'rails::rails'
 
 case node[:scalarium][:ruby_version]
-when /1.9/
-   default[:passenger][:gems_path] = "/usr/local/lib/ruby/gems/1.9.1/gems"
 when /1.8/
-   default[:passenger][:gems_path] = "/usr/local/lib/ruby/gems/1.8/gems"
+  default[:passenger][:gems_path] = '/usr/local/lib/ruby/gems/1.8/gems'
+else
+  default[:passenger][:gems_path] = '/usr/local/lib/ruby/gems/1.9.1/gems'
 end
 
 default[:passenger][:version] = '3.0.9'
