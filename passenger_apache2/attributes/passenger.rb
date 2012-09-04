@@ -10,9 +10,9 @@ end
 default[:passenger][:version] = '3.0.9'
 default[:passenger][:root_path] = "#{node[:passenger][:gems_path]}/passenger-#{passenger[:version]}"
 default[:passenger][:module_path] = "#{passenger[:root_path]}/ext/apache2/mod_passenger.so"
-default[:passenger][:ruby_bin] = "/usr/local/bin/ruby"
-default[:passenger][:ruby_wrapper_bin] = "/usr/local/bin/ruby_gc_wrapper.sh"
-default[:passenger][:gem_bin] = "/usr/local/bin/gem"
+default[:passenger][:ruby_bin] = '/usr/local/bin/ruby'
+default[:passenger][:ruby_wrapper_bin] = '/usr/local/bin/ruby_gc_wrapper.sh'
+default[:passenger][:gem_bin] = '/usr/local/bin/gem'
 default[:passenger][:stat_throttle_rate] = 5
 default[:passenger][:rails_framework_spawner_idle_time] = 0
 default[:passenger][:rails_app_spawner_idle_time] = 0
