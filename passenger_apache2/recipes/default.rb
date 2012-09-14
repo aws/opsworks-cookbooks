@@ -26,7 +26,7 @@ include_recipe "packages"
 include_recipe "gem_support"
 include_recipe 'apache2::service'
 
-if platform?("centos","redhat") and dist_only?
+if platform?("centos","redhat","amazon") and dist_only?
   # just the gem, we'll install the apache module within apache2
   package "rubygem-passenger"
 

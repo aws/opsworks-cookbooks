@@ -1,4 +1,4 @@
-if node[:platform] == 'ubuntu' && node[:platform_version].to_i == 11
+if platform?('ubuntu') && node[:platform_version].to_i == 11
   remote_file '/tmp/ganglia-monitor.deb' do
     source "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/ganglia-monitor_3.2.0-7_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
     not_if { ::File.exists?('/tmp/ganglia-monitor.deb') }
@@ -14,12 +14,20 @@ if node[:platform] == 'ubuntu' && node[:platform_version].to_i == 11
   end
   execute 'dpkg -i /tmp/libganglia1.deb'
   execute 'dpkg -i /tmp/ganglia-monitor.deb'
+elsif platform?('centos','redhat','fedora','amazon')
+  # TODO: Need to either add the EPEL repo, or build/import packages by hand:
+  package "ganglia-gmond"
 else
   package "ganglia-monitor"
 end
 
 execute "stop gmond with non-updated configuration" do
-  command "/etc/init.d/ganglia-monitor stop"
+  case node[:platform]
+  when "ubuntu","debian"
+    command "/etc/init.d/ganglia-monitor stop"
+  when "centos","redhat","fedora","amazon"
+    command "/etc/init.d/gmond stop"
+  end
 end
 
 directory "/etc/ganglia/scripts" do

@@ -19,19 +19,32 @@
 # limitations under the License.
 #
 
-remote_file "/tmp/#{node[:ruby][:deb]}" do
-  source node[:ruby][:deb_url]
-  action :create_if_missing
-end
+case node[:platform]
+when "debian","ubuntu"
+  remote_file "/tmp/#{node[:ruby][:deb]}" do
+    source node[:ruby][:deb_url]
+    action :create_if_missing
+  end
 
-package "ruby-enterprise" do
-  action :remove
-  ignore_failure true
+  package "ruby-enterprise" do
+    action :remove
+    ignore_failure true
+  end
+when "centos","redhat","fedora","suse","amazon"
+  remote_file "/tmp/#{node[:ruby][:rpm]}" do
+    source node[:ruby][:rpm_url]
+    action :create_if_missing
+  end
 end
 
 execute "Install Ruby #{node[:ruby][:full_version]}" do
   cwd "/tmp"
-  command "dpkg -i /tmp/#{node[:ruby][:deb]}"
+  case node[:platform]
+  when "centos","redhat","fedora","suse","amazon"
+    command "rpm -Uvh /tmp/#{node[:ruby][:rpm]}"
+  when "debian","ubuntu"
+    command "dpkg -i /tmp/#{node[:ruby][:deb]}"
+  end
 
   not_if do
     ::File.exists?("/usr/local/bin/ruby") &&

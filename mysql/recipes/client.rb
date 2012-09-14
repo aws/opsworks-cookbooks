@@ -3,7 +3,7 @@ if node[:mysql][:use_percona_xtradb]
 else
   package "mysql-devel" do
     package_name value_for_platform(
-      [ "centos", "redhat", "suse" ] => { "default" => "mysql-devel" },
+      [ "centos", "redhat", "suse", "amazon" ] => { "default" => "mysql-devel" },
       "ubuntu" => {'default' => 'libmysqlclient-dev'}
     )
     action :install
@@ -11,7 +11,7 @@ else
 
   package "mysql-client" do
     package_name value_for_platform(
-      [ "centos", "redhat", "suse" ] => { "default" => "mysql" },
+      [ "centos", "redhat", "suse", "amazon" ] => { "default" => "mysql" },
       "default" => "mysql-client"
     )
     action :install

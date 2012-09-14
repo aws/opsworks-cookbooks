@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-if platform?("centos", "redhat", "fedora", "suse")
+if platform?("centos", "redhat", "fedora", "suse", "amazon")
   apache_module "log_config"
 else
   include_recipe "apache2"

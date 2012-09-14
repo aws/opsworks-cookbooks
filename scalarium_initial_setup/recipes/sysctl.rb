@@ -1,4 +1,9 @@
-
+directory "/etc/sysctl.d" do
+  mode 0755
+  owner "root"
+  group "root"
+  action :create
+end
 
 template "/etc/sysctl.d/70-scalarium-defaults.conf" do
   mode 0644

@@ -1,5 +1,5 @@
 service "mysql" do
-  service_name value_for_platform([ "centos", "redhat", "suse" ] => {"default" => "mysqld"}, "default" => "mysql")
+  service_name value_for_platform([ "centos", "redhat", "suse", "amazon" ] => {"default" => "mysqld"}, "default" => "mysql")
 
   case node[:platform]
   when "ubuntu"

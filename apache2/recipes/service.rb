@@ -19,7 +19,7 @@
 
 service "apache2" do
   case node[:platform]
-  when "centos","redhat","fedora","suse"
+  when "centos","redhat","fedora","suse","amazon"
     service_name "httpd"
     # If restarted/reloaded too quickly httpd has a habit of failing.
     # This may happen with multiple recipes notifying apache to restart - like
@@ -36,6 +36,7 @@ service "apache2" do
     "centos" => { "default" => [ :restart, :reload, :status ] },
     "redhat" => { "default" => [ :restart, :reload, :status ] },
     "fedora" => { "default" => [ :restart, :reload, :status ] },
+    "amazon" => { "default" => [ :restart, :reload, :status ] },
     "default" => { "default" => [:restart, :reload ] }
   )
   action :nothing

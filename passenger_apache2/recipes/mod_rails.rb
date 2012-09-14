@@ -24,7 +24,7 @@
 
 include_recipe "passenger_apache2"
 
-if platform?("centos","redhat") and dist_only?
+if platform?("centos","redhat","amazon") and dist_only?
   package "mod_passenger" do
     notifies :run, resources(:execute => "generate-module-list"), :immediately
   end

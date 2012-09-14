@@ -19,7 +19,7 @@
 
 if platform?("debian", "ubuntu")
   package "libapache2-mod-fcgid"
-elsif platform?("centos", "redhat", "fedora")
+elsif platform?("centos", "redhat", "fedora", "amazon")
   package "mod_fcgid" do
     notifies :run, resources(:execute => "generate-module-list"), :immediately
   end

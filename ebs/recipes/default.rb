@@ -1,6 +1,14 @@
 package "xfsprogs"
-package "xfsdump"
-package "xfslibs-dev"
+# TODO: Find out if xfsdump is in Amazon Linux within another package.
+# It's in CentOS 6 / RHEL 6, which makes its absence from Amazon Linux
+# even more confusing. For now, exclude it for Amazon Linux.
+case node[:platform]
+when 'debian','ubuntu'
+  package "xfsdump"
+  package "xfslibs-dev"
+when 'redhat','centos','scientific','fedora','amazon'
+  package "xfsprogs-devel"
+end
 
 # VirtIO device name mapping
 if BlockDevice.on_kvm?

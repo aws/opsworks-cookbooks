@@ -7,11 +7,22 @@ include_recipe "packages"
 include_recipe "gem_support"
 include_recipe node[:scalarium][:ruby_stack]
 
-node[:dependencies][:debs].each do |deb, version|
-  Chef::Log.info("preparing installation of dependency: dpkg #{deb.inspect}")
-  package deb do
-    action :upgrade
-    version(version)
+case node[:platform]
+when "centos", "redhat", "fedora", "suse", "amazon"
+  node[:dependencies][:rpms].each do |rpm, version|
+    Chef::Log.info("preparing installation of dependency: rpm #{rpm.inspect}")
+    package rpm do
+      action :upgrade
+      version(version)
+    end
+  end
+when "debian", "ubuntu"
+  node[:dependencies][:debs].each do |deb, version|
+    Chef::Log.info("preparing installation of dependency: dpkg #{deb.inspect}")
+    package deb do
+      action :upgrade
+      version(version)
+    end
   end
 end
 

@@ -19,7 +19,7 @@
 
 package "apache2" do
   case node[:platform]
-  when "centos","redhat","fedora","suse"
+  when "centos","redhat","fedora","suse","amazon"
     package_name "httpd"
   when "debian","ubuntu"
     package_name "apache2"
@@ -33,7 +33,7 @@ service "apache2" do
   action :enable
 end
 
-if platform?("centos", "redhat", "fedora", "suse")
+if platform?("centos", "redhat", "fedora", "suse", "amazon")
   directory node[:apache][:log_dir] do
     mode 0755
     action :create
@@ -101,7 +101,7 @@ end
 
 template "apache2.conf" do
   case node[:platform]
-  when "centos","redhat","fedora"
+  when "centos","redhat","fedora","amazon"
     path "#{node[:apache][:dir]}/conf/httpd.conf"
   when "debian","ubuntu"
     path "#{node[:apache][:dir]}/apache2.conf"
@@ -164,7 +164,7 @@ include_recipe "apache2::mod_env"
 include_recipe "apache2::mod_mime"
 include_recipe "apache2::mod_negotiation"
 include_recipe "apache2::mod_setenvif"
-include_recipe "apache2::mod_log_config" if platform?("centos", "redhat", "suse")
+include_recipe "apache2::mod_log_config" if platform?("centos", "redhat", "suse", "amazon")
 include_recipe "apache2::mod_ssl"
 include_recipe "apache2::mod_expires"
 include_recipe "apache2::logrotate"

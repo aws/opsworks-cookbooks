@@ -9,7 +9,7 @@ version           "0.11"
   depends cb
 end
 
-%w{ redhat centos ubuntu debian }.each do |os|
+%w{ redhat centos amazon ubuntu debian }.each do |os|
   supports os
 end
 
