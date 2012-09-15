@@ -1,6 +1,14 @@
 # Apache request monitoring with http://vuksan.com/linux/ganglia/index.html
 
-package "logtail"
+package "logtail" do
+  case node[:platform]
+  when "centos","redhat","fedora","suse","amazon"
+    package_name "logcheck"
+  when "debian","ubuntu"
+    package_name "logtail"
+  end
+  action :install
+end
 
 cookbook_file "/tmp/ganglia-logtailer.tar.gz" do
   source "ganglia-logtailer.tar.gz"
