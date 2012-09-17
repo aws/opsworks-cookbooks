@@ -49,10 +49,10 @@ else
       action :upgrade
     end
   end
-end
 
-if node[:passenger][:version] >= '3.0.0'
-  package 'libcurl4-openssl-dev'
+  if node[:passenger][:version] >= '3.0.0'
+    package 'libcurl4-openssl-dev'
+  end
 end
 
 ruby_block "ensure only our passenger version is installed by deinstalling any other version" do
