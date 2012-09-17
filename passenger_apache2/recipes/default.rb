@@ -33,9 +33,21 @@ if platform?("centos","redhat","amazon") and dist_only?
   return
 end
 
-%w{ apache2-prefork-dev libapr1-dev }.each do |pkg|
-  package pkg do
-    action :upgrade
+case node[:platform]
+when "centos","redhat","amazon"
+  package "httpd-devel"
+  if node['platform_version'].to_f < 6.0
+    package 'curl-devel'
+  else
+    package 'libcurl-devel'
+    package 'openssl-devel'
+    package 'zlib-devel'
+  end
+else
+  %w{ apache2-prefork-dev libapr1-dev }.each do |pkg|
+    package pkg do
+      action :upgrade
+    end
   end
 end
 
