@@ -19,7 +19,7 @@
 
 # Where the various parts of apache are
 case platform
-when "redhat","centos","fedora","suse"
+when "redhat","centos","fedora","suse","amazon"
   default[:apache][:dir]     = "/etc/httpd"
   default[:apache][:log_dir] = "/var/log/httpd"
   default[:apache][:user]    = "apache"
