@@ -170,7 +170,9 @@ include_recipe "apache2::mod_expires"
 include_recipe "apache2::logrotate"
 
 # uncomment to get working example site on centos/redhat/fedora
-#apache_site "default"
+if %w{centos redhat amazon}.include?(node[:platform])
+  apache_site "default"
+end
 
 service "apache2" do
   action :start
