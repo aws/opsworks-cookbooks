@@ -18,11 +18,7 @@ LockFile logs/accept.lock
 # PidFile: The file in which the server should record its process
 # identification number when it starts.
 #
-<% if node[:platform] == "debian" || node[:platform] == "ubuntu" -%>
-PidFile /var/run/apache2.pid
-<% else -%>
-PidFile logs/httpd.pid
-<% end -%>
+PidFile <%= node[:apache][:pid_file] %>
 
 #
 # Timeout: The number of seconds before receives and sends time out.

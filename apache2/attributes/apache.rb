@@ -20,23 +20,36 @@
 # Where the various parts of apache are
 case platform
 when "redhat","centos","fedora","suse","amazon"
-  default[:apache][:dir]     = "/etc/httpd"
-  default[:apache][:log_dir] = "/var/log/httpd"
-  default[:apache][:user]    = "apache"
-  default[:apache][:binary]  = "/usr/sbin/httpd"
-  default[:apache][:icondir] = "/var/www/icons/"
+  default[:apache][:dir]         = "/etc/httpd"
+  default[:apache][:log_dir]     = "/var/log/httpd"
+  default[:apache][:user]        = "apache"
+  default[:apache][:group]       = "apache"
+  default[:apache][:binary]      = "/usr/sbin/httpd"
+  default[:apache][:icondir]     = "/var/www/icons/"
+  default[:apache][:init_script] = "/etc/init.d/httpd"
+  if node['platform_version'].to_f >= 6 then
+    default[:apache][:pid_file] = '/var/run/httpd/httpd.pid'
+  else
+    default[:apache][:pid_file] = '/var/run/httpd.pid'
+  end
 when "debian","ubuntu"
-  default[:apache][:dir]     = "/etc/apache2"
-  default[:apache][:log_dir] = "/var/log/apache2"
-  default[:apache][:user]    = "www-data"
-  default[:apache][:binary]  = "/usr/sbin/apache2"
-  default[:apache][:icondir] = "/usr/share/apache2/icons"
+  default[:apache][:dir]         = "/etc/apache2"
+  default[:apache][:log_dir]     = "/var/log/apache2"
+  default[:apache][:user]        = "www-data"
+  default[:apache][:group]       = "www-data"
+  default[:apache][:binary]      = "/usr/sbin/apache2"
+  default[:apache][:icondir]     = "/usr/share/apache2/icons"
+  default[:apache][:init_script] = "/etc/init.d/apache2"
+  default[:apache][:pid_file]    = '/var/run/apache2.pid'
 else
-  default[:apache][:dir]     = "/etc/apache2"
-  default[:apache][:log_dir] = "/var/log/apache2"
-  default[:apache][:user]    = "www-data"
-  default[:apache][:binary]  = "/usr/sbin/apache2"
-  default[:apache][:icondir] = "/usr/share/apache2/icons"
+  default[:apache][:dir]         = "/etc/apache2"
+  default[:apache][:log_dir]     = "/var/log/apache2"
+  default[:apache][:user]        = "www-data"
+  default[:apache][:group]       = "www-data"
+  default[:apache][:binary]      = "/usr/sbin/apache2"
+  default[:apache][:icondir]     = "/usr/share/apache2/icons"
+  default[:apache][:init_script] = "/etc/init.d/apache2"
+  default[:apache][:pid_file]    = "logs/httpd.pid"
 end
 
 ###

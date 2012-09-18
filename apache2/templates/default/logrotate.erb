@@ -1,4 +1,4 @@
-/var/log/apache2/*.log {
+<%= node[:apache][:log_dir] %>/*.log {
         <%= node[:apache][:logrotate][:schedule] %>
         missingok
         rotate <%= node[:apache][:logrotate][:rotate] %>
@@ -10,8 +10,8 @@
         create <%= node[:apache][:logrotate][:mode] %> <%= node[:apache][:logrotate][:owner] %> <%= node[:apache][:logrotate][:group] %>
         sharedscripts
         postrotate
-                if [ -f "`. /etc/apache2/envvars ; echo ${APACHE_PID_FILE:-/var/run/apache2.pid}`" ]; then
-                        /etc/init.d/apache2 reload > /dev/null
+                if [ -f "<%= node[:apache][:pid_file] %>" ]; then
+                        <%= node[:apache][:init_script] %> reload > /dev/null
                 fi
         endscript
 }
