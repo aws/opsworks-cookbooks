@@ -9,12 +9,25 @@ if node[:platform] == 'ubuntu' && node[:platform_version].to_i == 11
   execute 'apt-get -q -y install librrd4'
   execute 'dpkg -i /tmp/gmetad.deb'
 else
-  package 'gmetad'
+  package 'ganglia-gmetad'
 end
 
 # install old ganglia frontend to bring in all dependencies
-package "ganglia-webfrontend"
 package "ganglia-webfrontend" do
+  case node[:platform]
+  when "debian","ubuntu"
+    package_name "ganglia-webfrontend"
+  when "centos","redhat","amazon","scientific","fedora","oracle"
+    package_name "ganglia-web"
+  end
+end
+package "ganglia-webfrontend" do
+  case node[:platform]
+  when "debian","ubuntu"
+    package_name "ganglia-webfrontend"
+  when "centos","redhat","amazon","scientific","fedora","oracle"
+    package_name "ganglia-web"
+  end
   action :remove
 end
 
