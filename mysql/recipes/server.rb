@@ -25,7 +25,9 @@ if node[:platform] == 'ubuntu' && node[:platform_version].to_f < 10.04
   end
 end
 
-include_recipe "mysql::apparmor"
+if node[:platform] == 'ubuntu' || node[:platform] == 'debian'
+  include_recipe "mysql::apparmor"
+end
 
 include_recipe 'mysql::service'
 
@@ -45,3 +47,11 @@ service "mysql" do
   action :start
 end
 
+case node[:platform]
+when 'centos','redhat','amazon','fedora','scientific','oracle'
+  execute 'assign root password' do
+    command "/usr/bin/mysqladmin -u root password \"#{node[:mysql][:server_root_password]}\""
+    action :run
+    only_if "/usr/bin/mysql -u root -e 'show databases;'"
+  end
+end
