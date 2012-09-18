@@ -70,7 +70,7 @@ node[:ebs][:raids].each do |raid_device, options|
     end
   end
 
-  template "/etc/mdadm/mdadm.conf" do
+  template value_for_platform([ "centos", "redhat", "amazon" ]) => { "default" => "/etc/mdadm.conf" }, "default" => "/etc/mdadm/mdadm.conf" do
     source "mdadm.conf.erb"
     mode 0644
     owner 'root'
