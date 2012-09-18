@@ -16,19 +16,19 @@ node[:deploy].each do |application, deploy|
   when 'apache_passenger'
     include_recipe "#{node[:scalarium][:rails_stack][:service]}::service" if node[:scalarium][:rails_stack][:service]
 
-    link "/etc/apache2/sites-enabled/#{application}.conf" do
+    link "#{node[:apache][:dir]}/sites-enabled/#{application}.conf" do
       action :delete
       only_if do
-        File.exists?("/etc/apache2/sites-enabled/#{application}.conf")
+        File.exists?("#{node[:apache][:dir]}/sites-enabled/#{application}.conf")
       end
 
       notifies :restart, resources(:service => node[:scalarium][:rails_stack][:service])
     end
 
-    file "/etc/apache2/sites-available/#{application}.conf" do
+    file "#{node[:apache][:dir]}/sites-available/#{application}.conf" do
       action :delete
       only_if do
-        File.exists?("/etc/apache2/sites-available/#{application}.conf")
+        File.exists?("#{node[:apache][:dir]}/sites-available/#{application}.conf")
       end
     end
 
