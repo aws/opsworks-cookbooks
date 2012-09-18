@@ -38,7 +38,7 @@ when 'centos','redhat','amazon','fedora','scientific','oracle'
     'php-pear-Auth-SASL',
     'php-mysql',
     'php-mcrypt',
-    'php-memcache',
+    'php-pecl-memcache',
     'php-pear',
     'php-pear-XML-Parser',
     'php-pear-Mail-Mime',
