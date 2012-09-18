@@ -5,7 +5,12 @@ default[:ganglia][:original_datadir] = "/var/lib/ganglia"
 default[:ganglia][:tcp_client_port] = 8649
 default[:ganglia][:udp_client_port] = 8666
 default[:ganglia][:user] = 'ganglia'
-default[:ganglia][:rrds_user] = 'nobody'
+case node[:platform]
+when 'debian','ubuntu'
+  default[:ganglia][:rrds_user] = 'nobody'
+when 'centos','redhat','amazon','fedora','scientific','oracle'
+  default[:ganglia][:rrds_user] = 'ganglia'
+end
 
 default[:ganglia][:web][:url] = '/ganglia'
 default[:ganglia][:web][:user] = 'scalarium'
