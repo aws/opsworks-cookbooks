@@ -28,6 +28,12 @@ template "/etc/ganglia-webfrontend/apache.conf" do
 end
 
 link "/etc/apache2/conf.d/ganglia-webfrontend" do
+  case node[:platform]
+  when "debian","ubuntu"
+    target_file "/etc/apache2/conf.d/ganglia-webfrontend"
+  when "centos","redhat","amazon","fedora","scientific","oracle"
+    target_file "/etc/httpd/conf.d/ganglia-webfrontend.conf"
+  end
   to "/etc/ganglia-webfrontend/apache.conf"
   notifies :restart, resources(:service => "apache2")
 end
