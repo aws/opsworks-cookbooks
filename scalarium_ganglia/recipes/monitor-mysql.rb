@@ -1,4 +1,11 @@
-package "python-mysqldb"
+package "python-mysqldb" do
+  case node[:platform]
+  when "centos","redhat","fedora","scientific","amazon","oracle"
+    package_name "MySQL-python"
+  when "debian","ubuntu"
+    package_name "python-mysqldb"
+  end
+end
 
 template "/etc/ganglia/conf.d/mysql.pyconf" do
   source "mysql.pyconf.erb"
