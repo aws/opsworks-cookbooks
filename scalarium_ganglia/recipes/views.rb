@@ -2,7 +2,7 @@ directory node[:ganglia][:conf_dir] do
   mode '0755'
   action :create
   recursive true
-  owner 'www-data'
+  owner node[:ganglia][:web][:apache_user]
 end
 
 instances = {}
@@ -19,8 +19,8 @@ instances.keys.each do |instance_name|
   template "#{node[:ganglia][:datadir]}/conf/host_#{instance_name}.json" do
     source 'host_view_json.erb'
     mode '0644'
-    owner 'www-data'
-    group 'www-data'
+    owner node[:ganglia][:web][:apache_user]
+    group node[:ganglia][:web][:apache_group]
     variables({:roles => instances[instance_name]})
   end
 end
@@ -29,7 +29,7 @@ end
 template "#{node[:ganglia][:datadir]}/conf/view_overview.json" do
   source 'view_overview.json.erb'
   mode '0644'
-  owner 'www-data'
-  group 'www-data'
+  owner node[:ganglia][:web][:apache_user]
+  group node[:ganglia][:web][:apache_group]
   variables({:instances => instances})
 end

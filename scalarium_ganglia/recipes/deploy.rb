@@ -2,13 +2,13 @@ directory node[:ganglia][:events_dir] do
   mode '0755'
   action :create
   recursive true
-  owner 'www-data'
+  owner node[:ganglia][:web][:apache_user]
 end
 
 template "#{node[:ganglia][:events_dir]}/#{node[:scalarium][:sent_at]}_event.json" do
   source 'event.json.erb'
   mode '0644'
-  owner 'www-data'
+  owner node[:ganglia][:web][:apache_user]
   variables(:scalarium => node[:scalarium])
 end
 

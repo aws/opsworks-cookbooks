@@ -14,9 +14,11 @@ default[:ganglia][:web][:user] = 'scalarium'
 default[:ganglia][:web][:destdir] = '/usr/share/ganglia-webfrontend'
 case node[:platform]
 when 'debian','ubuntu'
-  default[:ganglia][:web][:apache_user] = 'www-data'
+  default[:ganglia][:web][:apache_user]  = 'www-data'
+  default[:ganglia][:web][:apache_group] = 'www-data'
 when 'centos','redhat','amazon','fedora','scientific','oracle'
-  default[:ganglia][:web][:apache_user] = 'apache'
+  default[:ganglia][:web][:apache_user]  = 'apache'
+  default[:ganglia][:web][:apache_group] = 'apache'
 end
 default[:ganglia][:web][:svn] = 'no'
 
