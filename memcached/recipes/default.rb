@@ -3,6 +3,14 @@ package "memcached" do
 end
 
 package "libmemcache-dev" do
+  case node[:platform]
+  when "debian","ubuntu"
+    package_name "libmemcache-dev"
+  when "centos","redhat","fedora","scientific","amazon","oracle"
+    # TODO: No such thing as libmemcache in centos repos. We'll try to use
+    # libmemcached, though we'll likely have to use another repo for this.
+    package_name "libmemcached-devel"
+  end
   action :upgrade
 end
 
@@ -25,12 +33,14 @@ template "/etc/memcached.conf" do
   notifies :restart, resources(:service => "memcached"), :immediately
 end
 
-template "/etc/default/memcached" do
-  source "memcached.default.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  notifies :restart, resources(:service => "memcached"), :immediately
+if node[:platform] == 'ubuntu' or node[:platform] == 'debian'
+  template "/etc/default/memcached" do
+    source "memcached.default.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    notifies :restart, resources(:service => "memcached"), :immediately
+  end
 end
 
 template "/etc/monit/conf.d/memcached.monitrc" do
