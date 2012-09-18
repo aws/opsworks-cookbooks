@@ -13,6 +13,10 @@ template "/usr/share/ganglia-webfrontend/conf.php" do
   mode '0644'
 end
 
+directory "/etc/ganglia-webfrontend" do
+  mode '0755'
+end
+
 execute "Update htpasswd secret" do
   command "htpasswd -b -c /etc/ganglia-webfrontend/htaccess #{node[:ganglia][:web][:user]} #{node[:ganglia][:web][:password]}"
 end

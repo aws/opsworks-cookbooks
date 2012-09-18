@@ -57,7 +57,12 @@ directory node[:ganglia][:events_dir] do
   mode '0755'
   action :create
   recursive true
-  owner 'www-data'
+  case node[:platform]
+  when 'debian','ubuntu'
+    owner 'www-data'
+  when 'centos','redhat','amazon','fedora','scientific','oracle'
+    owner 'apache'
+  end
 end
 
 # add config overrides
