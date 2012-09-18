@@ -3,7 +3,12 @@ include_attribute 'deploy::rails_stack'
 
 default[:scalarium][:deploy_user][:shell] = '/bin/zsh'
 default[:scalarium][:deploy_user][:user] = 'deploy'
-default[:scalarium][:deploy_user][:group] = 'www-data'
+case node[:platform]
+when 'debian','ubuntu'
+  default[:scalarium][:deploy_user][:group] = 'www-data'
+when 'centos','redhat','amazon','fedora','scientific','oracle'
+  default[:scalarium][:deploy_user][:group] = 'apache'
+end
 
 default[:scalarium][:rails][:ignore_bundler_groups] = ['test', 'development']
 
