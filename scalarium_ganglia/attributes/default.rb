@@ -12,7 +12,12 @@ default[:ganglia][:web][:user] = 'scalarium'
 
 # gweb2 Makefile config
 default[:ganglia][:web][:destdir] = '/usr/share/ganglia-webfrontend'
-default[:ganglia][:web][:apache_user] = 'www-data'
+case node[:platform]
+when 'debian','ubuntu'
+  default[:ganglia][:web][:apache_user] = 'www-data'
+when 'centos','redhat','amazon','fedora','scientific','oracle'
+  default[:ganglia][:web][:apache_user] = 'apache'
+end
 default[:ganglia][:web][:svn] = 'no'
 
 pw = String.new
