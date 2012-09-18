@@ -17,7 +17,7 @@ define :passenger_web_app do
     end
   end
 
-  template "/etc/apache2/ssl/#{deploy[:domains].first}.crt" do
+  template "#{node[:apache][:dir]}/ssl/#{deploy[:domains].first}.crt" do
     cookbook 'passenger_apache2'
     mode '0600'
     source "ssl.key.erb"
@@ -28,7 +28,7 @@ define :passenger_web_app do
     end
   end
 
-  template "/etc/apache2/ssl/#{deploy[:domains].first}.key" do
+  template "#{node[:apache][:dir]}/ssl/#{deploy[:domains].first}.key" do
     cookbook 'passenger_apache2'
     mode '0600'
     source "ssl.key.erb"
@@ -39,7 +39,7 @@ define :passenger_web_app do
     end
   end
 
-  template "/etc/apache2/ssl/#{deploy[:domains].first}.ca" do
+  template "#{node[:apache][:dir]}/ssl/#{deploy[:domains].first}.ca" do
     cookbook 'passenger_apache2'
     mode '0600'
     source "ssl.key.erb"
@@ -53,7 +53,7 @@ define :passenger_web_app do
   # move away default virtual host so that the Rails app becomes the default virtual host
   execute "mv away default virtual host" do
     action :run
-    command "mv /etc/apache2/sites-enabled/000-default /etc/apache2/sites-enabled/zzz-default"
+    command "mv #{node[:apache][:dir]}/sites-enabled/000-default #{node[:apache][:dir]}/sites-enabled/zzz-default"
     only_if do
       File.exists?("#{node[:apache][:dir]}/sites-enabled/000-default")
     end

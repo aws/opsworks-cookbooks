@@ -64,10 +64,10 @@
   
   SSLEngine on
   SSLProxyEngine on
-  SSLCertificateFile /etc/apache2/ssl/<%= @params[:server_name] %>.crt
-  SSLCertificateKeyFile /etc/apache2/ssl/<%= @params[:server_name] %>.key
+  SSLCertificateFile <%= node[:apache][:dir] %>/ssl/<%= @params[:server_name] %>.crt
+  SSLCertificateKeyFile <%= node[:apache][:dir] %>/ssl/<%= @params[:server_name] %>.key
   <% if @params[:ssl_certificate_ca] -%>
-  SSLCACertificateFile /etc/apache2/ssl/<%= @params[:server_name] %>.ca
+  SSLCACertificateFile <%= node[:apache][:dir] %>/ssl/<%= @params[:server_name] %>.ca
   <% end -%>
   SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown downgrade-1.0 force-response-1.0
   
