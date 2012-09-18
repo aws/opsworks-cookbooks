@@ -21,14 +21,14 @@ execute "Update htpasswd secret" do
   command "htpasswd -b -c /etc/ganglia-webfrontend/htaccess #{node[:ganglia][:web][:user]} #{node[:ganglia][:web][:password]}"
 end
 
-link "/etc/apache2/conf.d/ganglia-webfrontend" do
-  to "/etc/ganglia-webfrontend/apache.conf"
-  notifies :restart, resources(:service => "apache2")
-end
-
 template "/etc/ganglia-webfrontend/apache.conf" do
   source "apache.conf.erb"
   mode '0644'
+  notifies :restart, resources(:service => "apache2")
+end
+
+link "/etc/apache2/conf.d/ganglia-webfrontend" do
+  to "/etc/ganglia-webfrontend/apache.conf"
   notifies :restart, resources(:service => "apache2")
 end
 
