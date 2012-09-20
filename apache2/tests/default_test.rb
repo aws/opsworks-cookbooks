@@ -3,7 +3,14 @@ class Apache2Test < MiniTest::Chef::TestCase
   include MiniTest::Chef::Assertions
 
   def test_apache2_package_existence
-    package('apache2').must_be_installed
+    case node[:platform]
+    when "debian","ubuntu"
+      package('apache2').must_be_installed
+    when "centos","fedora","amazon","redhat","scientific","oracle"
+      package('httpd').must_be_installed
+    else
+      fail_test
+    end
   end
 
   def test_apache2_log_directory_existence
@@ -11,12 +18,20 @@ class Apache2Test < MiniTest::Chef::TestCase
   end
 
   def test_apache2_log_directory_permissions
-    directory(node[:apache][:log_dir]).must_have(:mode, "0755")
+    directory(node[:apache][:log_dir]).must_have(:mode, "755")
   end
 
   def test_apache2_service_started_and_enabled
-    service("apache2").must_be_enabled
-    service("apache2").must_be_running
+    case node[:platform]
+    when "debian","ubuntu"
+      service("apache2").must_be_enabled
+      service("apache2").must_be_running
+    when "centos","fedora","amazon","redhat","scientific","oracle"
+      service("httpd").must_be_enabled
+      service("httpd").must_be_running
+    else
+      fail_test
+    end
   end
 
   def test_apache2_module_conf_generate_pl_existence
@@ -26,30 +41,30 @@ class Apache2Test < MiniTest::Chef::TestCase
   def test_apache2_debian_style_directories_existence_and_permissions
     %w{sites-available sites-enabled mods-available mods-enabled}.each do |dir|
       directory("#{node[:apache][:dir]}/#{dir}").must_exist
-      directory("#{node[:apache][:dir]}/#{dir}").must_have(:mode, "0755").and(:owner, "root").and(:group, "root")
+      directory("#{node[:apache][:dir]}/#{dir}").must_have(:mode, "755").and(:owner, "root").and(:group, "root")
     end
   end
 
   def test_apache2_script_existence_and_permissions
     %w{a2ensite a2dissite a2enmod a2dismod}.each do |modscript|
-      file("/usr/sbin/#{modscript}").must_exist.with(:owner, "root").and(:mode, "0755").and(:group, 'root")
+      file("/usr/sbin/#{modscript}").must_exist.with(:owner, "root").and(:mode, "755").and(:group, "root")
     end
   end
 
   def test_apache2_ssl_directory_existence_and_permissions
-    directory("#{node[:apache][:dir]}/ssl").must_exist.with(:mode, '0755').and(:owner, "root").and(:group, "root")
+    directory("#{node[:apache][:dir]}/ssl").must_exist.with(:mode, '755').and(:owner, "root").and(:group, "root")
   end
 
   def test_apache2_httpd_conf_existence_and_permissions
     case node[:platform]
     when "centos","redhat","fedora","amazon"
-      file("#{node[:apache][:dir]}/conf/httpd.conf").must_exist.with(:mode, "0644").and(:owner, "root").and(:group, "root")
+      file("#{node[:apache][:dir]}/conf/httpd.conf").must_exist.with(:mode, "644").and(:owner, "root").and(:group, "root")
     when "debian","ubuntu"
-      file("#{node[:apache][:dir]}/apache2.conf").must_exist.with(:mode, "0644").and(:owner, "root").and(:group, "root")
+      file("#{node[:apache][:dir]}/apache2.conf").must_exist.with(:mode, "644").and(:owner, "root").and(:group, "root")
     else
       # Fail the test - we want to make sure we're explicit with what
       # operating systems are supported by our tests.
-      assert_equal(3, nil)
+      fail_test
     end
   end
 
@@ -67,19 +82,19 @@ class Apache2Test < MiniTest::Chef::TestCase
   end
 
   def test_apache2_security_file_existence_and_permissions
-    file("#{node[:apache][:dir]}/conf.d/security").must_exist.with(:mode, "0644").and(:owner, "root").and(:group, "root")
+    file("#{node[:apache][:dir]}/conf.d/security").must_exist.with(:mode, "644").and(:owner, "root").and(:group, "root")
   end
 
   def test_apache2_charset_file_existence_and_permissions
-    file("#{node[:apache][:dir]}/conf.d/charset").must_exist.with(:mode, "0644").and(:owner, "root").and(:group, "root")
+    file("#{node[:apache][:dir]}/conf.d/charset").must_exist.with(:mode, "644").and(:owner, "root").and(:group, "root")
   end
 
   def test_apache2_ports_conf_file_existence_and_permissions
-    file("#{node[:apache][:dir]}/ports.conf").must_exist.with(:mode, "0644").and(:owner, "root").and(:group, "root")
+    file("#{node[:apache][:dir]}/ports.conf").must_exist.with(:mode, "644").and(:owner, "root").and(:group, "root")
   end
 
   def test_apache2_default_site_file_existence_and_permissions
-    file("#{node[:apache][:dir]}/sites-available/default").must_exist.with(:mode, "0644").and(:owner, "root").and(:group, "root")
+    file("#{node[:apache][:dir]}/sites-available/default").must_exist.with(:mode, "644").and(:owner, "root").and(:group, "root")
   end
 
   def test_apache2_docroot_index_html_must_not_exist
@@ -93,5 +108,9 @@ class Apache2Test < MiniTest::Chef::TestCase
 
   def test_apache2_access_via_tcp_on_127_0_0_1_port_80
     access_apache2_over_tcp('127.0.0.1', '80')
+  end
+
+  def fail_test
+    assert_equal(3, nil)
   end
 end
