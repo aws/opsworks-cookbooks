@@ -54,7 +54,7 @@ if platform?("centos", "redhat", "fedora", "suse", "amazon")
       action :create
     end
   end
-    
+
   execute "generate-module-list" do
     if node[:kernel][:machine] == "x86_64" 
       libdir = "lib64"
