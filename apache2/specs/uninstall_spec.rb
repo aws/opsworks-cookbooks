@@ -1,8 +1,10 @@
-class Apache2UninstallTest < MiniTest::Chef::TestCase
+require 'minitest/spec'
+
+describe 'apache2::uninstall'
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
-  def test_apache2_service_stopped
+  it 'should stop apache2' do
     case node[:platform]
     when "debian","ubuntu"
       service("apache2").wont_be_running
@@ -14,7 +16,7 @@ class Apache2UninstallTest < MiniTest::Chef::TestCase
     end
   end
 
-  def test_apache2_package_removed
+  it 'should remove the apache2 package' do
     case node[:platform]
     when "debian","ubuntu"
       package("apache2").wont_be_installed
