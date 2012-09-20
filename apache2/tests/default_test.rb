@@ -14,7 +14,8 @@ class Apache2Test < MiniTest::Chef::TestCase
     directory(node[:apache][:log_dir]).must_have(:mode, "0755")
   end
 
-  def test_apache2_service_started
+  def test_apache2_service_started_and_enabled
+    service("apache2").must_be_enabled
     service("apache2").must_be_running
   end
 
