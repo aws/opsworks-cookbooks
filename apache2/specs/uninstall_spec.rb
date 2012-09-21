@@ -1,6 +1,6 @@
 require 'minitest/spec'
 
-describe 'apache2::uninstall'
+describe_recipe 'apache2::uninstall' do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
