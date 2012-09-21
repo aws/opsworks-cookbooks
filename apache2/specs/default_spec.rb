@@ -12,7 +12,7 @@ describe_recipe 'apache2::default' do
       when "centos","fedora","amazon","redhat","scientific","oracle"
         package('httpd').must_be_installed
       else
-        fail_test
+        fail_test "Your OS (#{node[:platform]}) is not supported."
       end
     end
   end
@@ -48,7 +48,7 @@ describe_recipe 'apache2::default' do
         service("httpd").must_be_enabled
         service("httpd").must_be_running
       else
-        fail_test
+        fail_test "Your OS (#{node[:platform]}) is not supported."
       end
     end
   end
@@ -73,7 +73,7 @@ describe_recipe 'apache2::default' do
       else
         # Fail the test - we want to make sure we're explicit with what
         # operating systems are supported by our tests.
-        fail_test
+        fail_test "Your OS (#{node[:platform]}) is not supported."
       end
     end
 
@@ -84,7 +84,7 @@ describe_recipe 'apache2::default' do
       when "debian","ubuntu"
         file("#{node[:apache][:dir]}/apache2.conf").must_include "PidFile #{node[:apache][:pid_file]}"
       else
-        fail_test
+        fail_test "Your OS (#{node[:platform]}) is not supported."
       end
     end
 
@@ -120,7 +120,7 @@ describe_recipe 'apache2::default' do
                "Apache is not accepting connections on #{host}:#{port}"
   end
 
-  def fail_test
-    assert_equal(3, nil)
+  def fail_test(msg = nil)
+    assert_equal(3, nil, msg)
   end
 end
