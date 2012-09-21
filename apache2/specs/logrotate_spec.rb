@@ -16,10 +16,9 @@ describe_recipe 'apache2::logrotate' do
   it 'should be pointing to the correct log directory' do
     case node[:platform]
     when 'debian','ubuntu'
-      file("/etc/logrotate.d/apache2").must_include "#{node[:apache][:log_dir]}/*.log"
+      file("/etc/logrotate.d/apache2").must_include node[:apache][:log_dir]
     when 'centos','redhat','amazon','fedora','scientific','oracle'
-      file("/etc/logrotate.d/httpd").must_include "#{node[:apache][:log_dir]}/
-*.log"
+      file("/etc/logrotate.d/httpd").must_include node[:apache][:log_dir]
     end
   end
 end
