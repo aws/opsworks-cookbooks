@@ -6,7 +6,7 @@ service "gmond" do
   action :nothing
 end
 
-monitoring_master = node[:scalarium][:roles]['monitoring-master'][:instances].collect{|instance, names| names["private_dns_name"]}.first rescue nil
+monitoring_master = node[:scalarium][:roles]['monitoring-master'][:instances].collect{|instance, names| names["private_ip"]}.first rescue nil
 
 template "/etc/ganglia/gmond.conf" do
   source "gmond.conf.erb"
