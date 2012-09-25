@@ -1,12 +1,21 @@
 include_recipe "mysql::percona_repository"
 
-if node[:percona][:version] =~ /^5\.5\..*/
-  package 'libaio1'
-end 
+if platform?('debian','ubuntu')
+  if node[:percona][:version] =~ /^5\.5\..*/
+    package 'libaio1'
+  end 
+end
 
 execute "Install Percona XtraDB Server" do
   cwd "#{node[:percona][:tmp_dir]}/#{node[:lsb][:release]}_#{node[:scalarium][:instance][:architecture]}"
-  command "dpkg -i percona-server-server-*"
+  command value_for_platform(
+    %w{debian ubuntu} => {
+      'default' => "dpkg -i percona-server-server-*"
+    },
+    %w{centos amazon redhat fedora oracle scientific} => {
+      'default' => "rpm -Uvh Percona-Server-shared-* Percona-Server-server-*"
+    }
+  )
 end
 
 if node[:platform] == 'ubuntu' && node[:platform_version].to_f >= 10.04

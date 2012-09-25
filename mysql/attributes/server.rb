@@ -51,7 +51,12 @@ default[:mysql][:clients] = []
 
 # Percona XtraDB
 default[:mysql][:use_percona_xtradb] = false
-default[:scalarium][:instance][:architecture] = `dpkg --print-architecture`.chomp
+case node[:platform]
+when 'debian','ubuntu'
+  default[:scalarium][:instance][:architecture] = `dpkg --print-architecture`.chomp
+when 'centos','amazon','redhat','fedora','scientific','oracle'
+  default[:scalarium][:instance][:architecture] = node[:kernel][:machine]
+end
 
 default[:percona] = {}
 default[:percona][:tmp_dir] = '/tmp/percona-server'
