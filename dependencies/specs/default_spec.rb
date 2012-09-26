@@ -8,9 +8,9 @@ describe_recipe 'dependencies::default' do
     packages = {}
     case node[:platform]
     when "debian","ubuntu"
-      packages = node[:dependencies][:rpms]
-    when "centos","redhat","amazon","scientific","fedora","oracle"
       packages = node[:dependencies][:debs]
+    when "centos","redhat","amazon","scientific","fedora","oracle"
+      packages = node[:dependencies][:rpms]
     end
 
     packages.each do |pkg, version|
