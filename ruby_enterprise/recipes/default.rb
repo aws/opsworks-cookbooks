@@ -19,30 +19,47 @@
 # limitations under the License.
 #
 
-arch = RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'
+case node[:platform]
+when "debian","ubuntu"
+  arch = RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'
 
-remote_file "/tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}" do
-  source node[:ruby_enterprise][:url][arch]
-  not_if { ::File.exists?("/tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}") }
-end
-
-package "ruby1.9" do
-  action :remove
-  ignore_failure true
-end
-
-execute "Install Ruby Enterprise Edition" do
-  cwd "/tmp"
-  command "dpkg -i /tmp/#{File.basename(node[:ruby_enterprise][:url][arch])} && (/usr/local/bin/gem uninstall -a bundler || echo '1')"
-
-  not_if do
-    ::File.exists?("/usr/local/bin/ruby") &&
-    system("/usr/local/bin/ruby -v | grep -q '#{node[:ruby_enterprise][:version]}$'")
+  remote_file "/tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}" do
+    source node[:ruby_enterprise][:url][arch]
+    not_if { ::File.exists?("/tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}") }
   end
-end
 
-if node[:platform].eql?('ubuntu') && ['11.10', '12.04'].include?("#{node[:platform_version]}")
-  package 'libssl0.9.8'
+  package "ruby1.9" do
+    action :remove
+    ignore_failure true
+  end
+
+  execute "Install Ruby Enterprise Edition" do
+    cwd "/tmp"
+    command "dpkg -i /tmp/#{File.basename(node[:ruby_enterprise][:url][arch])} && (/usr/local/bin/gem uninstall -a bundler || echo '1')"
+
+    not_if do
+      ::File.exists?("/usr/local/bin/ruby") &&
+      system("/usr/local/bin/ruby -v | grep -q '#{node[:ruby_enterprise][:version]}$'")
+    end
+  end
+
+  if node[:platform].eql?('ubuntu') && ['11.10', '12.04'].include?("#{node[:platform_version]}")
+    package 'libssl0.9.8'
+  end
+when "centos","amazon","redhat","fedora","scientific","oracle"
+  arch = node[:kernel][:machine]
+  remote_file "/tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}"])}" do
+    source node[:ruby_enterprise][:url][arch]
+    not_if { ::File.exists?("/tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}") }
+  end
+
+  package "ruby19" do
+    action :remove
+  end
+
+  rpm_package 'ruby-enterprise' do
+    source "/tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}"
+  end
 end
 
 template "/etc/environment" do
