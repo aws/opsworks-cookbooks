@@ -21,7 +21,7 @@ globals {
  * of a <CLUSTER> tag.  If you do not specify a cluster tag, then all <HOSTS> will 
  * NOT be wrapped inside of a <CLUSTER> tag. */ 
 cluster { 
-  name = "<%= @cluster_name.gsub(/[\(\)\[\]]/,'') %>"
+  name = "<%= @cluster_name.gsub(/[\(\)\[\]\&]/,'') %>"
   owner = "Scalarium" 
   latlong = "unspecified" 
   url = "unspecified" 
@@ -40,7 +40,7 @@ udp_send_channel {
 }
 <% end %>
 
-<% if @monitoring_master && @monitoring_master == node[:scalarium][:instance][:private_dns_name] %>
+<% if @monitoring_master && @monitoring_master == node[:scalarium][:instance][:private_ip] %>
 udp_recv_channel {
   port = <%= node[:ganglia][:udp_client_port] %>
   family = inet4
