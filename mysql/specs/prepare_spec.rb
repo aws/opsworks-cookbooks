@@ -1,6 +1,6 @@
 require 'minitest/spec'
 
-describe_recipe 'mysql::prepare', :if => platform?('debian','ubuntu') do
+describe_recipe 'mysql::prepare', :if => ['debian','ubuntu'].include?(node[:platform]) do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
