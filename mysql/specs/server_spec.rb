@@ -4,7 +4,7 @@ describe_recipe 'mysql::server' do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
-  context 'init script on ubuntu machines < 10.04' do
+  describe 'init script on ubuntu machines < 10.04' do
     it 'creates a patch file for the init script' do
       skip unless node[:platform] == 'ubuntu' && node[:platform_version].to_f < 10.04
       file('/tmp/mysql_init.patch').must_exist

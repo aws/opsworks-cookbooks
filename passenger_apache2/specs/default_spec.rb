@@ -4,14 +4,14 @@ describe_recipe 'passenger_apache2::default' do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
-  context 'distribution packages only' do
+  describe 'distribution packages only' do
     it 'installs rubygem-passenger package if RHEL based' do
       skip unless node[:packages][:dist_only]
       package('rubygem-passenger').must_be_installed
     end
   end
 
-  context 'compilation is allowed' do
+  describe 'compilation is allowed' do
     it 'installs devel packages for building rubygem-passenger' do
       skip unless node[:packages][:dist_only]
       case node[:platform]

@@ -4,7 +4,7 @@ describe_recipe 'ruby::default' do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
-  context 'debian systems' do
+  describe 'debian systems' do
     it 'creates deb file' do
       skip unless ['debian','ubuntu'].include?(node[:platform]) 
       file(File.join('/tmp', node[:ruby][:deb])).must_exist
@@ -16,7 +16,7 @@ describe_recipe 'ruby::default' do
     end
   end
 
-  context 'rhel based systems' do
+  describe 'rhel based systems' do
     it 'creates rpm file' do
       skip unless ['centos','redhat','amazon'].include?(node[:platform])
       file(File.join('/tmp', node[:ruby][:rpm])).must_exist
