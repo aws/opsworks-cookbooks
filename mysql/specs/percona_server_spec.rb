@@ -4,11 +4,13 @@ describe_recipe 'mysql::percona_server' do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
-  it 'installs dependencies', :if => ['debian', 'ubuntu'].include?(node[:platform]) do
+  it 'installs dependencies' do
+    skip unless ['debian','ubuntu'].include?(node[:platform])
     package('libaio1').must_be_installed
   end
 
-  it 'fixes percona issues if platform is ubuntu and is lucid or newer', :if => node[:platform] == 'ubuntu' && node[:platform_version].to_f >= 10.04 do
+  it 'fixes percona issues if platform is ubuntu and is lucid or newer' do
+    skip unless node[:platform] == 'ubuntu' && node[:platform_version].to_f >= 10.04
     if File.directory?('/etc/init') && !File.exists?('/etc/init/mysql.conf')
       file('/etc/init/mysql.conf').must_exist.with(:mode, '644').and(:owner, 'root').and(:group, 'root')
     end
