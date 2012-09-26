@@ -38,5 +38,6 @@ describe_recipe 'haproxy::default' do
       file('/etc/haproxy/haproxy.cfg').must_include node[:haproxy][:stats_user]
       file('/etc/haproxy/haproxy.cfg').must_include node[:haproxy][:stats_password]
       file('/etc/haproxy/haproxy.cfg').must_include node[:haproxy][:stats_url]
+    end
   end
 end
