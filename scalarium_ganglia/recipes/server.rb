@@ -6,7 +6,7 @@ if node[:platform] == 'ubuntu' && node[:platform_version].to_i == 11
     not_if { ::File.exists?('/tmp/gmetad.deb') }
   end
 
-  execute 'apt-get -q -y install librrd4'
+  package 'librrd4'
   execute 'dpkg -i /tmp/gmetad.deb'
 else
   package 'ganglia-gmetad'
