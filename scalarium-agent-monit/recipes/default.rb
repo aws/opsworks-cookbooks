@@ -1,7 +1,7 @@
 
 package "monit"
 
-directory "/etc/monit/conf.d" do
+directory node[:monit][:conf_dir] do
   group "root"
   owner "root"
   action :create
@@ -10,21 +10,29 @@ end
 
 include_recipe "scalarium-agent-monit::service"
 
-template "/etc/default/monit" do
-  source "monit.erb"
-  mode 0644
+if platform?('debian','ubuntu')
+  template "/etc/default/monit" do
+    source "monit.erb"
+    mode 0644
+  end
 end
 
-template "/etc/monit/monitrc" do
+template node[:monit][:conf] do
   source "monitrc.erb"
   mode 0644
   notifies :restart, resources(:service => "monit")
 end
 
-template "/etc/monit/conf.d/scalarium_agent.monitrc" do
+template File.join(node[:monit][:conf_dir], "scalarium_agent.monitrc") do
   source "scalarium_agent.monitrc.erb"
   mode 0644
   notifies :restart, resources(:service => "monit")
+end
+
+if platform?('centos','redhat','amazon','scientific','fedora','oracle')
+  file File.join(node[:monit][:conf_dir], 'logging') do
+    action :remove
+  end
 end
 
 service "monit" do

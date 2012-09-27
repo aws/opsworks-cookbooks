@@ -4,6 +4,6 @@ set eventqueue
     basedir /var/monit
     slots 100
 set logfile syslog
-Include /etc/monit/conf.d/*.monitrc
+Include <%= node[:monit][:conf_dir] %>/*.monitrc
 set httpd port 2812 and use the address localhost
   allow localhost
