@@ -23,9 +23,9 @@ case node[:platform]
 when "debian","ubuntu"
   arch = RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'
 
-  remote_file "/tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}" do
+  remote_file File.join('/tmp', File.basename(node[:ruby_enterprise][:url][arch])) do
     source node[:ruby_enterprise][:url][arch]
-    not_if { ::File.exists?("/tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}") }
+    not_if { ::File.exists?(File.join('/tmp', File.basename(node[:ruby_enterprise][:url][arch]))) }
   end
 
   package "ruby1.9" do
@@ -48,9 +48,9 @@ when "debian","ubuntu"
   end
 when "centos","amazon","redhat","fedora","scientific","oracle"
   arch = node[:kernel][:machine]
-  remote_file "/tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}"])}" do
+  remote_file File.join('/tmp', File.basename(node[:ruby_enterprise][:url][arch])) do
     source node[:ruby_enterprise][:url][arch]
-    not_if { ::File.exists?("/tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}") }
+    not_if { ::File.exists?(File.join('/tmp', File.basename(node[:ruby_enterprise][:url][arch]))) }
   end
 
   package "ruby19" do
@@ -58,7 +58,7 @@ when "centos","amazon","redhat","fedora","scientific","oracle"
   end
 
   rpm_package 'ruby-enterprise' do
-    source "/tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}"
+    source File.join('/tmp', File.basename(node[:ruby_enterprise][:url][arch]))
   end
 end
 
