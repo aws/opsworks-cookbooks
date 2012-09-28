@@ -6,3 +6,6 @@ default[:scalarium_nodejs][:pkgrelease] = '1'
 arch = RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'
 default[:scalarium_nodejs][:deb] = "nodejs_#{node[:scalarium_nodejs][:version]}-#{node[:scalarium_nodejs][:pkgrelease]}_#{arch}.deb"
 default[:scalarium_nodejs][:deb_url] = "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/#{node[:scalarium_nodejs][:deb]}"
+
+default[:scalarium_nodejs][:rpm] = "nodejs-#{node[:scalarium_nodejs][:version]}-#{node[:scalarium_nodejs][:pkgrelease]}.#{node[:kernel][:machine]}.rpm"
+default[:scalarium_nodejs][:rpm_url] = "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/#{node[:scalarium_nodejs][:rpm]}"
