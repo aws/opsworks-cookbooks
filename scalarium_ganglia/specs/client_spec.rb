@@ -29,7 +29,7 @@ describe_recipe 'scalarium_ganglia::client' do
 
   describe 'all other debian based systems' do
     it 'installs ganglia-monitor' do
-      skip if node[:platform] == 'ubuntu' && node[:platform_version].to_i == 11
+      skip unless (node[:platform] == 'ubuntu' && node[:platform_version].to_i != 11) || (node[:platform] == 'debian')
       package('ganglia-monitor').must_be_installed
     end
   end
