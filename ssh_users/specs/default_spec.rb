@@ -14,7 +14,7 @@ describe_recipe 'ssh_users::default' do
 
   it 'includes the sudoers' do
     node[:sudoers].each do |sudoer|
-      file('/etc/sudoers').must_include sudoer
+      file('/etc/sudoers').must_include sudoer[:name]
     end
   end
 end
