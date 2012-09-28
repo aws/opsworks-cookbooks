@@ -24,4 +24,4 @@ default[:ruby][:deb_url] = "http://peritor-assets.s3.amazonaws.com/#{node[:platf
 
 rhel_arch = RUBY_PLATFORM.match(/64/) ? 'x86_64' : 'i686'
 default[:ruby][:rpm] = "ruby#{node[:ruby][:major_version].delete('.')}-#{node[:ruby][:full_version]}-#{node[:ruby][:patch]}-#{node[:ruby][:pkgrelease]}.#{rhel_arch}.rpm"
-default[:ruby][:rpm_url] = "http://scalarium-attachments-bud.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/#{node[:ruby][:rpm]}"
+default[:ruby][:rpm_url] = "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/#{node[:ruby][:rpm]}"
