@@ -19,7 +19,7 @@ end
 
 template node[:monit][:conf] do
   source "monitrc.erb"
-  mode 0644
+  mode 0600
   notifies :restart, resources(:service => "monit")
 end
 
