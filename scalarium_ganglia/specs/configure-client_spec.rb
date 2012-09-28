@@ -18,7 +18,7 @@ describe_recipe 'scalarium_ganglia::configure-client' do
     file('/etc/ganglia/gmond.conf').must_include node[:scalarium][:cluster][:name]
   end
 
-  it 'makes sure gmond is stopped if there's no monitoring master' do
+  it 'makes sure gmond is stopped if there is no monitoring master' do
     monitoring_master = node[:scalarium][:roles]['monitoring-master'][:instances].collect{|instance, names| names["private_ip"]}.first rescue nil
     skip if monitoring_master
     service('gmond').wont_be_running

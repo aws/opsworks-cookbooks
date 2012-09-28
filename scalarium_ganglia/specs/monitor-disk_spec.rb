@@ -19,7 +19,7 @@ describe_recipe 'scalarium_ganglia::monitor-disk' do
       disks = disks + node[:ebs][:devices].keys
     end
 
-    disks = disks.flatten.map { |x| x.sub('/dev/', '').sub('/(xvd.)(.*)/, '\1p\2')}.uniq
+    disks = disks.flatten.map { |x| x.sub('/dev/', '').sub(/(xvd.)(.*)/, '\1p\2')}.uniq
 
     disks.each do |device_id|
       file(File.join('/etc/ganglia/scripts', "diskstats-#{device_id}")).must_exist.with(:owner, 'root').and(:group, 'root').and(:mode, '744')
