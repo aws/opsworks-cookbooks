@@ -15,5 +15,16 @@ when "debian","ubuntu"
     end
   end
 when "centos","redhat","fedora","scientific","oracle","amazon"
-  # TODO: Figure out what to do with RPM's.
+  remote_file "/tmp/#{node[:scalarium_nodejs][:rpm]}" do
+    source node[:scalarium_nodejs][:rpm_url]
+    action :create_if_missing
+  end
+
+  rpm_package 'nodejs' do
+    source "/tmp/#{node[:scalarium_nodejs][:rpm]}"
+    not_if do
+     ::File.exists?("/usr/local/bin/node") &&
+     system("/usr/local/bin/node -v | grep -q '#{node[:scalarium_nodejs][:version]}'")
+    end
+  end
 end
