@@ -31,7 +31,7 @@ end
 
 if platform?('centos','redhat','amazon','scientific','fedora','oracle')
   file File.join(node[:monit][:conf_dir], 'logging') do
-    action :remove
+    action :delete
   end
 end
 
