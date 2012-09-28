@@ -18,7 +18,7 @@ describe_recipe 'scalarium-agent-monit::default' do
   end
 
   it 'creates main monit conf file' do
-    file(node[:monit][:conf]).must_exist.with(:mode, '644')
+    file(node[:monit][:conf]).must_exist.with(:mode, '600')
   end
 
   it 'ensures main monit conf file has the right config settings' do
