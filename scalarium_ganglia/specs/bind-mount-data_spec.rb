@@ -10,6 +10,6 @@ describe_recipe 'scalarium_ganglia::bind-mount-data' do
 
   it 'creates mounts to the data directory' do
     mount(node[:ganglia][:original_datadir], :device => node[:ganglia][:datadir]).must_be_mounted
-    mount(node[:ganglia][:original_datadir], :device => node[:ganglia][:datadir]).must_be_enabled.with(:fstype, 'none').and(:options, 'bind,rw')
+    mount(node[:ganglia][:original_datadir], :device => node[:ganglia][:datadir]).must_be_enabled.with(:fstype, 'none').and(:options, ['bind', 'rw'])
   end
 end

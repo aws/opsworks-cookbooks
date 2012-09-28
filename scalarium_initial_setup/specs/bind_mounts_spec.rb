@@ -14,7 +14,7 @@ describe_recipe 'scalarium_initial_setup::bind_mounts' do
   it 'creates mounts for directories' do
     node[:scalarium_initial_setup][:bind_mounts][:mounts].each do |dir, source|
       mount(dir, :device => source).must_be_mounted
-      mount(dir, :device => source).must_be_enabled.with(:fstype, 'none').and(:options, 'bind,rw')
+      mount(dir, :device => source).must_be_enabled.with(:fstype, 'none').and(:options, ['bind', 'rw'])
     end
   end
 end
