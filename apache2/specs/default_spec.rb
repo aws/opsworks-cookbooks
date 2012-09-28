@@ -55,6 +55,7 @@ describe_recipe 'apache2::default' do
 
   describe 'files' do
     it 'creates the apache2_module_conf_generate.pl script' do
+      skip unless ["centos", "redhat", "fedora", "suse", "amazon"].include?(node[:platform])
       file('/usr/local/bin/apache2_module_conf_generate.pl').must_exist
     end
 
