@@ -14,7 +14,11 @@ describe_recipe 'dependencies::default' do
     end
 
     packages.each do |pkg, version|
-      package(pkg).must_be_installed.with(:version, version)
+      unless version.nil?
+        package(pkg).must_be_installed.with(:version, version)
+      else
+        package(pkg).must_be_installed
+      end
     end
   end
 
