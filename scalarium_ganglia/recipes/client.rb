@@ -8,10 +8,14 @@ if platform?('ubuntu') && node[:platform_version].to_i == 11
     not_if { ::File.exists?('/tmp/libganglia1.deb') }
   end
 
-  execute 'apt-get -q -y install libapr1 libconfuse0'
-  if node[:platform] == 'ubuntu' && node[:platform_version].to_f == 11.04
-    execute 'apt-get -q -y install libpython2.7'
+  %w{libapr1 libconfuse0}.each do |pkg|
+    package pkg
   end
+
+  if node[:platform] == 'ubuntu' && node[:platform_version].to_f == 11.04
+    package 'libpython2.7'
+  end
+
   execute 'dpkg -i /tmp/libganglia1.deb'
   execute 'dpkg -i /tmp/ganglia-monitor.deb'
 elsif platform?('centos','redhat','fedora','amazon')
