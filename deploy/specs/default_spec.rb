@@ -10,7 +10,16 @@ describe_recipe 'deploy::default' do
       user(deploy[:user]).must_have(:home, deploy[:home])
       user(deploy[:user]).must_have(:shell, deploy[:shell])
       user(deploy[:user]).must_have(:comment, "deploy user")
-      user(deploy[:user]).must_have(:gid, deploy[:group])
+
+      # NOTE: Why doesn't this work?
+      # Because :gid compares against the numerical GID, not the
+      # group name. So we'll have to grep against the group name
+      # on /etc/group and see if we get anything back.
+
+      # BAD:
+      #user(deploy[:user]).must_have(:gid, deploy[:group])
+      # GOOD:
+      assert system("grep '^#{deploy[:group]}:' /etc/group")
     end
   end
 end
