@@ -16,7 +16,34 @@ default[:mysql][:debian_sys_maintainer_user]     = 'debian-sys-maint'
 default[:mysql][:debian_sys_maintainer_password] = debian_pw
 
 default[:mysql][:bind_address]         = '0.0.0.0'
-default[:mysql][:datadir]              = "/var/lib/mysql"
+default[:mysql][:port]                 = 3306
+
+case node[:platform]
+when 'centos','redhat','fedora','suse','scientific','amazon'
+  default[:mysql][:datadir]              = "/var/lib/mysql"
+  default[:mysql][:basedir]              = "/usr"
+  default[:mysql][:root_group]           = "root"
+  default[:mysql][:mysqladmin_bin]       = "/usr/bin/mysqladmin"
+  default[:mysql][:mysql_bin]            = "/usr/bin/mysql"
+
+  set[:mysql][:conf_dir]                 = "/etc"
+  set[:mysql][:confd_dir]                = "/etc/mysql/conf.d"
+  set[:mysql][:socket]                   = "/var/lib/mysql/mysql.sock"
+  set[:mysql][:pid_file]                 = "/var/run/mysqld/mysqld.pid"
+  set[:mysql][:grants_path]              = "/etc/mysql_grants.sql"
+else
+  default[:mysql][:datadir]              = "/var/lib/mysql"
+  default[:mysql][:basedir]              = "/usr"
+  default[:mysql][:root_group]           = "root"
+  default[:mysql][:mysqladmin_bin]       = "/usr/bin/mysqladmin"
+  default[:mysql][:mysql_bin]            = "/usr/bin/mysql"
+  
+  set[:mysql][:conf_dir]                 = "/etc/mysql"
+  set[:mysql][:confd_dir]                = "/etc/mysql/conf.d"
+  set[:mysql][:socket]                   = "/var/run/mysqld/mysqld.sock"
+  set[:mysql][:pid_file]                 = "/var/run/mysqld/mysqld.pid"
+  set[:mysql][:grants_path]              = "/etc/mysql/grants.sql"
+end
 
 if attribute?(:ec2)
   default[:mysql][:ec2_path]    = "/mnt/mysql"
@@ -47,6 +74,10 @@ default[:mysql][:tunable][:net_write_timeout]   = "30"
 default[:mysql][:tunable][:back_log]            = "128"
 default[:mysql][:tunable][:table_cache]         = "2048"
 default[:mysql][:tunable][:max_heap_table_size] = "32M"
+
+default[:mysql][:tunable][:log_slow_queries]    = "/var/log/mysql/mysql-slow.log"
+default[:mysql][:tunable][:long_query_time]     = 1
+
 default[:mysql][:clients] = []
 
 # Percona XtraDB
