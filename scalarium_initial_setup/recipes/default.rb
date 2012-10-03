@@ -5,6 +5,7 @@ include_recipe "scalarium_initial_setup::remove_landscape"
 
 if platform?("centos", "redhat", "fedora", "amazon", "scientific", "oracle")
   include_recipe "scalarium_initial_setup::setup_rhel_repos"
+  include_recipe "scalarium_initial_setup::zsh"
 end
 
 if node[:scalarium][:run_cookbook_tests]
