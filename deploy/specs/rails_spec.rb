@@ -7,7 +7,7 @@ describe_recipe 'deploy::rails' do
   it 'should create bundle' do
     node[:deploy].each do |app, deploy|
       if deploy[:auto_bundle_on_deploy] && deploy[:application_type] == 'rails'
-        directory("#{node[:deploy][app][:home]}/.bundler/#{application}").must_exist
+        directory("#{node[:deploy][app][:home]}/.bundler/#{app}").must_exist
       end
     end
   end
