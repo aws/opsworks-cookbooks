@@ -32,6 +32,8 @@ when "redhat","centos","fedora","suse","amazon"
   else
     default[:apache][:pid_file] = '/var/run/httpd.pid'
   end
+  default[:apache][:lib_dir]    = node[:kernel][:machine] =~ /^i[36']86$/ ? "/usr/lib/httpd" : "/usr/lib64/httpd"
+  default[:apache][:libexecdir] = "#{node[:apache][:lib_dir]}/modules"
 when "debian","ubuntu"
   default[:apache][:dir]         = "/etc/apache2"
   default[:apache][:log_dir]     = "/var/log/apache2"
@@ -41,6 +43,8 @@ when "debian","ubuntu"
   default[:apache][:icondir]     = "/usr/share/apache2/icons"
   default[:apache][:init_script] = "/etc/init.d/apache2"
   default[:apache][:pid_file]    = '/var/run/apache2.pid'
+  default[:apache][:lib_dir]     = '/usr/lib/apache2'
+  default[:apache][:libexecdir]  = "#{node[:apache][:lib_dir]}/modules"
 else
   default[:apache][:dir]         = "/etc/apache2"
   default[:apache][:log_dir]     = "/var/log/apache2"
@@ -50,6 +54,8 @@ else
   default[:apache][:icondir]     = "/usr/share/apache2/icons"
   default[:apache][:init_script] = "/etc/init.d/apache2"
   default[:apache][:pid_file]    = "logs/httpd.pid"
+  default[:apache][:lib_dir]     = '/usr/lib/apache2'
+  default[:apache][:libexecdir]  = "#{node[:apache][:lib_dir]}/modules"
 end
 
 ###
