@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-SYSCONFDIR='<%= node[:apache][:dir] %>'
+SYSCONFDIR='<%= node['apache']['dir'] %>'
 
 if [ -z $1 ]; then
         echo "Which module would you like to enable?"
@@ -18,7 +18,7 @@ if [ -x /usr/sbin/apache2 ]; then
         PREFORK=`/usr/sbin/apache2 -l | grep prefork || true`
 fi
 
-if [ -e $SYSCONFDIR/mods-enabled/$MODNAME.load ]; then
+if [ -e $SYSCONFDIR/mods-enabled/$MODNAME.load -a -e $SYSCONFDIR/mods-enabled/$MODNAME.conf ]; then
         echo "This module is already enabled!"
         exit 0 
 fi
