@@ -30,9 +30,9 @@ node[:deploy].each do |application, deploy|
       only_if do
         File.exists?("#{node[:apache][:dir]}/sites-available/#{application}.conf")
       end
+      notifies :restart, resources(:service => node[:scalarium][:rails_stack][:service])
     end
 
-    notifies :restart, resources(:service => node[:scalarium][:rails_stack][:service])
 
   when 'nginx_unicorn'
     include_recipe "nginx::service"
