@@ -17,7 +17,12 @@ describe_recipe 'scalarium_ganglia::server' do
   end
 
   it 'installs gmetad' do
-    package('ganglia-gmetad').must_be_installed
+    case node[:platform]
+    when "debian","ubuntu"
+      package('gmetad').must_be_installed
+    when "centos","amazon","scientific","oracle","fedora","suse","redhat"
+      package('ganglia-gmetad').must_be_installed
+    end
   end
 
   it 'creates gmetad.conf' do
