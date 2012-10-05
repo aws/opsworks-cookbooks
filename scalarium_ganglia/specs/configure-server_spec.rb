@@ -38,7 +38,12 @@ describe_recipe 'scalarium_ganglia::configure-server' do
   end
 
   it 'links apache.conf to apache conf.d directory' do
-    link(File.join(node[:apache][:dir], 'conf.d', 'ganglia-webfrontend')).must_exist.with(:link_type, :symbolic).and(:to, '/etc/ganglia-webfrontend/apache.conf')
+    case node[:platform]
+    when "debian","ubuntu"
+      link(File.join(node[:apache][:dir], 'conf.d', 'ganglia-webfrontend')).must_exist.with(:link_type, :symbolic).and(:to, '/etc/ganglia-webfrontend/apache.conf')
+    when "centos","redhat","amazon","fedora","scientific","oracle"
+      link(File.join(node[:apache][:dir], 'conf.d', 'ganglia-webfrontend.conf')).must_exist.with(:link_type, :symbolic).and(:to, '/etc/ganglia-webfrontend/apache.conf')
+    end
   end
 
   it 'creates index.html for apache doc root' do

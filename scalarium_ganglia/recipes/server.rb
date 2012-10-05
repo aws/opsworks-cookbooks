@@ -8,6 +8,8 @@ if node[:platform] == 'ubuntu' && node[:platform_version].to_i == 11
 
   package 'librrd4'
   execute 'dpkg -i /tmp/gmetad.deb'
+elsif node[:platform] == 'ubuntu'
+  package 'gmetad'
 else
   package 'ganglia-gmetad'
 end
