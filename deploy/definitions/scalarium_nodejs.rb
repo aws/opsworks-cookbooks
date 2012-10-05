@@ -21,7 +21,7 @@ define :scalarium_nodejs do
     variables(:database => deploy[:database], :memcached => deploy[:memcached], :roles => node[:scalarium][:roles])
   end
 
-  template "/etc/monit/conf.d/node_web_app-#{application}.monitrc" do
+  template "#{node[:monit][:conf_dir]}/node_web_app-#{application}.monitrc" do
     source 'node_web_app.monitrc.erb'
     cookbook 'scalarium_nodejs'
     owner 'root'

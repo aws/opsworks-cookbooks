@@ -14,10 +14,10 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-  file "/etc/monit/conf.d/node_web_app-#{application}.monitrc" do
+  file "#{node[:monit][:conf_dir]}/node_web_app-#{application}.monitrc" do
     action :delete
     only_if do
-      File.exists?("/etc/monit/conf.d/node_web_app-#{application}.monitrc")
+      File.exists?("#{node[:monit][:conf_dir]}/node_web_app-#{application}.monitrc")
     end
   end
 

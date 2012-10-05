@@ -15,7 +15,7 @@ class MemcacheTest < MiniTest::Chef::TestCase
   end
 
   def test_exist_monit_configuration_file
-    file('/etc/monit/conf.d/memcached.monitrc').must_exist
+    file("#{node[:monit][:conf_dir]}/memcached.monitrc").must_exist
   end
 
   def test_service_started

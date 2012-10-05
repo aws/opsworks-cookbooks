@@ -57,7 +57,7 @@ when "centos","redhat","amazon","fedora","scientific","oracle"
   end
 end
 
-template "/etc/monit/conf.d/memcached.monitrc" do
+template "#{node[:monit][:conf_dir]}/memcached.monitrc" do
   source "memcached.monitrc.erb"
   owner "root"
   group "root"
