@@ -33,14 +33,6 @@ if platform?("centos","redhat","amazon") and dist_only?
     action :delete
     backup false 
   end
-else  
-  template "#{node[:apache][:dir]}/mods-available/passenger.load" do
-    cookbook "passenger_apache2"
-    source "passenger.load.erb"
-    owner "root"
-    group "root"
-    mode 0755
-  end
 end
 
 template "#{node[:apache][:dir]}/mods-available/passenger.conf" do
@@ -51,4 +43,6 @@ template "#{node[:apache][:dir]}/mods-available/passenger.conf" do
   mode 0755
 end
 
-apache_module "passenger"
+apache_module "passenger" do
+  module_path node[:passenger][:module_path] unless platform?("centos","redhat","amazon") and dist_only?
+end
