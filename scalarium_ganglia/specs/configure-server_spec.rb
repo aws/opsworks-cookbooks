@@ -49,4 +49,8 @@ describe_recipe 'scalarium_ganglia::configure-server' do
   it 'creates index.html for apache doc root' do
     file(File.join(node[:apache][:document_root], 'index.html')).must_exist.with(:mode, '644')
   end
+
+  it 'displays "Ganglia Monitoring" on the website' do
+    assert system("curl http://localhost | grep 'Ganglia Monitoring'")
+  end
 end
