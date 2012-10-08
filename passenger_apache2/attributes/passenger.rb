@@ -1,4 +1,5 @@
 include_attribute 'rails::rails'
+include_attribute 'packages::packages'
 
 case node[:scalarium][:ruby_version]
 when /1.8/
