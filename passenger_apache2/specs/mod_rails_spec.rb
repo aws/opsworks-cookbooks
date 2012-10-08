@@ -16,11 +16,11 @@ describe_recipe 'passenger_apache2::mod_rails' do
 
   it 'creates passenger.load' do
     skip if ['centos','redhat','amazon'].include?(node[:platform]) && node[:packages][:dist_only] 
-    file(File.join(node[:apache][:dir], 'mods-available', 'passenger.load')).must_exist.with(:owner, 'root').and(:group, 'root').and(:mode, '755')
+    file(File.join(node[:apache][:dir], 'mods-available', 'passenger.load')).must_exist.with(:owner, 'root').and(:group, 'root').and(:mode, '644')
   end
 
   it 'creates passenger.conf' do
-    file(File.join(node[:apache][:dir], 'mods-available', 'passenger.conf')).must_exist.with(:owner, 'root').and(:group, 'root').and(:mode, '755')
+    file(File.join(node[:apache][:dir], 'mods-available', 'passenger.conf')).must_exist.with(:owner, 'root').and(:group, 'root').and(:mode, '644')
   end
 
   it 'enables mod_passenger' do
