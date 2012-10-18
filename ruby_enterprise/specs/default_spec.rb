@@ -40,21 +40,20 @@ describe_recipe 'ruby_enterprise::default' do
   end
 
   it 'creates /etc/environment with the right variables' do
-    file('/etc/environment').must_exist.with(:mode, '755').and(:owner, 'root').and(:group, 'root')
-    file('/etc/environment').must_include node[:ruby_enterprise][:gc][:heap_min_slots]
-    file('/etc/environment').must_include node[:ruby_enterprise][:gc][:heap_slots_increment]
-    file('/etc/environment').must_include node[:ruby_enterprise][:gc][:heap_slots_growth_factor]
-    file('/etc/environment').must_include node[:ruby_enterprise][:gc][:malloc_limit]
-    file('/etc/environment').must_include node[:ruby_enterprise][:gc][:heap_free_min]
+    file('/etc/environment').must_exist.with(:mode, '644').and(:owner, 'root').and(:group, 'root')
+    file('/etc/environment').must_include "#{node[:ruby_enterprise][:gc][:heap_min_slots]}"
+    file('/etc/environment').must_include "#{node[:ruby_enterprise][:gc][:heap_slots_increment]}"
+    file('/etc/environment').must_include "#{node[:ruby_enterprise][:gc][:heap_slots_growth_factor]}"
+    file('/etc/environment').must_include "#{node[:ruby_enterprise][:gc][:malloc_limit]}"
+    file('/etc/environment').must_include "#{node[:ruby_enterprise][:gc][:heap_free_min]}"
   end
 
   it 'creates /usr/local/bin/ruby_gc_wrapper.sh with the right variables' do
     file('/usr/local/bin/ruby_gc_wrapper.sh').must_exist.with(:mode, '755').and(:owner, 'root').and(:group, 'root')
-nd(:group, 'root')
-    file('/usr/local/bin/ruby_gc_wrapper.sh').must_include node[:ruby_enterprise][:gc][:heap_min_slots]
-    file('/usr/local/bin/ruby_gc_wrapper.sh').must_include node[:ruby_enterprise][:gc][:heap_slots_increment]
-    file('/usr/local/bin/ruby_gc_wrapper.sh').must_include node[:ruby_enterprise][:gc][:heap_slots_growth_factor]
-    file('/usr/local/bin/ruby_gc_wrapper.sh').must_include node[:ruby_enterprise][:gc][:malloc_limit]
-    file('/usr/local/bin/ruby_gc_wrapper.sh').must_include node[:ruby_enterprise][:gc][:heap_free_min]
+    file('/usr/local/bin/ruby_gc_wrapper.sh').must_include "#{node[:ruby_enterprise][:gc][:heap_min_slots]}"
+    file('/usr/local/bin/ruby_gc_wrapper.sh').must_include "#{node[:ruby_enterprise][:gc][:heap_slots_increment]}"
+    file('/usr/local/bin/ruby_gc_wrapper.sh').must_include "#{node[:ruby_enterprise][:gc][:heap_slots_growth_factor]}"
+    file('/usr/local/bin/ruby_gc_wrapper.sh').must_include "#{node[:ruby_enterprise][:gc][:malloc_limit]}"
+    file('/usr/local/bin/ruby_gc_wrapper.sh').must_include "#{node[:ruby_enterprise][:gc][:heap_free_min]}"
   end
 end
