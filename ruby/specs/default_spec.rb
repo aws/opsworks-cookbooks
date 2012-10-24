@@ -6,12 +6,12 @@ describe_recipe 'ruby::default' do
 
   describe 'debian systems' do
     it 'creates deb file' do
-      skip unless ['debian','ubuntu'].include?(node[:platform]) 
+      skip unless ['debian','ubuntu'].include?(node[:platform])
       file(File.join('/tmp', node[:ruby][:deb])).must_exist
     end
 
     it 'uninstalls ruby-enterprise' do
-      skip unless ['debian','ubuntu'].include?(node[:platform]) 
+      skip unless ['debian','ubuntu'].include?(node[:platform])
       package('ruby-enterprise').wont_be_installed
     end
   end

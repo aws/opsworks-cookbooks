@@ -14,6 +14,7 @@ when "debian","ubuntu"
       system("/usr/local/bin/node -v | grep -q '#{node[:scalarium_nodejs][:version]}'")
     end
   end
+
 when "centos","redhat","fedora","scientific","oracle","amazon"
   remote_file "/tmp/#{node[:scalarium_nodejs][:rpm]}" do
     source node[:scalarium_nodejs][:rpm_url]

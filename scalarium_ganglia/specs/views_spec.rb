@@ -18,11 +18,13 @@ describe_recipe 'scalarium_ganglia::views' do
     end
 
     instances.keys.each do |instance_name|
-      file(File.join(node[:ganglia][:datadir], 'conf', "host_#{instance_name}.json")).must_exist.with(:mode, '644').and(:owner, node[:ganglia][:web][:apache_user]).and(:group, node[:ganglia][:web][:apache_group])
+      file(File.join(node[:ganglia][:datadir], 'conf', "host_#{instance_name}.json")).must_exist.with(
+           :mode, '644').and(:owner, node[:ganglia][:web][:apache_user]).and(:group, node[:ganglia][:web][:apache_group])
     end
   end
 
   it 'creates view_overview json' do
-    file(File.join(node[:ganglia][:datadir], 'conf', 'view_overview.json')).must_exist.with(:mode, '644').and(:owner, node[:ganglia][:web][:apache_user]).and(:group, node[:ganglia][:web][:apache_group])
+    file(File.join(node[:ganglia][:datadir], 'conf', 'view_overview.json')).must_exist.with(
+         :mode, '644').and(:owner, node[:ganglia][:web][:apache_user]).and(:group, node[:ganglia][:web][:apache_group])
   end
 end

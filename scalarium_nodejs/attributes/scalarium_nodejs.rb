@@ -8,6 +8,7 @@ default[:scalarium_nodejs][:deb] = "nodejs_#{node[:scalarium_nodejs][:version]}-
 default[:scalarium_nodejs][:deb_url] = "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/#{node[:scalarium_nodejs][:deb]}"
 
 default[:scalarium_nodejs][:rpm] = "nodejs-#{node[:scalarium_nodejs][:version]}-#{node[:scalarium_nodejs][:pkgrelease]}.#{node[:kernel][:machine]}.rpm"
+
 if node[:platform] == 'amazon'
   default[:scalarium_nodejs][:rpm_url] = "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:scalarium_nodejs][:rpm]}"
 else
