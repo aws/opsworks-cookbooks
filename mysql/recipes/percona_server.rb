@@ -3,7 +3,7 @@ include_recipe "mysql::percona_repository"
 if platform?('debian','ubuntu')
   if node[:percona][:version] =~ /^5\.5\..*/
     package 'libaio1'
-  end 
+  end
 end
 
 execute "Install Percona XtraDB Server" do

@@ -26,7 +26,7 @@ describe_recipe 'mysql::server' do
   end
 
   it 'starts the mysql service' do
-    case node[:platform] 
+    case node[:platform]
     when 'debian','ubuntu'
       service('mysql').must_be_enabled
     when 'centos','amazon','fedora','redhat','scientific','oracle'
