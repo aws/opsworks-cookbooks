@@ -5,7 +5,7 @@ packages = []
 case node[:platform]
 when 'debian','ubuntu'
   packages = [
-    'php5-xsl', 
+    'php5-xsl',
     'php5-curl',
     'php5-xmlrpc',
     'php5-sqlite',
