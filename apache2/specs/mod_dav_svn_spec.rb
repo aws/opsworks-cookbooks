@@ -14,6 +14,7 @@ describe_recipe 'apache2::mod_dav_svn' do
   end
 
   it 'enables mod_dav_svn' do
-    link("#{node[:apache][:dir]}/mods-enabled/dav_svn.load").must_exist
+    link("#{node[:apache][:dir]}/mods-enabled/dav_svn.load").must_exist.with(
+         :link_type, :symbolic).and(:to, "#{node[:apache][:dir]}/mods-available/dav_svn.load")
   end
 end

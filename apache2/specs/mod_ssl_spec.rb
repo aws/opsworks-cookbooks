@@ -17,6 +17,7 @@ describe_recipe 'apache2::mod_ssl' do
   end
 
   it 'enables mod_ssl' do
-    link("#{node[:apache][:dir]}/mods-enabled/ssl.load").must_exist
+    link("#{node[:apache][:dir]}/mods-enabled/ssl.load").must_exist.with(
+         :link_type, :symbolic).and(:to, "#{node[:apache][:dir]}/mods-available/ssl.load")
   end
 end

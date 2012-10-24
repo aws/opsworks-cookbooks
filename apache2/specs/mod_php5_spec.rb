@@ -14,6 +14,7 @@ describe_recipe 'apache2::mod_php5' do
   end
 
   it 'enables mod_php5' do
-    link("#{node[:apache][:dir]}/mods-enabled/php5.load").must_exist
+    link("#{node[:apache][:dir]}/mods-enabled/php5.load").must_exist.with(
+         :link_type, :symbolic).and(:to, "#{node[:apache][:dir]}/mods-available/php5.load")
   end
 end

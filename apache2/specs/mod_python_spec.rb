@@ -14,6 +14,7 @@ describe_recipe 'apache2::mod_python' do
   end
 
   it 'enables mod_python' do
-    link("#{node[:apache][:dir]}/mods-enabled/python.load").must_exist
+    link("#{node[:apache][:dir]}/mods-enabled/python.load").must_exist.with(
+         :link_type, :symbolic).and(:to, "#{node[:apache][:dir]}/mods-available/python.load")
   end
 end
