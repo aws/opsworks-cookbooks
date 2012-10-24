@@ -24,7 +24,8 @@ describe_recipe 'scalarium_nodejs::default' do
 
     it 'installs nodejs pkg' do
       skip unless ['centos','redhat','fedora','scientific','oracle','amazon'].include?(node[:platform])
-      package('nodejs').must_be_installed
+       (`node --version`).chomp.must_equal("v#{node[:scalarium_nodejs][:version]}")
     end
   end
+
 end
