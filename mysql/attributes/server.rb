@@ -37,7 +37,7 @@ else
   default[:mysql][:root_group]           = "root"
   default[:mysql][:mysqladmin_bin]       = "/usr/bin/mysqladmin"
   default[:mysql][:mysql_bin]            = "/usr/bin/mysql"
-  
+
   set[:mysql][:conf_dir]                 = "/etc/mysql"
   set[:mysql][:confd_dir]                = "/etc/mysql/conf.d"
   set[:mysql][:socket]                   = "/var/run/mysqld/mysqld.sock"

@@ -14,7 +14,7 @@ when 'centos','amazon','redhat','fedora','scientific','oracle'
   default[:ruby_enterprise][:version]                         = '1.8.7'
   default[:ruby_enterprise][:phusion_version]                 = '2012.02'
   default[:ruby_enterprise][:url][:i686]                      = "http://peritor-assets.s3.amazonaws.com/ruby-enterprise-#{node[:ruby_enterprise][:version]}-#{node[:ruby_enterprise][:phusion_version]}-#{node[:ruby_enterprise][:pkgrelease]}.i686.rpm"
-  default[:ruby_enterprise][:url][:x86_64]                      = "http://peritor-assets.s3.amazonaws.com/ruby-enterprise-#{node[:ruby_enterprise][:version]}-#{node[:ruby_enterprise][:phusion_version]}-#{node[:ruby_enterprise][:pkgrelease]}.x86_64.rpm"
+  default[:ruby_enterprise][:url][:x86_64]                    = "http://peritor-assets.s3.amazonaws.com/ruby-enterprise-#{node[:ruby_enterprise][:version]}-#{node[:ruby_enterprise][:phusion_version]}-#{node[:ruby_enterprise][:pkgrelease]}.x86_64.rpm"
 end
 
 default[:ruby_enterprise][:gc][:heap_min_slots]           = 500000
