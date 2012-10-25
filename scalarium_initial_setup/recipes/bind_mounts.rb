@@ -3,6 +3,7 @@ node[:scalarium_initial_setup][:bind_mounts][:mounts].each do |dir, source|
   directory dir do
     recursive true
     action :create
+    # TODO: something is changing the permissions on Ubuntu to 2750, who? and why?
     mode "0755"
   end
 

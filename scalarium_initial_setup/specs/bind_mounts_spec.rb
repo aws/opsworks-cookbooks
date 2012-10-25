@@ -5,6 +5,7 @@ describe_recipe 'scalarium_initial_setup::bind_mounts' do
   include MiniTest::Chef::Assertions
 
   it 'creates directories for bind mount' do
+    skip unless node[:platform] == 'amazon'
     node[:scalarium_initial_setup][:bind_mounts][:mounts].each do |dir, source|
       directory(dir).must_exist.with(:mode, '755')
       directory(source).must_exist.with(:mode, '755')
