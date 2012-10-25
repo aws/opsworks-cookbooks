@@ -9,7 +9,8 @@ include_recipe node[:scalarium][:ruby_stack]
 
 case node[:platform]
 when "centos", "redhat", "fedora", "suse", "amazon"
-  node[:dependencies][:rpms].each do |rpm, version|
+  #node[:dependencies][:rpms].each do |rpm, version|
+  node[:dependencies][:debs].each do |rpm, version|
     Chef::Log.info("preparing installation of dependency: rpm #{rpm.inspect}")
     package rpm do
       action :upgrade
