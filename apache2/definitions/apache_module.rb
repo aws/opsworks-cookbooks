@@ -18,16 +18,16 @@
 #
 
 define :apache_module, :enable => true, :conf => false do
-  include_recipe "apache2"
+  include_recipe 'apache2'
 
-  params[:filename] = params[:filename] || "mod_#{params[:name]}.so"
-  params[:module_path] = params[:module_path] || "#{node['apache']['libexecdir']}/#{params[:filename]}"
+  params[:filename] ||= "mod_#{params[:name]}.so"
+  params[:module_path] ||= "#{node['apache']['libexecdir']}/#{params[:filename]}"
  
   if params[:conf]
     apache_conf params[:name]
   end
 
-  if platform?("redhat", "centos", "scientific", "fedora", "arch", "suse", "amazon", "freebsd")
+  if platform?('redhat', 'centos', 'fedora', 'amazon')
     file "#{node['apache']['dir']}/mods-available/#{params[:name]}.load" do
       content "LoadModule #{params[:name]}_module #{params[:module_path]}\n"
       mode 0644
@@ -37,16 +37,16 @@ define :apache_module, :enable => true, :conf => false do
   if params[:enable]
     execute "a2enmod #{params[:name]}" do
       command "/usr/sbin/a2enmod #{params[:name]}"
-      notifies :restart, resources(:service => "apache2")
+      notifies :restart, resources(:service => 'apache2')
       not_if do (::File.symlink?("#{node['apache']['dir']}/mods-enabled/#{params[:name]}.load") and
-            ((::File.exists?("#{node['apache']['dir']}/mods-available/#{params[:name]}.conf"))?
-              (::File.symlink?("#{node['apache']['dir']}/mods-enabled/#{params[:name]}.conf")):(true)))
+                 ((::File.exists?("#{node['apache']['dir']}/mods-available/#{params[:name]}.conf"))?
+                  (::File.symlink?("#{node['apache']['dir']}/mods-enabled/#{params[:name]}.conf")):(true)))
       end
     end
   else
     execute "a2dismod #{params[:name]}" do
       command "/usr/sbin/a2dismod #{params[:name]}"
-      notifies :restart, resources(:service => "apache2")
+      notifies :restart, resources(:service => 'apache2')
       only_if do ::File.symlink?("#{node['apache']['dir']}/mods-enabled/#{params[:name]}.load") end
     end
   end
