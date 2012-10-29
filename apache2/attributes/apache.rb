@@ -19,7 +19,7 @@
 
 # Where the various parts of apache are
 case platform
-when "redhat","centos","fedora","suse","amazon"
+when "redhat","centos","fedora","amazon"
   default[:apache][:dir]         = "/etc/httpd"
   default[:apache][:log_dir]     = "/var/log/httpd"
   default[:apache][:user]        = "apache"
@@ -45,20 +45,10 @@ when "debian","ubuntu"
   default[:apache][:init_script] = "/etc/init.d/apache2"
   default[:apache][:pid_file]    = '/var/run/apache2.pid'
   default[:apache][:lib_dir]     = '/usr/lib/apache2'
-  default[:apache][:document_root] = "/var/www"
   default[:apache][:libexecdir]  = "#{node[:apache][:lib_dir]}/modules"
+  default[:apache][:document_root] = "/var/www"
 else
-  default[:apache][:dir]         = "/etc/apache2"
-  default[:apache][:log_dir]     = "/var/log/apache2"
-  default[:apache][:user]        = "www-data"
-  default[:apache][:group]       = "www-data"
-  default[:apache][:binary]      = "/usr/sbin/apache2"
-  default[:apache][:icondir]     = "/usr/share/apache2/icons"
-  default[:apache][:init_script] = "/etc/init.d/apache2"
-  default[:apache][:pid_file]    = "logs/httpd.pid"
-  default[:apache][:lib_dir]     = '/usr/lib/apache2'
-  default[:apache][:libexecdir]  = "#{node[:apache][:lib_dir]}/modules"
-  default[:apache][:document_root] = "/var/www"
+  raise "Bailing out, unknown platform."
 end
 
 ###
