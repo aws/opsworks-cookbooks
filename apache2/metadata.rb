@@ -39,7 +39,7 @@ recipe            "apache2::mod_ssl", "Apache module 'ssl' with config file, add
 recipe            "apache2::mod_status", "Apache module 'status' with config file"
 recipe            "apache2::logrotate", "Apache Logrotate configuration"
 
-%w{redhat centos amazon debian ubuntu}.each do |os|
+%w{redhat centos fedora amazon debian ubuntu}.each do |os|
   supports os
 end
 
