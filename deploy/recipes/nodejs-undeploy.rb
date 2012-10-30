@@ -17,7 +17,7 @@ node[:deploy].each do |application, deploy|
   file "#{node[:monit][:conf_dir]}/node_web_app-#{application}.monitrc" do
     action :delete
     only_if do
-      File.exists?("#{node[:monit][:conf_dir]}/node_web_app-#{application}.monitrc")
+      ::File.exists?("#{node[:monit][:conf_dir]}/node_web_app-#{application}.monitrc")
     end
   end
 
@@ -26,7 +26,7 @@ node[:deploy].each do |application, deploy|
     action :delete
 
     only_if do
-      File.exists?("#{deploy[:deploy_to]}")
+      ::File.exists?("#{deploy[:deploy_to]}")
     end
   end
 end
