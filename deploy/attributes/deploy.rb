@@ -6,7 +6,7 @@ default[:scalarium][:deploy_user][:user] = 'deploy'
 case node[:platform]
 when 'debian','ubuntu'
   default[:scalarium][:deploy_user][:group] = 'www-data'
-when 'centos','redhat','amazon','fedora','scientific','oracle'
+when 'centos','redhat','fedora','amazon'
   default[:scalarium][:deploy_user][:group] = 'apache'
 end
 
@@ -18,7 +18,7 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:release] = Time.now.utc.strftime("%Y%m%d%H%M%S")
   default[:deploy][application][:release_path] = "#{node[:deploy][application][:deploy_to]}/releases/#{node[:deploy][application][:release]}"
   default[:deploy][application][:current_path] = "#{node[:deploy][application][:deploy_to]}/current"
-  default[:deploy][application][:document_root] = ""
+  default[:deploy][application][:document_root] = ''
   default[:deploy][application][:ignore_bundler_groups] = node[:scalarium][:rails][:ignore_bundler_groups]
   if deploy[:document_root]
     default[:deploy][application][:absolute_document_root] = "#{default[:deploy][application][:current_path]}/#{deploy[:document_root]}/"
@@ -26,14 +26,16 @@ node[:deploy].each do |application, deploy|
     default[:deploy][application][:absolute_document_root] = "#{default[:deploy][application][:current_path]}/"
   end
   
-  if File.exists?("/usr/local/bin/rake")
+  if File.exists?('/usr/local/bin/rake')
     # local Ruby rake is installed
-    default[:deploy][application][:rake] = "/usr/local/bin/rake"
+    default[:deploy][application][:rake] = '/usr/local/bin/rake'
   else
     # use default Rake/ruby
-    default[:deploy][application][:rake] = "rake"
+    default[:deploy][application][:rake] = 'rake'
   end
+
   default[:deploy][application][:migrate] = false
+
   if node[:deploy][application][:auto_bundle_on_deploy]
     default[:deploy][application][:migrate_command] = "if [ -f Gemfile ]; then echo 'Scalarium: Gemfile found - running migration with bundle exec' && bundle exec #{node[:deploy][application][:rake]} db:migrate; else echo 'Scalarium: no Gemfile - running plain migrations' && #{node[:deploy][application][:rake]} db:migrate; fi"
   else

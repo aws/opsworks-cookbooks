@@ -25,7 +25,8 @@ describe_recipe 'dependencies::default' do
 
   it 'should upgrade all gem files to the required version' do
     node[:dependencies][:gems].each do |gem_name, version|
-      assert system("#{node[:dependencies][:gem_binary]} list | grep '#{gem_name}' | grep '#{version}'"), "#{gem_name} (#{version}) was not installed."
+      assert system("#{node[:dependencies][:gem_binary]} list | grep '#{gem_name}' | \
+                    grep '#{version}'"), "#{gem_name} (#{version}) was not installed."
     end
   end
 end
