@@ -12,7 +12,8 @@ describe_recipe 'ebs::volumes' do
 
   it 'mounts the volume' do
     node[:ebs][:devices].each do |device, options|
-      mount(options[:mount_point], :device => device).must_be_mounted.with(:fstype, options[:fstype])
+      mount(options[:mount_point], :device => device).must_be_mounted.with(
+        :fstype, options[:fstype])
     end
   end
 end

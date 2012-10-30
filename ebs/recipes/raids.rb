@@ -1,8 +1,8 @@
-package "mdadm"
-package "lvm2"
+package 'mdadm'
+package 'lvm2'
 
-execute "Load device mapper kernel module" do
-  command "modprobe dm-mod"
+execute 'Load device mapper kernel module' do
+  command 'modprobe dm-mod'
   ignore_failure true
 end
 
@@ -25,7 +25,6 @@ node[:ebs][:raids].each do |raid_device, options|
       else
         BlockDevice.create_raid(raid_device, options.update(:chunk_size => node[:ebs][:mdadm_chunk_size]))
       end
-
       BlockDevice.set_read_ahead(raid_device, node[:ebs][:md_read_ahead])
     end
   end
@@ -36,9 +35,8 @@ node[:ebs][:raids].each do |raid_device, options|
     end
   end
 
-  execute "mkfs" do
+  execute 'mkfs' do
     command "mkfs -t #{options[:fstype]} #{lvm_device}"
-
     not_if do
       # check volume filesystem
       system("blkid -s TYPE -o value #{lvm_device}")
@@ -54,7 +52,7 @@ node[:ebs][:raids].each do |raid_device, options|
   mount options[:mount_point] do
     fstype options[:fstype]
     device lvm_device
-    options "noatime"
+    options 'noatime'
     not_if do
       File.read('/etc/mtab').split("\n").any?{|line| line.match(" #{options[:mount_point]} ")}
     end
@@ -70,15 +68,16 @@ node[:ebs][:raids].each do |raid_device, options|
     end
   end
 
-  template value_for_platform([ "centos", "redhat", "amazon" ]) => { "default" => "/etc/mdadm.conf" }, "default" => "/etc/mdadm/mdadm.conf" do
-    source "mdadm.conf.erb"
+  template value_for_platform(['centos','redhat','fedora','amazon']) => {'default' => '/etc/mdadm.conf'},
+                              'default' => '/etc/mdadm/mdadm.conf' do
+    source 'mdadm.conf.erb'
     mode 0644
     owner 'root'
     group 'root'
   end
 
-  template "/etc/rc.local" do
-    source "rc.local.erb"
+  template '/etc/rc.local' do
+    source 'rc.local.erb'
     mode 0755
     owner 'root'
     group 'root'

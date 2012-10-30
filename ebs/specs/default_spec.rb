@@ -8,10 +8,10 @@ describe_recipe 'ebs::default' do
     it 'should install xfs packages' do
       package('xfsprogs').must_be_installed
       case node[:platform]
-      when "debian","ubuntu"
+      when 'debian','ubuntu'
         package('xfsdump').must_be_installed
         package('xfslibs-dev').must_be_installed
-      when "centos","redhat","scientific","fedora","amazon","oracle"
+      when 'centos','redhat','fedora','amazon'
         package('xfsprogs-devel').must_be_installed
       end
     end
@@ -20,13 +20,15 @@ describe_recipe 'ebs::default' do
   describe 'KVM setup' do
     it 'creates /usr/local/bin/virtio-to-scsi' do
       if BlockDevice.on_kvm?
-        file('/usr/local/bin/virtio-to-scsi').must_exist.with(:owner, 'root').and(:mode, '755')
+        file('/usr/local/bin/virtio-to-scsi').must_exist.with(
+             :owner, 'root').and(:mode, '755')
       end
     end
 
     it 'creates udev rules' do
       if BlockDevice.on_kvm?
-        file('/etc/udev/rules.d/65-virtio-to-scsi.rules').must_exist.with(:owner, 'root').and(:mode, '644')
+        file('/etc/udev/rules.d/65-virtio-to-scsi.rules').must_exist.with(
+             :owner, 'root').and(:mode, '644')
       end
     end
   end

@@ -14,8 +14,7 @@
 modprobe dm-mod
 vgchange -ay
 
-<% case node[:platform]
-   when 'centos','redhat','amazon','scientific','oracle','fedora' %>
+<% if %w(centos redhat fedora amazon).include?(node[:platform]) %>
 touch /var/lock/subsys/local
 <%- end %>
 
