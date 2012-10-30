@@ -57,17 +57,17 @@ end
 ###
 
 # General settings
-default[:apache][:listen_ports] = [ "80","443" ]
-default[:apache][:contact] = "ops@example.com"
+default[:apache][:listen_ports] = [ '80','443' ]
+default[:apache][:contact] = 'ops@example.com'
 default[:apache][:timeout] = 120
-default[:apache][:keepalive] = "Off"
+default[:apache][:keepalive] = 'Off'
 default[:apache][:keepaliverequests] = 100
 default[:apache][:keepalivetimeout] = 3
 
 # Security
-default[:apache][:servertokens] = "Prod"
-default[:apache][:serversignature] = "Off"
-default[:apache][:traceenable] = "On"
+default[:apache][:servertokens] = 'Prod'
+default[:apache][:serversignature] = 'Off'
+default[:apache][:traceenable] = 'On'
 
 # Prefork Attributes
 default[:apache][:prefork][:startservers] = 16
