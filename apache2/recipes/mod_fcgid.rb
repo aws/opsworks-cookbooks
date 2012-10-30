@@ -17,21 +17,21 @@
 # limitations under the License.
 #
 
-if platform?("debian", "ubuntu")
-  package "libapache2-mod-fcgid"
-elsif platform?("centos", "redhat", "fedora", "amazon")
-  package "mod_fcgid" do
-    notifies :run, resources(:execute => "generate-module-list"), :immediately
+if platform?('debian', 'ubuntu')
+  package 'libapache2-mod-fcgid'
+elsif platform?('centos', 'redhat', 'fedora', 'amazon')
+  package 'mod_fcgid' do
+    notifies :run, resources(:execute => 'generate-module-list'), :immediately
   end
 
   file "#{node[:apache][:dir]}/conf.d/fcgid.conf" do
     action :delete
     backup false 
   end
-elsif platform?("suse")
-  apache_lib_path = RUBY_PLATFORM.match(/64/) ? "/usr/lib64/httpd" : "/usr/lib/httpd"
-  package "httpd-devel"
-  bash "install-fcgid" do
+elsif platform?('suse')
+  apache_lib_path = RUBY_PLATFORM.match(/64/) ? '/usr/lib64/httpd' : '/usr/lib/httpd'
+  package 'httpd-devel'
+  bash 'install-fcgid' do
     code <<-EOH
 (cd /tmp; wget http://superb-east.dl.sourceforge.net/sourceforge/mod-fcgid/mod_fcgid.2.2.tgz)
 (cd /tmp; tar zxvf mod_fcgid.2.2.tgz)
@@ -41,6 +41,6 @@ EOH
   end
 end
 
-apache_module "fcgid" do
+apache_module 'fcgid' do
   conf true
 end

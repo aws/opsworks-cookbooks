@@ -6,7 +6,7 @@ describe_recipe 'apache2::mod_dav_svn' do
 
   it 'installs svn dependencies' do
     case node[:platform]
-    when 'centos','redhat','amazon','fedora','scientific','oracle'
+    when 'centos','redhat','fedora','amazon'
       package('mod_dav_svn').must_be_installed
     when 'debian','ubuntu'
       package('libapache2-svn').must_be_installed

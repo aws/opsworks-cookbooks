@@ -62,7 +62,6 @@ if platform?('centos', 'redhat', 'fedora', 'amazon')
       libdir = 'lib'
     end
     command "/usr/local/bin/apache2_module_conf_generate.pl /usr/#{libdir}/httpd/modules /etc/httpd/mods-available"
-
     action :run
   end
 
@@ -80,6 +79,7 @@ if platform?('centos', 'redhat', 'fedora', 'amazon')
     action :delete
     backup false
   end
+
   file "#{node[:apache][:dir]}/conf.d/README" do
     action :delete
     backup false

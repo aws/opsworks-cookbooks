@@ -6,10 +6,10 @@ describe_recipe 'apache2::uninstall' do
 
   it 'should stop apache2' do
     case node[:platform]
-    when "debian","ubuntu"
-      service("apache2").wont_be_running
-    when "centos","redhat","amazon","fedora","scientific","oracle"
-      service("httpd").wont_be_running
+    when 'debian','ubuntu'
+      service('apache2').wont_be_running
+    when 'centos','redhat','fedora','amazon'
+      service('httpd').wont_be_running
     else
       # Fail test if we don't have a supported OS.
       assert_equal(3, nil)
@@ -18,10 +18,10 @@ describe_recipe 'apache2::uninstall' do
 
   it 'should remove the apache2 package' do
     case node[:platform]
-    when "debian","ubuntu"
-      package("apache2").wont_be_installed
-    when "centos","redhat","amazon","fedora","scientific","oracle"
-      package("httpd").wont_be_installed
+    when 'debian','ubuntu'
+      package('apache2').wont_be_installed
+    when 'centos','redhat','fedora','amazon'
+      package('httpd').wont_be_installed
     else
       # Fail test if we don't have a supported OS.
       assert_equal(3, nil)

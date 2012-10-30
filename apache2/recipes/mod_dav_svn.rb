@@ -17,10 +17,11 @@
 # limitations under the License.
 #
 
-if platform?("debian", "ubuntu")
-  package "libapache2-svn"
-elsif platform?("centos", "redhat", "fedora", "amazon", "scientific", "oracle")
-  package "mod_dav_svn"
+case platform
+when 'centos', 'redhat', 'fedora', 'amazon'
+  package 'mod_dav_svn'
+when 'debian', 'ubuntu'
+  package 'libapache2-svn'
 end
 
-apache_module "dav_svn"
+apache_module 'dav_svn'

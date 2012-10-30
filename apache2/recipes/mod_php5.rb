@@ -18,15 +18,15 @@
 #
 
 case node[:platform]
-when "debian", "ubuntu"
-  package "libapache2-mod-php5" do
+when 'debian', 'ubuntu'
+  package 'libapache2-mod-php5' do
     action :install
   end  
-when "centos", "redhat", "fedora", "amazon"
-  package "php" do
+when 'centos', 'redhat', 'fedora', 'amazon'
+  package 'php' do
     action :install
-    notifies :run, resources(:execute => "generate-module-list"), :immediately
-    not_if "which php"
+    notifies :run, resources(:execute => 'generate-module-list'), :immediately
+    not_if 'which php'
   end
 
   # remove stock config
@@ -41,9 +41,9 @@ when "centos", "redhat", "fedora", "amazon"
   end
 end
 
-apache_module "php5" do
+apache_module 'php5' do
   case node['platform']
-  when 'redhat','centos','scientific','amazon','fedora','freebsd'
+  when 'redhat','centos','fedora','amazon'
     filename 'libphp5.so'
   end
 end

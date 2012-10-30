@@ -8,7 +8,7 @@ describe_recipe 'apache2::mod_php5' do
     case node[:platform]
     when 'debian', 'ubuntu'
       package('libapache2-mod-php5').must_be_installed
-    when 'centos','amazon','redhat','amazon','fedora','scientific','oracle'
+    when 'centos','redhat','fedora','amazon'
       package('php').must_be_installed
     end
   end

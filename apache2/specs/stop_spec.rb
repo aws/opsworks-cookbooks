@@ -6,7 +6,7 @@ describe_recipe 'apache2::stop' do
 
   it 'stops apache2' do
     case node[:platform]
-    when 'centos','amazon','redhat','fedora','scientific','oracle'
+    when 'centos','redhat','fedora','amazon'
       service('httpd').wont_be_running
     when 'ubuntu','debian'
       service('apache2').wont_be_running

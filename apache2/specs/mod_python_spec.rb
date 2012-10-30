@@ -8,7 +8,7 @@ describe_recipe 'apache2::mod_python' do
     case node[:platform]
     when 'debian','ubuntu'
       package('libapache2-mod-python').must_be_installed
-    when 'centos','amazon','redhat','fedora','scientific','oracle'
+    when 'centos','redhat','fedora','amazon'
       package('mod_python').must_be_installed
     end
   end

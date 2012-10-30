@@ -18,9 +18,9 @@
 #
 
 if platform?('debian','ubuntu')
-  package "libapache2-mod-python"
-elsif platform?('centos','amazon','redhat','fedora','scientific','oracle')
-  package "mod_python"
+  package 'libapache2-mod-python'
+elsif platform?('centos','redhat', 'fedora','amazon')
+  package 'mod_python'
 end
 
-apache_module "python"
+apache_module 'python'

@@ -17,10 +17,10 @@
 # limitations under the License.
 #
 
-if platform?('centos','amazon','redhat','fedora','scientific','oracle')
-  package "mod_ssl" do
+if platform?('centos','redhat','fedora','amazon')
+  package 'mod_ssl' do
     action :install
-    notifies :run, resources(:execute => "generate-module-list"), :immediately
+    notifies :run, resources(:execute => 'generate-module-list'), :immediately
   end
 
   file "#{node[:apache][:dir]}/conf.d/ssl.conf" do
@@ -30,13 +30,13 @@ if platform?('centos','amazon','redhat','fedora','scientific','oracle')
 end
 
 template "#{node[:apache][:dir]}/ports.conf" do
-  source "ports.conf.erb"
-  group "root"
-  owner "root"
+  source 'ports.conf.erb'
+  group 'root'
+  owner 'root'
   mode 0644
-  notifies :restart, resources(:service => "apache2")
+  notifies :restart, resources(:service => 'apache2')
 end
 
-apache_module "ssl" do
+apache_module 'ssl' do
   conf true
 end
