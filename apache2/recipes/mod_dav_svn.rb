@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-case platform
+case node[:platform]
 when 'centos', 'redhat', 'fedora', 'amazon'
   package 'mod_dav_svn'
 when 'debian', 'ubuntu'

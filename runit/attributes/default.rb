@@ -17,15 +17,15 @@
 # limitations under the License.
 #
 
-case platform
-when "ubuntu","debian"
-  set[:runit][:sv_bin] = "/usr/bin/sv"
-  set[:runit][:chpst_bin] = "/usr/bin/chpst"
-  set[:runit][:service_dir] = "/etc/service"
-  set[:runit][:sv_dir] = "/etc/sv"
-when "gentoo"
-  set[:runit][:sv_bin] = "/usr/bin/sv"
-  set[:runit][:chpst_bin] = "/usr/bin/chpst"
-  set[:runit][:service_dir] = "/etc/service"
-  set[:runit][:sv_dir] = "/var/service"
+case node[:platform]
+when 'ubuntu','debian'
+  set[:runit][:sv_bin] = '/usr/bin/sv'
+  set[:runit][:chpst_bin] = '/usr/bin/chpst'
+  set[:runit][:service_dir] = '/etc/service'
+  set[:runit][:sv_dir] = '/etc/sv'
+when 'gentoo'
+  set[:runit][:sv_bin] = '/usr/bin/sv'
+  set[:runit][:chpst_bin] = '/usr/bin/chpst'
+  set[:runit][:service_dir] = '/etc/service'
+  set[:runit][:sv_dir] = '/var/service'
 end

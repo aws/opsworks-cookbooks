@@ -18,37 +18,37 @@
 #
 
 # Where the various parts of apache are
-case platform
-when "redhat","centos","fedora","amazon"
-  default[:apache][:dir]         = "/etc/httpd"
-  default[:apache][:log_dir]     = "/var/log/httpd"
-  default[:apache][:user]        = "apache"
-  default[:apache][:group]       = "apache"
-  default[:apache][:binary]      = "/usr/sbin/httpd"
-  default[:apache][:icondir]     = "/var/www/icons/"
-  default[:apache][:init_script] = "/etc/init.d/httpd"
+case node[:platform]
+when 'redhat','centos','fedora','amazon'
+  default[:apache][:dir]         = '/etc/httpd'
+  default[:apache][:log_dir]     = '/var/log/httpd'
+  default[:apache][:user]        = 'apache'
+  default[:apache][:group]       = 'apache'
+  default[:apache][:binary]      = '/usr/sbin/httpd'
+  default[:apache][:icondir]     = '/var/www/icons/'
+  default[:apache][:init_script] = '/etc/init.d/httpd'
   if node['platform_version'].to_f >= 6 then
     default[:apache][:pid_file] = '/var/run/httpd/httpd.pid'
   else
     default[:apache][:pid_file] = '/var/run/httpd.pid'
   end
-  default[:apache][:lib_dir]    = node[:kernel][:machine] =~ /^i[36']86$/ ? "/usr/lib/httpd" : "/usr/lib64/httpd"
+  default[:apache][:lib_dir]    = node[:kernel][:machine] =~ /^i[36']86$/ ? '/usr/lib/httpd' : '/usr/lib64/httpd'
   default[:apache][:libexecdir] = "#{node[:apache][:lib_dir]}/modules"
-  default[:apache][:document_root] = "/var/www/html"
-when "debian","ubuntu"
-  default[:apache][:dir]         = "/etc/apache2"
-  default[:apache][:log_dir]     = "/var/log/apache2"
-  default[:apache][:user]        = "www-data"
-  default[:apache][:group]       = "www-data"
-  default[:apache][:binary]      = "/usr/sbin/apache2"
-  default[:apache][:icondir]     = "/usr/share/apache2/icons"
-  default[:apache][:init_script] = "/etc/init.d/apache2"
+  default[:apache][:document_root] = '/var/www/html'
+when 'debian','ubuntu'
+  default[:apache][:dir]         = '/etc/apache2'
+  default[:apache][:log_dir]     = '/var/log/apache2'
+  default[:apache][:user]        = 'www-data'
+  default[:apache][:group]       = 'www-data'
+  default[:apache][:binary]      = '/usr/sbin/apache2'
+  default[:apache][:icondir]     = '/usr/share/apache2/icons'
+  default[:apache][:init_script] = '/etc/init.d/apache2'
   default[:apache][:pid_file]    = '/var/run/apache2.pid'
   default[:apache][:lib_dir]     = '/usr/lib/apache2'
   default[:apache][:libexecdir]  = "#{node[:apache][:lib_dir]}/modules"
-  default[:apache][:document_root] = "/var/www"
+  default[:apache][:document_root] = '/var/www'
 else
-  raise "Bailing out, unknown platform."
+  raise 'Bailing out, unknown platform.'
 end
 
 ###
