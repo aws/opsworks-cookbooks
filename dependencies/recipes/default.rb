@@ -1,15 +1,14 @@
 #
 # Cookbook Name:: dependencies
 # Recipe:: default
-#
 
-include_recipe "packages"
-include_recipe "gem_support"
+include_recipe 'packages'
+include_recipe 'gem_support'
 include_recipe node[:scalarium][:ruby_stack]
 
 case node[:platform]
-when "centos", "redhat", "fedora", "suse", "amazon"
-  #node[:dependencies][:rpms].each do |rpm, version|
+when 'centos','redhat','fedora','amazon'
+  # this should actually iterate over node[:dependencies][:rpms]
   node[:dependencies][:debs].each do |rpm, version|
     Chef::Log.info("preparing installation of dependency: rpm #{rpm.inspect}")
     package rpm do
@@ -17,7 +16,7 @@ when "centos", "redhat", "fedora", "suse", "amazon"
       version(version)
     end
   end
-when "debian", "ubuntu"
+when 'debian','ubuntu'
   node[:dependencies][:debs].each do |deb, version|
     Chef::Log.info("preparing installation of dependency: dpkg #{deb.inspect}")
     package deb do
@@ -29,12 +28,11 @@ end
 
 node[:dependencies][:gems].each do |gem_name, version|
   Chef::Log.info("Preparing installation of dependency: Gem #{gem_name}")
-
   gem_package gem_name do
     version(version)
     retries 2
     gem_binary node[:dependencies][:gem_binary]
-    options "--no-ri --no-rdoc"
+    options '--no-ri --no-rdoc'
   end
 end
 

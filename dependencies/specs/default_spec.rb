@@ -7,10 +7,11 @@ describe_recipe 'dependencies::default' do
   it 'should upgrade all OS dependencies to the required version' do
     packages = {}
     case node[:platform]
-    when "debian","ubuntu"
+    when 'debian','ubuntu'
       packages = node[:dependencies][:debs]
-    when "centos","redhat","amazon","scientific","fedora","oracle"
-      packages = node[:dependencies][:rpms]
+    when 'centos','redhat','fedora','amazon'
+      #packages = node[:dependencies][:rpms] - not implemented on the application
+      packages = node[:dependencies][:debs]
     end
 
     packages.each do |pkg, version|
