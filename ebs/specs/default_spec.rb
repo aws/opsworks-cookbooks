@@ -19,14 +19,13 @@ describe_recipe 'ebs::default' do
 
   describe 'KVM setup' do
     it 'creates /usr/local/bin/virtio-to-scsi' do
-      if BlockDevice.on_kvm?
+      skip unless BlockDevice.on_kvm?
         file('/usr/local/bin/virtio-to-scsi').must_exist.with(
              :owner, 'root').and(:mode, '755')
-      end
     end
 
     it 'creates udev rules' do
-      if BlockDevice.on_kvm?
+      skip unless BlockDevice.on_kvm?
         file('/etc/udev/rules.d/65-virtio-to-scsi.rules').must_exist.with(
              :owner, 'root').and(:mode, '644')
       end
