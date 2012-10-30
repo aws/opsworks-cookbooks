@@ -26,7 +26,7 @@ when 'centos', 'redhat', 'fedora', 'amazon'
   package 'php' do
     action :install
     notifies :run, resources(:execute => 'generate-module-list'), :immediately
-    not_if 'which php'
+    not_if `which php`
   end
 
   # remove stock config
