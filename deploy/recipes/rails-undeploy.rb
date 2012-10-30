@@ -1,9 +1,8 @@
 #
 # Cookbook Name:: deploy
 # Recipe:: rails-undeploy
-#
 
-include_recipe "deploy"
+include_recipe 'deploy'
 
 node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'rails'
@@ -12,64 +11,61 @@ node[:deploy].each do |application, deploy|
   end
 
   case node[:scalarium][:rails_stack][:name]
-
   when 'apache_passenger'
-    include_recipe "#{node[:scalarium][:rails_stack][:service]}::service" if node[:scalarium][:rails_stack][:service]
+    if node[:scalarium][:rails_stack][:service]
+      include_recipe "#{node[:scalarium][:rails_stack][:service]}::service"
+    end
 
     link "#{node[:apache][:dir]}/sites-enabled/#{application}.conf" do
       action :delete
       only_if do
-        File.exists?("#{node[:apache][:dir]}/sites-enabled/#{application}.conf")
+        ::File.exists?("#{node[:apache][:dir]}/sites-enabled/#{application}.conf")
       end
-
       notifies :restart, resources(:service => node[:scalarium][:rails_stack][:service])
     end
 
     file "#{node[:apache][:dir]}/sites-available/#{application}.conf" do
       action :delete
       only_if do
-        File.exists?("#{node[:apache][:dir]}/sites-available/#{application}.conf")
+        ::File.exists?("#{node[:apache][:dir]}/sites-available/#{application}.conf")
       end
       notifies :restart, resources(:service => node[:scalarium][:rails_stack][:service])
     end
 
-
   when 'nginx_unicorn'
-    include_recipe "nginx::service"
+    include_recipe 'nginx::service'
 
     link "/etc/nginx/sites-enabled/#{application}" do
       action :delete
       only_if do
-        File.exists?("/etc/nginx/sites-enabled/#{application}")
+        ::File.exists?("/etc/nginx/sites-enabled/#{application}")
       end
-
-      notifies :restart, resources(:service => "nginx")
+      notifies :restart, resources(:service => 'nginx')
     end
 
     file "/etc/nginx/sites-available/#{application}" do
       action :delete
       only_if do
-        File.exists?("/etc/nginx/sites-available/#{application}")
+        ::File.exists?("/etc/nginx/sites-available/#{application}")
       end
     end
 
-    execute "stop unicorn and restart nginx" do
-      command "sleep #{deploy[:sleep_before_restart]} && /srv/www/#{application}/shared/scripts/unicorn stop"
-      notifies :restart, resources(:service => "nginx")
+    execute 'stop unicorn and restart nginx' do
+      command "sleep #{deploy[:sleep_before_restart]} && \
+               /srv/www/#{application}/shared/scripts/unicorn stop"
+      notifies :restart, resources(:service => 'nginx')
       action :run
     end
 
   else
-    raise "Unsupport Rails stack"
+    raise 'Unsupport Rails stack'
   end
 
   directory "#{deploy[:deploy_to]}" do
     recursive true
     action :delete
-
     only_if do
       File.exists?("#{deploy[:deploy_to]}")
     end
   end
-
 end
