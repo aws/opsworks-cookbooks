@@ -1,8 +1,6 @@
 package 'xfsprogs'
 
-# TODO: Find out if xfsdump is in Amazon Linux within another package.
-# It's in CentOS 6 / RHEL 6, which makes its absence from Amazon Linux
-# even more confusing. For now, exclude it for Amazon Linux.
+# xfsdump is not an Amazon Linux package at this moment.
 case node[:platform]
 when 'debian','ubuntu'
   package 'xfsdump'
@@ -32,7 +30,6 @@ if BlockDevice.on_kvm?
   execute 'Let udev reprocess devices' do
     command 'udevadm trigger'
   end
-
 end
 
 include_recipe 'ebs::volumes'
