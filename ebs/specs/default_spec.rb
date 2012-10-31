@@ -28,7 +28,6 @@ describe_recipe 'ebs::default' do
       skip unless BlockDevice.on_kvm?
         file('/etc/udev/rules.d/65-virtio-to-scsi.rules').must_exist.with(
              :owner, 'root').and(:mode, '644')
-      end
     end
   end
 end
