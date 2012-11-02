@@ -7,9 +7,9 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,11 +30,14 @@ service 'apache2' do
     restart_command '/etc/init.d/apache2 restart && sleep 1'
     reload_command '/etc/init.d/apache2 reload && sleep 1'
   end
+
   supports value_for_platform(
-    'debian' => { '4.0' => [ :restart, :reload ], 'default' => [ :restart, :reload, :status ] },
-    'ubuntu' => { 'default' => [ :restart, :reload, :status ] },
-    ['centos','redhat','fedora','amazon'] => { 'default' => [ :restart, :reload, :status ] },
-    'default' => { 'default' => [:restart, :reload ] }
+    'debian' => {'4.0' => [:restart, :reload],
+                 'default' => [:restart, :reload, :status]
+    },
+    'ubuntu' => {'default' => [:restart, :reload, :status]},
+    ['centos','redhat','fedora','amazon'] => {'default' => [:restart, :reload, :status]},
+    'default' => {'default' => [:restart, :reload]}
   )
   action :nothing
 end

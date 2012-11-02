@@ -46,7 +46,7 @@ if platform?('centos', 'redhat', 'fedora', 'amazon')
     group 'root'
   end
 
-  %w{sites-available sites-enabled mods-available mods-enabled}.each do |dir|
+  ['sites-available','sites-enabled','mods-available','mods-enabled'].each do |dir|
     directory "#{node[:apache][:dir]}/#{dir}" do
       mode 0755
       owner 'root'
@@ -65,7 +65,7 @@ if platform?('centos', 'redhat', 'fedora', 'amazon')
     action :run
   end
 
-  %w{a2ensite a2dissite a2enmod a2dismod}.each do |modscript|
+  ['a2ensite','a2dissite','a2enmod','a2dismod'].each do |modscript|
     template "/usr/sbin/#{modscript}" do
       source "#{modscript}.erb"
       mode 0755
@@ -164,7 +164,7 @@ include_recipe 'apache2::mod_env'
 include_recipe 'apache2::mod_mime'
 include_recipe 'apache2::mod_negotiation'
 include_recipe 'apache2::mod_setenvif'
-include_recipe 'apache2::mod_log_config' if platform?('centos', 'redhat', 'amazon')
+include_recipe 'apache2::mod_log_config' if platform?('centos','redhat','amazon')
 include_recipe 'apache2::mod_ssl'
 include_recipe 'apache2::mod_expires'
 include_recipe 'apache2::logrotate'

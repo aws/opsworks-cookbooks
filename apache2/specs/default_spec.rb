@@ -27,7 +27,7 @@ describe_recipe 'apache2::default' do
     end
 
     it 'creates debian style folders for apache2' do
-      %w{sites-available sites-enabled mods-available mods-enabled}.each do |dir|
+      ['sites-available','sites-enabled','mods-available','mods-enabled'].each do |dir|
         directory("#{node[:apache][:dir]}/#{dir}").must_exist
         directory("#{node[:apache][:dir]}/#{dir}").must_have(:mode, '755').and(
                   :owner, 'root').and(:group, 'root')
@@ -62,7 +62,7 @@ describe_recipe 'apache2::default' do
     end
 
     it 'creates debian apache2 scripts for managing sites and modules' do
-      %w{a2ensite a2dissite a2enmod a2dismod}.each do |modscript|
+      ['a2ensite','a2dissite','a2enmod','a2dismod'].each do |modscript|
         file("/usr/sbin/#{modscript}").must_exist.with(:owner, 'root').and(
              :mode, '755').and(:group, 'root')
       end
