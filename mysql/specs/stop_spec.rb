@@ -8,7 +8,7 @@ describe_recipe 'mysql::stop' do
     case node[:platform]
     when 'debian','ubuntu'
       service('mysql').wont_be_running
-    when 'centos','amazon','fedora','redhat','scientific','oracle'
+    when 'centos','redhat','fedora','amazon'
       service('mysqld').wont_be_running
     end
   end

@@ -20,7 +20,7 @@ describe_recipe 'mysql::server' do
     case node[:platform]
     when 'debian','ubuntu'
       service('mysql').must_be_running
-    when 'centos','amazon','fedora','redhat','scientific','oracle'
+    when 'centos','redhat','fedora','amazon'
       service('mysqld').must_be_running
     end
   end
@@ -29,7 +29,7 @@ describe_recipe 'mysql::server' do
     case node[:platform]
     when 'debian','ubuntu'
       service('mysql').must_be_enabled
-    when 'centos','amazon','fedora','redhat','scientific','oracle'
+    when 'centos','redhat','fedora','amazon'
       service('mysqld').must_be_enabled
     end
   end

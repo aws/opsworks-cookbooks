@@ -1,54 +1,47 @@
 require 'resolv'
 
-include_recipe "mysql::client"
+include_recipe 'mysql::client'
+include_recipe 'mysql::prepare'
 
-include_recipe "mysql::prepare"
+package 'mysql-server'
 
-if node[:mysql][:use_percona_xtradb]
-  include_recipe "mysql::percona_server"
-else
-  package "mysql-server"
-end
-
-if node[:platform] == 'ubuntu' && node[:platform_version].to_f < 10.04
-  remote_file "/tmp/mysql_init.patch" do
-    source "mysql_init.patch"
+if platform?('ubuntu') && node[:platform_version].to_f < 10.04
+  remote_file '/tmp/mysql_init.patch' do
+    source 'mysql_init.patch'
   end
 
-  execute "Fix MySQL init.d script to sleep longer - needed for instances with more RAM" do
-    cwd "/etc/init.d"
-    command "patch -p0 mysql < /tmp/mysql_init.patch"
+  execute 'Fix MySQL init.d script to sleep longer - needed for instances with more RAM' do
+    cwd '/etc/init.d'
+    command 'patch -p0 mysql < /tmp/mysql_init.patch'
     action :run
     only_if do
-      File.read("/etc/init.d/mysql").match(/sleep 1/)
+      File.read('/etc/init.d/mysql').match(/sleep 1/)
     end
   end
 end
 
-if node[:platform] == 'ubuntu' || node[:platform] == 'debian'
-  include_recipe "mysql::apparmor"
+if platform?('debian','ubuntu')
+  include_recipe 'mysql::apparmor'
 end
 
 include_recipe 'mysql::service'
 
-service "mysql" do
+service 'mysql' do
   action :enable
 end
 
-service "mysql" do
+service 'mysql' do
   action :stop
 end
 
-include_recipe "mysql::ebs"
+include_recipe 'mysql::ebs'
+include_recipe 'mysql::config'
 
-include_recipe "mysql::config"
-
-service "mysql" do
+service 'mysql' do
   action :start
 end
 
-case node[:platform]
-when 'centos','redhat','amazon','fedora','scientific','oracle'
+if platform?('centos','redhat','fedora','amazon')
   execute 'assign root password' do
     command "/usr/bin/mysqladmin -u root password \"#{node[:mysql][:server_root_password]}\""
     action :run
