@@ -18,7 +18,7 @@
 #
 
 service 'apache2' do
-  case node[:platform]
+  case platform?
   when 'centos','redhat','fedora','amazon'
     service_name 'httpd'
     # If restarted/reloaded too quickly httpd has a habit of failing.

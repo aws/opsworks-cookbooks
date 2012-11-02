@@ -1,8 +1,8 @@
-include_recipe "apache2"
+include_recipe 'apache2'
 
 packages = []
 
-case node[:platform]
+case platform?
 when 'debian','ubuntu'
   packages = [
     'php5-xsl',
@@ -26,7 +26,7 @@ when 'debian','ubuntu'
   if node[:platform] == 'ubuntu' && node[:platform_version] == '9.10'
     packages << 'php5-mhash'
   end
-when 'centos','redhat','amazon','fedora','scientific','oracle'
+when 'centos','redhat','fedora','amazon'
   # TODO: Compile php-sqlite extension for RHEL based systems.
   packages = [
     'php-xml',
@@ -52,4 +52,4 @@ packages.each do |pkg|
   end
 end
 
-include_recipe "apache2::mod_php5"
+include_recipe 'apache2::mod_php5'
