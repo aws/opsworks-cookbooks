@@ -14,7 +14,7 @@ describe_recipe 'memcached::default' do
 
   it 'installs system config' do
     case node[:platform]
-    when 'centos','redhat','amazon','fedora','scientific','oracle'
+    when 'centos','redhat','fedora','amazon'
       file('/etc/sysconfig/memcached').must_exist
     when 'debian','ubuntu'
       file('/etc/default/memcached').must_exist
