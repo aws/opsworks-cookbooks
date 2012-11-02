@@ -17,29 +17,29 @@
 # limitations under the License.
 #
 
-package "haproxy" do
+package 'haproxy' do
   action :install
 end
 
-if platform?("debian","ubuntu")
-  template "/etc/default/haproxy" do
-    source "haproxy-default.erb"
-    owner "root"
-    group "root"
+if platform?('debian','ubuntu')
+  template '/etc/default/haproxy' do
+    source 'haproxy-default.erb'
+    owner 'root'
+    group 'root'
     mode 0644
   end
 end
 
-include_recipe "haproxy::service"
+include_recipe 'haproxy::service'
 
-service "haproxy" do
+service 'haproxy' do
   action [:enable, :start]
 end
 
-template "/etc/haproxy/haproxy.cfg" do
-  source "haproxy.cfg.erb"
-  owner "root"
-  group "root"
+template '/etc/haproxy/haproxy.cfg' do
+  source 'haproxy.cfg.erb'
+  owner 'root'
+  group 'root'
   mode 0644
-  notifies :restart, resources(:service => "haproxy")
+  notifies :restart, resources(:service => 'haproxy')
 end
