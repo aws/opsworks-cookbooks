@@ -23,7 +23,8 @@ node[:ebs][:raids].each do |raid_device, options|
           BlockDevice.assemble_raid(raid_device, options)
         end
       else
-        BlockDevice.create_raid(raid_device, options.update(:chunk_size => node[:ebs][:mdadm_chunk_size]))
+        BlockDevice.create_raid(raid_device, options.update(
+          :chunk_size => node[:ebs][:mdadm_chunk_size]))
       end
       BlockDevice.set_read_ahead(raid_device, node[:ebs][:md_read_ahead])
     end
@@ -46,7 +47,7 @@ node[:ebs][:raids].each do |raid_device, options|
   directory options[:mount_point] do
     recursive true
     action :create
-    mode "0755"
+    mode 0755
   end
 
   mount options[:mount_point] do
@@ -54,7 +55,9 @@ node[:ebs][:raids].each do |raid_device, options|
     device lvm_device
     options 'noatime'
     not_if do
-      File.read('/etc/mtab').split("\n").any?{|line| line.match(" #{options[:mount_point]} ")}
+      File.read('/etc/mtab').split("\n").any? do |line|
+        line.match(" #{options[:mount_point]} ")
+      end
     end
   end
 
@@ -62,14 +65,19 @@ node[:ebs][:raids].each do |raid_device, options|
     action :enable
     fstype options[:fstype]
     device lvm_device
-    options "noatime"
+    options 'noatime'
     not_if do
-      File.read('/etc/mtab').split("\n").any?{|line| line.match(" #{options[:mount_point]} ")}
+      File.read('/etc/mtab').split("\n").any? do |line| 
+        line.match(" #{options[:mount_point]} ")
+      end
     end
   end
 
-  template value_for_platform(['centos','redhat','fedora','amazon']) => {'default' => '/etc/mdadm.conf'},
-                              'default' => '/etc/mdadm/mdadm.conf' do
+  template do
+    path value_for_platform(
+      ['centos','redhat','fedora','amazon'] => {'default' => '/etc/mdadm.conf'},
+      'default' => '/etc/mdadm/mdadm.conf'
+    )
     source 'mdadm.conf.erb'
     mode 0644
     owner 'root'
