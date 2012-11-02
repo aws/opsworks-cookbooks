@@ -1,6 +1,6 @@
 include_recipe 'mysql::service'
 
-template do
+template 'mysql configuration' do
   path value_for_platform(
     ['centos','redhat','fedora','amazon'] => {'default' => '/etc/my.cnf'},
     'default' => '/etc/mysql/my.cnf'

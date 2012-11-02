@@ -73,7 +73,7 @@ node[:ebs][:raids].each do |raid_device, options|
     end
   end
 
-  template do
+  template 'mdadm configuration' do
     path value_for_platform(
       ['centos','redhat','fedora','amazon'] => {'default' => '/etc/mdadm.conf'},
       'default' => '/etc/mdadm/mdadm.conf'
