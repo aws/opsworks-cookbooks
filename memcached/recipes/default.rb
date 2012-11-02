@@ -2,16 +2,6 @@ package 'memcached' do
   action :upgrade
 end
 
-package 'libmemcache-dev' do
-  case platform?
-  when 'debian','ubuntu'
-    package_name 'libmemcache-dev'
-  when 'centos','redhat','fedora','amazon'
-    package_name 'libmemcached-devel'
-  end
-  action :upgrade
-end
-
 include_recipe 'memcached::service'
 
 service 'monit' do
@@ -42,6 +32,7 @@ when 'ubuntu','debian'
     mode 0644
     notifies :restart, resources(:service => 'memcached'), :immediately
   end
+
 when 'centos','redhat','fedora','amazon'
   template '/etc/sysconfig/memcached' do
     source 'memcached.sysconfig.erb'

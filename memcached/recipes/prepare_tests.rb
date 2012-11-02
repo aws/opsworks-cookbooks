@@ -1,18 +1,14 @@
 # dependencie for the memcached gem
-package 'libmemcached-dev' do
-  case platform?
-  when 'centos','redhat','fedora','amazon'
-    package_name 'libmemcached-devel'
-  when 'debian','ubuntu'
-    package_name 'libmemcached-dev'
-  end
+package 'libmemcached development libraries' do
+  package_name value_for_platform(
+    ['centos','redhat','fedora','amazon'] => {'default' => 'libmemcached-devel'},
+    ['debian','ubuntu'] => {'default' => 'libmemcached-dev'}
+  )
 end
 
 package 'libsasl2-dev' do
-  case platform?
-  when 'centos','redhat','fedora','amazon'
-    package_name 'cyrus-sasl-devel'
-  when 'debian','ubuntu'
-    package_name 'libsasl2-dev'
-  end
+  package_name value_for_platform(
+    ['centos','redhat','fedora','amazon'] => {'default' => 'cyrus-sasl-devel'},
+    ['debian','ubuntu'] => {'default' => 'libsasl2-dev'}
+  )
 end
