@@ -11,7 +11,7 @@ describe_recipe 'deploy::web' do
                   :user, deploy[:user]).and(:group, deploy[:group])
         directory("#{deploy[:deploy_to]}/shared").must_exist.with(:mode, '770').and(
                   :user, deploy[:user]).and(:group, deploy[:group])
-        %w{log config system pids scripts sockets}.each do |dir_name|
+        ['log','config','system','pids','scripts','sockets'].each do |dir_name|
           directory("#{deploy[:deploy_to]}/shared/#{dir_name}").must_exist.with(
                     :mode, '770').and(:user, deploy[:user]).and(:group, deploy[:group])
         end
