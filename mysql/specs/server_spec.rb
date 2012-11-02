@@ -25,10 +25,12 @@ describe_recipe 'mysql::server' do
     end
   end
 
-  it 'starts the mysql service' do
+  it 'enables the mysql service' do
     case node[:platform]
     when 'debian','ubuntu'
-      service('mysql').must_be_enabled
+      #service('mysql').must_be_enabled
+      # ugly but works, as opposite to the above one
+      file('/etc/init/mysql.conf').must_match /^start on runlevel/
     when 'centos','redhat','fedora','amazon'
       service('mysqld').must_be_enabled
     end
