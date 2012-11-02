@@ -17,14 +17,14 @@
 # limitations under the License.
 #
 
-define :web_app, :template => "web_app.conf.erb" do
+define :web_app, :template => 'web_app.conf.erb' do
   
   application_name = params[:name]
 
-  include_recipe "apache2"
-  include_recipe "apache2::mod_rewrite"
-  include_recipe "apache2::mod_deflate"
-  include_recipe "apache2::mod_headers"
+  include_recipe 'apache2'
+  include_recipe 'apache2::mod_rewrite'
+  include_recipe 'apache2::mod_deflate'
+  include_recipe 'apache2::mod_headers'
   
   directory "#{node[:apache][:dir]}/sites-available/#{application_name}.conf.d"
   params[:rewrite_config] = "#{node[:apache][:dir]}/sites-available/#{application_name}.conf.d/rewrite"
@@ -33,8 +33,8 @@ define :web_app, :template => "web_app.conf.erb" do
   template "#{node[:apache][:dir]}/sites-available/#{application_name}.conf" do
     Chef::Log.debug("Generating Apache site template for #{application_name.inspect}")
     source params[:template]
-    owner "root"
-    group "root"
+    owner 'root'
+    group 'root'
     mode 0644
     if params[:cookbook]
       cookbook params[:cookbook]
@@ -43,8 +43,8 @@ define :web_app, :template => "web_app.conf.erb" do
       :application_name => application_name,
       :params => params
     )
-    if File.exists?("#{node[:apache][:dir]}/sites-enabled/#{application_name}.conf")
-      notifies :reload, resources(:service => "apache2"), :delayed
+    if ::File.exists?("#{node[:apache][:dir]}/sites-enabled/#{application_name}.conf")
+      notifies :reload, resources(:service => 'apache2'), :delayed
     end
   end
   
