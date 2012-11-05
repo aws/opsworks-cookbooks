@@ -6,6 +6,11 @@ package "ganglia client" do
   )
 end
 
+if platform?('centos','redhat','fedora','amazon')
+  # this will be installed in ubuntu as dep to ganglia
+  package 'ganglia-gmond-python'
+end
+
 execute 'stop gmond with non-updated configuration' do
   command value_for_platform(
     ['centos','redhat','fedora','amazon'] => {
