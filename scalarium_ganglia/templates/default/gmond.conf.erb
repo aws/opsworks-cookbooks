@@ -53,42 +53,42 @@ tcp_accept_channel {
 <% end %>
 
 
-/* Each metrics module that is referenced by gmond must be specified and 
-   loaded. If the module has been statically linked with gmond, it does not 
-   require a load path. However all dynamically loadable modules must include 
-   a load path. */ 
-modules { 
-  module { 
-    name = "core_metrics" 
-  } 
-  module { 
-    name = "cpu_module" 
-    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modcpu.so" 
-  } 
-  module { 
-    name = "disk_module" 
-    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/moddisk.so" 
-  } 
-  module { 
-    name = "load_module" 
-    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modload.so" 
-  } 
-  module { 
-    name = "mem_module" 
-    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modmem.so" 
-  } 
-  module { 
-    name = "net_module" 
-    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modnet.so" 
-  } 
-  module { 
-    name = "proc_module" 
-    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modproc.so" 
-  } 
-  module { 
-    name = "sys_module" 
-    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modsys.so" 
-  } 
+/* Each metrics module that is referenced by gmond must be specified and
+   loaded. If the module has been statically linked with gmond, it does not
+   require a load path. However all dynamically loadable modules must include
+   a load path. */
+modules {
+  module {
+    name = "core_metrics"
+  }
+  module {
+    name = "cpu_module"
+    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modcpu.so"
+  }
+  module {
+    name = "disk_module"
+    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/moddisk.so"
+  }
+  module {
+    name = "load_module"
+    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modload.so"
+  }
+  module {
+    name = "mem_module"
+    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modmem.so"
+  }
+  module {
+    name = "net_module"
+    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modnet.so"
+  }
+  module {
+    name = "proc_module"
+    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modproc.so"
+  }
+  module {
+    name = "sys_module"
+    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modsys.so"
+  }
   module {
     name = "python_module"
     path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modpython.so"
