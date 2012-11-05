@@ -5,35 +5,28 @@ default[:ganglia][:original_datadir] = "/var/lib/ganglia"
 default[:ganglia][:tcp_client_port] = 8649
 default[:ganglia][:udp_client_port] = 8666
 default[:ganglia][:user] = 'ganglia'
-case node[:platform]
-when 'debian','ubuntu'
-  default[:ganglia][:rrds_user] = 'nobody'
-when 'centos','redhat','amazon','fedora','scientific','oracle'
-  default[:ganglia][:rrds_user] = 'ganglia'
-end
+default[:ganglia][:rrds_user] = 'nobody'
 
-default[:ganglia][:web][:url] = '/ganglia'
-default[:ganglia][:web][:user] = 'scalarium'
-
-# gweb2 Makefile config
-default[:ganglia][:web][:destdir] = '/usr/share/ganglia-webfrontend'
 case node[:platform]
 when 'debian','ubuntu'
   default[:ganglia][:web][:apache_user]  = 'www-data'
   default[:ganglia][:web][:apache_group] = 'www-data'
-when 'centos','redhat','amazon','fedora','scientific','oracle'
+when 'centos','redhat','fedora','amazon'
   default[:ganglia][:web][:apache_user]  = 'apache'
   default[:ganglia][:web][:apache_group] = 'apache'
 end
+
 default[:ganglia][:web][:svn] = 'no'
+default[:ganglia][:web][:url] = '/ganglia'
+default[:ganglia][:web][:user] = 'scalarium'
+# gweb2 Makefile config
+default[:ganglia][:web][:destdir] = '/usr/share/ganglia-webfrontend'
 
 pw = String.new
-
 while pw.length < 20
   pw << OpenSSL::Random.random_bytes(1).gsub(/\W/, '')
 end
 
 default[:ganglia][:web][:password] = pw
-
 
 default[:ganglia][:nginx][:status_url] = '/nginx_status'
