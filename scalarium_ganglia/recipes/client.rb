@@ -1,69 +1,53 @@
-if platform?('ubuntu') && node[:platform_version].to_i == 11
-  remote_file '/tmp/ganglia-monitor.deb' do
-    source "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/ganglia-monitor_3.2.0-7_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
-    not_if { ::File.exists?('/tmp/ganglia-monitor.deb') }
-  end
-  remote_file '/tmp/libganglia1.deb' do
-    source "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/libganglia1_3.2.0-7_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
-    not_if { ::File.exists?('/tmp/libganglia1.deb') }
-  end
-
-  %w{libapr1 libconfuse0}.each do |pkg|
-    package pkg
-  end
-
-  if node[:platform] == 'ubuntu' && node[:platform_version].to_f == 11.04
-    package 'libpython2.7'
-  end
-
-  execute 'dpkg -i /tmp/libganglia1.deb'
-  execute 'dpkg -i /tmp/ganglia-monitor.deb'
-elsif platform?('centos','redhat','fedora','amazon')
+package "ganglia client" do
+  package_name value_for_platform(
   # TODO: Need to either add the EPEL repo, or build/import packages by hand:
-  package "ganglia-gmond"
-else
-  package "ganglia-monitor"
+    ['centos','redhat','fedora','amazon'] => {'default' => 'ganglia-gmond'},
+    ['debian','ubuntu'] => {'default' => 'ganglia-monitor'}
+  )
 end
 
-execute "stop gmond with non-updated configuration" do
-  case node[:platform]
-  when "ubuntu","debian"
-    command "/etc/init.d/ganglia-monitor stop"
-  when "centos","redhat","fedora","amazon"
-    command "/etc/init.d/gmond stop"
+execute 'stop gmond with non-updated configuration' do
+  command value_for_platform(
+    ['centos','redhat','fedora','amazon'] => {
+      'default' => '/etc/init.d/gmond stop'
+    },
+    ['debian','ubuntu'] => {
+      'default' => '/etc/init.d/ganglia-monitor stop'
+    }
+  )
+end
+
+['scripts','conf.d','python_modules'].each do |dir|
+  directory "/etc/ganglia/#{dir}" do
+    action :create
+    owner 'root'
+    group 'root'
+    mode 0755
   end
 end
 
-directory "/etc/ganglia/scripts" do
-  action :create
-  owner "root"
-  group "root"
-  mode '0755'
-end
+include_recipe 'scalarium_ganglia::monitor-fd-and-sockets'
+include_recipe 'scalarium_ganglia::monitor-disk'
 
-directory "/etc/ganglia/conf.d" do
-  action :create
-  owner "root"
-  group "root"
-  mode '0755'
-end
+case node[:scalarium][:instance][:roles]
+when 'memcached'
+  include_recipe 'scalarium_ganglia::monitor-memcached'
+when 'db-master'
+  include_recipe 'scalarium_ganglia::monitor-mysql'
+when 'lb'
+  include_recipe 'scalarium_ganglia::monitor-haproxy'
+when 'php-app','monitoring-master'
+  include_recipe 'scalarium_ganglia::monitor-apache'
+when 'web'
+  include_recipe 'scalarium_ganglia::monitor-nginx'
+when 'rails-app'
 
-directory "/etc/ganglia/python_modules" do
-  action :create
-  owner "root"
-  group "root"
-  mode '0755'
-end
+  case node[:scalarium][:rails_stack][:name]
+  when 'apache_passenger'
+    include_recipe 'scalarium_ganglia::monitor-passenger'
+    include_recipe 'scalarium_ganglia::monitor-apache'
+  when 'nginx_unicorn'
+    include_recipe 'scalarium_ganglia::monitor-nginx'
+  end
 
-include_recipe "scalarium_ganglia::monitor-fd-and-sockets"
-include_recipe "scalarium_ganglia::monitor-disk"
-include_recipe "scalarium_ganglia::monitor-memcached" if node[:scalarium][:instance][:roles].include?('memcached')
-include_recipe "scalarium_ganglia::monitor-mysql" if node[:scalarium][:instance][:roles].include?('db-master')
-include_recipe "scalarium_ganglia::monitor-haproxy" if node[:scalarium][:instance][:roles].include?('lb')
-include_recipe "scalarium_ganglia::monitor-apache" if node[:scalarium][:instance][:roles].any?{|role| ['php-app', 'monitoring-master'].include?(role) }
-if node[:scalarium][:instance][:roles].include?('rails-app')
-  include_recipe "scalarium_ganglia::monitor-passenger" if node[:scalarium][:rails_stack][:name] == 'apache_passenger'
-  include_recipe "scalarium_ganglia::monitor-apache" if node[:scalarium][:rails_stack][:name] == 'apache_passenger'
-  include_recipe "scalarium_ganglia::monitor-nginx" if node[:scalarium][:rails_stack][:name] == 'nginx_unicorn'
 end
-include_recipe "scalarium_ganglia::monitor-nginx" if node[:scalarium][:instance][:roles].include?('web')
