@@ -2,7 +2,7 @@ include_recipe 'apache2'
 
 packages = []
 
-case platform?
+case node[:platform]
 when 'debian','ubuntu'
   packages = [
     'php5-xsl',
@@ -23,9 +23,6 @@ when 'debian','ubuntu'
     'php-mdb2',
     'php-html-common']
 
-  if node[:platform] == 'ubuntu' && node[:platform_version] == '9.10'
-    packages << 'php5-mhash'
-  end
 when 'centos','redhat','fedora','amazon'
   # TODO: Compile php-sqlite extension for RHEL based systems.
   packages = [
