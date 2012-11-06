@@ -10,7 +10,7 @@ end
 
 #
 # be aware that Amazon Linux uses a different configuration schema.
-case platform?
+case node[:platform]
 when 'ubuntu','debian'
   template '/etc/memcached.conf' do
     source 'memcached.conf.erb'

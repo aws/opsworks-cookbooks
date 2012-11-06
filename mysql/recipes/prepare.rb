@@ -1,4 +1,4 @@
-case platform?
+case node[:platform]
 when 'debian','ubuntu'
   directory '/var/cache/local/preseeding' do
     owner 'root'
