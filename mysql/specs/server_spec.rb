@@ -30,7 +30,7 @@ describe_recipe 'mysql::server' do
     when 'debian','ubuntu'
       #service('mysql').must_be_enabled
       # ugly but works, as opposite to the above one
-      file('/etc/init/mysql.conf').must_match /^start on runlevel/
+      file('/etc/init/mysql.conf').must_match /^start on/
     when 'centos','redhat','fedora','amazon'
       service('mysqld').must_be_enabled
     end
