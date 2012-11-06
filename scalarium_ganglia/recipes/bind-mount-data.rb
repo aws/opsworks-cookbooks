@@ -1,25 +1,14 @@
-ruby_block 'Bindmounting RRDS directories for Ganglia' do
-  block do
-    Chef::Log.info('Bindmounting RRDS directories for Ganglia')
-  end
-end
-
 directory "#{node[:ganglia][:datadir]}/rrds" do
+  owner node[:ganglia][:rrds_user]
+  mode 0775
   recursive true
   action :create
-  mode 0775
 end
 
 mount node[:ganglia][:original_datadir] do
+  Chef::Log.info('Bind-mounting RRDS directories for Ganglia')
   device node[:ganglia][:datadir]
   fstype 'none'
   options 'bind,rw'
-  action :mount
-end
-
-mount node[:ganglia][:original_datadir] do
-  device node[:ganglia][:datadir]
-  fstype 'none'
-  options 'bind,rw'
-  action :enable
+  action [:mount, :enable]
 end
