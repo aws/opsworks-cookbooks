@@ -1,4 +1,4 @@
-if node[:platform] == 'ubuntu' && node[:platform_version].to_i == 11
+if node[:platform] == 'ubuntu' && ['12.04', '11.10', '11.04'].include?(node[:platform_version].to_s)
   remote_file '/tmp/ganglia-monitor.deb' do
     source "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/ganglia-monitor_3.2.0-7_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
     not_if { ::File.exists?('/tmp/ganglia-monitor.deb') }
@@ -9,7 +9,7 @@ if node[:platform] == 'ubuntu' && node[:platform_version].to_i == 11
   end
 
   execute 'apt-get -q -y install libapr1 libconfuse0'
-  if node[:platform] == 'ubuntu' && node[:platform_version].to_f == 11.04
+  if node[:platform] == 'ubuntu' && node[:platform_version].to_s == '11.04'
     execute 'apt-get -q -y install libpython2.7'
   end
   execute 'dpkg -i /tmp/libganglia1.deb'

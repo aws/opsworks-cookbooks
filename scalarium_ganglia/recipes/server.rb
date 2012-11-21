@@ -1,6 +1,6 @@
 include_recipe "scalarium_ganglia::client"
 
-if node[:platform] == 'ubuntu' && node[:platform_version].to_i == 11
+if node[:platform] == 'ubuntu' && ['12.04', '11.10', '11.04'].include?(node[:platform_version].to_s)
   remote_file '/tmp/gmetad.deb' do
     source "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/gmetad_3.2.0-7_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
     not_if { ::File.exists?('/tmp/gmetad.deb') }
