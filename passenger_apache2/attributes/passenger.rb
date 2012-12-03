@@ -1,3 +1,4 @@
+include_attribute 'scalarium_initial_setup::default'
 include_attribute 'rails::rails'
 
 case node[:scalarium][:ruby_version]
