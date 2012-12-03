@@ -1,3 +1,4 @@
+include_attribute 'scalarium_initial_setup::default'
 include_attribute 'rails::rails'
 include_attribute 'packages::packages'
 

@@ -1,4 +1,5 @@
 default[:scalarium][:ruby_stack] = 'ruby_enterprise'
+default[:scalarium][:ruby_version] = '1.9.3'
 default[:scalarium][:run_cookbook_tests] = false
 default[:scalarium_initial_setup][:sysctl] = Mash.new
 default[:scalarium_initial_setup][:sysctl]['net.core.somaxconn'] = 1024           # 128

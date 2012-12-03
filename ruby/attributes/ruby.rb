@@ -1,3 +1,5 @@
+include_attribute 'scalarium_initial_setup::default'
+
 # ruby 1.8.7 is ruby-enterprise, os we don't handle it here
 case node['scalarium']['ruby_version']
 when '1.9.2'
