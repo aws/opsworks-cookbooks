@@ -27,8 +27,8 @@ describe_recipe 'scalarium-agent-monit::default' do
     file(node[:monit][:conf]).must_include 'set daemon 60'
   end
 
-  it 'ensures scalarium_agent.monitrc is installed' do
-    file(File.join(node[:monit][:conf_dir], 'scalarium_agent.monitrc')).must_exist.with(:mode, '644')
+  it 'ensures opsworks-agent.monitrc is installed' do
+    file(File.join(node[:monit][:conf_dir], 'opsworks-agent.monitrc')).must_exist.with(:mode, '644')
   end
 
   it 'ensures logging monitrc file is removed on rhel based systems' do
