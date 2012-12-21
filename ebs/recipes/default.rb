@@ -3,11 +3,9 @@ package 'xfsprogs'
 # xfsdump is not an Amazon Linux package at this moment.
 case node[:platform]
 when 'debian','ubuntu'
-  package 'xfsprogs'
   package 'xfsdump'
   package 'xfslibs-dev'
 when 'redhat','centos','fedora','amazon'
-  package 'xfsprogs'
   package 'xfsprogs-devel'
 end
 

@@ -12,10 +12,9 @@ globals {
   cleanup_threshold = 500 /*secs */
   gexec = no
   send_metadata_interval = 15
-  <% if node[:platform] == 'ubuntu' && node[:platform_version].to_f >= 11.00 %>
+  <% if node[:platform] == 'ubuntu' && ['12.04', '11.10', '11.04'].include?(node[:platform_version].to_s) %>
   override_hostname = <%= node[:scalarium][:instance][:hostname] %>
   <% end %>
-}
 
 /* If a cluster attribute is specified, then all gmond hosts are wrapped inside
  * of a <CLUSTER> tag.  If you do not specify a cluster tag, then all <HOSTS> will

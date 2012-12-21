@@ -1,9 +1,29 @@
-package "ganglia client" do
-  package_name value_for_platform(
-  # TODO: Need to either add the EPEL repo, or build/import packages by hand:
-    ['centos','redhat','fedora','amazon'] => {'default' => 'ganglia-gmond'},
-    ['debian','ubuntu'] => {'default' => 'ganglia-monitor'}
-  )
+#package "ganglia client" do
+#  package_name value_for_platform(
+#  # TODO: Need to either add the EPEL repo, or build/import packages by hand:
+#    ['centos','redhat','fedora','amazon'] => {'default' => 'ganglia-gmond'},
+#    ['debian','ubuntu'] => {'default' => 'ganglia-monitor'}
+#  )
+#end
+
+if node[:platform] == 'ubuntu' && ['12.04', '11.10', '11.04'].include?(node[:platform_version].to_s)
+  remote_file '/tmp/ganglia-monitor.deb' do
+    source "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/ganglia-monitor_3.2.0-7_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
+    not_if { ::File.exists?('/tmp/ganglia-monitor.deb') }
+  end
+  remote_file '/tmp/libganglia1.deb' do
+    source "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/libganglia1_3.2.0-7_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
+    not_if { ::File.exists?('/tmp/libganglia1.deb') }
+  end
+
+  execute 'apt-get -q -y install libapr1 libconfuse0'
+  if node[:platform] == 'ubuntu' && node[:platform_version].to_s == '11.04'
+    execute 'apt-get -q -y install libpython2.7'
+  end
+  execute 'dpkg -i /tmp/libganglia1.deb'
+  execute 'dpkg -i /tmp/ganglia-monitor.deb'
+else
+  package "ganglia-monitor"
 end
 
 if platform?('centos','redhat','fedora','amazon')
