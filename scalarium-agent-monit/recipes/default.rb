@@ -23,8 +23,8 @@ template node[:monit][:conf] do
   notifies :restart, resources(:service => "monit")
 end
 
-template File.join(node[:monit][:conf_dir], "scalarium_agent.monitrc") do
-  source "scalarium_agent.monitrc.erb"
+template File.join(node[:monit][:conf_dir], "opsworks-agent.monitrc") do
+  source "opsworks-agent.monitrc.erb"
   mode 0644
   notifies :restart, resources(:service => "monit")
 end
