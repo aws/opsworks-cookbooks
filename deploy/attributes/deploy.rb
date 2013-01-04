@@ -1,7 +1,7 @@
 include_attribute 'deploy::logrotate'
 include_attribute 'deploy::rails_stack'
 
-default[:scalarium][:deploy_user][:shell] = '/bin/zsh'
+default[:scalarium][:deploy_user][:shell] = '/bin/bash'
 default[:scalarium][:deploy_user][:user] = 'deploy'
 case node[:platform]
 when 'debian','ubuntu'
