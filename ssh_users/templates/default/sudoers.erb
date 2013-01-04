@@ -29,9 +29,3 @@ ubuntu  ALL=(ALL) NOPASSWD:ALL
 <% (@sudoers || []).each do |sudoer| %>
 <%= sudoer[:name] %>  ALL=(ALL) NOPASSWD:ALL
 <% end %>
-
-scalarium-agent ALL=NOPASSWD:/tmp/scalarium-agent-installer/scalarium-agent/instance_bootstrap/remote_updater.rb
-scalarium-agent ALL=NOPASSWD:/opt/scalarium-agent/bin/chef-solo
-scalarium-agent ALL=NOPASSWD:/opt/scalarium-agent/bin/statistics
-Defaults:scalarium-agent !requiretty
-

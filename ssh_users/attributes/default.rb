@@ -1,5 +1,7 @@
 require 'etc'
 
+include_attribute 'scalarium_initial_setup::default'
+
 Etc.group do |entry|
   if entry.name == 'scalarium'
     default[:scalarium_gid] = entry.gid

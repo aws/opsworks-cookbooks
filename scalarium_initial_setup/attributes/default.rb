@@ -1,6 +1,12 @@
 default[:scalarium][:ruby_stack] = 'ruby_enterprise'
 default[:scalarium][:ruby_version] = '1.9.3'
 default[:scalarium][:run_cookbook_tests] = false
+
+default[:scalarium][:agent][:base_dir] = '/opt/aws/opsworks/current'
+# system user, group and user share the same name
+default[:scalarium][:agent][:user] = 'scalarium-agent'
+default[:scalarium][:agent][:group] = node[:scalarium][:agent][:user]
+
 default[:scalarium_initial_setup][:sysctl] = Mash.new
 default[:scalarium_initial_setup][:sysctl]['net.core.somaxconn'] = 1024           # 128
 default[:scalarium_initial_setup][:sysctl]['net.core.netdev_max_backlog'] = 3072  # 1000

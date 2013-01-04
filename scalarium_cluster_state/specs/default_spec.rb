@@ -5,11 +5,11 @@ describe_recipe 'scalarium_cluster_state::default' do
   include MiniTest::Chef::Assertions
 
   it 'creates cluster state directory' do
-    directory(File.dirname(node[:scalarium_cluster_state][:path])).must_exist.with(:mode, '755')
+    directory(File.dirname(node[:scalarium][:stack_state][:path])).must_exist.with(:mode, '755')
   end
 
   it 'creates cluster_state.json' do
-    file(node[:scalarium_cluster_state][:path]).must_exist.with(:mode, '644')
+    file(node[:scalarium][:stack_state][:path]).must_exist.with(:mode, '644')
   end
 
   it 'creates /etc/hosts' do

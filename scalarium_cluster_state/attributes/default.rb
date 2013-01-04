@@ -1,3 +1,3 @@
 GC.disable
-default[:scalarium_cluster_state][:path] = '/var/lib/scalarium/cluster_state.json'
-set[:scalarium_agent_root] = '/opt/scalarium-agent/current'
+include_attribute 'scalarium_initial_setup'
+default[:scalarium][:stack_state][:path] = '/var/lib/scalarium/cluster_state.json'

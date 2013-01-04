@@ -20,7 +20,6 @@ end
 
 template '/etc/sudoers' do
   backup false
-  cookbook 'ssh_users'
   source 'sudoers.erb'
   owner 'root'
   group 'root'
