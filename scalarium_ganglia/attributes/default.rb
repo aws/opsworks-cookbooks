@@ -1,7 +1,7 @@
 default[:ganglia][:datadir] = '/vol/ganglia'
 default[:ganglia][:conf_dir] = "#{node[:ganglia][:datadir]}/conf"
 default[:ganglia][:events_dir] = "#{node[:ganglia][:datadir]}/conf/events.json.d/"
-default[:ganglia][:original_datadir] = "/var/lib/ganglia"
+default[:ganglia][:original_datadir] = '/var/lib/ganglia'
 default[:ganglia][:tcp_client_port] = 8649
 default[:ganglia][:udp_client_port] = 8666
 default[:ganglia][:user] = 'ganglia'

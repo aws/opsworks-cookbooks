@@ -1,34 +1,24 @@
-#package "ganglia client" do
-#  package_name value_for_platform(
-#  # TODO: Need to either add the EPEL repo, or build/import packages by hand:
-#    ['centos','redhat','fedora','amazon'] => {'default' => 'ganglia-gmond'},
-#    ['debian','ubuntu'] => {'default' => 'ganglia-monitor'}
-#  )
-#end
+case node[:platform]
+when 'debian','ubuntu'
+  package 'libapr1'
+  package 'libconfuse0'
 
-if node[:platform] == 'ubuntu' && ['12.04', '11.10', '11.04'].include?(node[:platform_version].to_s)
-  remote_file '/tmp/ganglia-monitor.deb' do
-    source "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/ganglia-monitor_3.2.0-7_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
-    not_if { ::File.exists?('/tmp/ganglia-monitor.deb') }
-  end
-  remote_file '/tmp/libganglia1.deb' do
-    source "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/libganglia1_3.2.0-7_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
-    not_if { ::File.exists?('/tmp/libganglia1.deb') }
+  ['libganglia1','ganglia-monitor'].each do |package_name|
+    remote_file "/tmp/#{package_name}.deb" do
+      source "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/#{package_name}_3.3.8-1_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
+      not_if { `dpkg-query --show #{package_name} | cut -f 2`.chomp.eql?('3.3.8-1') }
+    end
+     execute "dpkg -i /tmp/#{package_name}.deb && rm /tmp/#{package_name}.deb"
   end
 
-  execute 'apt-get -q -y install libapr1 libconfuse0'
-  if node[:platform] == 'ubuntu' && node[:platform_version].to_s == '11.04'
-    execute 'apt-get -q -y install libpython2.7'
+  remote_file '/tmp/ganglia-monitor-python.deb' do
+    source "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/ganglia-monitor-python_3.3.8-1_all.deb"
+    not_if { ::File.exists?('/tmp/ganglia-monitor-python.deb') }
   end
-  execute 'dpkg -i /tmp/libganglia1.deb'
-  execute 'dpkg -i /tmp/ganglia-monitor.deb'
-else
-  package "ganglia-monitor"
-end
+  execute 'dpkg -i /tmp/ganglia-monitor-python.deb && rm /tmp/ganglia-monitor-python.deb'
 
-if platform?('centos','redhat','fedora','amazon')
-  # this will be installed in ubuntu as dep to ganglia
-  package 'ganglia-gmond-python'
+when 'centos','redhat','fedora','amazon'
+  package 'ganglia-gmond'
 end
 
 execute 'stop gmond with non-updated configuration' do

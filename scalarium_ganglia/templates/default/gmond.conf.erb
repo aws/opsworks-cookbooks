@@ -8,27 +8,28 @@ globals {
   max_udp_msg_len = 1472
   mute = no
   deaf = no
+  allow_extra_data = yes
   host_dmax = 90000 /* 25h in secs */
+  host_tmax = 20 /*secs */
   cleanup_threshold = 500 /*secs */
   gexec = no
-  send_metadata_interval = 15
-  <% if node[:platform] == 'ubuntu' && ['12.04', '11.10', '11.04'].include?(node[:platform_version].to_s) %>
+  send_metadata_interval = 20
   override_hostname = <%= node[:scalarium][:instance][:hostname] %>
-  <% end %>
+}
 
 /* If a cluster attribute is specified, then all gmond hosts are wrapped inside
  * of a <CLUSTER> tag.  If you do not specify a cluster tag, then all <HOSTS> will
  * NOT be wrapped inside of a <CLUSTER> tag. */
 cluster {
   name = "<%= @cluster_name.gsub(/[\(\)\[\]\&]/,'') %>"
-  owner = "Scalarium"
+  owner = "AWS OpsWorks"
   latlong = "unspecified"
   url = "unspecified"
 }
 
 /* The host section describes attributes of the host, like the location */
 host {
-  location = "Scalarium"
+  location = "AWS OpsWorks"
 }
 
 <% if @monitoring_master %>
@@ -40,11 +41,16 @@ udp_send_channel {
 <% end %>
 
 <% if @monitoring_master && @monitoring_master == node[:scalarium][:instance][:private_ip] %>
+/* You can specify as many udp_recv_channels as you like as well. */
 udp_recv_channel {
+  bind = <%= node[:scalarium][:instance][:private_ip] %>
   port = <%= node[:ganglia][:udp_client_port] %>
+  retry_bind = false
   family = inet4
 }
 
+/* You can specify as many tcp_accept_channels as you like to share
+   an xml description of the state of the cluster */
 tcp_accept_channel {
   port = <%= node[:ganglia][:tcp_client_port] %>
 }
@@ -55,43 +61,41 @@ tcp_accept_channel {
    loaded. If the module has been statically linked with gmond, it does not
    require a load path. However all dynamically loadable modules must include
    a load path. */
+<% @prefix = '/usr/lib/ganglia/' if ['debian','ubuntu'].include?(node[:platform]) %>
 modules {
   module {
     name = "core_metrics"
   }
   module {
     name = "cpu_module"
-    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modcpu.so"
+    path = "<%= @prefix %>modcpu.so"
   }
   module {
     name = "disk_module"
-    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/moddisk.so"
+    path = "<%= @prefix %>moddisk.so"
   }
   module {
     name = "load_module"
-    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modload.so"
+    path = "<%= @prefix %>modload.so"
   }
   module {
     name = "mem_module"
-    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modmem.so"
+    path = "<%= @prefix %>modmem.so"
   }
   module {
     name = "net_module"
-    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modnet.so"
+    path = "<%= @prefix %>modnet.so"
   }
   module {
     name = "proc_module"
-    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modproc.so"
+    path = "<%= @prefix %>modproc.so"
   }
   module {
     name = "sys_module"
-    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modsys.so"
+    path = "<%= @prefix %>modsys.so"
   }
-  module {
-    name = "python_module"
-    path = "/usr/lib<%= '64' if node[:kernel][:machine] == 'x86_64' %>/ganglia/modpython.so"
-    params = "/etc/ganglia/python_modules"
-  }
+  # the python module has been statically linked. No need for extra configuration.
+  # Python modules are placed in /usr/lib[64]/ganglia/python_modules/
 }
 
 include ('/etc/ganglia/conf.d/*.conf')
@@ -113,7 +117,7 @@ collection_group {
   }
 }
 
-/* This collection group will send general info about this host every 1200 secs.
+/* This collection group will send general info about this host every 120 secs.
    This information doesn't change between reboots and is only collected once. */
 collection_group {
   collect_once = yes
