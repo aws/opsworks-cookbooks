@@ -1,5 +1,7 @@
+include_attribute 'scalarium_initial_setup::default'
+
 case node[:platform]
-when 'centos','amazon','redhat','fedora','scientific','oracle'
+when 'centos','redhat','fedora','suse','amazon'
   default[:monit][:conf]     = '/etc/monit.conf'
   default[:monit][:conf_dir] = '/etc/monit.d'
 when 'debian','ubuntu'
