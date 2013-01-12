@@ -1,4 +1,3 @@
-
 package "monit"
 
 directory node[:monit][:conf_dir] do
@@ -29,12 +28,8 @@ template File.join(node[:monit][:conf_dir], "opsworks-agent.monitrc") do
   notifies :restart, resources(:service => "monit")
 end
 
-if platform?('centos','redhat','amazon','scientific','fedora','oracle')
+if platform?('centos','redhat','fedora','amazon')
   file File.join(node[:monit][:conf_dir], 'logging') do
     action :delete
   end
-end
-
-service "monit" do
-  action :restart
 end
