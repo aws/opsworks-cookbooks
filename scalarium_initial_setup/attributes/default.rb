@@ -3,6 +3,7 @@ default[:scalarium][:ruby_version] = '1.9.3'
 default[:scalarium][:run_cookbook_tests] = false
 
 default[:scalarium][:agent][:base_dir] = '/opt/aws/opsworks/current'
+default[:scalarium][:agent][:state_dir] = '/var/lib/aws/opsworks/state'
 # system user, group and user share the same name
 default[:scalarium][:agent][:user] = 'scalarium-agent'
 default[:scalarium][:agent][:group] = node[:scalarium][:agent][:user]
