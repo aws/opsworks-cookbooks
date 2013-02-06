@@ -67,7 +67,8 @@ default[:apache][:keepalivetimeout] = 3
 # Security
 default[:apache][:servertokens] = 'Prod'
 default[:apache][:serversignature] = 'Off'
-default[:apache][:traceenable] = 'On'
+default[:apache][:traceenable] = 'Off'
+default[:apache][:hide_info_headers] = true
 
 # Prefork Attributes
 default[:apache][:prefork][:startservers] = 16

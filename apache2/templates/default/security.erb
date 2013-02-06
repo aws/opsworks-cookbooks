@@ -43,5 +43,11 @@ ServerSignature <%= node[:apache][:serversignature] %>
 #
 # Set to one of:  On | Off | extended
 #
-TraceEnable <%= node[:apache][:traceenable] %> 
+TraceEnable <%= node[:apache][:traceenable] %>
 
+<% if node[:apache][:hide_info_headers] %>
+<IfModule mod_headers.c>
+  Header unset X-Runtime
+  Header unset X-Powered-By
+</IfModule>
+<% end %>
