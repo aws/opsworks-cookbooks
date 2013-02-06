@@ -16,16 +16,22 @@ if platform?('debian','ubuntu')
   end
 end
 
+service 'monit' do
+  action :stop
+end
+
 template node[:monit][:conf] do
   source "monitrc.erb"
   mode 0600
-  notifies :restart, resources(:service => "monit")
+  #TODO: This should only happen if the service is running, after rebooting
+#  notifies :restart, resources(:service => "monit")
 end
 
 template File.join(node[:monit][:conf_dir], "opsworks-agent.monitrc") do
   source "opsworks-agent.monitrc.erb"
   mode 0644
-  notifies :restart, resources(:service => "monit")
+  #TODO: This should only happen if the service is running, after rebooting
+#  notifies :restart, resources(:service => "monit")
 end
 
 if platform?('centos','redhat','fedora','amazon')
