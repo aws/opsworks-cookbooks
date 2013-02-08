@@ -17,11 +17,11 @@ module Scalarium
         end
 
         execute "Download application from S3: #{scm_options[:repository]}" do
-          command "#{node[:scalarium][:agent][:base_dir]}/bin/s3curl.pl --id scalarium -- -o #{tmpdir}/archive #{scm_options[:repository]}"
+          command "#{node[:scalarium][:agent][:current_dir]}/bin/s3curl.pl --id scalarium -- -o #{tmpdir}/archive #{scm_options[:repository]}"
         end
 
         execute 'extract files' do
-          command "#{node[:scalarium][:agent][:base_dir]}/bin/extract #{tmpdir}/archive"
+          command "#{node[:scalarium][:agent][:current_dir]}/bin/extract #{tmpdir}/archive"
         end
 
         execute 'create git repository' do

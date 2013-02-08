@@ -1,12 +1,16 @@
+# fix b
+GC.disable
+
+default[:scalarium][:agent][:base_dir] = '/opt/aws/opsworks'
+default[:scalarium][:agent][:current_dir] = "#{node[:scalarium][:agent][:base_dir]}/current"
+default[:scalarium][:agent][:shared_dir] = '/var/lib/aws/opsworks'
+default[:scalarium][:agent][:log_dir] = '/var/log/aws/opsworks'
+default[:scalarium][:agent][:user] = 'opsworks'
+default[:scalarium][:agent][:group] = 'aws'
+
 default[:scalarium][:ruby_stack] = 'ruby_enterprise'
 default[:scalarium][:ruby_version] = '1.9.3'
 default[:scalarium][:run_cookbook_tests] = false
-
-default[:scalarium][:agent][:base_dir] = '/opt/aws/opsworks/current'
-default[:scalarium][:agent][:state_dir] = '/var/lib/aws/opsworks/state'
-# system user, group and user share the same name
-default[:scalarium][:agent][:user] = 'scalarium-agent'
-default[:scalarium][:agent][:group] = node[:scalarium][:agent][:user]
 
 default[:scalarium_initial_setup][:sysctl] = Mash.new
 default[:scalarium_initial_setup][:sysctl]['net.core.somaxconn'] = 1024           # 128
