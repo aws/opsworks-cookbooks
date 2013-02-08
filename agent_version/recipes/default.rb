@@ -1,4 +1,4 @@
-template "#{node[:scalarium][:agent][:base_dir]}/TARGET_VERSION" do
+template "#{node[:scalarium][:agent][:shared_dir]}/TARGET_VERSION" do
   source 'TARGET_VERSION.erb'
   backup false
   owner node[:scalarium][:agent][:user]
