@@ -10,7 +10,7 @@ when '1.9.2'
 else
   default[:ruby][:major_version] = '1.9'
   default[:ruby][:full_version] = '1.9.3'
-  default[:ruby][:patch] = 'p327'
+  default[:ruby][:patch] = node[:platform] == 'amazon' ? 'p194' : 'p327'
   default[:ruby][:pkgrelease] = '1'
 end
 
