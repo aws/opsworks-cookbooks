@@ -6,7 +6,7 @@ describe_recipe 'mod_php5_apache2::default' do
 
   it 'installs a pile of php packages' do
     case node[:platform]
-    when 'debian','ubuntu'
+    when 'debian', 'ubuntu'
       packages = [
         'php5-xsl',
         'php5-curl',
@@ -24,12 +24,10 @@ describe_recipe 'mod_php5_apache2::default' do
         'php-mail-mime',
         'php-db',
         'php-mdb2',
-        'php-html-common']
+        'php-html-common'
+      ]
 
-      if node[:platform] == 'ubuntu' && node[:platform_version] == '9.10'
-        packages << 'php5-mhash'
-      end
-    when 'redhat','centos','amazon','fedora','scientific','oracle'
+    when 'redhat', 'centos', 'fedora', 'amazon'
       packages = [
         'php-xml',
         'php-common',
@@ -45,7 +43,8 @@ describe_recipe 'mod_php5_apache2::default' do
         'php-pear-XML-Parser',
         'php-pear-Mail-Mime',
         'php-pear-DB',
-       'php-pear-HTML-Common']
+       'php-pear-HTML-Common'
+      ]
     end
 
     packages.each do |pkg|

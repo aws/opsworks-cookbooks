@@ -43,7 +43,7 @@ end
 
 apache_module 'php5' do
   case node['platform']
-  when 'redhat','centos','fedora','amazon'
+  when 'redhat', 'centos', 'fedora', 'amazon'
     filename 'libphp5.so'
   end
 end

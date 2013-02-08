@@ -3,7 +3,7 @@ include_recipe 'apache2'
 packages = []
 
 case node[:platform]
-when 'debian','ubuntu'
+when 'debian', 'ubuntu'
   packages = [
     'php5-xsl',
     'php5-curl',
@@ -21,9 +21,10 @@ when 'debian','ubuntu'
     'php-mail-mime',
     'php-db',
     'php-mdb2',
-    'php-html-common']
+    'php-html-common'
+  ]
 
-when 'centos','redhat','fedora','amazon'
+when 'centos', 'redhat', 'fedora', 'amazon'
   # TODO: Compile php-sqlite extension for RHEL based systems.
   packages = [
     'php-xml',
@@ -40,7 +41,8 @@ when 'centos','redhat','fedora','amazon'
     'php-pear-XML-Parser',
     'php-pear-Mail-Mime',
     'php-pear-DB',
-    'php-pear-HTML-Common']
+    'php-pear-HTML-Common'
+  ]
 end
 
 packages.each do |pkg|
