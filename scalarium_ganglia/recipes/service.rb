@@ -1,3 +1,3 @@
 service 'ganglia-monitor' do
-  action :nothing
+  action [:enable, :nothing]
 end
