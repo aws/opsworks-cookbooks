@@ -1,6 +1,6 @@
 require 'minitest/spec'
 
-describe_recipe 'scalarium_rubygems::default' do
+describe_recipe 'opsworks_rubygems::default' do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
@@ -9,6 +9,6 @@ describe_recipe 'scalarium_rubygems::default' do
   end
 
   it 'ensures rubygems is the right version' do
-    assert system("/usr/local/bin/gem -v | grep '#{node[:scalarium_rubygems][:version]}'")
+    assert system("/usr/local/bin/gem -v | grep '#{node[:opsworks_rubygems][:version]}'")
   end
 end

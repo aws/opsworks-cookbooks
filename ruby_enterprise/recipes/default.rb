@@ -76,5 +76,5 @@ template "/usr/local/bin/ruby_gc_wrapper.sh" do
   group "root"
 end
 
-include_recipe('scalarium_rubygems')
-include_recipe('scalarium_bundler')
+include_recipe 'opsworks_rubygems'
+include_recipe 'opsworks_bundler'

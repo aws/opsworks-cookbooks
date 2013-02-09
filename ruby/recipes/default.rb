@@ -52,5 +52,5 @@ execute "Install Ruby #{node[:ruby][:full_version]}" do
   end
 end
 
-include_recipe('scalarium_rubygems')
-include_recipe('scalarium_bundler')
+include_recipe 'opsworks_rubygems'
+include_recipe 'opsworks_bundler'
