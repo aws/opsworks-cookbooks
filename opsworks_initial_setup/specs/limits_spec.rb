@@ -1,6 +1,6 @@
 require 'minitest/spec'
 
-describe_recipe 'scalarium_initial_setup::limits' do
+describe_recipe 'opsworks_initial_setup::limits' do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
@@ -9,7 +9,7 @@ describe_recipe 'scalarium_initial_setup::limits' do
   end
 
   it 'ensures limits.conf has right settings' do
-    node[:scalarium_initial_setup][:limits].each do |key, value|
+    node[:opsworks_initial_setup][:limits].each do |key, value|
       unless value.nil?
         file('/etc/security/limits.conf').must_match /^root            hard    #{key}      #{value}$/
         file('/etc/security/limits.conf').must_match /^root            soft    #{key}      #{value}$/

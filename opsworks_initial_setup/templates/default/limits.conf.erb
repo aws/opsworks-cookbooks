@@ -53,7 +53,7 @@
 #ftp             -       chroot          /ftp
 #@student        -       maxlogins       4
 
-<% node[:scalarium_initial_setup][:limits].each do |key, value| %>
+<% node[:opsworks_initial_setup][:limits].each do |key, value| %>
 <% unless value.nil? %>
 root            hard    <%= key %>      <%= value %>
 root            soft    <%= key %>      <%= value %>

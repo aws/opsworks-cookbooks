@@ -1,6 +1,6 @@
 require 'tmpdir'
 
-module Scalarium
+module OpsWorks
   module SCM
     module Archive
       def prepare_archive_checkouts(scm_options)
@@ -13,7 +13,7 @@ module Scalarium
           archive_url = scm_options[:repository]
         end
 
-        tmpdir = Dir.mktmpdir('scalarium')
+        tmpdir = Dir.mktmpdir('opsworks')
         directory tmpdir do
           mode 0755
         end
@@ -23,7 +23,7 @@ module Scalarium
         end
 
         execute 'extract files' do
-          command "#{node[:scalarium][:agent][:current_dir]}/bin/extract #{tmpdir}/archive"
+          command "#{node[:opsworks_agent][:current_dir]}/bin/extract #{tmpdir}/archive"
         end
 
         execute 'create git repository' do
@@ -39,5 +39,5 @@ module Scalarium
 end
 
 class Chef::Recipe
-  include Scalarium::SCM::Archive
+  include OpsWorks::SCM::Archive
 end

@@ -1,4 +1,4 @@
-include_attribute 'scalarium_initial_setup::default'
+include_attribute 'opsworks_initial_setup::default'
 include_attribute 'rails::rails'
 include_attribute 'packages::packages'
 
@@ -27,4 +27,4 @@ default[:passenger][:max_instances_per_app] = 0
 default[:passenger][:max_requests] = 0
 default[:passenger][:high_performance_mode] = 'off'
 default[:passenger][:rails_spawn_method] = 'smart-lv2'
-default[:passenger][:max_pool_size] = 8 # usually will be set by Scalarium directy. Override if you need a custom size
+default[:passenger][:max_pool_size] = 8 # usually will be set by OpsWorks directy. Override if you need a custom size

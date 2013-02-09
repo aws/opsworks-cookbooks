@@ -1,4 +1,4 @@
-include_attribute 'scalarium_initial_setup::default'
+include_attribute 'opsworks_initial_setup::default'
 
 case node[:platform]
 when 'centos','redhat','fedora','suse','amazon'

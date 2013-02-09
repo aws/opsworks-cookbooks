@@ -1,6 +1,6 @@
 require 'minitest/spec'
 
-describe_recipe 'scalarium_initial_setup::sqlite' do
+describe_recipe 'opsworks_initial_setup::sqlite' do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 

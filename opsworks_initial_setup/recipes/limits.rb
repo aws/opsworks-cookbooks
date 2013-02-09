@@ -3,5 +3,5 @@ template '/etc/security/limits.conf' do
   owner 'root'
   group 'root'
   mode '0644'
-  cookbook 'scalarium_initial_setup'
+  cookbook 'opsworks_initial_setup'
 end

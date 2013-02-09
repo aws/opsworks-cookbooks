@@ -1,5 +1,5 @@
 
-node[:scalarium_initial_setup][:bind_mounts][:mounts].each do |dir, source|
+node[:opsworks_initial_setup][:bind_mounts][:mounts].each do |dir, source|
   directory dir do
     recursive true
     action :create

@@ -1,6 +1,6 @@
 require 'tmpdir'
 
-module Scalarium
+module OpsWorks
   module SCM
     module S3
       def prepare_s3_checkouts(scm_options)
@@ -11,17 +11,17 @@ module Scalarium
           variables(:access_key => scm_options[:user], :secret_key => scm_options[:password])
         end
 
-        tmpdir = Dir.mktmpdir('scalarium')
+        tmpdir = Dir.mktmpdir('opsworks')
         directory tmpdir do
           mode 0755
         end
 
         execute "Download application from S3: #{scm_options[:repository]}" do
-          command "#{node[:scalarium][:agent][:current_dir]}/bin/s3curl.pl --id scalarium -- -o #{tmpdir}/archive #{scm_options[:repository]}"
+          command "#{node[:opsworks_agent][:current_dir]}/bin/s3curl.pl --id opsworks -- -o #{tmpdir}/archive #{scm_options[:repository]}"
         end
 
         execute 'extract files' do
-          command "#{node[:scalarium][:agent][:current_dir]}/bin/extract #{tmpdir}/archive"
+          command "#{node[:opsworks_agent][:current_dir]}/bin/extract #{tmpdir}/archive"
         end
 
         execute 'create git repository' do
@@ -37,5 +37,5 @@ module Scalarium
 end
 
 class Chef::Recipe
-  include Scalarium::SCM::S3
+  include OpsWorks::SCM::S3
 end
