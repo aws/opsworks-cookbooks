@@ -43,10 +43,10 @@ when "debian","ubuntu"
     end
   end
 
-  if node[:platform].eql?('ubuntu') && ['11.10', '12.04'].include?("#{node[:platform_version]}")
+  if node[:platform].eql?('ubuntu') && ['12.04'].include?("#{node[:platform_version]}")
     package 'libssl0.9.8'
   end
-when "centos","amazon","redhat","fedora","scientific","oracle"
+when 'centos','redhat','fedora','amazon'
   arch = node[:kernel][:machine]
   remote_file File.join('/tmp', File.basename(node[:ruby_enterprise][:url][arch])) do
     source node[:ruby_enterprise][:url][arch]
