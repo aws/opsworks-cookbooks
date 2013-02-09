@@ -1,5 +1,4 @@
 include_recipe 'scalarium_initial_setup::system_user'
-include_recipe 'scalarium_initial_setup::hosts'
 
 include_recipe 'scalarium_initial_setup::sysctl'
 include_recipe 'scalarium_initial_setup::limits'
