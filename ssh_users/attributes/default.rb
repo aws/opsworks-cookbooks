@@ -3,8 +3,8 @@ require 'etc'
 include_attribute 'opsworks_initial_setup::default'
 
 Etc.group do |entry|
-  if entry.name == 'scalarium'
-    default[:scalarium_gid] = entry.gid
+  if entry.name == 'opsworks'
+    default[:opsworks_gid] = entry.gid
   end
 end
 

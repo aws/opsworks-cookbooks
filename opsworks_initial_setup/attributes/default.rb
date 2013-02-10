@@ -1,10 +1,11 @@
 GC.disable
 
+# this values must match the ones respective ones in the agent configuration
 default[:opsworks_agent][:base_dir] = '/opt/aws/opsworks'
 default[:opsworks_agent][:current_dir] = "#{node[:opsworks_agent][:base_dir]}/current"
 default[:opsworks_agent][:shared_dir] = '/var/lib/aws/opsworks'
 default[:opsworks_agent][:log_dir] = '/var/log/aws/opsworks'
-default[:opsworks_agent][:user] = 'opsworks'
+default[:opsworks_agent][:user] = 'aws'
 default[:opsworks_agent][:group] = 'aws'
 
 default[:opsworks][:ruby_stack] = 'ruby_enterprise'

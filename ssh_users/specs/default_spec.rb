@@ -4,8 +4,8 @@ describe_recipe 'ssh_users::default' do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
-  it 'creates scalarium group' do
-    group('scalarium').must_exist
+  it 'creates opsworks group' do
+    group('opsworks').must_exist
   end
 
   it 'sets up sudoers file' do

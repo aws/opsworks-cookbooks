@@ -1,11 +1,11 @@
-module Scalarium
+module OpsWorks
   module User
     def load_existing_ssh_users
-      return {} unless node[:scalarium_gid]
+      return {} unless node[:opsworks_gid]
 
       existing_ssh_users = {}
       (node[:passwd] || node[:etc][:passwd]).each do |username, entry|
-        if entry[:gid] == node[:scalarium_gid]
+        if entry[:gid] == node[:opsworks_gid]
           existing_ssh_users[entry[:uid].to_s] = username
         end
       end
@@ -30,9 +30,9 @@ module Scalarium
         Chef::Log.info("setting up user #{params[:name]}")
         user params[:name] do
           action :create
-          comment "Scalarium user #{params[:name]}"
+          comment "OpsWorks user #{params[:name]}"
           uid params[:uid]
-          gid 'scalarium'
+          gid 'opsworks'
           home "/home/#{params[:name]}"
           supports :manage_home => true
           shell '/bin/bash'
@@ -40,7 +40,7 @@ module Scalarium
 
         directory "/home/#{params[:name]}/.ssh" do
           owner params[:name]
-          group 'scalarium'
+          group 'opsworks'
           mode 0700
         end
 
@@ -54,7 +54,7 @@ module Scalarium
         cookbook 'ssh_users'
         source 'authorized_keys.erb'
         owner params[:name]
-        group 'scalarium'
+        group 'opsworks'
         variables(:public_key => params[:public_key])
         only_if do
           File.exists?("/home/#{params[:name]}/.ssh")
@@ -103,8 +103,8 @@ module Scalarium
 end
 
 class Chef::Recipe
-  include Scalarium::User
+  include OpsWorks::User
 end
 class Chef::Resource::User
-  include Scalarium::User
+  include OpsWorks::User
 end
