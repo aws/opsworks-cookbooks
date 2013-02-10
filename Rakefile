@@ -15,7 +15,7 @@ end
 KNOWN_COOKBOOK_ATTRIBUTES = {
   'opsworks_agent' => 'opsworks_initial_setup',
   'passenger' => 'passenger_apache2',
-  'ganglia' => 'scalarium_ganglia',
+  'ganglia' => 'opsworks_ganglia',
   'sudoers' => 'ssh_users',
   'opsworks' => :any,
   'platform' => :any,

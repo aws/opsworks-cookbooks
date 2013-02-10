@@ -1,1 +1,1 @@
-include_recipe "scalarium-agent-monit::stop"
+include_recipe "opsworks_agent_monit::stop"

@@ -4,10 +4,10 @@ node[:deploy].each do |application, deploy|
     next
   end
 
-  # write out scalarium.php
-  template "#{deploy[:deploy_to]}/shared/config/scalarium.php" do
+  # write out opsworks.php
+  template "#{deploy[:deploy_to]}/shared/config/opsworks.php" do
     cookbook 'php'
-    source 'scalarium.php.erb'
+    source 'opsworks.php.erb'
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
