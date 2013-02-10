@@ -1,5 +1,3 @@
-include_recipe 'opsworks_initial_setup::system_user'
-
 include_recipe 'opsworks_initial_setup::sysctl'
 include_recipe 'opsworks_initial_setup::limits'
 include_recipe 'opsworks_initial_setup::bind_mounts'
