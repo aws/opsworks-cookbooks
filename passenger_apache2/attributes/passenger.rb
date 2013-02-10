@@ -11,11 +11,13 @@ end
 
 default[:passenger][:version] = '3.0.9'
 default[:passenger][:root_path] = "#{node[:passenger][:gems_path]}/passenger-#{passenger[:version]}"
-if platform?('centos','amazon','redhat') and node[:packages][:dist_only]
+
+if platform?('centos','redhat','fedora','amazon') and node[:packages][:dist_only]
   default[:passenger][:module_path] = "#{node['apache']['libexecdir']}/mod_passenger.so"
 else
   default[:passenger][:module_path] = "#{passenger[:root_path]}/ext/apache2/mod_passenger.so"
 end
+
 default[:passenger][:ruby_bin] = '/usr/local/bin/ruby'
 default[:passenger][:ruby_wrapper_bin] = '/usr/local/bin/ruby_gc_wrapper.sh'
 default[:passenger][:gem_bin] = '/usr/local/bin/gem'

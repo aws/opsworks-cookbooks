@@ -6,7 +6,7 @@ describe_recipe 'scalarium_ganglia::monitor-apache' do
 
   it 'installs logtail dep' do
     case node[:platform]
-    when 'centos','redhat','fedora','suse','amazon'
+    when 'centos','redhat','fedora','amazon'
       package('logcheck').must_be_installed
     when 'debian','ubuntu'
       package('logtail').must_be_installed
