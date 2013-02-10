@@ -20,7 +20,7 @@ describe_recipe 'opsworks_ganglia::server' do
     case node[:platform]
     when "debian","ubuntu"
       package('gmetad').must_be_installed
-    when "centos","amazon","scientific","oracle","fedora","suse","redhat"
+    when 'centos','redhat','fedora','amazon'
       package('ganglia-gmetad').must_be_installed
     end
   end
