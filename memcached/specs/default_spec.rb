@@ -1,5 +1,5 @@
 # Load in memcached library
-Scalarium::InternalGems.internal_gem_package "memcached"
+OpsWorks::InternalGems.internal_gem_package "memcached"
 require 'memcached'
 
 require 'minitest/spec'
@@ -38,7 +38,7 @@ describe_recipe 'memcached::default' do
   end
 
   it 'allows memcached port to be accesible on private ip' do
-    access_memcache_over_tcp(node[:scalarium][:instance][:private_ip])
+    access_memcache_over_tcp(node[:opsworks][:instance][:private_ip])
   end
 
   it 'accesses service on 127.0.0.1' do
@@ -50,7 +50,7 @@ describe_recipe 'memcached::default' do
   end
 
   it 'accesses service on private ip' do
-    access_memcached_service(node[:scalarium][:instance][:private_ip])
+    access_memcached_service(node[:opsworks][:instance][:private_ip])
   end
 
   def access_memcached_service(host)

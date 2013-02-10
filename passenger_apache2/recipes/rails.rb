@@ -1,4 +1,4 @@
-unless node[:scalarium][:skip_uninstall_of_other_rails_stack]
+unless node[:opsworks][:skip_uninstall_of_other_rails_stack]
   include_recipe "nginx::uninstall"
   include_recipe "unicorn::stop"
 end

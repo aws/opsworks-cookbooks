@@ -56,4 +56,4 @@ template "#{node[:monit][:conf_dir]}/memcached.monitrc" do
   notifies :restart, resources(:service => 'monit')
 end
 
-include_recipe 'memcached::prepare_tests' if node[:scalarium][:run_cookbook_tests]
+include_recipe 'memcached::prepare_tests' if node[:opsworks][:run_cookbook_tests]

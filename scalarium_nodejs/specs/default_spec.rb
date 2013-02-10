@@ -7,7 +7,7 @@ describe_recipe 'scalarium_nodejs::default' do
   describe 'debian based systems' do
     it 'grabs deb file' do
       skip unless ['debian','ubuntu'].include?(node[:platform])
-      file(File.join('/tmp', node[:scalarium_nodejs][:deb])).must_exist
+      file(File.join('/tmp', node[:opsworks_nodejs][:deb])).must_exist
     end
 
     it 'installs nodejs pkg' do
@@ -18,13 +18,13 @@ describe_recipe 'scalarium_nodejs::default' do
 
   describe 'rhel based systems' do
     it 'grabs rpm file' do
-      skip unless ['centos','redhat','fedora','scientific','oracle','amazon'].include?(node[:platform])
-      file(File.join('/tmp', node[:scalarium_nodejs][:rpm])).must_exist
+      skip unless ['centos','redhat','fedora','amazon'].include?(node[:platform])
+      file(File.join('/tmp', node[:opsworks_nodejs][:rpm])).must_exist
     end
 
     it 'installs nodejs pkg' do
-      skip unless ['centos','redhat','fedora','scientific','oracle','amazon'].include?(node[:platform])
-       (`node --version`).chomp.must_equal("v#{node[:scalarium_nodejs][:version]}")
+      skip unless ['centos','redhat','fedora','amazon'].include?(node[:platform])
+       (`node --version`).chomp.must_equal("v#{node[:opsworks_nodejs][:version]}")
     end
   end
 

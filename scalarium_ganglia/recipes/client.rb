@@ -44,7 +44,7 @@ end
 include_recipe 'scalarium_ganglia::monitor-fd-and-sockets'
 include_recipe 'scalarium_ganglia::monitor-disk'
 
-case node[:scalarium][:instance][:roles]
+case node[:opsworks][:instance][:roles]
 when 'memcached'
   include_recipe 'scalarium_ganglia::monitor-memcached'
 when 'db-master'
@@ -57,7 +57,7 @@ when 'web'
   include_recipe 'scalarium_ganglia::monitor-nginx'
 when 'rails-app'
 
-  case node[:scalarium][:rails_stack][:name]
+  case node[:opsworks][:rails_stack][:name]
   when 'apache_passenger'
     include_recipe 'scalarium_ganglia::monitor-passenger'
     include_recipe 'scalarium_ganglia::monitor-apache'

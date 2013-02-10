@@ -1,5 +1,4 @@
-maintainer "Peritor GmbH"
-maintainer_email "scalarium@peritor.com"
+maintainer "Amazon Web Services"
 description "Deploy applications"
 version "0.1"
 recipe "deploy::scm", "Install and setup the source code management system"

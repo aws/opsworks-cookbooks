@@ -13,11 +13,11 @@ task :validate_literal_includes do
 end
 
 KNOWN_COOKBOOK_ATTRIBUTES = {
-  'scalarium_agent_root' => 'scalarium_cluster_state',
+  'opsworks_agent' => 'opsworks_initial_setup',
   'passenger' => 'passenger_apache2',
   'ganglia' => 'scalarium_ganglia',
   'sudoers' => 'ssh_users',
-  'scalarium' => :any,
+  'opsworks' => :any,
   'platform' => :any,
   'platform_version' => :any
 }

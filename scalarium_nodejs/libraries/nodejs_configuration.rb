@@ -1,4 +1,4 @@
-module Scalarium
+module OpsWorks
   module NodejsConfiguration
     def self.npm_install(app_name, app_config, app_root_path)
       if File.exists?("#{app_root_path}/package.json")

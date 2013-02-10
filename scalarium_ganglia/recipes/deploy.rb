@@ -5,11 +5,11 @@ directory node[:ganglia][:events_dir] do
   owner node[:ganglia][:web][:apache_user]
 end
 
-template "#{node[:ganglia][:events_dir]}/#{node[:scalarium][:sent_at]}_event.json" do
+template "#{node[:ganglia][:events_dir]}/#{node[:opsworks][:sent_at]}_event.json" do
   source 'event.json.erb'
   mode 0644
   owner node[:ganglia][:web][:apache_user]
-  variables(:scalarium => node[:scalarium])
+  variables(:opsworks => node[:opsworks])
 end
 
 ruby_block 'Create new events.json file for Ganglia' do

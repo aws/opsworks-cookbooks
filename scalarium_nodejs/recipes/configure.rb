@@ -10,6 +10,6 @@ node[:deploy].each do |application, deploy|
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
-    variables(:database => deploy[:database], :memcached => deploy[:memcached], :roles => node[:scalarium][:roles])
+    variables(:database => deploy[:database], :memcached => deploy[:memcached], :roles => node[:opsworks][:roles])
   end
 end

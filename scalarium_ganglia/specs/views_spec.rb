@@ -10,7 +10,7 @@ describe_recipe 'scalarium_ganglia::views' do
 
   it 'creates json files for each instance' do
     instances = {}
-    node[:scalarium][:roles].each do |role_name, role_config|
+    node[:opsworks][:roles].each do |role_name, role_config|
       role_config[:instances].each do |instance_name, instance_config|
         instances[instance_name] ||= []
         instances[instance_name] << role_name

@@ -1,4 +1,4 @@
-module Scalarium
+module OpsWorks
   module SCM
     module Git
       
@@ -44,5 +44,5 @@ module Scalarium
 end
 
 class Chef::Recipe
-  include Scalarium::SCM::Git
+  include OpsWorks::SCM::Git
 end

@@ -1,4 +1,4 @@
-module Scalarium
+module OpsWorks
   module HostKey
     def write_host_key(params)
       template params[:path] do
@@ -19,5 +19,5 @@ module Scalarium
 end
 
 class Chef::Recipe
-  include Scalarium::HostKey
+  include OpsWorks::HostKey
 end

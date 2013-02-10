@@ -9,6 +9,6 @@ describe_recipe 'scalarium_ganglia::deploy' do
   end
 
   it 'creates event json' do
-    file(File.join(node[:ganglia][:events_dir], "#{node[:scalarium][:sent_at]}_event.json")).must_exist.with(:mode, '644').and(:owner, node[:ganglia][:web][:apache_user])
+    file(File.join(node[:ganglia][:events_dir], "#{node[:opsworks][:sent_at]}_event.json")).must_exist.with(:mode, '644').and(:owner, node[:ganglia][:web][:apache_user])
   end
 end

@@ -2,10 +2,10 @@
 # This recipe uses "minitest-chef-handler" to facilitate cookbook testing.
 # minitest-chef-handler project: https://github.com/calavera/minitest-chef-handler
 
-if node[:scalarium][:run_cookbook_tests]
+if node[:opsworks][:run_cookbook_tests]
   Chef::Log.info('Initializing Cookbook Test Environment.')
 
-  Scalarium::InternalGems.internal_gem_package 'minitest-chef-handler', :version => '0.6.1.1'
+  OpsWorks::InternalGems.internal_gem_package 'minitest-chef-handler', :version => '0.6.1.1'
   require 'minitest-chef-handler'
 
   Chef::Log.info('Enabling minitest-chef-handler as a report handler')

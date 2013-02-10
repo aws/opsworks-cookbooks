@@ -1,4 +1,4 @@
-define :scalarium_deploy do
+define :opsworks_deploy do
   application = params[:app]
   deploy = params[:deploy_data]
 
@@ -68,7 +68,7 @@ define :scalarium_deploy do
       action deploy[:action]
 
       if deploy[:application_type] == 'rails'
-        restart_command "sleep #{deploy[:sleep_before_restart]} && #{node[:scalarium][:rails_stack][:restart_command]}"
+        restart_command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:rails_stack][:restart_command]}"
       end
 
       case deploy[:scm][:scm_type].to_s
@@ -90,10 +90,10 @@ define :scalarium_deploy do
         run_symlinks_before_migrate
         if deploy[:application_type] == 'rails'
           if deploy[:auto_bundle_on_deploy]
-            Scalarium::RailsConfiguration.bundle(application, node[:deploy][application], release_path)
+            OpsWorks::RailsConfiguration.bundle(application, node[:deploy][application], release_path)
           end
 
-          node[:deploy][application][:database][:adapter] = Scalarium::RailsConfiguration.determine_database_adapter(application, node[:deploy][application], release_path, :force => node[:force_database_adapter_detection], :consult_gemfile => node[:deploy][application][:auto_bundle_on_deploy])
+          node[:deploy][application][:database][:adapter] = OpsWorks::RailsConfiguration.determine_database_adapter(application, node[:deploy][application], release_path, :force => node[:force_database_adapter_detection], :consult_gemfile => node[:deploy][application][:auto_bundle_on_deploy])
           template "#{node[:deploy][application][:deploy_to]}/shared/config/database.yml" do
             cookbook "rails"
             source "database.yml.erb"
@@ -109,14 +109,14 @@ define :scalarium_deploy do
             mode '0660'
             owner node[:deploy][application][:user]
             group node[:deploy][application][:group]
-            variables(:database => node[:deploy][application][:database], :memcached => node[:deploy][application][:memcached], :roles => node[:scalarium][:roles])
+            variables(:database => node[:deploy][application][:database], :memcached => node[:deploy][application][:memcached], :roles => node[:opsworks][:roles])
             only_if do
               File.exists?("#{node[:deploy][application][:deploy_to]}/shared/config")
             end
           end
         elsif deploy[:application_type] == 'nodejs'
           if deploy[:auto_npm_install_on_deploy]
-            Scalarium::NodejsConfiguration.npm_install(application, node[:deploy][application], release_path)
+            OpsWorks::NodejsConfiguration.npm_install(application, node[:deploy][application], release_path)
           end
         end
 
@@ -132,8 +132,8 @@ define :scalarium_deploy do
     end
   end
 
-  if deploy[:application_type] == 'rails' && node[:scalarium][:instance][:roles].include?('rails-app')
-    case node[:scalarium][:rails_stack][:name]
+  if deploy[:application_type] == 'rails' && node[:opsworks][:instance][:roles].include?('rails-app')
+    case node[:opsworks][:rails_stack][:name]
 
     when 'apache_passenger'
       passenger_web_app do

@@ -1,5 +1,5 @@
 default[:haproxy][:stats_url] = '/haproxy?stats'
-default[:haproxy][:stats_user] = 'scalarium'
+default[:haproxy][:stats_user] = 'opsworks'
 default[:haproxy][:health_check_url] = '/'
 default[:haproxy][:health_check_method] = 'OPTIONS'
 default[:haproxy][:check_interval] = '10s'

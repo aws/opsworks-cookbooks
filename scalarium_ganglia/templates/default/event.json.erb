@@ -1,8 +1,8 @@
 <% 
   event = {
-    'event_id' => node[:scalarium][:deployment],
-    'start_time' => node[:scalarium][:sent_at],
-    'summary' => node[:scalarium][:activity],
+    'event_id' => node[:opsworks][:deployment],
+    'start_time' => node[:opsworks][:sent_at],
+    'summary' => node[:opsworks][:activity],
     'grid' => '*',
     'cluster' => '*',
     'host_regex' => '',

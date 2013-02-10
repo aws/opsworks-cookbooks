@@ -12,9 +12,9 @@ ff02::2 ip6-allrouters
 ff02::3 ip6-allhosts
 
 # OpsWorks Layer State
-127.0.0.1 <%= node[:scalarium][:instance][:hostname] %>.localdomain <%= node[:scalarium][:instance][:hostname] %>
+127.0.0.1 <%= node[:opsworks][:instance][:hostname] %>.localdomain <%= node[:opsworks][:instance][:hostname] %>
 <% seen = [] -%>
-<% node[:scalarium][:roles].each do |role_name, role_config| -%>
+<% node[:opsworks][:roles].each do |role_name, role_config| -%>
 <% role_config[:instances].each do |instance_name, instance_config| -%>
 <% if !seen.include?(instance_name) && instance_config[:private_ip] -%>
 <%= Resolv.getaddress(instance_config[:private_ip]) %> <%= instance_name %>

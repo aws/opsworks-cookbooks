@@ -1,5 +1,4 @@
-maintainer "Peritor GmbH"
-maintainer_email "scalarium@peritor.com"
+maintainer "Amazon Web Services"
 description "Installs Memcached"
 version "0.1"
 supports "ubuntu"

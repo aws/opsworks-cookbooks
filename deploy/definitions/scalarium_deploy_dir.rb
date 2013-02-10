@@ -1,4 +1,4 @@
-define :scalarium_deploy_dir do
+define :opsworks_deploy_dir do
 
   # create shared/ directory structure
   ['log','config','system','pids','scripts','sockets'].each do |dir_name|

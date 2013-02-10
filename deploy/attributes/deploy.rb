@@ -1,16 +1,16 @@
 include_attribute 'deploy::logrotate'
 include_attribute 'deploy::rails_stack'
 
-default[:scalarium][:deploy_user][:shell] = '/bin/bash'
-default[:scalarium][:deploy_user][:user] = 'deploy'
+default[:opsworks][:deploy_user][:shell] = '/bin/bash'
+default[:opsworks][:deploy_user][:user] = 'deploy'
 case node[:platform]
 when 'debian','ubuntu'
-  default[:scalarium][:deploy_user][:group] = 'www-data'
+  default[:opsworks][:deploy_user][:group] = 'www-data'
 when 'centos','redhat','fedora','amazon'
-  default[:scalarium][:deploy_user][:group] = 'apache'
+  default[:opsworks][:deploy_user][:group] = 'apache'
 end
 
-default[:scalarium][:rails][:ignore_bundler_groups] = ['test', 'development']
+default[:opsworks][:rails][:ignore_bundler_groups] = ['test', 'development']
 
 default[:deploy] = {}
 node[:deploy].each do |application, deploy|
@@ -19,7 +19,7 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:release_path] = "#{node[:deploy][application][:deploy_to]}/releases/#{node[:deploy][application][:release]}"
   default[:deploy][application][:current_path] = "#{node[:deploy][application][:deploy_to]}/current"
   default[:deploy][application][:document_root] = ''
-  default[:deploy][application][:ignore_bundler_groups] = node[:scalarium][:rails][:ignore_bundler_groups]
+  default[:deploy][application][:ignore_bundler_groups] = node[:opsworks][:rails][:ignore_bundler_groups]
   if deploy[:document_root]
     default[:deploy][application][:absolute_document_root] = "#{default[:deploy][application][:current_path]}/#{deploy[:document_root]}/"
   else
@@ -37,15 +37,15 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:migrate] = false
 
   if node[:deploy][application][:auto_bundle_on_deploy]
-    default[:deploy][application][:migrate_command] = "if [ -f Gemfile ]; then echo 'Scalarium: Gemfile found - running migration with bundle exec' && bundle exec #{node[:deploy][application][:rake]} db:migrate; else echo 'Scalarium: no Gemfile - running plain migrations' && #{node[:deploy][application][:rake]} db:migrate; fi"
+    default[:deploy][application][:migrate_command] = "if [ -f Gemfile ]; then echo 'OpsWorks: Gemfile found - running migration with bundle exec' && bundle exec #{node[:deploy][application][:rake]} db:migrate; else echo 'OpsWorks: no Gemfile - running plain migrations' && #{node[:deploy][application][:rake]} db:migrate; fi"
   else
     default[:deploy][application][:migrate_command] = "#{node[:deploy][application][:rake]} db:migrate"
   end
   default[:deploy][application][:rails_env] = 'production'
   default[:deploy][application][:action] = 'deploy'
-  default[:deploy][application][:user] = node[:scalarium][:deploy_user][:user]
-  default[:deploy][application][:group] = node[:scalarium][:deploy_user][:group]
-  default[:deploy][application][:shell] = node[:scalarium][:deploy_user][:shell]
+  default[:deploy][application][:user] = node[:opsworks][:deploy_user][:user]
+  default[:deploy][application][:group] = node[:opsworks][:deploy_user][:group]
+  default[:deploy][application][:shell] = node[:opsworks][:deploy_user][:shell]
   home = self[:passwd] && 
          self[:passwd][self[:deploy][application][:user]] &&
          self[:passwd][self[:deploy][application][:user]][:dir] || "/home/#{self[:deploy][application][:user]}"
@@ -71,4 +71,4 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:nodejs][:stop_command] = "monit stop node_web_app_#{application}"
 end
 
-default[:scalarium][:skip_uninstall_of_other_rails_stack] = false
+default[:opsworks][:skip_uninstall_of_other_rails_stack] = false

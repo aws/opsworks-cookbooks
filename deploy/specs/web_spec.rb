@@ -33,9 +33,9 @@ describe_recipe 'deploy::web' do
     it 'should create a logrotate with the required contents' do
       node[:deploy].each do |app, deploy|
         if deploy[:application_type].eql?('static')
-          file("/etc/logrotate.d/scalarium_app_#{app}").must_exist.with(:mode, '644').and(
+          file("/etc/logrotate.d/opsworks_app_#{app}").must_exist.with(:mode, '644').and(
               :owner, 'root').and(:group, 'root')
-          file("/etc/logrotate.d/scalarium_app_#{app}").must_include "#{deploy[:deploy_to]}/shared/log"
+          file("/etc/logrotate.d/opsworks_app_#{app}").must_include "#{deploy[:deploy_to]}/shared/log"
         end
       end
     end

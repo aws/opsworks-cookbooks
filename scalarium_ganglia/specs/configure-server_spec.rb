@@ -9,7 +9,7 @@ describe_recipe 'scalarium_ganglia::configure-server' do
   end
 
   it 'makes sure cluster name is set in gmetad.conf' do
-    file('/etc/ganglia/gmetad.conf').must_include node[:scalarium][:cluster][:name]
+    file('/etc/ganglia/gmetad.conf').must_include node[:opsworks][:cluster][:name]
   end
 
   it 'ensures gmetad is running' do

@@ -6,13 +6,13 @@ node[:deploy].each do |application, deploy|
     next
   end
 
-  scalarium_deploy_dir do
+  opsworks_deploy_dir do
     user deploy[:user]
     group deploy[:group]
     path deploy[:deploy_to]
   end
 
-  scalarium_deploy do
+  opsworks_deploy do
     app application
     deploy_data deploy
   end

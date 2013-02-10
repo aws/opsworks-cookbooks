@@ -5,7 +5,7 @@ describe_recipe 'scalarium_nodejs::npm' do
   include MiniTest::Chef::Assertions
 
   it 'grabs tarball' do
-    file(File.join('/tmp', "npm-#{node[:scalarium_nodejs][:npm_version]}.tgz")).must_exist
+    file(File.join('/tmp', "npm-#{node[:opsworks_nodejs][:npm_version]}.tgz")).must_exist
   end
 
   it 'installs npm' do
@@ -13,6 +13,6 @@ describe_recipe 'scalarium_nodejs::npm' do
   end
 
   it 'ensures npm is the right version' do
-    assert system("/usr/local/bin/npm -v | grep -q '#{node[:scalarium_nodejs][:npm_version]}'")
+    assert system("/usr/local/bin/npm -v | grep -q '#{node[:opsworks_nodejs][:npm_version]}'")
   end
 end

@@ -5,17 +5,17 @@
 # because chef run in the Bundler environment
 require 'bundler/setup'
 
-module Scalarium
+module OpsWorks
   module InternalGems
 
      def self.internal_gem_package(name, options = {})
        options = {
          :version => nil
        }.update(options)
-       if Scalarium::InternalGems.internal_gem_installed?(name, options[:version])
-         Chef::Log.info("Scalarium Gem #{name} #{options[:version]}  is already installed - skipping")
+       if OpsWorks::InternalGems.internal_gem_installed?(name, options[:version])
+         Chef::Log.info("OpsWorks Gem #{name} #{options[:version]}  is already installed - skipping")
        else
-         Scalarium::InternalGems.install_internal_gem_package(name, options[:version])
+         OpsWorks::InternalGems.install_internal_gem_package(name, options[:version])
        end
        refresh_ruby_load_path
      end
@@ -53,7 +53,7 @@ module Scalarium
      def self.install_internal_gem_package(name, version=nil)
        version = "--version=#{version}" if version
        with_env 'GEM_HOME' => internal_gem_home do
-         Chef::Log.info("Installing Scalarium Gem #{name} #{version}")
+         Chef::Log.info("Installing OpsWorks Gem #{name} #{version}")
          Chef::Log.info(`/usr/bin/gem install #{name} #{version} --no-rdoc --no-ri`)
        end
      end

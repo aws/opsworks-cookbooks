@@ -1,4 +1,4 @@
-module Scalarium
+module OpsWorks
   module SCM
     module Package
       
@@ -32,5 +32,5 @@ module Scalarium
 end
 
 class Chef::Recipe
-  include Scalarium::SCM::Package
+  include OpsWorks::SCM::Package
 end

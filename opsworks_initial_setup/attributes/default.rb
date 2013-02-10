@@ -7,9 +7,9 @@ default[:opsworks_agent][:log_dir] = '/var/log/aws/opsworks'
 default[:opsworks_agent][:user] = 'opsworks'
 default[:opsworks_agent][:group] = 'aws'
 
-default[:scalarium][:ruby_stack] = 'ruby_enterprise'
-default[:scalarium][:ruby_version] = '1.9.3'
-default[:scalarium][:run_cookbook_tests] = false
+default[:opsworks][:ruby_stack] = 'ruby_enterprise'
+default[:opsworks][:ruby_version] = '1.9.3'
+default[:opsworks][:run_cookbook_tests] = false
 
 default[:opsworks_initial_setup][:sysctl] = Mash.new
 default[:opsworks_initial_setup][:sysctl]['net.core.somaxconn'] = 1024           # 128

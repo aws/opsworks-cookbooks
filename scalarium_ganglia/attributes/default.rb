@@ -18,7 +18,7 @@ end
 
 default[:ganglia][:web][:svn] = 'no'
 default[:ganglia][:web][:url] = '/ganglia'
-default[:ganglia][:web][:user] = 'scalarium'
+default[:ganglia][:web][:user] = 'opsworks'
 # gweb2 Makefile config
 default[:ganglia][:web][:destdir] = '/usr/share/ganglia-webfrontend'
 

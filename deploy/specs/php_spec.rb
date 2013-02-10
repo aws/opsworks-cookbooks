@@ -4,6 +4,7 @@ describe_recipe 'deploy::php' do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
+node['deploy'].each do |application, deploy|
   if deploy[:application_type] = 'php'
 
     it 'creates a deployment directory' do
@@ -25,7 +26,7 @@ describe_recipe 'deploy::php' do
     end
 
     it 'creates a logrotate configuration' do
-      file("/etc/logrotate.d/scalarium_app_#{application}").must_exist(:mode, '0644').with(:owner, 'root').and(:group, 'root')
+      file("/etc/logrotate.d/opsworks_app_#{application}").must_exist(:mode, '0644').with(:owner, 'root').and(:group, 'root')
     end
   end
 end

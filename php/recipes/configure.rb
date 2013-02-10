@@ -14,8 +14,8 @@ node[:deploy].each do |application, deploy|
     variables(
       :database => deploy[:database],
       :memcached => deploy[:memcached],
-      :roles => node[:scalarium][:roles],
-      :cluster_name => node[:scalarium][:cluster][:name]
+      :roles => node[:opsworks][:roles],
+      :cluster_name => node[:opsworks][:cluster][:name]
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")

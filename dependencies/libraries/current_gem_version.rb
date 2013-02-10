@@ -1,4 +1,4 @@
-module Scalarium
+module OpsWorks
   module GemSupport
     require 'rubygems/version'
 
@@ -21,5 +21,5 @@ module Scalarium
 end
 
 class Chef::Resource
-  include Scalarium::GemSupport
+  include OpsWorks::GemSupport
 end

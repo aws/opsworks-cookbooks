@@ -5,11 +5,11 @@ node[:deploy].each do |application, deploy|
 
   execute "restart Rails app #{application}" do
     cwd deploy[:current_path]
-    command node[:scalarium][:rails_stack][:restart_command]
+    command node[:opsworks][:rails_stack][:restart_command]
     action :nothing
   end
 
-  node[:deploy][application][:database][:adapter] = Scalarium::RailsConfiguration.determine_database_adapter(application, node[:deploy][application], "#{node[:deploy][application][:deploy_to]}/current", :force => node[:force_database_adapter_detection])
+  node[:deploy][application][:database][:adapter] = OpsWorks::RailsConfiguration.determine_database_adapter(application, node[:deploy][application], "#{node[:deploy][application][:deploy_to]}/current", :force => node[:force_database_adapter_detection])
 
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
     source "database.yml.erb"

@@ -2,7 +2,7 @@ include_attribute 'opsworks_initial_setup::default'
 include_attribute 'rails::rails'
 include_attribute 'packages::packages'
 
-case node[:scalarium][:ruby_version]
+case node[:opsworks][:ruby_version]
 when /1.8/
   default[:passenger][:gems_path] = '/usr/local/lib/ruby/gems/1.8/gems'
 else

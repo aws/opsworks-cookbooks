@@ -1,4 +1,4 @@
-module Scalarium
+module OpsWorks
   module SCM
     module SVN
       
@@ -48,5 +48,5 @@ class Chef::Provider::SubversionInit < Chef::Provider::Subversion
 end
 
 class Chef::Recipe
-  include Scalarium::SCM::SVN
+  include OpsWorks::SCM::SVN
 end

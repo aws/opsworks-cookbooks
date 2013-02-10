@@ -4,7 +4,7 @@
 
 include_recipe 'packages'
 include_recipe 'gem_support'
-include_recipe node[:scalarium][:ruby_stack]
+include_recipe node[:opsworks][:ruby_stack]
 
 case node[:platform]
 when 'centos','redhat','fedora','amazon'

@@ -1,5 +1,4 @@
-maintainer "Peritor GmbH"
-maintainer_email "scalarium@peritor.com"
+maintainer "Amazon Web Services"
 description "Cleans up Chef run"
 version "0.1"
 

@@ -4,7 +4,7 @@ include_recipe 'scalarium_ganglia::service-gmetad'
 template '/etc/ganglia/gmetad.conf' do
   source 'gmetad.conf.erb'
   mode '0644'
-  variables :cluster_name => node[:scalarium][:cluster][:name]
+  variables :cluster_name => node[:opsworks][:cluster][:name]
   notifies :restart, resources(:service => 'gmetad')
 end
 

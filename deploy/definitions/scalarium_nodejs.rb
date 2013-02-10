@@ -1,4 +1,4 @@
-define :scalarium_nodejs do
+define :opsworks_nodejs do
   deploy = params[:deploy_data]
   application = params[:app]
 
@@ -18,7 +18,7 @@ define :scalarium_nodejs do
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
-    variables(:database => deploy[:database], :memcached => deploy[:memcached], :roles => node[:scalarium][:roles])
+    variables(:database => deploy[:database], :memcached => deploy[:memcached], :roles => node[:opsworks][:roles])
   end
 
   template "#{node[:monit][:conf_dir]}/node_web_app-#{application}.monitrc" do

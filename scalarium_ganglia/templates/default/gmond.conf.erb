@@ -14,7 +14,7 @@ globals {
   cleanup_threshold = 500 /*secs */
   gexec = no
   send_metadata_interval = 20
-  override_hostname = <%= node[:scalarium][:instance][:hostname] %>
+  override_hostname = <%= node[:opsworks][:instance][:hostname] %>
 }
 
 /* If a cluster attribute is specified, then all gmond hosts are wrapped inside
@@ -40,10 +40,10 @@ udp_send_channel {
 }
 <% end %>
 
-<% if @monitoring_master && @monitoring_master == node[:scalarium][:instance][:private_ip] %>
+<% if @monitoring_master && @monitoring_master == node[:opsworks][:instance][:private_ip] %>
 /* You can specify as many udp_recv_channels as you like as well. */
 udp_recv_channel {
-  bind = <%= node[:scalarium][:instance][:private_ip] %>
+  bind = <%= node[:opsworks][:instance][:private_ip] %>
   port = <%= node[:ganglia][:udp_client_port] %>
   retry_bind = false
   family = inet4

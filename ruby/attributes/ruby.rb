@@ -1,7 +1,7 @@
 include_attribute 'opsworks_initial_setup::default'
 
 # ruby 1.8.7 is ruby-enterprise, os we don't handle it here
-case node['scalarium']['ruby_version']
+case node['opsworks']['ruby_version']
 when '1.9.2'
   default[:ruby][:major_version] = '1.9'
   default[:ruby][:full_version] = '1.9.2'

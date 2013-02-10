@@ -40,7 +40,7 @@ include_recipe 'scalarium_ganglia::bind-mount-data'
 
 template '/etc/ganglia/gmetad.conf' do
   source 'gmetad.conf.erb'
-  variables :cluster_name => node[:scalarium][:cluster][:name]
+  variables :cluster_name => node[:opsworks][:cluster][:name]
   mode 0644
 end
 

@@ -1,5 +1,5 @@
 <?php
-class ScalariumDb {
+class OpsWorksDb {
   public $adapter, $database, $encoding, $host, $username, $password, $reconnect;
 
   public function __construct() {
@@ -13,7 +13,7 @@ class ScalariumDb {
   }
 }
 
-class ScalariumMemcached {
+class OpsWorksMemcached {
   public $host, $port;
 
   public function __construct() {
@@ -22,14 +22,14 @@ class ScalariumMemcached {
   }
 }
 
-class Scalarium {
+class OpsWorks {
   public $db;
   public $memcached;
   private $cluster_map;
 
   public function __construct() {
-    $this->db = new ScalariumDb();
-    $this->memcached = new ScalariumMemcached();
+    $this->db = new OpsWorksDb();
+    $this->memcached = new OpsWorksMemcached();
     $this->cluster_map = array(<%= @roles.map {|role_short_name, role| "'#{role_short_name}' => array(#{role['instances'].values.map {|instance| "'#{instance['private_ip']}'"}.join(', ') })"}.join(', ') %>);
     $this->cluster_name = '<%= @cluster_name %>';
   }
