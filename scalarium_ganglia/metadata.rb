@@ -1,6 +1,4 @@
-maintainer "Peritor GmbH"
-maintainer_email "scalarium@peritor.com"
-description "Installs Ganglia Server & Client"
+maintainer "Amazon Web Services"
 version "0.2"
 supports "ubuntu"
 
