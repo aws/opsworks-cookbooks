@@ -1,4 +1,4 @@
-define :scalarium_deploy_user do
+define :opsworks_deploy_user do
   deploy = params[:deploy_data]
 
   group deploy[:group]
