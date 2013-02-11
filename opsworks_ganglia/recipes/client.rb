@@ -44,7 +44,7 @@ end
 include_recipe 'opsworks_ganglia::monitor-fd-and-sockets'
 include_recipe 'opsworks_ganglia::monitor-disk'
 
-case node[:opsworks][:instance][:roles]
+case node[:opsworks][:instance][:layers]
 when 'memcached'
   include_recipe 'opsworks_ganglia::monitor-memcached'
 when 'db-master'

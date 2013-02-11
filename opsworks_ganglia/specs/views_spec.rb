@@ -10,10 +10,10 @@ describe_recipe 'opsworks_ganglia::views' do
 
   it 'creates json files for each instance' do
     instances = {}
-    node[:opsworks][:roles].each do |role_name, role_config|
-      role_config[:instances].each do |instance_name, instance_config|
+    node[:opsworks][:layers].each do |layer_name, layer_config|
+      layer_config[:instances].each do |instance_name, instance_config|
         instances[instance_name] ||= []
-        instances[instance_name] << role_name
+        instances[instance_name] << layer_name
       end
     end
 

@@ -4,7 +4,7 @@ include_recipe 'opsworks_ganglia::service-gmetad'
 template '/etc/ganglia/gmetad.conf' do
   source 'gmetad.conf.erb'
   mode '0644'
-  variables :cluster_name => node[:opsworks][:cluster][:name]
+  variables :stack_name => node[:opsworks][:stack][:name]
   notifies :restart, resources(:service => 'gmetad')
 end
 
@@ -45,7 +45,7 @@ end
 
 include_recipe 'opsworks_ganglia::views'
 
-execute 'Restart gmetad if not running' do # can happen if ganglia role is shared?
+execute 'Restart gmetad if not running' do # can happen if ganglia layer is shared?
   command '(sleep 60 && /etc/init.d/gmetad restart) &'
   not_if 'pgrep gmetad'
 end

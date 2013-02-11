@@ -40,7 +40,7 @@ include_recipe 'opsworks_ganglia::bind-mount-data'
 
 template '/etc/ganglia/gmetad.conf' do
   source 'gmetad.conf.erb'
-  variables :cluster_name => node[:opsworks][:cluster][:name]
+  variables :stack_name => node[:opsworks][:stack][:name]
   mode 0644
 end
 

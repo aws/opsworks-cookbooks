@@ -3,24 +3,24 @@
 $conf['template_name'] = 'opsworks';
 $conf['metriccols'] = 4;
 
-# additional cluster view reports
+# additional stack view reports
 $conf['optional_graphs'] = array();
-<% if node[:opsworks][:roles].has_key?("lb") && !node[:opsworks][:roles]['lb']['instances'].empty? -%>
+<% if node[:opsworks][:layers].has_key?("lb") && !node[:opsworks][:layers]['lb']['instances'].empty? -%>
   array_push($conf['optional_graphs'], 'haproxy_requests');
 <% end -%>
-<% if node[:opsworks][:roles].has_key?("db-master") && !node[:opsworks][:roles]['db-master']['instances'].empty? -%>
+<% if node[:opsworks][:layers].has_key?("db-master") && !node[:opsworks][:layers]['db-master']['instances'].empty? -%>
   array_push($conf['optional_graphs'], 'mysql_query');
 <% end -%>
-<% if (node[:opsworks][:roles].has_key?("rails-app") && node[:opsworks][:rails_stack][:name] == 'apache_passenger' && !node[:opsworks][:roles]['rails-app']['instances'].empty? ) ||  (node[:opsworks][:roles].has_key?("php-app") && !node[:opsworks][:roles]['php-app']['instances'].empty? ) -%>
+<% if (node[:opsworks][:layers].has_key?("rails-app") && node[:opsworks][:rails_stack][:name] == 'apache_passenger' && !node[:opsworks][:layers]['rails-app']['instances'].empty? ) ||  (node[:opsworks][:layers].has_key?("php-app") && !node[:opsworks][:layers]['php-app']['instances'].empty? ) -%>
   array_push($conf['optional_graphs'], 'apache', 'apache_worker', 'apache_response_time');
 <% end -%>
-<% if (node[:opsworks][:roles].has_key?("rails-app") && node[:opsworks][:rails_stack][:name] == 'apache_passenger' && !node[:opsworks][:roles]['rails-app']['instances'].empty? ) -%>
+<% if (node[:opsworks][:layers].has_key?("rails-app") && node[:opsworks][:rails_stack][:name] == 'apache_passenger' && !node[:opsworks][:layers]['rails-app']['instances'].empty? ) -%>
   array_push($conf['optional_graphs'], 'passenger_memory_stats', 'passenger_status');
 <% end -%>
-<% if node[:opsworks][:roles].has_key?("rails-app") && node[:opsworks][:rails_stack][:name] == 'nginx_unicorn' && !node[:opsworks][:roles]['rails-app']['instances'].empty? -%>
+<% if node[:opsworks][:layers].has_key?("rails-app") && node[:opsworks][:rails_stack][:name] == 'nginx_unicorn' && !node[:opsworks][:layers]['rails-app']['instances'].empty? -%>
   array_push($conf['optional_graphs'], 'nginx_status');
 <% end -%>
-<% if node[:opsworks][:roles].has_key?("web") && !node[:opsworks][:roles]['web']['instances'].empty? -%>
+<% if node[:opsworks][:layers].has_key?("web") && !node[:opsworks][:layers]['web']['instances'].empty? -%>
   array_push($conf['optional_graphs'], 'nginx_status');
 <% end -%>
 

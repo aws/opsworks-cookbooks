@@ -14,14 +14,14 @@ service 'gmond' do
   action :nothing
 end
 
-monitoring_master = node[:opsworks][:roles]['monitoring-master'][:instances].collect{ |instance, names|
+monitoring_master = node[:opsworks][:layers]['monitoring-master'][:instances].collect{ |instance, names|
   names['private_ip']
 }.first rescue nil
 
 template '/etc/ganglia/gmond.conf' do
   source 'gmond.conf.erb'
   variables({
-    :cluster_name => node[:opsworks][:cluster][:name],
+    :stack_name => node[:opsworks][:stack][:name],
     :monitoring_master => monitoring_master
   })
 
@@ -38,9 +38,9 @@ if monitoring_master.nil?
   end
 end
 
-if node[:opsworks][:instance][:roles].any?{ |role|
-  ['php-app', 'monitoring-master'].include?(role)
-} || (node[:opsworks][:instance][:roles].include?('rails-app') && node[:opsworks][:rails_stack][:name] == 'apache_passenger')
+if node[:opsworks][:instance][:layers].any?{ |layer|
+  ['php-app', 'monitoring-master'].include?(layer)
+} || (node[:opsworks][:instance][:layers].include?('rails-app') && node[:opsworks][:rails_stack][:name] == 'apache_passenger')
 
   Dir.glob("#{node[:apache][:log_dir]}/*-ganglia.log").each do |ganglia_log|
     cron "Ganglia Apache Monitoring #{ganglia_log}" do

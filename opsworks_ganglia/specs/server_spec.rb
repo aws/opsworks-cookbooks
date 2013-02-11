@@ -29,8 +29,8 @@ describe_recipe 'opsworks_ganglia::server' do
     file('/etc/ganglia/gmetad.conf').must_exist.with(:mode, '644')
   end
 
-  it 'has cluster name in gmetad.conf' do
-    file('/etc/ganglia/gmetad.conf').must_include node[:opsworks][:cluster][:name]
+  it 'has stack name in gmetad.conf' do
+    file('/etc/ganglia/gmetad.conf').must_include node[:opsworks][:stack][:name]
   end
 
   it 'starts and enables gmetad' do

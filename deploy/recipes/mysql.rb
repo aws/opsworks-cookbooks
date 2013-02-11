@@ -31,7 +31,7 @@ node[:deploy].each do |application, deploy|
     owner 'root'
     group 'root'
     mode '0600'
-    variables :hosts => [], :settings => deploy[:database], :cluster_clients => node[:mysql][:clients].select{|private_ip| Resolv.getaddress(private_ip) }
+    variables :hosts => [], :settings => deploy[:database], :stack_clients => node[:mysql][:clients].select{|private_ip| Resolv.getaddress(private_ip) }
     cookbook "mysql"
     action :create
   end

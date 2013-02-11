@@ -25,21 +25,21 @@ class OpsWorksMemcached {
 class OpsWorks {
   public $db;
   public $memcached;
-  private $cluster_map;
+  private $stack_map;
 
   public function __construct() {
     $this->db = new OpsWorksDb();
     $this->memcached = new OpsWorksMemcached();
-    $this->cluster_map = array(<%= @roles.map {|role_short_name, role| "'#{role_short_name}' => array(#{role['instances'].values.map {|instance| "'#{instance['private_ip']}'"}.join(', ') })"}.join(', ') %>);
-    $this->cluster_name = '<%= @cluster_name %>';
+    $this->stack_map = array(<%= @layers.map {|layer_short_name, layer| "'#{layer_short_name}' => array(#{layer['instances'].values.map {|instance| "'#{instance['private_ip']}'"}.join(', ') })"}.join(', ') %>);
+    $this->stack_name = '<%= @stack_name %>';
   }
 
-  public function roles() {
-    return array_keys($this->cluster_map);
+  public function layers() {
+    return array_keys($this->stack_map);
   }
 
-  public function hosts($role) {
-    return $this->cluster_map[$role];
+  public function hosts($layer) {
+    return $this->stack_map[$layer];
   }
 }
 ?>

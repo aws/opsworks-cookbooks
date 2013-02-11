@@ -109,7 +109,7 @@ define :opsworks_deploy do
             mode '0660'
             owner node[:deploy][application][:user]
             group node[:deploy][application][:group]
-            variables(:database => node[:deploy][application][:database], :memcached => node[:deploy][application][:memcached], :roles => node[:opsworks][:roles])
+            variables(:database => node[:deploy][application][:database], :memcached => node[:deploy][application][:memcached], :layers => node[:opsworks][:layers])
             only_if do
               File.exists?("#{node[:deploy][application][:deploy_to]}/shared/config")
             end
@@ -132,7 +132,7 @@ define :opsworks_deploy do
     end
   end
 
-  if deploy[:application_type] == 'rails' && node[:opsworks][:instance][:roles].include?('rails-app')
+  if deploy[:application_type] == 'rails' && node[:opsworks][:instance][:layers].include?('rails-app')
     case node[:opsworks][:rails_stack][:name]
 
     when 'apache_passenger'
