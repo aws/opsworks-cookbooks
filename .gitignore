@@ -1,0 +1,9 @@
+*.swp
+*.swo
+.DS_Store
+*/.DS_Store
+*/*/.DS_Store
+.vagrant
+.idea
+.redcar
+.rvmrc

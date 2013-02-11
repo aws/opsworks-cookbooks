@@ -1,0 +1,51 @@
+modules {
+  module {
+    name = "apache"
+    language = "python"
+    param status_url {
+      value = 'http://127.0.0.1/server-status?auto'
+    }
+  }
+}
+
+collection_group {
+  collect_every = 10
+  time_threshold = 60
+
+  metric {
+    name ="apache_uptime"
+    value_threshold= 0.0
+  }
+  metric {
+    name ="apache_idleworkers"
+    value_threshold= 0.0
+  }
+  metric {
+    name ="apache_total_accesses"
+    value_threshold= 0.0
+  }
+  metric {
+    name ="apache_bytesperreq"
+    value_threshold= 0.0
+  }
+  metric {
+    name ="apache_cpuload"
+    value_threshold= 0.0
+  }
+  metric {
+    name ="apache_bytespersec"
+    value_threshold= 0.0
+  }
+  metric {
+    name ="apache_reqpersec"
+    value_threshold= 0.0
+  }
+  metric {
+    name ="apache_total_kbytes"
+    value_threshold= 0.0
+  }
+  metric {
+    name ="apache_busyworkers"
+    value_threshold= 0.0
+  }
+}

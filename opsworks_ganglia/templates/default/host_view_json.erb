@@ -1,0 +1,27 @@
+<% 
+  reports = ['packet_report']
+  if @layers.include?("lb")
+   reports << 'haproxy_requests_report'
+  end
+  if @layers.include?("db-master")
+   reports << 'mysql_query_report'
+  end
+  if @layers.include?('php-app') || @layers.include?('monitoring-master')
+    reports << 'apache_report'
+    reports << 'apache_worker_report'
+    reports << 'apache_response_time_report'
+  end
+  if @layers.include?("rails-app")
+    if node[:opsworks][:rails_stack][:name] == 'apache_passenger'
+      reports << 'passenger_memory_stats_report'
+      reports << 'passenger_status_report'
+    elsif node[:opsworks][:rails_stack][:name] == 'nginx_unicorn'
+      reports << 'nginx_status_report'
+    else
+    end
+  end
+  if @layers.include?("web")
+    reports << 'nginx_status_report'
+  end
+-%>
+<%= JSON.pretty_generate({:included_reports => reports}) %>

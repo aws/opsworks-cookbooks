@@ -1,0 +1,441 @@
+modules {
+  module {
+    name = "mysql"
+    language = "python"
+    param host {
+      value = 'localhost'
+    }
+    param user {
+      value = 'root'
+    }
+    param passwd {
+      value = '<%= node[:mysql][:server_root_password] %>'
+    }
+    param get_innodb {
+      value = True
+    }
+    param get_master {
+      value = True
+    }
+    param get_slave {
+      value = False
+    }
+  }
+}
+
+collection_group {
+  collect_every = 10
+  time_threshold = 60
+
+  metric {
+    name = "mysql_innodb_pending_normal_aio_reads"
+  }
+
+  metric {
+    name = "mysql_innodb_pending_log_writes"
+  }
+
+  metric {
+    name = "mysql_innodb_transactions"
+  }
+
+  metric {
+    name = "mysql_innodb_pending_chkp_writes"
+  }
+
+  metric {
+    name = "mysql_innodb_rows_updated"
+  }
+
+  metric {
+    name = "mysql_innodb_data_fsyncs"
+  }
+
+  metric {
+    name = "mysql_innodb_spin_rounds"
+  }
+
+  metric {
+    name = "mysql_innodb_spin_waits"
+  }
+
+  metric {
+    name = "mysql_innodb_pending_aio_log_ios"
+  }
+
+  metric {
+    name = "mysql_innodb_pending_log_flushes"
+  }
+
+  metric {
+    name = "mysql_innodb_rows_read"
+  }
+
+  metric {
+    name = "mysql_innodb_transactions_unpurged"
+  }
+
+  metric {
+    name = "mysql_innodb_queries_queued"
+  }
+
+  metric {
+    name = "mysql_innodb_pending_ibuf_aio_reads"
+  }
+
+  metric {
+    name = "mysql_innodb_pending_normal_aio_writes"
+  }
+
+  metric {
+    name = "mysql_innodb_pages_read"
+  }
+
+  metric {
+    name = "mysql_innodb_read_views"
+  }
+
+  metric {
+    name = "mysql_innodb_buffer_pool_pages_data"
+  }
+
+  metric {
+    name = "mysql_innodb_data_reads"
+  }
+
+  metric {
+    name = "mysql_innodb_queries_inside"
+  }
+
+  metric {
+    name = "mysql_innodb_log_bytes_written"
+  }
+
+  metric {
+    name = "mysql_innodb_buffer_pool_pages_dirty"
+  }
+
+  metric {
+    name = "mysql_innodb_pending_aio_sync_ios"
+  }
+
+  metric {
+    name = "mysql_innodb_ibuf_merged"
+  }
+
+  metric {
+    name = "mysql_innodb_pages_created"
+  }
+
+  metric {
+    name = "mysql_innodb_buffer_pool_pages_free"
+  }
+
+  metric {
+    name = "mysql_innodb_pages_written"
+  }
+
+  metric {
+    name = "mysql_innodb_rows_inserted"
+  }
+
+  metric {
+    name = "mysql_innodb_active_transactions"
+  }
+
+  metric {
+    name = "mysql_innodb_log_bytes_flushed"
+  }
+
+  metric {
+    name = "mysql_innodb_history_list"
+  }
+
+  metric {
+    name = "mysql_innodb_pending_buffer_pool_flushes"
+  }
+
+  metric {
+    name = "mysql_innodb_current_transactions"
+  }
+
+  metric {
+    name = "mysql_innodb_ibuf_inserts"
+  }
+
+  metric {
+    name = "mysql_innodb_rows_deleted"
+  }
+
+  metric {
+    name = "mysql_innodb_buffer_pool_pages_total"
+  }
+
+  metric {
+    name = "mysql_innodb_log_bytes_unflushed"
+  }
+
+  metric {
+    name = "mysql_innodb_data_writes"
+  }
+
+  metric {
+    name = "mysql_innodb_transactions_purged"
+  }
+
+  metric {
+    name = "mysql_innodb_os_waits"
+  }
+
+  metric {
+    name = "mysql_innodb_log_writes"
+  }
+
+  metric {
+    name = "mysql_innodb_ibuf_merges"
+  }
+
+  metric {
+    name = "mysql_binlog_space_used"
+  }
+
+  metric {
+    name = "mysql_binlog_space_current"
+  }
+
+  metric {
+    name = "mysql_binlog_count"
+  }
+
+  metric {
+    name = "mysql_binlog_space_total"
+  }
+
+  metric {
+    name = "mysql_key_write_requests"
+  }
+
+  metric {
+    name = "mysql_qcache_inserts"
+  }
+
+  metric {
+    name = "mysql_select_scan"
+  }
+
+  metric {
+    name = "mysql_key_writes"
+  }
+
+  metric {
+    name = "mysql_com_update_multi"
+  }
+
+  metric {
+    name = "mysql_table_locks_immediate"
+  }
+
+  metric {
+    name = "mysql_threads_created"
+  }
+
+  metric {
+    name = "mysql_connections"
+  }
+
+  metric {
+    name = "mysql_questions"
+  }
+
+  metric {
+    name = "mysql_bytes_received"
+  }
+
+  metric {
+    name = "mysql_qcache_queries_in_cache"
+  }
+
+  metric {
+    name = "mysql_binlog_cache_disk_use"
+  }
+
+  metric {
+    name = "mysql_uptime"
+  }
+
+  metric {
+    name = "mysql_slave_open_temp_tables"
+  }
+
+  metric {
+    name = "mysql_slow_launch_threads"
+  }
+
+  metric {
+    name = "mysql_open_tables"
+  }
+
+  metric {
+    name = "mysql_sort_range"
+  }
+
+  metric {
+    name = "mysql_select_range"
+  }
+
+  metric {
+    name = "mysql_com_insert"
+  }
+
+  metric {
+    name = "mysql_sort_rows"
+  }
+
+  metric {
+    name = "mysql_select_range_check"
+  }
+
+  metric {
+    name = "mysql_version"
+  }
+
+  metric {
+    name = "mysql_opened_tables"
+  }
+
+  metric {
+    name = "mysql_threads_running"
+  }
+
+  metric {
+    name = "mysql_slow_queries"
+  }
+
+  metric {
+    name = "mysql_created_tmp_tables"
+  }
+
+  metric {
+    name = "mysql_threads_connected"
+  }
+
+  metric {
+    name = "mysql_select_full_join"
+  }
+
+  metric {
+    name = "mysql_com_select"
+  }
+
+  metric {
+    name = "mysql_slave_retried_transactions"
+  }
+
+  metric {
+    name = "mysql_threads_cached"
+  }
+
+  metric {
+    name = "mysql_table_locks_waited"
+  }
+
+  metric {
+    name = "mysql_qcache_lowmem_prunes"
+  }
+
+  metric {
+    name = "mysql_binlog_cache_use"
+  }
+
+  metric {
+    name = "mysql_com_insert_select"
+  }
+
+  metric {
+    name = "mysql_qcache_hits"
+  }
+
+  metric {
+    name = "mysql_created_tmp_files"
+  }
+
+  metric {
+    name = "mysql_open_files"
+  }
+
+  metric {
+    name = "mysql_com_update"
+  }
+
+  metric {
+    name = "mysql_select_full_range_join"
+  }
+
+  metric {
+    name = "mysql_qcache_not_cached"
+  }
+
+  metric {
+    name = "mysql_sort_scan"
+  }
+
+  metric {
+    name = "mysql_max_used_connections"
+  }
+
+  metric {
+    name = "mysql_com_delete_multi"
+  }
+
+  metric {
+    name = "mysql_bytes_sent"
+  }
+
+  metric {
+    name = "mysql_com_replace"
+  }
+
+  metric {
+    name = "mysql_qcache_free_memory"
+  }
+
+  metric {
+    name = "mysql_qcache_total_blocks"
+  }
+
+  metric {
+    name = "mysql_com_delete"
+  }
+
+  metric {
+    name = "mysql_key_read_requests"
+  }
+
+  metric {
+    name = "mysql_qcache_free_blocks"
+  }
+
+  metric {
+    name = "mysql_aborted_connects"
+  }
+
+  metric {
+    name = "mysql_com_load"
+  }
+
+  metric {
+    name = "mysql_com_replace_select"
+  }
+
+  metric {
+    name = "mysql_created_tmp_disk_tables"
+  }
+
+  metric {
+    name = "mysql_key_reads"
+  }
+
+  metric {
+    name = "mysql_aborted_clients"
+  }
+}

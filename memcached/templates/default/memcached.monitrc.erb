@@ -1,0 +1,8 @@
+check process memcached with pidfile <%= node[:memcached][:pid_file] %>
+      start program = "<%= node[:memcached][:start_command] %>"
+      stop program = "<%= node[:memcached][:stop_command] %>"
+      if failed host 127.0.0.1 port <%= node[:memcached][:port] %> then restart
+      if cpu > 60% for 2 cycles then alert
+      if cpu > 98% for 5 cycles then restart
+      if 2 restarts within 3 cycles then timeout
+      group cache

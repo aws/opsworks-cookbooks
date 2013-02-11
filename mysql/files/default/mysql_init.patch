@@ -1,0 +1,8 @@
+116c116
+<                 sleep 1
+---
+>                 sleep $i
+149c149
+<               sleep 1
+---
+>               sleep $i

@@ -1,0 +1,14 @@
+<% @log_dirs.each do |dir| %><%= dir %>/*.log <% end %> {
+        daily
+        missingok
+        rotate <%= node[:logrotate][:rotate] %>
+        compress
+        delaycompress
+        <% if node[:logrotate][:dateformat] -%>
+        dateext
+        dateformat <%= node[:logrotate][:dateformat] %>
+        <% end -%>
+        notifempty
+        copytruncate
+        sharedscripts
+}
