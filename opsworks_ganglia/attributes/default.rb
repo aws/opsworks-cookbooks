@@ -1,3 +1,5 @@
+include_attribute 'opsworks_commons::default'
+
 default[:ganglia][:custom_package_version] = '3.3.8-1'
 
 default[:ganglia][:datadir] = '/vol/ganglia'

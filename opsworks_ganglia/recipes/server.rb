@@ -3,7 +3,7 @@ include_recipe 'opsworks_ganglia::client'
 case node[:platform]
 when 'debian','ubuntu'
   remote_file '/tmp/gmetad.deb' do
-    source "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/gmetad_3.3.8-1_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
+    source "#{node[:opsworks_commons][:assets_url]}/packages/#{node[:platform]}/#{node[:platform_version]}/gmetad_3.3.8-1_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
     not_if { `dpkg-query --show gmetad | cut -f 2`.chomp.eql?('3.3.8-1') }
   end
   package 'librrd4'

@@ -1,5 +1,3 @@
-include_attribute 'opsworks_commons::default'
-
 case node[:platform]
 when 'debian','ubuntu'
   package 'libapr1'

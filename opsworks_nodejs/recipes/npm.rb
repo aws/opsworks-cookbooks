@@ -1,5 +1,5 @@
 remote_file "/tmp/npm-#{node[:opsworks_nodejs][:npm_version]}.tgz" do
-  source "http://peritor-assets.s3.amazonaws.com/npm/npm-#{node[:opsworks_nodejs][:npm_version]}.tgz"
+  source "#{node[:opsworks_commons][:assets_url]}/sources/npm/npm-#{node[:opsworks_nodejs][:npm_version]}.tgz"
   action :create_if_missing
 end
 
