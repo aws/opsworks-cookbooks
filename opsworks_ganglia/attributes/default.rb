@@ -1,3 +1,5 @@
+default[:ganglia][:custom_package_version] = '3.3.8-1'
+
 default[:ganglia][:datadir] = '/vol/ganglia'
 default[:ganglia][:conf_dir] = "#{node[:ganglia][:datadir]}/conf"
 default[:ganglia][:events_dir] = "#{node[:ganglia][:datadir]}/conf/events.json.d/"
