@@ -8,14 +8,20 @@ when 'debian','ubuntu'
       source "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/#{package_name}_3.3.8-1_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
       not_if { `dpkg-query --show #{package_name} | cut -f 2`.chomp.eql?('3.3.8-1') }
     end
-     execute "dpkg -i /tmp/#{package_name}.deb && rm /tmp/#{package_name}.deb"
+    execute "install #{package_name}" do
+      command "dpkg -i /tmp/#{package_name}.deb && rm /tmp/#{package_name}.deb"
+      only_if { ::File.exists?("/tmp/#{package_name}.deb") }
+    end
   end
 
   remote_file '/tmp/ganglia-monitor-python.deb' do
     source "http://peritor-assets.s3.amazonaws.com/#{node[:platform]}/#{node[:platform_version]}/ganglia-monitor-python_3.3.8-1_all.deb"
     not_if { ::File.exists?('/tmp/ganglia-monitor-python.deb') }
   end
-  execute 'dpkg -i /tmp/ganglia-monitor-python.deb && rm /tmp/ganglia-monitor-python.deb'
+  execute '' do
+    command 'dpkg -i /tmp/ganglia-monitor-python.deb && rm /tmp/ganglia-monitor-python.deb'
+    only_if { ::File.exists?('/tmp/ganglia-monitor-python.deb') }
+  end
 
 when 'centos','redhat','fedora','amazon'
   package 'ganglia-gmond'
