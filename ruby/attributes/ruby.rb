@@ -1,4 +1,5 @@
 include_attribute 'opsworks_initial_setup::default'
+include_attribute 'opsworks_commons::default'
 
 # ruby 1.8.7 is ruby-enterprise, os we don't handle it here
 case node['opsworks']['ruby_version']
