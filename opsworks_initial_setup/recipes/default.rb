@@ -3,6 +3,7 @@ include_recipe 'opsworks_initial_setup::limits'
 include_recipe 'opsworks_initial_setup::bind_mounts'
 include_recipe 'opsworks_initial_setup::vol_mount_point'
 include_recipe 'opsworks_initial_setup::remove_landscape'
+include_recipe 'opsworks_initial_setup::ldconfig'
 
 include_recipe 'opsworks_initial_setup::setup_rhel_repos'
 
