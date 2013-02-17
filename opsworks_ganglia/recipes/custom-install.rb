@@ -10,13 +10,13 @@ execute "Ensure Ganglia webfront folder is clean (idempotence)" do
   command "rm -rf /usr/share/ganglia-webfrontend/*"
 end
 
-cookbook_file "/tmp/scalarium-ganglia-gweb-2.1.8.tar.gz" do
-  source "scalarium-ganglia-gweb-2.1.8.tar.gz"
+cookbook_file "/tmp/opsworks-ganglia-gweb-2.1.8.tar.gz" do
+  source "opsworks-ganglia-gweb-2.1.8.tar.gz"
   mode "0644"
 end
 
-execute "Untar scalarium reports for Ganglia" do
-  command "tar -xzf /tmp/scalarium-ganglia-gweb-2.1.8.tar.gz && mv /tmp/scalarium-ganglia-gweb-2.1.8/* /usr/share/ganglia-webfrontend/"
+execute "Untar opsworks reports for Ganglia" do
+  command "tar -xzf /tmp/opsworks-ganglia-gweb-2.1.8.tar.gz && mv /tmp/opsworks-ganglia-gweb-2.1.8/* /usr/share/ganglia-webfrontend/"
 end
 
 # replace default reports
@@ -24,23 +24,23 @@ execute "Clean Ganglia reports folder" do
   command "rm -rf /usr/share/ganglia-webfrontend/graph.d/*"
 end
 
-cookbook_file "/tmp/scalarium-ganglia-reports.tar.gz" do
-  source "scalarium-ganglia-reports.tar.gz"
+cookbook_file "/tmp/opsworks-ganglia-reports.tar.gz" do
+  source "opsworks-ganglia-reports.tar.gz"
   mode "0644"
 end
 
-execute "Untar scalarium reports for Ganglia" do
-  command "tar -xzf /tmp/scalarium-ganglia-reports.tar.gz && mv /tmp/scalarium-ganglia-reports/* /usr/share/ganglia-webfrontend/graph.d/"
+execute "Untar opsworks reports for Ganglia" do
+  command "tar -xzf /tmp/opsworks-ganglia-reports.tar.gz && mv /tmp/opsworks-ganglia-reports/* /usr/share/ganglia-webfrontend/graph.d/"
 end
 
-# add scalarium template
-cookbook_file "/tmp/scalarium-ganglia-templates.tar.gz"  do
-  source "scalarium-ganglia-templates.tar.gz"
+# add opsworks template
+cookbook_file "/tmp/opsworks-ganglia-templates.tar.gz"  do
+  source "opsworks-ganglia-templates.tar.gz"
   mode "0644"
 end
 
-execute "Untar scalarium layout templates for Ganglia" do
-  command "tar -xzf /tmp/scalarium-ganglia-templates.tar.gz && mv /tmp/scalarium-ganglia-templates /usr/share/ganglia-webfrontend/templates/scalarium"
+execute "Untar opsworks layout templates for Ganglia" do
+  command "tar -xzf /tmp/opsworks-ganglia-templates.tar.gz && mv /tmp/opsworks-ganglia-templates /usr/share/ganglia-webfrontend/templates/opsworks"
 end
 
 # initialize new UI
@@ -75,6 +75,6 @@ execute "fix permissions on ganglia rrds directory" do
   command "chown -R #{node[:ganglia][:rrds_user]}:#{node[:ganglia][:user]} #{node[:ganglia][:datadir]}/rrds"
 end
 
-execute "Untar scalarium reports for Ganglia" do
-  command "rm -rf /tmp/scalarium-ganglia*"
+execute "Cleanup" do
+  command "rm -rf /tmp/opsworks-ganglia*"
 end
