@@ -1,0 +1,10 @@
+<IfModule mod_fcgid.c>
+  AddHandler    fcgid-script .fcgi
+  IPCConnectTimeout 20
+</IfModule>
+
+<% if ['centos','redhat','fedora','amazon'].include?(node[:platform]) -%>
+# Sane place to put sockets and shared memory file
+SocketPath run/mod_fcgid
+SharememPath run/mod_fcgid/fcgid_shm
+<% end -%>

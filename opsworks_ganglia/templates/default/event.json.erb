@@ -1,0 +1,12 @@
+<% 
+  event = {
+    'event_id' => node[:opsworks][:deployment],
+    'start_time' => node[:opsworks][:sent_at],
+    'summary' => node[:opsworks][:activity],
+    'grid' => '*',
+    'stack' => '*',
+    'host_regex' => '',
+    'end_time' => ''
+  } 
+%>
+<%= JSON.pretty_generate(event) %>

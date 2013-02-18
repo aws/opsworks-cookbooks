@@ -1,0 +1,49 @@
+# This is an example of a Ganglia Meta Daemon configuration file
+#                http://ganglia.sourceforge.net/
+#
+# $Id: gmetad.conf.in 1639 2008-08-09 23:30:32Z carenas $
+#
+#-------------------------------------------------------------------------------
+# Setting the debug_level to 1 will keep daemon in the forground and
+# show only error messages. Setting this value higher than 1 will make 
+# gmetad output debugging information and stay in the foreground.
+# default: 0
+# debug_level 10
+#
+#-------------------------------------------------------------------------------
+# What to monitor. The most important section of this file. 
+#
+# The data_source tag specifies either a cluster or a grid to
+# monitor. If we detect the source is a cluster, we will maintain a complete
+# set of RRD databases for it, which can be used to create historical 
+# graphs of the metrics. If the source is a grid (it comes from another gmetad),
+# we will only maintain summary RRDs for it.
+#
+# Format: 
+# data_source "my cluster" [polling interval] address1:port addreses2:port ...
+# 
+# The keyword 'data_source' must immediately be followed by a unique
+# string which identifies the source, then an optional polling interval in 
+# seconds. The source will be polled at this interval on average. 
+# If the polling interval is omitted, 15sec is asssumed. 
+#
+# A list of machines which service the data source follows, in the 
+# format ip:port, or name:port. If a port is not specified then 8649
+# (the default gmond port) is assumed.
+# default: There is no default value
+#
+# data_source "my cluster" 10 localhost  my.machine.edu:8649  1.2.3.5:8655
+# data_source "my grid" 50 1.3.4.7:8655 grid.org:8651 grid-backup.org:8651
+# data_source "another source" 1.3.4.7:8655  1.3.4.8
+
+data_source "<%= @stack_name.gsub(/[\(\)\[\]]/,'') %>" localhost:<%= node[:ganglia][:tcp_client_port] %>
+
+# The name of this Grid. All the data sources above will be wrapped in a GRID
+# tag with this name.
+# default: unspecified
+# gridname "MyGrid"
+gridname "AWS OpsWorks"
+
+# Where gmetad stores its round-robin databases
+# default: "/var/lib/ganglia/rrds"
+rrd_rootdir "<%= node[:ganglia][:datadir] %>/rrds"

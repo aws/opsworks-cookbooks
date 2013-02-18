@@ -1,0 +1,7 @@
+check host node_web_app_<%= @application_name %> with address 127.0.0.1
+  start program = "/bin/sh -c 'cd <%= @deploy[:deploy_to] %>/current; /usr/bin/env NODE_PATH=<%= @deploy[:deploy_to] %>/current/node_modules:<%= @deploy[:deploy_to] %>/current /usr/local/bin/node <%= @monitored_script %>'"
+  stop program  = "/usr/bin/pkill -f 'node <%= @monitored_script %>'"
+  if failed port 80 protocol HTTP
+    request /
+    with timeout 10 seconds
+    then restart

@@ -1,0 +1,289 @@
+{
+  "view_name": "overview",
+  "items": [
+    {
+      "aggregate_graph": "true",
+      "metric_regex": [
+        {
+          "regex": "load_one"
+        }
+      ],
+      "host_regex": [
+        {
+          "regex": "<%= @instances.keys.join('|') %>"
+        }
+      ],
+      "graph_type": "line",
+      "vertical_label": "load one",
+      "title": "load one"
+    },
+    {
+      "aggregate_graph": "true",
+      "metric_regex": [
+        {
+          "regex": "load_five"
+        }
+      ],
+      "host_regex": [
+        {
+          "regex": "<%= @instances.keys.join('|') %>"
+        }
+      ],
+      "graph_type": "line",
+      "vertical_label": "load five",
+      "title": "load five"
+    },
+    {
+      "aggregate_graph": "true",
+      "metric_regex": [
+        {
+          "regex": "load_fifteen"
+        }
+      ],
+      "host_regex": [
+        {
+          "regex": "<%= @instances.keys.join('|') %>"
+        }
+      ],
+      "graph_type": "line",
+      "vertical_label": "load fifteen",
+      "title": "load fifteen"
+    },
+    {
+      "aggregate_graph": "true",
+      "metric_regex": [
+        {
+          "regex": "part_max_used"
+        }
+      ],
+      "host_regex": [
+        {
+          "regex": "<%= @instances.keys.join('|') %>"
+        }
+      ],
+      "graph_type": "line",
+      "vertical_label": "%",
+      "title": "Maximum disk space used",
+      "upper_limit": "100",
+      "lower_limit": "0"
+    },
+    {
+      "aggregate_graph": "true",
+      "metric_regex": [
+        {
+          "regex": "^bytes_out"
+        }
+      ],
+      "host_regex": [
+        {
+          "regex": "<%= @instances.keys.join('|') %>"
+        }
+      ],
+      "graph_type": "line",
+      "vertical_label": "Bytes/sec",
+      "title": "Bytes sent"
+    },
+    {
+      "aggregate_graph": "true",
+      "metric_regex": [
+        {
+          "regex": "^bytes_in"
+        }
+      ],
+      "host_regex": [
+        {
+          "regex": "<%= @instances.keys.join('|') %>"
+        }
+      ],
+      "graph_type": "line",
+      "vertical_label": "Bytes/sec",
+      "title": "Bytes recieved"
+    },
+    {
+      "aggregate_graph": "true",
+      "metric_regex": [
+        {
+          "regex": "proc_run"
+        }
+      ],
+      "host_regex": [
+        {
+          "regex": "<%= @instances.keys.join('|') %>"
+        }
+      ],
+      "graph_type": "line",
+      "vertical_label": "processes",
+      "title": "Total running processes"
+    }
+    <% if @instances.keys.select{|nickname| !@instances[nickname].grep(/^lb/).empty?} %>
+    ,
+    {
+      "aggregate_graph": "true",
+      "metric_regex": [
+        {
+          "regex": "lb_total_req_per_s"
+        }
+      ],
+      "host_regex": [
+        {
+          "regex": "<%= @instances.keys.select{|nickname| !@instances[nickname].grep(/^lb/).empty?}.join('|') %>"
+        }
+      ],
+      "graph_type": "line",
+      "vertical_label": "total requests \/ s",
+      "title": "req \/ s"
+    }
+    <% end %>
+    <% if @instances.keys.select{|nickname| !@instances[nickname].grep(/^db-master/).empty?} %>
+    ,
+    {
+      "aggregate_graph": "true",
+      "metric_regex": [
+        {
+          "regex": "mysql_slow_queries"
+        }
+      ],
+      "host_regex": [
+        {
+          "regex": "<%= @instances.keys.select{|nickname| !@instances[nickname].grep(/^db-master/).empty?}.join('|') %>"
+        }
+      ],
+      "graph_type": "line",
+      "vertical_label": "queries",
+      "title": "MySQL slow queries"
+    },
+    {
+      "aggregate_graph": "true",
+      "metric_regex": [
+        {
+          "regex": "mysql_com_select"
+        }
+      ],
+      "host_regex": [
+        {
+          "regex": "<%= @instances.keys.select{|nickname| !@instances[nickname].grep(/^db-master/).empty?}.join('|') %>"
+        }
+      ],
+      "graph_type": "line",
+      "vertical_label": "queries",
+      "title": "MySQL select"
+    },
+    {
+      "aggregate_graph": "true",
+      "metric_regex": [
+        {
+          "regex": "mysql_com_insert"
+        }
+      ],
+      "host_regex": [
+        {
+          "regex": "<%= @instances.keys.select{|nickname| !@instances[nickname].grep(/^db-master/).empty?}.join('|') %>"
+        }
+      ],
+      "graph_type": "line",
+      "vertical_label": "queries",
+      "title": "MySQL insert"
+    },
+    {
+      "aggregate_graph": "true",
+      "metric_regex": [
+        {
+          "regex": "mysql_com_update"
+        }
+      ],
+      "host_regex": [
+        {
+          "regex": "<%= @instances.keys.select{|nickname| !@instances[nickname].grep(/^db-master/).empty?}.join('|') %>"
+        }
+      ],
+      "graph_type": "line",
+      "vertical_label": "queries",
+      "title": "MySQL update"
+    },
+    {
+      "aggregate_graph": "true",
+      "metric_regex": [
+        {
+          "regex": "mysql_com_delete"
+        }
+      ],
+      "host_regex": [
+        {
+          "regex": "<%= @instances.keys.select{|nickname| !@instances[nickname].grep(/^db-master/).empty?}.join('|') %>"
+        }
+      ],
+      "graph_type": "line",
+      "vertical_label": "queries",
+      "title": "MySQL delete"
+    }
+    <% end %>
+    <% if @instances.keys.select{|nickname| !@instances[nickname].grep(/^rails-app|^php-app|^monitoring-master/).empty?} %>
+    ,
+    {
+      "aggregate_graph": "true",
+      "metric_regex": [
+        {
+          "regex": "apache_200"
+        }
+      ],
+      "host_regex": [
+        {
+          "regex": "<%= @instances.keys.select{|nickname| !@instances[nickname].grep(/^rails-app|^php-app|^monitoring-master/).empty?}.join('|') %>"
+        }
+      ],
+      "graph_type": "line",
+      "vertical_label": "hps",
+      "title": "Apache 200"
+    },
+    {
+      "aggregate_graph": "true",
+      "metric_regex": [
+        {
+          "regex": "apache_300"
+        }
+      ],
+      "host_regex": [
+        {
+          "regex": "<%= @instances.keys.select{|nickname| !@instances[nickname].grep(/^rails-app|^php-app|^monitoring-master/).empty?}.join('|') %>"
+        }
+      ],
+      "graph_type": "line",
+      "vertical_label": "hps",
+      "title": "Apache 300"
+    },
+    {
+      "aggregate_graph": "true",
+      "metric_regex": [
+        {
+          "regex": "apache_400"
+        }
+      ],
+      "host_regex": [
+        {
+          "regex": "<%= @instances.keys.select{|nickname| !@instances[nickname].grep(/^rails-app|^php-app|^monitoring-master/).empty?}.join('|') %>"
+        }
+      ],
+      "graph_type": "line",
+      "vertical_label": "hps",
+      "title": "Apache 400"
+    },
+    {
+      "aggregate_graph": "true",
+      "metric_regex": [
+        {
+          "regex": "apache_500"
+        }
+      ],
+      "host_regex": [
+        {
+          "regex": "<%= @instances.keys.select{|nickname| !@instances[nickname].grep(/^rails-app|^php-app|^monitoring-master/).empty?}.join('|') %>"
+        }
+      ],
+      "graph_type": "line",
+      "vertical_label": "hps",
+      "title": "Apache 500"
+    }
+    <% end %>
+  ],
+  "view_type": "standard"
+}

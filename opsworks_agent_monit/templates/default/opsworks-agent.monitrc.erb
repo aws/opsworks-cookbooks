@@ -1,0 +1,5 @@
+check process opsworks-agent
+  with pidfile "<%= node[:opsworks_agent][:shared_dir] %>/pid/opsworks-agent.pid"
+  start program = "/etc/init.d/opsworks-agent start"
+  stop program = "/etc/init.d/opsworks-agent stop"
+  group opsworks

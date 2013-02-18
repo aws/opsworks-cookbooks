@@ -1,0 +1,78 @@
+<?php
+
+$conf['template_name'] = 'opsworks';
+$conf['metriccols'] = 4;
+
+# additional stack view reports
+$conf['optional_graphs'] = array();
+<% if node[:opsworks][:layers].has_key?("lb") && !node[:opsworks][:layers]['lb']['instances'].empty? -%>
+  array_push($conf['optional_graphs'], 'haproxy_requests');
+<% end -%>
+<% if node[:opsworks][:layers].has_key?("db-master") && !node[:opsworks][:layers]['db-master']['instances'].empty? -%>
+  array_push($conf['optional_graphs'], 'mysql_query');
+<% end -%>
+<% if (node[:opsworks][:layers].has_key?("rails-app") && node[:opsworks][:rails_stack][:name] == 'apache_passenger' && !node[:opsworks][:layers]['rails-app']['instances'].empty? ) ||  (node[:opsworks][:layers].has_key?("php-app") && !node[:opsworks][:layers]['php-app']['instances'].empty? ) -%>
+  array_push($conf['optional_graphs'], 'apache', 'apache_worker', 'apache_response_time');
+<% end -%>
+<% if (node[:opsworks][:layers].has_key?("rails-app") && node[:opsworks][:rails_stack][:name] == 'apache_passenger' && !node[:opsworks][:layers]['rails-app']['instances'].empty? ) -%>
+  array_push($conf['optional_graphs'], 'passenger_memory_stats', 'passenger_status');
+<% end -%>
+<% if node[:opsworks][:layers].has_key?("rails-app") && node[:opsworks][:rails_stack][:name] == 'nginx_unicorn' && !node[:opsworks][:layers]['rails-app']['instances'].empty? -%>
+  array_push($conf['optional_graphs'], 'nginx_status');
+<% end -%>
+<% if node[:opsworks][:layers].has_key?("web") && !node[:opsworks][:layers]['web']['instances'].empty? -%>
+  array_push($conf['optional_graphs'], 'nginx_status');
+<% end -%>
+
+$conf['overlay_events'] = true;
+$conf['overlay_events_exclude_ranges'] = array("month", "year");
+
+$conf['auth_system'] = 'disabled';
+
+$conf['graph_sizes'] = array(
+  'small'=>array(
+    'height'=>65,
+    'width'=>200,
+    'fudge_0'=>0,
+    'fudge_1'=>0,
+    'fudge_2'=>0
+  ),
+  'medium'=>array(
+    'height'=>95,
+    'width'=>300,
+    'fudge_0'=>0,
+    'fudge_1'=>14,
+    'fudge_2'=>28
+  ),
+  'large'=>array(
+    'height'=>150,
+    'width'=>480,
+    'fudge_0'=>0,
+    'fudge_1'=>0,
+    'fudge_2'=>0
+  ),
+  'xlarge'=>array(
+    'height'=>300,
+    'width'=>650,
+    'fudge_0'=>0,
+    'fudge_1'=>0,
+    'fudge_2'=>0
+  ),
+  'mobile'=>array(
+    'height'=>95,
+    'width'=>220,
+    'fudge_0'=>0,
+    'fudge_1'=>0,
+    'fudge_2'=>0
+  ),
+  # this was the default value when no other size was provided.
+  'default'=>array(
+    'height'=>95,
+    'width'=>300,
+    'fudge_0'=>0,
+    'fudge_1'=>0,
+    'fudge_2'=>0
+  )
+);
+
+?>

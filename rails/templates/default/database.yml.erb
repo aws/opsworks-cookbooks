@@ -1,0 +1,11 @@
+<% (['development', 'production'] + [@environment]).uniq.each do |env| -%>
+<%= env %>:
+  adapter: <%= @database[:adapter] %>
+  database: <%= @database[:database] %>
+  encoding: utf8
+  host: <%= @database[:host] || 'localhost' %>
+  username: <%= @database[:username] %>
+  password: <%= @database[:password] %>
+  reconnect: <%= @database[:reconnect] ? 'true' : 'false' %>
+
+<% end -%>

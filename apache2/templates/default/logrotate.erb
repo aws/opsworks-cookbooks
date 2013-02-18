@@ -1,0 +1,17 @@
+<%= node[:apache][:log_dir] %>/*.log {
+  <%= node[:apache][:logrotate][:schedule] %>
+  missingok
+  rotate <%= node[:apache][:logrotate][:rotate] %>
+  compress
+  <% if node[:apache][:logrotate][:delaycompress] -%>
+  delaycompress
+  <% end -%>
+  notifempty
+  create <%= node[:apache][:logrotate][:mode] %> <%= node[:apache][:logrotate][:owner] %> <%= node[:apache][:logrotate][:group] %>
+  sharedscripts
+  postrotate
+  if [ -f "<%= node[:apache][:pid_file] %>" ]; then
+    <%= node[:apache][:init_script] %> reload > /dev/null
+  fi
+  endscript
+}
