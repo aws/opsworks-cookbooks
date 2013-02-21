@@ -5,6 +5,7 @@ supports "ubuntu", ">= 8.10"
 
 recipe "rails::configure", "Re-configure a Rails application"
 
+depends "deploy"
 depends "apache2"
 depends "nginx"
 

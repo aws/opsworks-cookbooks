@@ -1,6 +1,13 @@
 maintainer "Amazon Web Services"
 description "Deploy applications"
 version "0.1"
+depends "scm_helper"
+depends "dependencies"
+depends "apache2"
+depends "mod_php5_apache2"
+depends "deploy"
+depends "nginx"
+
 recipe "deploy::scm", "Install and setup the source code management system"
 recipe "deploy::rails", "Deploy a Rails application"
 recipe "deploy::php", "Deploy a PHP application"
