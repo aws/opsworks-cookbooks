@@ -1,7 +1,8 @@
 maintainer "Amazon Web Services"
 version "0.2"
 supports "ubuntu"
-
+depends "opsworks_commons"
+depends "apache2"
 recipe "opsworks_ganglia::server", "Ganglia server"
 recipe "opsworks_ganglia::configure-server", "Reconfigure Ganglia server with correct clients"
 recipe "opsworks_ganglia::client", "Ganglia client"
