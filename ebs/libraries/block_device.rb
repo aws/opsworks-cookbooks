@@ -52,7 +52,30 @@ module BlockDevice
 
   def self.assemble_raid(raid_device, options)
     Chef::Log.info "Resuming existing RAID array #{raid_device} with #{options[:disks].size} disks, RAID level #{options[:raid_level]} at #{options[:mount_point]}"
-    exec_command("mdadm --assemble --verbose #{raid_device} #{options[:disks].join(' ')}") or raise "Failed to assemble the RAID array at #{raid_device}"
+    unless exec_command("mdadm --assemble --verbose #{raid_device} #{options[:disks].join(' ')}")
+      plain_disks = options[:disks].map{|disk| disk.gsub('/dev/', '')}
+      affected_vgs = []
+      mdstat = `cat /proc/mdstat`
+      mdstat.lines.each do |line|
+        md_device = line.split.first if plain_disks.any?{|disk| line.include?(disk)}
+        if md_device
+          pv_info = `pvdisplay -c /dev/#{md_device}`.lines.first
+          if pv_info
+            vg = pv_info.split(':')[1]
+            affected_vgs << vg
+            Chef::Log.info "Deactivating VG #{vg}"
+            exec_command("vgchange --available n #{vg}")
+          end
+          Chef::Log.info "Stopping /dev/#{md_device}"
+          exec_command("mdadm --stop --verbose /dev/#{md_device}")
+        end
+      end
+      exec_command("mdadm --assemble --verbose #{raid_device} #{options[:disks].join(' ')}") or raise "Failed to assemble the RAID array at #{raid_device}"
+      affected_vgs.each do |vg|
+        Chef::Log.info "(Re-)activating VG #{vg}"
+        exec_command("vgchange --available y #{vg}")
+      end
+    end
   end
 
   def self.create_raid(raid_device, options)
