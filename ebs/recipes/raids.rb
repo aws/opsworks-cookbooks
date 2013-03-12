@@ -40,7 +40,7 @@ node[:ebs][:raids].each do |raid_device, options|
     command "mkfs -t #{options[:fstype]} #{lvm_device}"
     not_if do
       # check volume filesystem
-      system("blkid -s TYPE -o value #{lvm_device}")
+      system("test $(blkid -s TYPE -o value #{lvm_device}) = #{options[:fstype]}")
     end
   end
 
