@@ -94,7 +94,13 @@ define :opsworks_deploy do
             OpsWorks::RailsConfiguration.bundle(application, node[:deploy][application], release_path)
           end
 
-          node[:deploy][application][:database][:adapter] = OpsWorks::RailsConfiguration.determine_database_adapter(application, node[:deploy][application], release_path, :force => node[:force_database_adapter_detection], :consult_gemfile => node[:deploy][application][:auto_bundle_on_deploy])
+          node[:deploy][application][:database][:adapter] = OpsWorks::RailsConfiguration.determine_database_adapter(
+            application, node[:deploy][application],
+            release_path,
+            :force => node[:force_database_adapter_detection],
+            :consult_gemfile => node[:deploy][application][:auto_bundle_on_deploy]
+          )
+
           template "#{node[:deploy][application][:deploy_to]}/shared/config/database.yml" do
             cookbook "rails"
             source "database.yml.erb"
@@ -103,6 +109,7 @@ define :opsworks_deploy do
             group node[:deploy][application][:group]
             variables(:database => node[:deploy][application][:database], :environment => node[:deploy][application][:rails_env])
           end.run_action(:create)
+
         elsif deploy[:application_type] == 'php'
           template "#{node[:deploy][application][:deploy_to]}/shared/config/opsworks.php" do
             cookbook 'php'
