@@ -64,7 +64,7 @@ define :opsworks_deploy do
       migrate deploy[:migrate]
       migration_command deploy[:migrate_command]
       environment deploy[:environment]
-      symlink_before_migrate deploy[:symlink_before_migrate]
+      symlink_before_migrate( deploy[:symlink_before_migrate] )
       action deploy[:action]
 
       if deploy[:application_type] == 'rails'
