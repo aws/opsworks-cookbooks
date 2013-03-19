@@ -4,7 +4,7 @@ include_attribute 'opsworks_commons::default'
 # ruby 1.8.7 is ruby-enterprise, os we don't handle it here
 default[:ruby][:major_version] = '1.9'
 default[:ruby][:full_version] = '1.9.3'
-default[:ruby][:patch] = 'p385'
+default[:ruby][:patch] = 'p392'
 default[:ruby][:pkgrelease] = '1'
 
 default[:ruby][:version] = "#{node[:ruby][:full_version]}#{node[:ruby][:patch]}"
