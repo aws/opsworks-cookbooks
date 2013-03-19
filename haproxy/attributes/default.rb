@@ -1,3 +1,11 @@
+include_attribute 'opsworks_commons::default'
+
+rhel_arch = RUBY_PLATFORM.match(/64/) ? 'x86_64' : 'i686'
+default[:haproxy][:version] = '1.4.22'
+default[:haproxy][:patchlevel] = '1'
+default[:haproxy][:rpm] = "haproxy-#{node[:haproxy][:version]}-#{node[:haproxy][:patchlevel]}.#{rhel_arch}.rpm"
+default[:haproxy][:rpm_url] = "#{node[:opsworks_commons][:assets_url]}/packages/#{node[:platform]}/#{node[:platform_version]}/#{node[:haproxy][:rpm]}"
+
 default[:haproxy][:stats_url] = '/haproxy?stats'
 default[:haproxy][:stats_user] = 'opsworks'
 default[:haproxy][:health_check_url] = '/'
