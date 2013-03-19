@@ -36,7 +36,7 @@ execute "Install Ruby #{node[:ruby][:full_version]}" do
     command "dpkg -i /tmp/#{node[:ruby][:deb]}"
   end
 
-  only_if do
+  not_if do
     ::File.exists?("/usr/local/bin/ruby") &&
     system("/usr/local/bin/ruby -v | grep -q '#{node[:ruby][:version]}'")
   end
