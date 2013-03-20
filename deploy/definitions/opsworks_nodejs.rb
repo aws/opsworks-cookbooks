@@ -10,6 +10,8 @@ define :opsworks_nodejs do
     Chef::Log.info("added env var: #{k}=#{v}")
   end
 
+  env_vars.push("MEMC_PATH=#{deploy[:deploy_to]}/shared/config/memcached.yml")
+
   Chef::Log.info("env vars for node: #{env_vars.join(' ')}")
   #------------------------------------
 
