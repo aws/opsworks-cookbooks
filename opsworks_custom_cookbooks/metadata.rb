@@ -12,3 +12,9 @@ attribute "opsworks_custom_cookbooks/repository",
   :description => "URL to you Chef cookbooks",
   :required => true,
   :type => 'string'
+
+attribute "opsworks_custom_cookbooks/cookbooks_paths",
+  :display_name => "Additional Cookbook Paths",
+  :description => "Additional paths to search for cookbooks, relative to your repository root",
+  :type => "array",
+  :default => []

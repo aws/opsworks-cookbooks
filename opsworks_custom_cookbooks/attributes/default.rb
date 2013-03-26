@@ -6,6 +6,7 @@ default[:opsworks_custom_cookbooks][:group] = 'root'
 default[:opsworks_custom_cookbooks][:home] = '/root'
 default[:opsworks_custom_cookbooks][:destination] = "#{node[:opsworks_agent][:current_dir]}/site-cookbooks"
 
+default[:opsworks_custom_cookbooks][:cookbooks_paths] = []
 default[:opsworks_custom_cookbooks][:recipes] = []
 
 default[:opsworks_custom_cookbooks][:scm] = {}
