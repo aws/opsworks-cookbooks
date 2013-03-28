@@ -18,7 +18,7 @@ describe_recipe 'deploy::php-undeploy' do
 
   it 'deletes the application directory' do
     if deploy[:application_type] = 'php'
-      directory("#{deploy[:deploy_to]}".wont_exist
+      directory("#{deploy[:deploy_to]}").wont_exist
     end
   end
 end
