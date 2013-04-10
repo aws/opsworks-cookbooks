@@ -5,9 +5,11 @@ define :opsworks_nodejs do
 
   #-------------- environment vars (temp location) --------------
   env_vars = Array.new
-  node[:custom_env].each do |k, v|
-    env_vars.push("#{k}=#{v}")
-    Chef::Log.info("added env var: #{k}=#{v}")
+  unless node[:custom_env].nil?
+    node[:custom_env].each do |k, v|
+      env_vars.push("#{k}=#{v}")
+      Chef::Log.info("added env var: #{k}=#{v}")
+    end
   end
 
   env_vars.push("MEMC_PORT=#{deploy[:memcached][:port]}")
