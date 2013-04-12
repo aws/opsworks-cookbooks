@@ -1,3 +1,6 @@
+opsworks-cookbooks
+==================
+
 These are the standard Chef cookbooks used by OpsWorks 
 
 If you want to override any template (like the Rails database.yml or the Apache vhost definition), this is the

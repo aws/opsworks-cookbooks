@@ -13,16 +13,20 @@ define :opsworks_deploy do
   if deploy[:scm]
     ensure_scm_package_installed(deploy[:scm][:scm_type])
 
-    prepare_git_checkouts(:user => deploy[:user],
-                          :group => deploy[:group],
-                          :home => deploy[:home],
-                          :ssh_key => deploy[:scm][:ssh_key]) if deploy[:scm][:scm_type].to_s == 'git'
+    prepare_git_checkouts(
+      :user => deploy[:user],
+      :group => deploy[:group],
+      :home => deploy[:home],
+      :ssh_key => deploy[:scm][:ssh_key]
+    ) if deploy[:scm][:scm_type].to_s == 'git'
 
-    prepare_svn_checkouts(:user => deploy[:user],
-                          :group => deploy[:group],
-                          :home => deploy[:home],
-                          :deploy => deploy,
-                          :application => application) if deploy[:scm][:scm_type].to_s == 'svn'
+    prepare_svn_checkouts(
+      :user => deploy[:user],
+      :group => deploy[:group],
+      :home => deploy[:home],
+      :deploy => deploy,
+      :application => application
+    ) if deploy[:scm][:scm_type].to_s == 'svn'
 
     if deploy[:scm][:scm_type].to_s == 'archive'
       repository = prepare_archive_checkouts(deploy[:scm])
@@ -95,7 +99,8 @@ define :opsworks_deploy do
           end
 
           node[:deploy][application][:database][:adapter] = OpsWorks::RailsConfiguration.determine_database_adapter(
-            application, node[:deploy][application],
+            application,
+            node[:deploy][application],
             release_path,
             :force => node[:force_database_adapter_detection],
             :consult_gemfile => node[:deploy][application][:auto_bundle_on_deploy]
@@ -107,9 +112,11 @@ define :opsworks_deploy do
             mode "0660"
             owner node[:deploy][application][:user]
             group node[:deploy][application][:group]
-            variables(:database => node[:deploy][application][:database], :environment => node[:deploy][application][:rails_env])
+            variables(
+              :database => node[:deploy][application][:database],
+              :environment => node[:deploy][application][:rails_env]
+            )
           end.run_action(:create)
-
         elsif deploy[:application_type] == 'php'
           template "#{node[:deploy][application][:deploy_to]}/shared/config/opsworks.php" do
             cookbook 'php'
@@ -117,7 +124,11 @@ define :opsworks_deploy do
             mode '0660'
             owner node[:deploy][application][:user]
             group node[:deploy][application][:group]
-            variables(:database => node[:deploy][application][:database], :memcached => node[:deploy][application][:memcached], :layers => node[:opsworks][:layers])
+            variables(
+              :database => node[:deploy][application][:database],
+              :memcached => node[:deploy][application][:memcached],
+              :layers => node[:opsworks][:layers]
+            )
             only_if do
               File.exists?("#{node[:deploy][application][:deploy_to]}/shared/config")
             end
