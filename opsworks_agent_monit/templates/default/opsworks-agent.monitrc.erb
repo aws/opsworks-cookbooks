@@ -1,5 +1,11 @@
-check process opsworks-agent
-  with pidfile "<%= node[:opsworks_agent][:shared_dir] %>/pid/opsworks-agent.pid"
+# restart process if not responsive
+check process opsworks-agent with pidfile "<%= node[:opsworks_agent][:shared_dir] %>/pid/opsworks-agent.pid"
   start program = "/etc/init.d/opsworks-agent start"
   stop program = "/etc/init.d/opsworks-agent stop"
+  group opsworks
+
+# check run of keepalive
+check file opsworks-agent-log with path "<%= node[:opsworks_agent][:log_dir] %>/opsworks-agent.log"
+  if timestamp > 3 minutes
+    then exec "/etc/init.d/opsworks-agent restart"
   group opsworks
