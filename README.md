@@ -8,7 +8,7 @@ place to look for the originals.
 
 The stable branch is the one deployed on the instances.
 
-See also <http://www.amazonaws.com/opsworks>
+See also <http://aws.amazon.com/opsworks/>
 
 Some of these cookbooks rely on functionality included in our [fork of
 Chef](http://github.com/peritor/chef/tree/scalarium-0.8-stable). That involves either changes already merged in
