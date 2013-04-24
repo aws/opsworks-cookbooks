@@ -1,4 +1,4 @@
-GC.disable
+GC.disable unless node[:opsworks] && node[:opsworks][:instance] && node[:opsworks][:instance][:instance_type] == 't1.micro'
 
 # this values must match the ones respective ones in the agent configuration
 default[:opsworks_agent][:base_dir] = '/opt/aws/opsworks'
