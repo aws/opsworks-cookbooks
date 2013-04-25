@@ -1,6 +1,18 @@
-include_attribute 'rails::rails'
+if node[:sinatra] || node[:web_application_type] == 'sinatra'
+  include_attribute 'sinatra::default'
+elsif node[:rails] || node[:web_application_type] == 'rails'
+  include_attribute 'rails'
+end
 
-default[:unicorn][:worker_processes] = node[:rails][:max_pool_size] ? node[:rails][:max_pool_size] : 4
+default[:unicorn][:worker_processes] = if node[:rails] && node[:rails][:max_pool_size]
+  node[:rails][:max_pool_size]
+elsif node[:rack] && node[:rack][:max_pool_size]
+  node[:rack][:max_pool_size]
+elsif node[:sinatra] && node[:sinatra][:max_pool_size]
+  node[:sinatra][:max_pool_size]
+else
+  4
+end
 default[:unicorn][:backlog] = 1024
 default[:unicorn][:timeout] = 60
 default[:unicorn][:preload_app] = true
