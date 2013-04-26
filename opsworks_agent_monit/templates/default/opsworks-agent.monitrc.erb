@@ -1,5 +1,11 @@
+# restart process if not responsive
+check process opsworks-agent with pidfile "<%= node[:opsworks_agent][:shared_dir] %>/pid/opsworks-agent.pid"
+  start program = "/etc/init.d/opsworks-agent start"
+  stop program = "/etc/init.d/opsworks-agent stop"
+  group opsworks
+
 # check for running master process
-check process opsworks-agent-master-running matching "opsworks-agent:\smaster"
+check process opsworks-agent-master-running matching "opsworks-agent:\smaster" every 3 cycles
   start program = "/etc/init.d/opsworks-agent start"
   stop program = "/etc/init.d/opsworks-agent stop"
   group opsworks
