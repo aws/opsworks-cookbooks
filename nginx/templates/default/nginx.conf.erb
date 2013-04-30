@@ -33,6 +33,8 @@ http {
   gzip_disable "<%= node[:nginx][:gzip_disable] %>";
   <% end %>
 
+  client_max_body_size <%= node[:nginx][:client_max_body_size] %>;
+
   server_names_hash_bucket_size <%= node[:nginx][:server_names_hash_bucket_size] %>;
 
   include <%= node[:nginx][:dir] %>/conf.d/*.conf;
