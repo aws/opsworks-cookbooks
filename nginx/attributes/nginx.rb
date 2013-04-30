@@ -15,6 +15,9 @@ else
   Chef::LOG.error "Cannot configure nginx, platform unkown"
 end
 
+# increase if you accept large uploads
+default[:nginx][:client_max_body_size] = '4m'
+
 default[:nginx][:gzip] = 'on'
 default[:nginx][:gzip_static] = 'on'
 default[:nginx][:gzip_vary] = 'on'
