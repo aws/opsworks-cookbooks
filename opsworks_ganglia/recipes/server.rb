@@ -8,7 +8,7 @@ when 'debian','ubuntu'
   end
   package 'librrd4'
   execute 'install and cleanup' do
-    cmd 'dpkg -i /tmp/gmetad.deb && rm /tmp/gmetad.deb'
+    command 'dpkg -i /tmp/gmetad.deb && rm /tmp/gmetad.deb'
     only_if { ::File.exists?('/tmp/gmetad.deb') }
   end
 
