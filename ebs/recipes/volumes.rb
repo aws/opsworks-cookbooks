@@ -20,6 +20,7 @@ node[:ebs][:devices].each do |device, options|
     fstype options[:fstype]
     device device
     options "noatime"
+    pass 0
   end
   
   mount options[:mount_point] do
@@ -27,6 +28,7 @@ node[:ebs][:devices].each do |device, options|
     fstype options[:fstype]
     device device
     options "noatime"
+    pass 0
   end
   
 end
