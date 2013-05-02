@@ -9,8 +9,7 @@ end
 bash "adding bind mount for #{node[:ganglia][:original_datadir]} to #{node[:ganglia][:opsworks_autofs_map_file]}" do
   user 'root'
   code <<-EOC
-    if ! grep -q #{node[:ganglia][:original_datadir]} #{node[:ganglia][:opsworks_autofs_map_file]}; then
-      echo "#{node[:ganglia][:original_datadir]} -fstype=none,bind,rw :#{node[:ganglia][:datadir]}" >> #{node[:ganglia][:opsworks_autofs_map_file]}
-    fi
+    echo "#{node[:ganglia][:original_datadir]} -fstype=none,bind,rw :#{node[:ganglia][:datadir]}" >> #{node[:ganglia][:opsworks_autofs_map_file]}
   EOC
+  not_if { ::File.read("#{node[:ganglia][:opsworks_autofs_map_file]}").include?("#{node[:ganglia][:original_datadir]}") }
 end
