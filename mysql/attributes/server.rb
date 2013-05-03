@@ -46,7 +46,8 @@ when 'debian','ubuntu'
 end
 
 if attribute?(:ec2)
-  default[:mysql][:ec2_path]    = '/mnt/mysql'
+  default[:mysql][:ec2_path]                 = '/mnt/mysql'
+  default[:mysql][:opsworks_autofs_map_file] = '/etc/auto.opsworks'
 end
 
 # Tunables
