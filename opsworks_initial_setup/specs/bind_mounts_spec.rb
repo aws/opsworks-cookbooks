@@ -12,10 +12,9 @@ describe_recipe 'opsworks_initial_setup::bind_mounts' do
     end
   end
 
-  it 'creates mounts for directories' do
+  it 'should cover the bind mounts by an autofs map' do
     node[:opsworks_initial_setup][:bind_mounts][:mounts].each do |dir, source|
-      mount(dir, :device => source).must_be_mounted
-      mount(dir, :device => source).must_be_enabled.with(:fstype, 'none').and(:options, ['bind', 'rw'])
+      assert system("automount -m | grep '#{dir} | -fstype=none,bind,rw :#{source}'")
     end
   end
 end
