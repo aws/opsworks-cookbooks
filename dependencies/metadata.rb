@@ -18,18 +18,15 @@ attribute "dependencies/debs",
 attribute "dependencies/update_debs",
   :display_name => "Update sources",
   :description => "Update sources using apt-get update",
-  :required => false,
-  :type => 'boolean'
+  :required => false
 
 attribute "dependencies/upgrade_debs",
   :display_name => "Update packages",
   :description => "Update packages using apt-get upgrade",
-  :required => false,
-  :type => 'boolean'
+  :required => false
 
 attribute "dependencies/upgrade_gems",
   :display_name => "Update gems",
   :description => "Update gems using gem update",
-  :required => false,
-  :type => 'boolean'
+  :required => false
 
