@@ -1,8 +1,8 @@
-maintainer        "Opscode, Inc."
-maintainer_email  "cookbooks@opscode.com"
+maintainer        "niteshb"
+maintainer_email  "nitesh.bhavsar@raweng.com"
 license           "Apache 2.0"
 description       "Installs and configures nginx"
-version           "0.8"
+version           "1.2.5"
 
 %w{ ubuntu debian }.each do |os|
   supports os
@@ -11,12 +11,12 @@ end
 attribute "nginx/dir",
   :display_name => "Nginx Directory",
   :description => "Location of nginx configuration files",
-  :default => "/etc/nginx"
+  :default => "/opt/nginx"
 
 attribute "nginx/log_dir",
   :display_name => "Nginx Log Directory",
   :description => "Location for nginx logs",
-  :default => "/var/log/nginx"
+  :default => "/opt/nginx/log/access.log"
 
 attribute "nginx/user",
   :display_name => "Nginx User",
@@ -66,7 +66,7 @@ attribute "nginx/keepalive_timeout",
 attribute "nginx/worker_processes",
   :display_name => "Nginx Worker Processes",
   :description => "Number of worker processes",
-  :default => "1"
+  :default => "4"
 
 attribute "nginx/worker_connections",
   :display_name => "Nginx Worker Connections",
