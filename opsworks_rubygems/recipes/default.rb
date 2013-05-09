@@ -14,7 +14,7 @@ execute "tar xvfz rubygems-#{node[:opsworks_rubygems][:version]}.tgz" do
 end
 
 execute "Updating Rubygems to #{node[:opsworks_rubygems][:version]}" do
-  command "/usr/local/bin/ruby setup.rb"
+  command "/usr/local/bin/ruby setup.rb --no-rdoc --no-ri"
   cwd "/tmp/rubygems-#{node[:opsworks_rubygems][:version]}"
   umask 022
   not_if do

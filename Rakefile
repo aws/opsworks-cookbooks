@@ -19,7 +19,9 @@ KNOWN_COOKBOOK_ATTRIBUTES = {
   'sudoers' => 'ssh_users',
   'opsworks' => :any,
   'platform' => :any,
-  'platform_version' => :any
+  'platform_version' => :any,
+  'apache' => 'apache2',
+  'kernel' => 'apache2'
 }
 
 desc 'check declared attribute dependencies'

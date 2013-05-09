@@ -5,10 +5,12 @@ directory "#{node[:ganglia][:datadir]}/rrds" do
   action :create
 end
 
-mount node[:ganglia][:original_datadir] do
-  Chef::Log.info('Bind-mounting RRDS directories for Ganglia')
-  device node[:ganglia][:datadir]
-  fstype 'none'
-  options 'bind,rw'
-  action [:mount, :enable]
+# TODO: after Chef upgrade use Chef::Util::FileEdit
+bash "adding bind mount for #{node[:ganglia][:original_datadir]} to #{node[:ganglia][:opsworks_autofs_map_file]}" do
+  user 'root'
+  code <<-EOC
+    echo "#{node[:ganglia][:original_datadir]} -fstype=none,bind,rw :#{node[:ganglia][:datadir]}" >> #{node[:ganglia][:opsworks_autofs_map_file]}
+    service autofs restart
+  EOC
+  not_if { ::File.read("#{node[:ganglia][:opsworks_autofs_map_file]}").include?("#{node[:ganglia][:original_datadir]}") }
 end

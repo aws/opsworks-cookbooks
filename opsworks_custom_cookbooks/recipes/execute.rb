@@ -10,9 +10,4 @@ ruby_block "Execute the new cookbooks" do
       end
     end
   end
-  
-  only_if do
-    Chef::Log.info("Executing custom cookbooks") if node[:opsworks_custom_cookbooks][:enabled]
-    node[:opsworks_custom_cookbooks][:enabled]
-  end
 end

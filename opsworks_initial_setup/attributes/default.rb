@@ -1,4 +1,4 @@
-GC.disable
+GC.disable unless node[:opsworks] && node[:opsworks][:instance] && node[:opsworks][:instance][:instance_type] == 't1.micro'
 
 # this values must match the ones respective ones in the agent configuration
 default[:opsworks_agent][:base_dir] = '/opt/aws/opsworks'
@@ -38,6 +38,8 @@ default[:opsworks_initial_setup][:limits][:sigpending] = nil
 default[:opsworks_initial_setup][:limits][:msgqueue] = nil
 default[:opsworks_initial_setup][:limits][:nice] = nil
 default[:opsworks_initial_setup][:limits][:rtprio] = nil
+
+default[:opsworks_initial_setup][:micro][:yum_dump_lock_timeout] = 120
 
 default[:opsworks_initial_setup][:bind_mounts][:mounts] = {
   "/srv/www" => "/mnt/srv/www",

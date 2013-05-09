@@ -1,1 +1,1 @@
-default[:opsworks_bundler][:version] = '1.0.10'
+default[:opsworks_bundler][:version] = '1.3.4'

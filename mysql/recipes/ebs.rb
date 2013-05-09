@@ -13,20 +13,6 @@ if (node[:mysql][:ec2_path] && ! FileTest.directory?(node[:mysql][:ec2_path]))
     group "mysql"
   end
 
-  mount node[:mysql][:datadir] do
-    device node[:mysql][:ec2_path]
-    fstype "none"
-    options "bind,rw"
-    action :mount
-  end
-
-  mount node[:mysql][:datadir] do
-    device node[:mysql][:ec2_path]
-    fstype "none"
-    options "bind,rw"
-    action :enable
-  end
-
   execute "ensure MySQL data owned by MySQL user" do
     command "chown -R mysql:mysql #{node[:mysql][:datadir]}"
     action :run
@@ -34,4 +20,14 @@ if (node[:mysql][:ec2_path] && ! FileTest.directory?(node[:mysql][:ec2_path]))
 
 else
   Chef::Log.info("Skipping MySQL EBS setup - using what is already on the EBS volume")
+end
+
+# TODO: after Chef upgrade use Chef::Util::FileEdit
+bash "adding bind mount for #{node[:mysql][:datadir]} to #{node[:mysql][:opsworks_autofs_map_file]}" do
+  user 'root'
+  code <<-EOC
+    echo "#{node[:mysql][:datadir]} -fstype=none,bind,rw :#{node[:mysql][:ec2_path]}" >> #{node[:mysql][:opsworks_autofs_map_file]}
+    service autofs restart
+  EOC
+  not_if { ::File.read("#{node[:mysql][:opsworks_autofs_map_file]}").include?("#{node[:mysql][:datadir]}") }
 end

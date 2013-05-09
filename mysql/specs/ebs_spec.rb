@@ -9,13 +9,7 @@ describe_recipe 'mysql::ebs' do
       :group, 'mysql')
   end
 
-  describe 'mount' do
-    it 'should be mounted' do
-      mount(node[:mysql][:datadir],
-            :device => node[:mysql][:ec2_path]).must_be_enabled.with(
-              :fstype, 'none').and(:options, ['bind', 'rw']
-           )
-      mount(node[:mysql][:datadir], :device => node[:mysql][:ec2_path]).must_be_mounted
-    end
+  it 'should cover the data directory by an autofs map' do
+    assert system("automount -m | grep '#{node[:mysql][:datadir]} | -fstype=none,bind,rw :#{node[:mysql][:ec2_path]}'")
   end
 end
