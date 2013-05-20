@@ -46,15 +46,22 @@ For examples see the USAGE section below.
 Adds the stable [10gen repo](http://www.mongodb.org/downloads#packages) for the
 corresponding platform. Currently only implemented for the Debian and Ubuntu repository.
 
-Usage: just add `recipe[mongodb::10gen_repo]` to the node run_list *before* any other
-MongoDB recipe, and the mongodb-10gen **stable** packages will be installed instead of the distribution default.
-
-## Single mongodb instance
+## Single Mongo DB Instance
 
 Simply add
 
+For OpsWorks, running Amazon Linux, add these recipes, in this order, to the custom section of your layer:
 ```ruby
-include_recipe "mongodb::default"
+yum::default
+# Mongodb-10gen **stable** packages will be installed instead of the distribution default
+mongodb::10gen_repo
+mongodb::default
+# This next line is the repo removal recipe. There is a better way to do this
+# by removing the repo after the mongo install, but this makes it optional, I guess.
+# It's required that you remove the 10gen repo to prevent yum from trying to use
+# the 10gen repo for the linux installation and updates. If there were a priority settings
+# in chef, then this would be unnecessary, since we could use priority when adding 10gen.
+mongodb::10gen_remrepo
 ```
   
 to your recipe. This will run the mongodb instance as configured by your distribution.
