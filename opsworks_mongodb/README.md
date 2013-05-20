@@ -2,17 +2,17 @@
 
 Installs and configures MongoDB, supporting:
 
-* Single MongoDB
-* Replication
-* Sharding
-* Replication and Sharding
-* 10gen repository package installation
+* Single MongoDB -- Currently tested and working with amazon linux
+* Replication -- Incomplete for amazon linux -- minor code changes to work with chef 9
+* Sharding -- Incomplete for amazon linux -- minor code changes to work with chef 9
+* Replication and Sharding -- Incomplete for amazon linux -- minor code changes to work with chef 9
+* 10gen repository package installation -- Currently tested and working with amazon linux
 
 # REQUIREMENTS:
 
 ## Platform:
 
-The cookbook aims to be platform independant, but is best tested on debian squeeze systems.
+The cookbook aims to be platform independant, but is best tested on amazon linux systems.
 
 The `10gen_repo` recipe configures the package manager to use 10gen's
 official package reposotories on Debian, Ubuntu, Redhat, CentOS, Fedora, and
