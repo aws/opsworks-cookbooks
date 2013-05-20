@@ -48,8 +48,6 @@ corresponding platform. Currently only implemented for the Debian and Ubuntu rep
 
 ## Single Mongo DB Instance
 
-Simply add
-
 For OpsWorks, running Amazon Linux, add these recipes, in this order, to the custom section of your layer:
 ```ruby
 yum::default
