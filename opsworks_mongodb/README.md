@@ -47,6 +47,13 @@ Adds the stable [10gen repo](http://www.mongodb.org/downloads#packages) for the
 corresponding platform. Currently only implemented for the Debian and Ubuntu repository.
 
 ## Single Mongo DB Instance
+OpsWorks includes a UI for the layer. Be sure to add data, log, and journal volumes:
+/data, /log, and /journal
+You can also configure these paths with a custom JSON. At the time of testing this script,
+Amazon Linux, Raid 10, unmounts the drives after a reboot. Someone posted a comment about it in a blog, 
+and I somehow stumbled upon it as I was working on other issues. I created a gist with details from the blog,
+and if you scroll down to my comment in the following GIST, you'll see the details:
+https://gist.github.com/Cyclic/5610805
 
 For OpsWorks, running Amazon Linux, add these recipes, in this order, to the custom section of your layer:
 ```ruby
