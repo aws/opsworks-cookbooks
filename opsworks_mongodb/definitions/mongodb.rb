@@ -90,6 +90,12 @@ define :mongodb_instance, :mongodb_type => "mongod" , :action => [:enable, :star
     action :nothing
   end
   
+  # chown the mongo directories/volumes per 10gen instructions
+  execute "" do
+    command "chown mongod:mongod #{journalpath} #{dbpath} #{logpath}"
+    action :nothing
+  end
+  
   # service
   service name do
     supports :status => true, :restart => true
