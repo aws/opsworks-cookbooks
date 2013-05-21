@@ -53,6 +53,9 @@ server {
   <% if @application[:ssl_certificate_ca] -%>
   ssl_client_certificate /etc/nginx/ssl/<%= @application[:domains].first %>.ca;
   <% end -%>
+  <% if @application[:nginx] && @application[:nginx][:ssl_verify_client] -%>
+  ssl_verify_client <%= @application[:nginx][:ssl_verify_client] %>;
+  <% end -%>
 
   keepalive_timeout 5;
 
