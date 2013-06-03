@@ -5,7 +5,7 @@ describe_recipe 'opsworks_initial_setup::hosts' do
   include MiniTest::Chef::Assertions
 
   it 'creates entries for all hosts on the same stack which are online ' do
-     node[:opsworks][:layers].each do |layer_name, layer_config|
+    node[:opsworks][:layers].each do |layer_name, layer_config|
       layer_config[:instances].each do |instance_name, instance_config|
         if !seen.include?(instance_name) && instance_config[:private_ip]
           file('/etc/hosts').must_include "#{Resolv.getaddress(instance_config[:private_ip])} #{instance_name}"
