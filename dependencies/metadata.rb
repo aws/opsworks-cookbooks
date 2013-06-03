@@ -31,4 +31,3 @@ attribute "dependencies/upgrade_gems",
   :display_name => "Update gems",
   :description => "Update gems using gem update",
   :required => false
-
