@@ -21,7 +21,7 @@ describe_recipe 'deploy::php' do
         file("#{node[:apache][:dir]}/sites-available/#{application}.conf").must_exist
       end
 
-      it 'creates the apache site-enebled link' do
+      it 'creates the apache site-enabled link' do
         file("#{node[:apache][:dir]}/sites-enabled/#{application}.conf").must_exist
       end
 
