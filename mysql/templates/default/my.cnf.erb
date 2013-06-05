@@ -6,6 +6,7 @@
 [client]
 port                  = <%= node[:mysql][:port] %>
 socket                = <%= node[:mysql][:socket] %>
+default-character-set = utf8
 
 [mysqld_safe]
 socket          = <%= node[:mysql][:socket] %>
@@ -20,7 +21,10 @@ basedir         = <%= node[:mysql][:basedir] %>
 datadir         = <%= node[:mysql][:datadir] %>
 tmpdir          = /tmp
 
-character-set-server		= utf8
+character-set-server    = utf8
+collation-server        = utf8_unicode_ci
+init_connect            = 'SET collation_connection = utf8_unicode_ci'
+init_connect            = 'SET NAMES utf8'
 
 default-storage-engine=innodb
 skip-external-locking

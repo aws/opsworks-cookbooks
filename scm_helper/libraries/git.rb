@@ -21,7 +21,7 @@ module OpsWorks
         end
         
         execute "echo 'StrictHostKeyChecking no' > #{options[:home]}/.ssh/config" do
-          not_if "grep '/^StrictHostKeyChecking no$/' #{options[:home]}/.ssh/config"
+          not_if "grep '^StrictHostKeyChecking no$' #{options[:home]}/.ssh/config"
         end
         
         template "#{options[:home]}/.ssh/id_dsa" do
