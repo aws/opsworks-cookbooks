@@ -4,7 +4,7 @@ default[:opsworks_custom_cookbooks][:enabled] = false
 default[:opsworks_custom_cookbooks][:user] = 'root'
 default[:opsworks_custom_cookbooks][:group] = 'root'
 default[:opsworks_custom_cookbooks][:home] = '/root'
-default[:opsworks_custom_cookbooks][:destination] = "#{node[:opsworks_agent][:current_dir]}/site-cookbooks"
+default[:opsworks_custom_cookbooks][:destination] = Chef::Config[:cookbook_path].select{|dir| dir =~ /site-cookbooks/}.first
 
 default[:opsworks_custom_cookbooks][:recipes] = []
 
