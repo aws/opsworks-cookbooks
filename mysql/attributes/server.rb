@@ -45,10 +45,8 @@ when 'debian','ubuntu'
   set[:mysql][:grants_path]              = '/etc/mysql/grants.sql'
 end
 
-if attribute?(:ec2)
-  default[:mysql][:ec2_path]                 = '/mnt/mysql'
-  default[:mysql][:opsworks_autofs_map_file] = '/etc/auto.opsworks'
-end
+default[:mysql][:ec2_path]                 = '/mnt/mysql'
+default[:mysql][:opsworks_autofs_map_file] = '/etc/auto.opsworks'
 
 # Tunables
 
