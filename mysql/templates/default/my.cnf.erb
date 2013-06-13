@@ -6,7 +6,6 @@
 [client]
 port                  = <%= node[:mysql][:port] %>
 socket                = <%= node[:mysql][:socket] %>
-default-character-set = utf8
 
 [mysqld_safe]
 socket          = <%= node[:mysql][:socket] %>
