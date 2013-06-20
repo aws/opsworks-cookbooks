@@ -11,19 +11,19 @@ check process opsworks-agent-master-running matching "opsworks-agent:\smaster" e
   group opsworks
 
 # check run of statistic daemon
-check file opsworks-agent-statistic-daemons-log with path "<%= node[:opsworks_agent][:log_dir] %>/opsworks-agent.statistic.log"
+check file opsworks-agent-statistic-daemons-log with path "<%= node[:opsworks_agent][:log_dir] %>/opsworks-agent.statistics.log"
   if timestamp > 3 minutes
     then exec "/etc/init.d/opsworks-agent restart"
   group opsworks
 
 # check run of process command daemon
-check file opsworks-agent-process-command-daemons-log with path "<%= node[:opsworks_agent][:log_dir] %>/opsworks-agent.process-command.log"
+check file opsworks-agent-process-command-daemons-log with path "<%= node[:opsworks_agent][:log_dir] %>/opsworks-agent.process_command.log"
   if timestamp > 3 minutes
     then exec "/etc/init.d/opsworks-agent restart"
   group opsworks
 
 # check run of keep alive deamon
-check file opsworks-agent-keep-alive-daemons-log with path "<%= node[:opsworks_agent][:log_dir] %>/opsworks-agent.keep-alive.log"
+check file opsworks-agent-keep-alive-daemons-log with path "<%= node[:opsworks_agent][:log_dir] %>/opsworks-agent.keep_alive.log"
   if timestamp > 3 minutes
     then exec "/etc/init.d/opsworks-agent restart"
   group opsworks
