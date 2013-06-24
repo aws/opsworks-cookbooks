@@ -9,10 +9,8 @@ when 'debian', 'ubuntu'
     end
   end
 
-  execute "Install node.js #{node[:opsworks_nodejs][:version]}" do
-    cwd "/tmp"
-    command "dpkg -i /tmp/#{node[:opsworks_nodejs][:deb]}"
-
+  apt_package "Install node.js #{node[:opsworks_nodejs][:version]}" do
+    source "/tmp/#{node[:opsworks_nodejs][:deb]}"
     only_if do
       ::File.exists?("/tmp/#{node[:opsworks_nodejs][:deb]}")
     end
@@ -28,10 +26,15 @@ when 'centos','redhat','fedora','amazon'
     end
   end
 
-  rpm_package 'nodejs' do
+  rpm_package "Install node.js #{node[:opsworks_nodejs][:version]}" do
     source "/tmp/#{node[:opsworks_nodejs][:rpm]}"
     only_if do
      ::File.exists?("/tmp/#{node[:opsworks_nodejs][:rpm]}")
     end
   end
+end
+
+execute "Clean up nodejs files" do
+  cwd "/tmp"
+  command "rm -f #{node[:opsworks_nodejs][:rpm]} #{node[:opsworks_nodejs][:deb]}"
 end
