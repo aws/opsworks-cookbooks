@@ -1,4 +1,4 @@
-<% (['development', 'production'] + [@environment]).uniq.each do |env| -%>
+<% (['development', 'production'] + [@environment]).uniq.flatten.each do |env| -%>
 <%= env %>:
   host: <%= @memcached[:host] || 'localhost' %>
   port: <%= @memcached[:port] %>
