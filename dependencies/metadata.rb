@@ -26,10 +26,3 @@ attribute "dependencies/upgrade_debs",
   :description => "Update packages using apt-get upgrade",
   :required => false,
   :type => 'boolean'
-
-attribute "dependencies/upgrade_gems",
-  :display_name => "Update gems",
-  :description => "Update gems using gem update",
-  :required => false,
-  :type => 'boolean'
-
