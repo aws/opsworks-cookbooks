@@ -14,7 +14,7 @@ execute "tar xvfz rubygems-#{node[:opsworks_rubygems][:version]}.tgz" do
 end
 
 execute "Updating Rubygems to #{node[:opsworks_rubygems][:version]}" do
-  command "/usr/bin/env LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 /usr/local/bin/ruby setup.rb --no-rdoc --no-ri" # workaround for US-ASCII errors with rubygems 2.0.3 on opsworks
+  command node[:opsworks_rubygems][:setup_command]
   cwd "/tmp/rubygems-#{node[:opsworks_rubygems][:version]}"
   umask 022
   not_if do
