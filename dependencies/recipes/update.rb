@@ -26,9 +26,3 @@ when 'debian','ubuntu'
     end
   end
 end
-
-if node[:dependencies][:upgrade_gems]
-  execute 'gem update' do
-    action :run
-  end
-end
