@@ -13,6 +13,11 @@ when "1.9.3"
   default[:ruby][:full_version] = '1.9.3'
   default[:ruby][:patch] = 'p429'
   default[:ruby][:pkgrelease] = '1'
+else
+  default[:ruby][:major_version] = ''
+  default[:ruby][:full_version] = ''
+  default[:ruby][:patch] = ''
+  default[:ruby][:pkgrelease] = ''
 end
 
 default[:ruby][:version] = "#{node[:ruby][:full_version]}#{node[:ruby][:patch]}"
