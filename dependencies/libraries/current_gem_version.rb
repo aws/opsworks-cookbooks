@@ -8,13 +8,13 @@ module OpsWorks
       for version in versions
         next if version == ensured_version
         Chef::Log.info("Uninstalling version #{version} of Rubygem #{name}")
-        system("#{node[:dependencies][:gem_binary]} uninstall #{name} -v=#{version}")
+        system("#{node[:dependencies][:gem_binary]} uninstall #{name} -v=#{version} #{node['dependencies']['gem_uninstall_options']}")
       end
       if versions.include?(ensured_version)
         Chef::Log.info("Skipping installation of version #{ensured_version} of Rubygem #{name}: already installed")
       else
         Chef::Log.info("Installing version #{ensured_version} of Rubygem #{name}")
-        system("#{node[:dependencies][:gem_binary]} install #{name} -v=#{ensured_version} --no-ri --no-rdoc")
+        system("#{node[:dependencies][:gem_binary]} install #{name} -v=#{ensured_version} #{node['dependencies']['gem_install_options']}")
       end
     end
   end
