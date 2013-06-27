@@ -5,17 +5,25 @@ include_attribute 'packages::packages'
 case node[:opsworks][:ruby_version]
 when /1.8/
   default[:passenger][:gems_path] = '/usr/local/lib/ruby/gems/1.8/gems'
-else
+when /1.9/
   default[:passenger][:gems_path] = '/usr/local/lib/ruby/gems/1.9.1/gems'
+when /2.0/
+  default[:passenger][:gems_path] = '/usr/local/lib/ruby/gems/2.0.0/gems'
 end
 
-default[:passenger][:version] = '3.0.9'
+default[:passenger][:version] = '3.0.19'
 default[:passenger][:root_path] = "#{node[:passenger][:gems_path]}/passenger-#{passenger[:version]}"
 
 if platform?('centos','redhat','fedora','amazon') and node[:packages][:dist_only]
   default[:passenger][:module_path] = "#{node['apache']['libexecdir']}/mod_passenger.so"
 else
-  default[:passenger][:module_path] = "#{passenger[:root_path]}/ext/apache2/mod_passenger.so"
+
+ if node[:passenger][:version] =~ /^4/
+   default[:passenger][:module_path] = "#{passenger[:root_path]}/libout/apache2/mod_passenger.so"
+ else
+   default[:passenger][:module_path] = "#{passenger[:root_path]}/ext/apache2/mod_passenger.so"
+ end
+
 end
 
 default[:passenger][:ruby_bin] = '/usr/local/bin/ruby'
