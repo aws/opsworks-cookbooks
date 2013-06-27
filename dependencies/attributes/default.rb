@@ -10,3 +10,6 @@ default[:dependencies][:upgrade_debs] = false
 default[:dependencies][:upgrade_rpms] = false
 
 default[:dependencies][:gem_binary] = "/usr/local/bin/gem"
+
+default["dependencies"]["gem_uninstall_options"] = "--force --executables"
+default["dependencies"]["gem_install_options"] = "--no-ri --no-rdoc"
