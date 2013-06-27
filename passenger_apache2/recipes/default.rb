@@ -1,3 +1,4 @@
+# original code license
 #
 # Cookbook Name:: passenger_apache2
 # Recipe:: default
@@ -26,25 +27,20 @@ include_recipe "packages"
 include_recipe "gem_support"
 include_recipe 'apache2::service'
 
-if platform?("centos","redhat","amazon") and dist_only?
-  # just the gem, we'll install the apache module within apache2
-  package "rubygem-passenger"
-
-  return
-end
-
 case node[:platform]
 when "centos","redhat","amazon"
   package "httpd-devel"
   if node['platform_version'].to_f < 6.0
     package 'curl-devel'
   else
-    package 'libcurl-devel'
-    package 'openssl-devel'
-    package 'zlib-devel'
+    ['libcurl-devel','openssl-devel','zlib-devel'].each do |pkg|
+      package pkg do
+        action :upgrade
+      end
+    end
   end
 else
-  %w{ apache2-prefork-dev libapr1-dev }.each do |pkg|
+  ['apache2-prefork-dev','libapr1-dev'].each do |pkg|
     package pkg do
       action :upgrade
     end
