@@ -1,18 +1,29 @@
-case node[:platform]
+# remove installed version if it's no the one we want to install
+# enables updating stack from ruby 1.9 to ruby 2.0
+# currently we only support one user sapce ruby installation
+
+local_ruby_up_to_date = ::File.exists?("/usr/local/bin/ruby") && system("/usr/local/bin/ruby -v | grep -q '#{node['ruby']['version']}'")
+
+case node['platform']
 when 'debian','ubuntu'
   remote_file "/tmp/#{node[:ruby][:deb]}" do
     source node[:ruby][:deb_url]
     action :create_if_missing
 
     not_if do
-      ::File.exists?("/usr/local/bin/ruby") &&
-      system("/usr/local/bin/ruby -v | grep -q '#{node[:ruby][:version]}'")
+      local_ruby_up_to_date
     end
   end
 
-  package "ruby-enterprise" do
-    action :remove
-    ignore_failure true
+  ['ruby-enterprise','ruby1.9','ruby2.0'].each do |pkg|
+    package pkg do
+      action :remove
+      ignore_failure true
+
+      only_if do
+       ::File.exists?("/tmp/#{node['ruby']['deb']}")
+      end
+    end
   end
 
 when 'centos','redhat','fedora','amazon'
@@ -21,8 +32,18 @@ when 'centos','redhat','fedora','amazon'
     action :create_if_missing
 
     not_if do
-      ::File.exists?("/usr/local/bin/ruby") &&
-      system("/usr/local/bin/ruby -v | grep -q '#{node[:ruby][:version]}'")
+      local_ruby_up_to_date
+    end
+  end
+
+  ['ruby-enterprise','ruby19','ruby20'].each do |pkg|
+    package pkg do
+      action :remove
+      ignore_failure true
+
+      only_if do
+        ::File.exists?("/tmp/#{node['ruby']['rpm']}")
+      end
     end
   end
 end
@@ -31,14 +52,16 @@ execute "Install Ruby #{node[:ruby][:full_version]}" do
   cwd "/tmp"
   case node[:platform]
   when 'centos','redhat','fedora','amazon'
-    command "rpm -Uvh /tmp/#{node[:ruby][:rpm]}"
-  when 'debian','ubuntu'
-    command "dpkg -i /tmp/#{node[:ruby][:deb]}"
-  end
+    command "rpm -Uvh /tmp/#{node['ruby']['rpm']}"
+    only_if do
+      ::File.exists?("/tmp/#{node['ruby']['rpm']}")
+    end
 
-  not_if do
-    ::File.exists?("/usr/local/bin/ruby") &&
-    system("/usr/local/bin/ruby -v | grep -q '#{node[:ruby][:version]}'")
+  when 'debian','ubuntu'
+    command "dpkg -i /tmp/#{node['ruby']['deb']}"
+    only_if do
+      ::File.exists?("/tmp/#{node['ruby']['deb']}")
+    end
   end
 end
 
