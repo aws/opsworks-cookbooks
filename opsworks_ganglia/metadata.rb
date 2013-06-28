@@ -13,3 +13,4 @@ recipe "opsworks_ganglia::monitor-fd-and-sockets", "Monitor File Descriptors and
 recipe "opsworks_ganglia::monitor-disk", "Monitor Disk Stats"
 recipe "opsworks_ganglia::monitor-apache", "Monitor Apache Stats"
 
+depends 'opsworks_commons'
