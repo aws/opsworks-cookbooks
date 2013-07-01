@@ -5,8 +5,8 @@ describe_recipe 'mysql::ebs' do
   include MiniTest::Chef::Assertions
 
   it 'should have directory for data' do
-    directory(node[:mysql][:ec2_path]).must_exist.with(:owner, 'mysql').and(
-      :group, 'mysql')
+    directory(node[:mysql][:ec2_path]).must_exist.with(:owner, node[:mysql][:user]).and(
+      :group, node[:mysql][:group])
   end
 
   it 'should cover the data directory by an autofs map' do
