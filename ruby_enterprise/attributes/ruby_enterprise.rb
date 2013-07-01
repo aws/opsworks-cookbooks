@@ -1,4 +1,5 @@
 include_attribute 'opsworks_commons::default'
+include_attribute 'opsworks_rubygems::rubygems'
 
 case node[:platform]
 when 'debian','ubuntu'
