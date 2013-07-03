@@ -176,8 +176,9 @@ include_recipe 'apache2::logrotate'
 # uncomment to get working example site on centos/redhat/fedora/amazon
 #apache_site 'default'
 
-service 'apache2' do
-  action :start
+execute "check existence of #{node[:apache][:log_dir]}" do
+  command "ls -la #{node[:apache][:log_dir]}"
+  notifies :start, resources(:service => 'apache2')
 end
 
 file "#{node[:apache][:document_root]}/index.html" do

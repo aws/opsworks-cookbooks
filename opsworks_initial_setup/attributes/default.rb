@@ -44,9 +44,14 @@ default[:opsworks_initial_setup][:micro][:yum_dump_lock_timeout] = 120
 default[:opsworks_initial_setup][:bind_mounts][:mounts] = {
   "/srv/www" => "/mnt/srv/www",
   "/var/www" => "/mnt/var/www",
-  "/var/log/apache2" => "/mnt/var/log/apache2",
   "/var/log/mysql" => "/mnt/var/log/mysql"
 }
+case node[:platform]
+when 'redhat','centos','fedora','amazon'
+  default[:opsworks_initial_setup][:bind_mounts][:mounts]["/var/log/httpd"] = "/mnt/var/log/apache2"
+when 'debian','ubuntu'
+  default[:opsworks_initial_setup][:bind_mounts][:mounts]["/var/log/apache2"] = "/mnt/var/log/apache2"
+end
 
 # landscape removal
 default[:opsworks_initial_setup][:landscape][:packages_to_remove] = ['landscape-common', 'landscape-client']
