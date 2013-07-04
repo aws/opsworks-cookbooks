@@ -43,6 +43,12 @@ if platform?("debian","ubuntu")
   end
 end
 
+execute 'logdir_existence_and_restart_apache2' do
+  command "ls -la #{node[:apache][:log_dir]}"
+  action :nothing
+  notifies :restart, resources(:service => 'apache2')
+end
+
 if platform?('centos', 'redhat', 'fedora', 'amazon')
   directory node[:apache][:log_dir] do
     mode 0755
@@ -120,7 +126,7 @@ template 'apache2.conf' do
   owner 'root'
   group 'root'
   mode 0644
-  notifies :restart, "service[apache2]"
+  notifies :run, resources(:execute => 'logdir_existence_and_restart_apache2')
 end
 
 template 'security' do
@@ -130,7 +136,7 @@ template 'security' do
   group 'root'
   mode 0644
   backup false
-  notifies :restart, "service[apache2]"
+  notifies :run, resources(:execute => 'logdir_existence_and_restart_apache2')
 end
 
 template 'charset' do
@@ -140,7 +146,7 @@ template 'charset' do
   group 'root'
   mode 0644
   backup false
-  notifies :restart, "service[apache2]"
+  notifies :run, resources(:execute => 'logdir_existence_and_restart_apache2')
 end
 
 template "#{node[:apache][:dir]}/ports.conf" do
@@ -148,7 +154,7 @@ template "#{node[:apache][:dir]}/ports.conf" do
   group 'root'
   owner 'root'
   mode 0644
-  notifies :restart, "service[apache2]"
+  notifies :run, resources(:execute => 'logdir_existence_and_restart_apache2')
 end
 
 template "#{node[:apache][:dir]}/sites-available/default" do
@@ -156,7 +162,7 @@ template "#{node[:apache][:dir]}/sites-available/default" do
   owner 'root'
   group 'root'
   mode 0644
-  notifies :restart, "service[apache2]"
+  notifies :run, resources(:execute => 'logdir_existence_and_restart_apache2')
 end
 
 include_recipe 'apache2::mod_status'
@@ -182,9 +188,8 @@ include_recipe 'apache2::logrotate'
 # uncomment to get working example site on centos/redhat/fedora/amazon
 #apache_site 'default'
 
-execute "check existence of #{node[:apache][:log_dir]}" do
-  command "ls -la #{node[:apache][:log_dir]}"
-  notifies :start, resources(:service => 'apache2')
+execute 'logdir_existence_and_restart_apache2' do
+  action :run
 end
 
 file "#{node[:apache][:document_root]}/index.html" do
