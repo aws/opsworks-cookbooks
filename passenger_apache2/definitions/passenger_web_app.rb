@@ -22,7 +22,7 @@ define :passenger_web_app do
     mode '0600'
     source "ssl.key.erb"
     variables :key => deploy[:ssl_certificate]
-    notifies :restart, resources(:service => "apache2")
+    notifies :restart, "service[apache2]"
     only_if do
       deploy[:ssl_support]
     end
@@ -33,7 +33,7 @@ define :passenger_web_app do
     mode '0600'
     source "ssl.key.erb"
     variables :key => deploy[:ssl_certificate_key]
-    notifies :restart, resources(:service => "apache2")
+    notifies :restart, "service[apache2]"
     only_if do
       deploy[:ssl_support]
     end
@@ -44,7 +44,7 @@ define :passenger_web_app do
     mode '0600'
     source "ssl.key.erb"
     variables :key => deploy[:ssl_certificate_ca]
-    notifies :restart, resources(:service => "apache2")
+    notifies :restart, "service[apache2]"
     only_if do
       deploy[:ssl_support] && deploy[:ssl_certificate_ca]
     end

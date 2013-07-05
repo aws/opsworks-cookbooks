@@ -19,7 +19,7 @@ define :nginx_web_app, :template => "site.erb", :enable => true do
       :params => params
     )
     if File.exists?("#{node[:nginx][:dir]}/sites-enabled/#{application_name}")
-      notifies :reload, resources(:service => "nginx"), :delayed
+      notifies :reload, "service[nginx]", :delayed
     end
   end
 
@@ -35,7 +35,7 @@ define :nginx_web_app, :template => "site.erb", :enable => true do
     mode '0600'
     source "ssl.key.erb"
     variables :key => application[:ssl_certificate]
-    notifies :restart, resources(:service => "nginx")
+    notifies :restart, "service[nginx]"
     only_if do
       application[:ssl_support]
     end
@@ -46,7 +46,7 @@ define :nginx_web_app, :template => "site.erb", :enable => true do
     mode '0600'
     source "ssl.key.erb"
     variables :key => application[:ssl_certificate_key]
-    notifies :restart, resources(:service => "nginx")
+    notifies :restart, "service[nginx]"
     only_if do
       application[:ssl_support]
     end
@@ -57,7 +57,7 @@ define :nginx_web_app, :template => "site.erb", :enable => true do
     mode '0600'
     source "ssl.key.erb"
     variables :key => application[:ssl_certificate_ca]
-    notifies :restart, resources(:service => "nginx")
+    notifies :restart, "service[nginx]"
     only_if do
       application[:ssl_support] && application[:ssl_certificate_ca]
     end
@@ -73,13 +73,13 @@ define :nginx_web_app, :template => "site.erb", :enable => true do
   if params[:enable]
     execute "nxensite #{application_name}" do
       command "/usr/sbin/nxensite #{application_name}"
-      notifies :reload, resources(:service => "nginx")
+      notifies :reload, "service[nginx]"
       not_if do File.symlink?("#{node[:nginx][:dir]}/sites-enabled/#{application_name}") end
     end
   else
     execute "nxdissite #{application_name}" do
       command "/usr/sbin/nxdissite #{application_name}"
-      notifies :reload, resources(:service => "nginx")
+      notifies :reload, "service[nginx]"
       only_if do File.symlink?("#{node[:nginx][:dir]}/sites-enabled/#{application_name}") end
     end
   end

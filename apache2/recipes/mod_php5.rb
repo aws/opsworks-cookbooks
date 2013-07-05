@@ -25,7 +25,7 @@ when 'debian', 'ubuntu'
 when 'centos', 'redhat', 'fedora', 'amazon'
   package 'php' do
     action :install
-    notifies :run, resources(:execute => 'generate-module-list'), :immediately
+    notifies :run, "execute[generate-module-list]", :immediately
     not_if 'which php'
   end
 
@@ -37,7 +37,7 @@ when 'centos', 'redhat', 'fedora', 'amazon'
   # replace with debian config
   template File.join(node[:apache][:dir], 'mods-available', 'php5.conf') do
     source 'mods/php5.conf.erb'
-    notifies :restart, resources(:service => 'apache2')
+    notifies :restart, "service[apache2]"
   end
 end
 

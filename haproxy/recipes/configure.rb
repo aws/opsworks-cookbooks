@@ -9,11 +9,11 @@ template "/etc/haproxy/haproxy.cfg" do
   owner "root"
   group "root"
   mode 0644
-  notifies :reload, resources(:service => "haproxy")
+  notifies :reload, "service[haproxy]"
 end
 
 execute "echo 'checking if HAProxy is not running - if so start it'" do
   not_if "pgrep haproxy"
-  notifies :start, resources(:service => "haproxy")
+  notifies :start, "service[haproxy]"
 end
 

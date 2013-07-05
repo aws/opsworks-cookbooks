@@ -21,7 +21,7 @@ node[:deploy].each do |application, deploy|
       only_if do
         ::File.exists?("#{node[:apache][:dir]}/sites-enabled/#{application}.conf")
       end
-      notifies :restart, resources(:service => node[:opsworks][:rails_stack][:service])
+      notifies :restart, "service[#{node[:opsworks][:rails_stack][:service]}]"
     end
 
     file "#{node[:apache][:dir]}/sites-available/#{application}.conf" do
@@ -29,7 +29,7 @@ node[:deploy].each do |application, deploy|
       only_if do
         ::File.exists?("#{node[:apache][:dir]}/sites-available/#{application}.conf")
       end
-      notifies :restart, resources(:service => node[:opsworks][:rails_stack][:service])
+      notifies :restart, "service[#{node[:opsworks][:rails_stack][:service]}]"
     end
 
   when 'nginx_unicorn'
@@ -40,7 +40,7 @@ node[:deploy].each do |application, deploy|
       only_if do
         ::File.exists?("/etc/nginx/sites-enabled/#{application}")
       end
-      notifies :restart, resources(:service => 'nginx')
+      notifies :restart, "service[nginx]"
     end
 
     file "/etc/nginx/sites-available/#{application}" do
@@ -53,7 +53,7 @@ node[:deploy].each do |application, deploy|
     execute 'stop unicorn and restart nginx' do
       command "sleep #{deploy[:sleep_before_restart]} && \
                /srv/www/#{application}/shared/scripts/unicorn stop"
-      notifies :restart, resources(:service => 'nginx')
+      notifies :restart, "service[nginx]"
       action :run
     end
 

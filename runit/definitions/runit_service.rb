@@ -151,7 +151,7 @@ define :runit_service, :directory => nil, :only_if => false, :finish_script => f
     restart_command "#{control_cmd} #{params[:restart_command]} #{service_dir_name}"
     status_command "#{control_cmd} #{params[:status_command]} #{service_dir_name}"
     if params[:run_restart]
-      subscribes :restart, resources(:template => "#{sv_dir_name}/run"), :delayed
+      subscribes :restart, "template[#{sv_dir_name}/run]", :delayed
     end
     action :nothing
   end

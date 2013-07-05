@@ -16,7 +16,7 @@ node[:deploy].each do |application, deploy|
     only_if do 
       ::File.exists?("#{node[:nginx][:dir]}/sites-enabled/#{application}")
     end
-    notifies :restart, resources(:service => 'nginx')
+    notifies :restart, "service[nginx]"
   end
   
   directory "#{deploy[:deploy_to]}" do

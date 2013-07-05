@@ -21,7 +21,7 @@ node[:deploy].each do |application, deploy|
     mode 0600
     source 'ssl.key.erb'
     variables :key => deploy[:ssl_certificate]
-    notifies :restart, resources(:service => "apache2")
+    notifies :restart, "service[apache2]"
     only_if do
       deploy[:ssl_support]
     end
@@ -31,7 +31,7 @@ node[:deploy].each do |application, deploy|
     mode 0600
     source 'ssl.key.erb'
     variables :key => deploy[:ssl_certificate_key]
-    notifies :restart, resources(:service => 'apache2')
+    notifies :restart, "service[apache2]"
     only_if do
       deploy[:ssl_support]
     end
@@ -41,7 +41,7 @@ node[:deploy].each do |application, deploy|
     mode 0600
     source 'ssl.key.erb'
     variables :key => deploy[:ssl_certificate_ca]
-    notifies :restart, resources(:service => 'apache2')
+    notifies :restart, "service[apache2]"
     only_if do
       deploy[:ssl_support] && deploy[:ssl_certificate_ca]
     end
@@ -52,7 +52,7 @@ node[:deploy].each do |application, deploy|
     action :run
     command "mv #{node[:apache][:dir]}/sites-enabled/000-default \
                 #{node[:apache][:dir]}/sites-enabled/zzz-default"
-    notifies :reload, resources(:service => "apache2"), :delayed
+    notifies :reload, "service[apache2]", :delayed
     only_if do
       ::File.exists?("#{node[:apache][:dir]}/sites-enabled/000-default")
     end

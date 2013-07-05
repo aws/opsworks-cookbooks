@@ -22,7 +22,7 @@ when 'ubuntu','debian'
       :port => node[:memcached][:port],
       :memory => node[:memcached][:memory]
     )
-    notifies :restart, resources(:service => 'memcached'), :immediately
+    notifies :restart, "service[memcached]", :immediately
   end
 
   template '/etc/default/memcached' do
@@ -30,7 +30,7 @@ when 'ubuntu','debian'
     owner 'root'
     group 'root'
     mode 0644
-    notifies :restart, resources(:service => 'memcached'), :immediately
+    notifies :restart, "service[memcached]", :immediately
   end
 
 when 'centos','redhat','fedora','amazon'
@@ -44,7 +44,7 @@ when 'centos','redhat','fedora','amazon'
       :port => node[:memcached][:port],
       :memory => node[:memcached][:memory]
     )
-    notifies :restart, resources(:service => 'memcached'), :immediately
+    notifies :restart, "service[memcached]", :immediately
   end
 end
 
@@ -53,7 +53,7 @@ template "#{node[:monit][:conf_dir]}/memcached.monitrc" do
   owner 'root'
   group 'root'
   mode 0644
-  notifies :restart, resources(:service => 'monit')
+  notifies :restart, "service[monit]"
 end
 
 include_recipe 'memcached::prepare_tests' if node[:opsworks][:run_cookbook_tests]

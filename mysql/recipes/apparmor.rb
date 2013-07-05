@@ -14,5 +14,5 @@ template "/etc/apparmor.d/usr.sbin.mysqld" do
   only_if do
     system("service apparmor status") && File.exists?("/etc/apparmor.d/usr.sbin.mysqld")
   end
-  notifies :restart, resources(:service => "apparmor"), :immediately
+  notifies :restart, "service[apparmor]", :immediately
 end

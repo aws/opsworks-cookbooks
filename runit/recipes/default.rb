@@ -65,7 +65,7 @@ when "debian","ubuntu", "gentoo"
     cookbook_file "/etc/event.d/runsvdir" do
       source "runsvdir"
       mode 0644
-      notifies :run, resources(:execute => "start-runsvdir"), :immediately
+      notifies :run, "execute[start-runsvdir]", :immediately
       only_if do ::File.directory?("/etc/event.d") end
     end
   end

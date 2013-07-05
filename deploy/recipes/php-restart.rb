@@ -21,7 +21,7 @@ node[:deploy].each do |application, deploy|
       File.exists?(deploy[:current_path])
     end
     
-    notifies :restart, resources(:service => "apache2")
+    notifies :restart, "service[apache2]"
   end
     
 end

@@ -25,7 +25,7 @@ template '/etc/ganglia/gmond.conf' do
     :monitoring_master => monitoring_master
   })
 
-  notifies :restart, resources(:service => 'gmond')
+  notifies :restart, "service[gmond]"
   only_if do
     File.exists?('/etc/ganglia/gmond.conf')
   end

@@ -60,6 +60,6 @@ end
 execute "passenger_module" do
   command 'passenger-install-apache2-module -a'
   creates node[:passenger][:module_path]
-  notifies :restart, resources(:service => 'apache2')
+  notifies :restart, "service[apache2]"
 end
 

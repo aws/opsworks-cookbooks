@@ -5,7 +5,7 @@ template '/etc/ganglia/gmetad.conf' do
   source 'gmetad.conf.erb'
   mode '0644'
   variables :stack_name => node[:opsworks][:stack][:name]
-  notifies :restart, resources(:service => 'gmetad')
+  notifies :restart, "service[gmetad]"
 end
 
 template '/usr/share/ganglia-webfrontend/conf.php' do
@@ -24,7 +24,7 @@ end
 template '/etc/ganglia-webfrontend/apache.conf' do
   source 'apache.conf.erb'
   mode '0644'
-  notifies :restart, resources(:service => 'apache2')
+  notifies :restart, "service[apache2]"
 end
 
 link "#{node[:apache][:dir]}/conf.d/ganglia-webfrontend" do
@@ -35,7 +35,7 @@ link "#{node[:apache][:dir]}/conf.d/ganglia-webfrontend" do
     target_file '/etc/httpd/conf.d/ganglia-webfrontend.conf'
   end
   to '/etc/ganglia-webfrontend/apache.conf'
-  notifies :restart, resources(:service => 'apache2')
+  notifies :restart, "service[apache2]"
 end
 
 template "#{node[:apache][:document_root]}/index.html" do

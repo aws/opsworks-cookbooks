@@ -20,7 +20,7 @@
 if platform?('centos','redhat','fedora','amazon')
   package 'mod_ssl' do
     action :install
-    notifies :run, resources(:execute => 'generate-module-list'), :immediately
+    notifies :run, "execute[generate-module-list]", :immediately
   end
 
   file "#{node[:apache][:dir]}/conf.d/ssl.conf" do
@@ -34,7 +34,7 @@ template "#{node[:apache][:dir]}/ports.conf" do
   group 'root'
   owner 'root'
   mode 0644
-  notifies :restart, resources(:service => 'apache2')
+  notifies :restart, "service[apache2]"
 end
 
 apache_module 'ssl' do
