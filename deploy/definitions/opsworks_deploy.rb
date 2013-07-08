@@ -63,6 +63,7 @@ define :opsworks_deploy do
     deploy deploy[:deploy_to] do
       repository deploy[:scm][:repository]
       user deploy[:user]
+      group deploy[:group]
       revision deploy[:scm][:revision]
       migrate deploy[:migrate]
       migration_command deploy[:migrate_command]
