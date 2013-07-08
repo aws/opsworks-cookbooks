@@ -10,3 +10,6 @@ recipe "deploy::mysql-configure", "Reconfigure the database"
 recipe "deploy::logrotate", "Logrotate configuration for log files in shared/log/"
 
 depends 'dependencies'
+depends 'apache2'
+depends 'mod_php5_apache2'
+depends 'nginx'

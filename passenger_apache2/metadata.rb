@@ -5,7 +5,7 @@ description       "Installs passenger for Apache2"
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version           "0.11"
 
-%w{ packages apache2 rails }.each do |cb|
+%w{ packages gem_support apache2 nginx unicorn rails }.each do |cb|
   depends cb
 end
 

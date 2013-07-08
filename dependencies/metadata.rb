@@ -6,6 +6,7 @@ recipe "dependencies::update", "Update all packages and gems"
 depends "ruby_enterprise"
 depends "ruby"
 depends "gem_support"
+depends "packages"
 
 attribute "dependencies/gems",
   :display_name => "Gems to install",

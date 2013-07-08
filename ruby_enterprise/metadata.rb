@@ -6,3 +6,4 @@ version          "0.1"
 supports "ubuntu"
 
 depends 'opsworks_rubygems'
+depends 'opsworks_bundler'
