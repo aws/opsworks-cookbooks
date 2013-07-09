@@ -40,7 +40,7 @@ node[:ebs][:raids].each do |raid_device, options|
     command "mkfs -t #{options[:fstype]} #{lvm_device}"
     not_if do
       # check volume filesystem
-      system("blkid -s TYPE -o value #{lvm_device}")
+      system("test $(blkid -s TYPE -o value #{lvm_device}) = #{options[:fstype]}")
     end
   end
 
@@ -54,6 +54,7 @@ node[:ebs][:raids].each do |raid_device, options|
     fstype options[:fstype]
     device lvm_device
     options 'noatime'
+    pass 0
     not_if do
       File.read('/etc/mtab').split("\n").any? do |line|
         line.match(" #{options[:mount_point]} ")
@@ -66,6 +67,7 @@ node[:ebs][:raids].each do |raid_device, options|
     fstype options[:fstype]
     device lvm_device
     options 'noatime'
+    pass 0
     not_if do
       File.read('/etc/mtab').split("\n").any? do |line| 
         line.match(" #{options[:mount_point]} ")

@@ -28,11 +28,21 @@ describe_recipe 'opsworks-agent-monit::default' do
   end
 
   it 'ensures opsworks-agent.monitrc is installed' do
-    file(File.join(node[:monit][:conf_dir], 'opsworks-agent.monitrc')).must_exist.with(:mode, '644')
+    file(::File.join(node[:monit][:conf_dir], 'opsworks-agent.monitrc')).must_exist.with(:mode, '644')
+  end
+
+  it 'should create opsworks-agent.monitrc entries for each daemon log' do
+    file(::File.join(node[:monit][:conf_dir], 'opsworks-agent.monitrc')).must_include "#{node[:opsworks_agent][:log_dir]}/opsworks-agent.statistic.log"
+    file(::File.join(node[:monit][:conf_dir], 'opsworks-agent.monitrc')).must_include "#{node[:opsworks_agent][:log_dir]}/opsworks-agent.process-command.log"
+    file(::File.join(node[:monit][:conf_dir], 'opsworks-agent.monitrc')).must_include "#{node[:opsworks_agent][:log_dir]}/opsworks-agent.keep-alive.log"
+  end
+
+  it 'should create opsworks-agent.monitrc with an entries for the pid file' do
+    file(::File.join(node[:monit][:conf_dir], 'opsworks-agent.monitrc')).must_include "#{node[:opsworks_agent][:log_dir]}/pid/opsworks-agent.pid"
   end
 
   it 'ensures logging monitrc file is removed on rhel based systems' do
-    file(File.join(node[:monit][:conf_dir], 'logging')).wont_exist
+    file(::File.join(node[:monit][:conf_dir], 'logging')).wont_exist
   end
 
   it 'starts monit' do

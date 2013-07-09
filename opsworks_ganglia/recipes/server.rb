@@ -7,8 +7,10 @@ when 'debian','ubuntu'
     not_if { `dpkg-query --show gmetad | cut -f 2`.chomp.eql?('3.3.8-1') }
   end
   package 'librrd4'
-  execute 'dpkg -i /tmp/gmetad.deb'
-  execute 'rm /tmp/gmetad.deb'
+  execute 'install and cleanup' do
+    command 'dpkg -i /tmp/gmetad.deb && rm /tmp/gmetad.deb'
+    only_if { ::File.exists?('/tmp/gmetad.deb') }
+  end
 
 when 'centos','redhat','fedora','amazon'
   package 'ganglia-gmetad'

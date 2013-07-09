@@ -1,3 +1,4 @@
+include_recipe 'deploy'
 include_recipe "nginx::service"
 
 node[:deploy].each do |application, deploy|
