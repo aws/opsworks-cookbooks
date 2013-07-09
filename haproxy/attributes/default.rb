@@ -46,3 +46,5 @@ end
 
 default[:haproxy][:stats_password] = random_haproxy_pw
 default[:haproxy][:enable_stats] = false
+
+default[:haproxy][:balance] = 'roundrobin'
