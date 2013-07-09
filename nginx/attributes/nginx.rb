@@ -12,7 +12,7 @@ when 'centos','redhat','fedora','amazon'
   nginx[:user]    = 'nginx'
   nginx[:binary]  = '/usr/sbin/nginx'
 else
-  Chef::Log.error "Cannot configure nginx, platform unkown"
+  Chef::Log.error "Cannot configure nginx, platform unknown"
 end
 
 # increase if you accept large uploads
