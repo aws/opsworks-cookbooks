@@ -3,6 +3,8 @@ description "Installs Memcached"
 version "0.1"
 supports "ubuntu"
 
+depends "opsworks_agent_monit"
+
 recipe "memcached::server", "Memcached server"
 recipe "memcached::ruby", "Memcached Ruby client libraries"
 recipe "memcached::php", "Memcached PHP client libraries"
