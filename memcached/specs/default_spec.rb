@@ -8,7 +8,7 @@ describe_recipe 'memcached::default' do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
-  it 'installs the apache2 package' do
+  it 'installs the memcached package' do
     package('memcached').must_be_installed
   end
 
