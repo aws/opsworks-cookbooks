@@ -125,7 +125,8 @@ define :opsworks_deploy do
             variables(
               :database => node[:deploy][application][:database],
               :memcached => node[:deploy][application][:memcached],
-              :layers => node[:opsworks][:layers]
+              :layers => node[:opsworks][:layers],
+              :stack_name => node[:opsworks][:stack][:name]
             )
             only_if do
               File.exists?("#{node[:deploy][application][:deploy_to]}/shared/config")
