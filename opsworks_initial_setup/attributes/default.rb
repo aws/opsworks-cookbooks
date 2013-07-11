@@ -43,16 +43,24 @@ default[:opsworks_initial_setup][:yum_dump_file] = File.join(Chef::CHEF_ROOT, "c
 default[:opsworks_initial_setup][:yum_dump_lock_timeout] = 120
 
 default[:opsworks_initial_setup][:autofs_map_file] = "/etc/auto.opsworks"
+
+case node[:platform]
+when 'redhat','centos','fedora','amazon'
+  default[:opsworks_initial_setup][:ephemeral_mount_point] = "/media/ephemeral0"
+when 'debian','ubuntu'
+  default[:opsworks_initial_setup][:ephemeral_mount_point] = "/mnt"
+end
+
 default[:opsworks_initial_setup][:bind_mounts][:mounts] = {
-  "/srv/www" => "/mnt/srv/www",
-  "/var/www" => "/mnt/var/www",
-  "/var/log/mysql" => "/mnt/var/log/mysql"
+  '/var/log/mysql' => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/log/mysql",
+  '/srv/www' => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/srv/www",
+  '/var/www' => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/www",
 }
 case node[:platform]
 when 'redhat','centos','fedora','amazon'
-  default[:opsworks_initial_setup][:bind_mounts][:mounts]["/var/log/httpd"] = "/mnt/var/log/apache2"
+  default[:opsworks_initial_setup][:bind_mounts][:mounts]['/var/log/httpd'] = "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/log/apache2"
 when 'debian','ubuntu'
-  default[:opsworks_initial_setup][:bind_mounts][:mounts]["/var/log/apache2"] = "/mnt/var/log/apache2"
+  default[:opsworks_initial_setup][:bind_mounts][:mounts]['/var/log/apache2'] = "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/log/apache2"
 end
 
 # landscape removal
