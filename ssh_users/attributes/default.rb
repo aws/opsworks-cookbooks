@@ -11,5 +11,5 @@ end
 if node[:ssh_users]
   default[:sudoers] = node[:ssh_users].values.select {|user| user[:sudoer]}
 else
-  node[:sudoers] = []
+  default[:sudoers] = []
 end
