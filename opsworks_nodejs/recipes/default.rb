@@ -36,12 +36,13 @@ when 'centos','redhat','fedora','amazon'
 
   rpm_package "Install node.js #{node[:opsworks_nodejs][:version]}" do
     source "/tmp/#{node[:opsworks_nodejs][:rpm]}"
-    action :upgrade
-    options "--oldpackage"
+    action :install
+    options "--verbose --oldpackage"
     only_if do
      ::File.exists?("/tmp/#{node[:opsworks_nodejs][:rpm]}")
     end
   end
+
 end
 
 execute "Clean up nodejs files" do
