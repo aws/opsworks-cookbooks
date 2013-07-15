@@ -16,10 +16,6 @@ describe_recipe 'opsworks_ganglia::configure-server' do
     service('gmetad').must_be_running
   end
 
-  it 'creates conf.php for ganglia-webfrontend' do
-    file('/usr/share/ganglia-webfrontend/conf.php').must_exist.with(:mode, '644')
-  end
-
   it 'creates /etc/ganglia-webfrontend' do
     file('/etc/ganglia-webfrontend').must_exist.with(:mode, '755')
   end
@@ -29,27 +25,35 @@ describe_recipe 'opsworks_ganglia::configure-server' do
     file('/etc/ganglia-webfrontend/htaccess').must_include node[:ganglia][:web][:user]
   end
 
-  it 'creates apache.conf' do
-    file('/etc/ganglia-webfrontend/apache.conf').must_exist
+  it 'removes the default ganglia apache configuration' do
+    file(::File.join(node['apache']['dir'], "conf.d", "ganglia.conf")).wont_exist
   end
 
-  it 'ensures apache.conf has web url' do
-    file('/etc/ganglia-webfrontend/apache.conf').must_include node[:ganglia][:web][:url]
-  end
-
-  it 'links apache.conf to apache conf.d directory' do
-    case node[:platform]
-    when "debian","ubuntu"
-      link(File.join(node[:apache][:dir], 'conf.d', 'ganglia-webfrontend')).must_exist.with(
-           :link_type, :symbolic).and(:to, '/etc/ganglia-webfrontend/apache.conf')
-    when "centos","redhat","amazon","fedora","scientific","oracle"
-      link(File.join(node[:apache][:dir], 'conf.d', 'ganglia-webfrontend.conf')).must_exist.with(
-           :link_type, :symbolic).and(:to, '/etc/ganglia-webfrontend/apache.conf')
+  it 'creates apache configuration' do
+    case node["platform_family"]
+    when "debian"
+      link(
+        ::File.join(node['apache']['dir'], "sites-enabled", "opsworks-ganglia.conf")
+      ).must_exist.with(:link_type, :symbolic).and(
+        :to, ::File.join('..', "sites-available", "opsworks-ganglia.conf")
+      )
+    when "rhel"
+      file(::File.join(node['apache']['dir'], "conf.d", "opsworks-ganglia.conf")).must_exist
     end
   end
 
-  it 'creates index.html for apache doc root' do
-    file(File.join(node[:apache][:document_root], 'index.html')).must_exist.with(:mode, '644')
+  it 'creates the ganglia entry page for apache doc root' do
+    file(File.join(node[:apache][:document_root], node[:ganglia][:web][:welcome_page])).must_exist.with(
+      :mode, '644').and(:owner, node[:apache][:user]).and(:group, node[:apache][:group])
+  end
+
+  it 'ensures apache2/httpd is running' do
+    case node["platform_family"]
+    when "debian"
+     service('apache2').must_be_running
+    when "rhel"
+      service('httpd').must_be_running
+    end
   end
 
   it 'displays "Ganglia Monitoring" on the website' do

@@ -4,11 +4,11 @@ describe_recipe 'opsworks_ganglia::monitor-mysql' do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
-  it 'installs deps' do
-    case node[:platform]
-    when "centos","redhat","fedora","scientific","amazon","oracle"
+  it 'installs dependencies' do
+    case node["platform_family"]
+    when "rhel"
       package("MySQL-python").must_be_installed
-    when "debian","ubuntu"
+    when "debian"
       package("python-mysqldb").must_be_installed
     end
   end

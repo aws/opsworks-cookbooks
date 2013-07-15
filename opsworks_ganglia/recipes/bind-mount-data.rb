@@ -1,16 +1,18 @@
 directory "#{node[:ganglia][:datadir]}/rrds" do
   owner node[:ganglia][:rrds_user]
-  mode 0775
+  mode "0775"
   recursive true
   action :create
 end
 
-# TODO: after Chef upgrade use Chef::Util::FileEdit
-bash "adding bind mount for #{node[:ganglia][:original_datadir]} to #{node[:ganglia][:opsworks_autofs_map_file]}" do
-  user 'root'
-  code <<-EOC
-    echo "#{node[:ganglia][:original_datadir]} -fstype=none,bind,rw :#{node[:ganglia][:datadir]}" >> #{node[:ganglia][:opsworks_autofs_map_file]}
-    service autofs restart
-  EOC
-  not_if { ::File.read("#{node[:ganglia][:opsworks_autofs_map_file]}").include?("#{node[:ganglia][:original_datadir]}") }
+ruby_block "Update autofs configuration for ganglia" do
+  block do
+    handle_to_map_file = Chef::Util::FileEdit.new(node[:opsworks_initial_setup][:autofs_map_file])
+    handle_to_map_file.insert_line_if_no_match(node[:ganglia][:datadir], node[:ganglia][:autofs_entry])
+    handle_to_map_file.write_file
+  end
+end
+
+service "autofs" do
+  action :reload
 end

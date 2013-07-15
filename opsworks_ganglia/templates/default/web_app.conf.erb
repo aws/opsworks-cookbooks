@@ -1,0 +1,14 @@
+DirectoryIndex <%= node[:ganglia][:web][:welcome_page] %>
+
+Alias <%= node[:ganglia][:web][:url] %> <%= node[:ganglia][:web][:destdir] %>
+
+<Location '<%= node[:ganglia][:web][:url] %>' >
+  AuthUserFile /etc/ganglia-webfrontend/htaccess
+  AuthType Basic
+  AuthName "Password Required"
+  require valid-user
+
+  <IfModule passenger_module>
+    PassengerEnabled off
+  </IfModule>
+</Location>

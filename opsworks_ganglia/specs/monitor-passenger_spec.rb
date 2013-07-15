@@ -13,10 +13,14 @@ describe_recipe 'opsworks_ganglia::monitor-passenger' do
   end
 
   it 'creates passenger-memory-stats cron' do
-    cron("Ganglia Passenger Memory").must_exist.with(:minute, '*/2').and(:command, "/etc/ganglia/scripts/passenger-memory-stats > /dev/null 2>&1")
+    cron(
+      "Ganglia Passenger Memory"
+    ).must_exist.with(:minute, '*/2').and(:command, "/etc/ganglia/scripts/passenger-memory-stats > /dev/null 2>&1")
   end
 
   it 'creates passenger-status cron' do
-    cron("Ganglia Passenger Status").must_exist.with(:minute, '*/2').and(:command, "/etc/ganglia/scripts/passenger-status > /dev/null 2>&1")
+    cron(
+      "Ganglia Passenger Status"
+    ).must_exist.with(:minute, '*/2').and(:command, "/etc/ganglia/scripts/passenger-status > /dev/null 2>&1")
   end
 end

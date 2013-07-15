@@ -9,6 +9,8 @@ describe_recipe 'opsworks_ganglia::monitor-fd-and-sockets' do
   end
 
   it 'creates fd-and-sockets cron' do
-    cron("Ganglia File Descriptors and Sockets in use").must_exist.with(:minute, '*/2').and(:command, "/etc/ganglia/scripts/fd-and-sockets > /dev/null 2>&1")
+    cron(
+      "Ganglia File Descriptors and Sockets in use"
+    ).must_exist.with(:minute, '*/2').and(:command, "/etc/ganglia/scripts/fd-and-sockets > /dev/null 2>&1")
   end
 end

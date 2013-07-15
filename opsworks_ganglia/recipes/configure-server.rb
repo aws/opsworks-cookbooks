@@ -8,38 +8,57 @@ template '/etc/ganglia/gmetad.conf' do
   notifies :restart, "service[gmetad]"
 end
 
-template '/usr/share/ganglia-webfrontend/conf.php' do
-  source 'conf.php.erb'
-  mode '0644'
-end
-
 directory '/etc/ganglia-webfrontend' do
   mode '0755'
+end
+
+if platform_family?("rhel")
+  ["dwoo/compiled","dwoo/cache"].each do |dir|
+    directory "#{node[:ganglia][:datadir]}/#{dir}" do
+      owner node[:apache][:user]
+      group node[:apache][:group]
+      mode '0755'
+      recursive true
+    end
+  end
 end
 
 execute 'Update htpasswd secret' do
   command "htpasswd -b -c /etc/ganglia-webfrontend/htaccess #{node[:ganglia][:web][:user]} #{node[:ganglia][:web][:password]}"
 end
 
-template '/etc/ganglia-webfrontend/apache.conf' do
-  source 'apache.conf.erb'
-  mode '0644'
-  notifies :restart, "service[apache2]"
-end
-
-link "#{node[:apache][:dir]}/conf.d/ganglia-webfrontend" do
-  case node[:platform]
-  when 'debian',"ubuntu"
-    target_file "#{node[:apache][:dir]}/conf.d/ganglia-webfrontend"
-  when 'centos','redhat','fedora','amazon'
-    target_file '/etc/httpd/conf.d/ganglia-webfrontend.conf'
+case node["platform_family"]
+when "debian"
+  apache_site "ganglia.conf" do
+    enable false
   end
-  to '/etc/ganglia-webfrontend/apache.conf'
-  notifies :restart, "service[apache2]"
+
+  web_app "opsworks-ganglia" do
+    enable true
+    notifies :nothing, "service[apache2]"
+  end
+
+when "rhel"
+  execute "Remove default apache configuration" do
+    command "rm -f #{node['apache']['dir']}/conf.d/ganglia.conf"
+  end
+
+  template "#{node['apache']['dir']}/conf.d/opsworks-ganglia.conf" do
+    source "web_app.conf.erb"
+  end
 end
 
-template "#{node[:apache][:document_root]}/index.html" do
+directory "#{node[:apache][:document_root]}" do
+  owner node[:apache][:user]
+  group node[:apache][:group]
+  mode '0755'
+  not_if { ::File.exists?(node[:apache][:document_root])}
+end
+
+template "#{node[:apache][:document_root]}/#{node[:ganglia][:web][:welcome_page]}" do
   source 'ganglia.index.html.erb'
+  owner node[:apache][:user]
+  group node[:apache][:group]
   mode '0644'
 end
 
@@ -48,4 +67,8 @@ include_recipe 'opsworks_ganglia::views'
 execute 'Restart gmetad if not running' do # can happen if ganglia layer is shared?
   command '(sleep 60 && /etc/init.d/gmetad restart) &'
   not_if 'pgrep gmetad'
+end
+
+service "apache2" do
+  action :restart
 end

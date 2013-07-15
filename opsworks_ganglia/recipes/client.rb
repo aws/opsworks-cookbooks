@@ -1,13 +1,16 @@
-case node[:platform]
-when 'debian','ubuntu'
+case node[:platform_family]
+when "debian"
   package 'libapr1'
   package 'libconfuse0'
 
   ['libganglia1','ganglia-monitor'].each do |package_name|
     remote_file "/tmp/#{package_name}.deb" do
-      source "#{node[:opsworks_commons][:assets_url]}/packages/#{node[:platform]}/#{node[:platform_version]}/#{package_name}_#{node[:ganglia][:custom_package_version]}_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
-      not_if { `dpkg-query --show #{package_name} | cut -f 2`.chomp.eql?('3.3.8-1') }
+      source "#{node[:ganglia][:package_base_url]}/#{package_name}_#{node[:ganglia][:custom_package_version]}_#{node[:ganglia][:package_arch]}.deb"
+      not_if do
+        `dpkg-query --show #{package_name} | cut -f 2`.chomp.eql?(node[:ganglia][:package_arch])
+      end
     end
+
     execute "install #{package_name}" do
       command "dpkg -i /tmp/#{package_name}.deb && rm /tmp/#{package_name}.deb"
       only_if { ::File.exists?("/tmp/#{package_name}.deb") }
@@ -15,35 +18,31 @@ when 'debian','ubuntu'
   end
 
   remote_file '/tmp/ganglia-monitor-python.deb' do
-    source "#{node[:opsworks_commons][:assets_url]}/packages/#{node[:platform]}/#{node[:platform_version]}/ganglia-monitor-python_3.3.8-1_all.deb"
+    source node[:ganglia][:monitor_plugins_package_url]
     not_if { ::File.exists?('/tmp/ganglia-monitor-python.deb') }
   end
-  execute '' do
+  execute 'install ganglia-monitor-python' do
     command 'dpkg -i /tmp/ganglia-monitor-python.deb && rm /tmp/ganglia-monitor-python.deb'
     only_if { ::File.exists?('/tmp/ganglia-monitor-python.deb') }
   end
 
-when 'centos','redhat','fedora','amazon'
-  package 'ganglia-gmond'
+when "rhel"
+  package node[:ganglia][:monitor_package_name]
 end
 
 execute 'stop gmond with non-updated configuration' do
-  command value_for_platform(
-    ['centos','redhat','fedora','amazon'] => {
-      'default' => '/etc/init.d/gmond stop'
-    },
-    ['debian','ubuntu'] => {
-      'default' => '/etc/init.d/ganglia-monitor stop'
-    }
+  command value_for_platform_family(
+    "rhel" => '/etc/init.d/gmond stop',
+    "debian" => '/etc/init.d/ganglia-monitor stop'
   )
 end
 
 ['scripts','conf.d','python_modules'].each do |dir|
   directory "/etc/ganglia/#{dir}" do
     action :create
-    owner 'root'
-    group 'root'
-    mode 0755
+    owner "root"
+    group "root"
+    mode "0755"
   end
 end
 

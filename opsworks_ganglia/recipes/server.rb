@@ -1,35 +1,48 @@
 include_recipe 'opsworks_ganglia::client'
 
-case node[:platform]
-when 'debian','ubuntu'
-  remote_file '/tmp/gmetad.deb' do
-    source "#{node[:opsworks_commons][:assets_url]}/packages/#{node[:platform]}/#{node[:platform_version]}/gmetad_3.3.8-1_#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}.deb"
-    not_if { `dpkg-query --show gmetad | cut -f 2`.chomp.eql?('3.3.8-1') }
+def install_and_delete_local_deb_package(deb_file)
+  dpkg_package deb_file do
+    source deb_file
+    only_if { ::File.exists?(deb_file) }
   end
+  execute "delete temporary file" do
+    command "rm -f #{deb_file}"
+  end
+end
+
+case node[:platform_family]
+when "rhel"
+  package node[:ganglia][:gmetad_package_name]
+  package node[:ganglia][:web_frontend_package_name]
+
+when "debian"
   package 'librrd4'
-  execute 'install and cleanup' do
-    command 'dpkg -i /tmp/gmetad.deb && rm /tmp/gmetad.deb'
-    only_if { ::File.exists?('/tmp/gmetad.deb') }
+
+  deb_file = "/tmp/#{node[:ganglia][:gmetad_package_name]}.deb"
+  remote_file deb_file do
+    source node[:ganglia][:gmetad_package_url]
+    not_if do
+      `dpkg-query --show gmetad | cut -f 2`.chomp.eql?(node[:ganglia][:custom_package_version])
+    end
+  end
+  install_and_delete_local_deb_package deb_file
+
+  node[:ganglia][:web_frontend_dependencies].each do |web_frontend_dependency|
+    package web_frontend_dependency
   end
 
-when 'centos','redhat','fedora','amazon'
-  package 'ganglia-gmetad'
+  deb_file = "/tmp/#{node[:ganglia][:web_frontend_package]}.deb"
+   remote_file deb_file do
+       source node[:ganglia][:web_frontend_package_url]
+      not_if do
+        `dpkg-query --show  ganglia-webfrontend | cut -f 2`.chomp.eql?(node[:ganglia][:custom_package_version])
+      end
+   end
+  install_and_delete_local_deb_package deb_file
 end
 
-# install old ganglia frontend to bring in all dependencies
-package 'ganglia-webfrontend' do
-  package_name value_for_platform(
-    ['centos','redhat','fedora','amazon'] => {'default' => 'ganglia-web'},
-    ['debian','ubuntu'] => {'default' => 'ganglia-webfrontend'}
-  )
-end
-
-# we install a newer version of ganglia on ubuntu and just need the dependencies
-package 'ganglia-webfrontend' do
-  package_name value_for_platform(
-    ['debian','ubuntu'] => {'default' => 'ganglia-webfrontend'}
-  )
-  action :remove
+execute "Ensure permission and ownership of web frontend" do
+  command "chown -R #{node[:apache][:user]}:#{node[:apache][:group]} #{node[:ganglia][:web][:destdir]}"
 end
 
 include_recipe 'opsworks_ganglia::service-gmetad'
@@ -43,16 +56,15 @@ include_recipe 'opsworks_ganglia::bind-mount-data'
 template '/etc/ganglia/gmetad.conf' do
   source 'gmetad.conf.erb'
   variables :stack_name => node[:opsworks][:stack][:name]
-  mode 0644
+  mode "0644"
 end
 
-include_recipe 'opsworks_ganglia::custom-install'
+execute "fix permissions on ganglia rrds directory" do
+ command "chown -R #{node[:ganglia][:rrds_user]}:#{node[:ganglia][:user]} #{node[:ganglia][:datadir]}/rrds"
+end
+
 include_recipe 'apache2::service'
 
 service 'gmetad' do
   action [ :enable, :start ]
-end
-
-service 'apache2' do
-  action :restart
 end

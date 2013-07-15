@@ -22,9 +22,15 @@ describe_recipe 'opsworks_ganglia::monitor-disk' do
     disks = disks.flatten.map { |x| x.sub('/dev/', '').sub(/(xvd.)(.*)/, '\1p\2')}.uniq
 
     disks.each do |device_id|
-      file(File.join('/etc/ganglia/scripts', "diskstats-#{device_id}")).must_exist.with(:owner, 'root').and(:group, 'root').and(:mode, '744')
       file(File.join('/etc/ganglia/scripts', "diskstats-#{device_id}")).must_include device_id
-      cron("Ganglia Disk stats for #{device_id}").must_exist.with(:minute, '*/2').and(:command, "/etc/ganglia/scripts/diskstats-#{device_id} > /dev/null 2>&1")
+
+      file(
+        File.join('/etc/ganglia/scripts', "diskstats-#{device_id}")
+      ).must_exist.with(:owner, 'root').and(:group, 'root').and(:mode, '744')
+
+      cron(
+        "Ganglia Disk stats for #{device_id}"
+      ).must_exist.with(:minute, '*/2').and(:command, "/etc/ganglia/scripts/diskstats-#{device_id} > /dev/null 2>&1")
     end
   end
 end

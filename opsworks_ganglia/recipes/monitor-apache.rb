@@ -1,8 +1,8 @@
 # Apache request monitoring with http://vuksan.com/linux/ganglia/index.html
-case node[:platform]
-when 'centos','redhat','fedora','suse','amazon'
+case node["platform_family"]
+when "rhel"
   package 'logcheck'
-when 'debian','ubuntu'
+when "debian"
   package 'logtail'
 end
 
@@ -26,16 +26,14 @@ end
 # Apache worker monitoring with http://static.g.raphaelli.com/contrib/code/ganglia/
 cookbook_file '/etc/ganglia/conf.d/apache.pyconf' do
   source 'apache.pyconf'
-  mode 0644
+  mode "0644"
 end
 
 cookbook_file '/etc/ganglia/python_modules/apache.py' do
-  path value_for_platform(
-    ['centos','redhat','fedora','amazon'] => {
-      'default' => "/usr/lib#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}/ganglia/python_modules/apache.py"
-    },
-    ['debian','ubuntu'] => {'default' => '/usr/lib/ganglia/python_modules/apache.py'}
+  path value_for_platform_family(
+    "rhel" => "/usr/lib#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}/ganglia/python_modules/apache.py",
+    "debian" => '/usr/lib/ganglia/python_modules/apache.py'
   )
   source 'apache.py'
-  mode 0644
+  mode "0644"
 end

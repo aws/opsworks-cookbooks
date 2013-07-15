@@ -4,23 +4,11 @@ describe_recipe 'opsworks_ganglia::server' do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
-  describe 'ubuntu versions released in 2011' do
-    it 'grabs gmetad deb' do
-      skip unless node[:platform] == 'ubuntu' && node[:platform_version].to_i == 11
-      file('/tmp/gmetad.deb').must_exist
-    end
-
-    it 'installs librrd4' do
-      skip unless node[:platform] == 'ubuntu' && node[:platform_version].to_i == 11
-      package('librrd4').must_be_installed
-    end
-  end
-
   it 'installs gmetad' do
-    case node[:platform]
-    when "debian","ubuntu"
+    case node["platform_family"]
+    when "debian"
       package('gmetad').must_be_installed
-    when 'centos','redhat','fedora','amazon'
+    when "rhel"
       package('ganglia-gmetad').must_be_installed
     end
   end

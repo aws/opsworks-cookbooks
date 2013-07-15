@@ -27,7 +27,7 @@ template '/etc/ganglia/gmond.conf' do
 
   notifies :restart, "service[gmond]"
   only_if do
-    File.exists?('/etc/ganglia/gmond.conf')
+    ::File.exists?('/etc/ganglia/gmond.conf')
   end
 end
 
