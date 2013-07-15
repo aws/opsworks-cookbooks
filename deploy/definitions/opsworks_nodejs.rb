@@ -21,7 +21,7 @@ define :opsworks_nodejs do
     variables(:database => deploy[:database], :memcached => deploy[:memcached], :layers => node[:opsworks][:layers])
   end
 
-  template "#{node[:monit][:conf_dir]}/node_web_app-#{application}.monitrc" do
+  template "#{node.default[:monit][:conf_dir]}/node_web_app-#{application}.monitrc" do
     source 'node_web_app.monitrc.erb'
     cookbook 'opsworks_nodejs'
     owner 'root'
