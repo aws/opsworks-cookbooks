@@ -6,7 +6,7 @@ execute 'Load device mapper kernel module' do
   ignore_failure true
 end
 
-node.override[:ebs][:raids].each do |raid_device, options|
+node.default[:ebs][:raids].each do |raid_device, options|
   Chef::Log.info "Processing RAID #{raid_device} with options #{options} "
   lvm_device = BlockDevice.lvm_device(raid_device)
 
