@@ -6,7 +6,7 @@ if node[:opsworks][:run_cookbook_tests]
   Chef::Log.info('Initializing Cookbook Test Environment.')
 
   chef_gem 'minitest-chef-handler' do
-    version node[:opsworks_test_suite_loader][:minitest_chef_handler][:version]
+    version node[:test_suite][:minitest_chef_handler][:version]
   end
 
   require 'minitest-chef-handler'
