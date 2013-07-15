@@ -4,9 +4,17 @@ describe_recipe 'apache2::mod_ssl' do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
+  before :all do
+    @prefix = case node[:platform_family]
+              when 'rhel'
+                node[:apache][:dir]
+              when "debian"
+                ".."
+              end
+  end
+
   it 'dependencies installed and clean configuration on rhel platform family' do
-    case node[:platform]
-    when 'centos','redhat','fedora','amazon'
+    if node[:platform_family] == 'rhel'
       package('mod_ssl').must_be_installed
       file("#{node[:apache][:dir]}/conf.d/ssl.conf").wont_exist
     end
@@ -19,6 +27,6 @@ describe_recipe 'apache2::mod_ssl' do
 
   it 'enables mod_ssl' do
     link("#{node[:apache][:dir]}/mods-enabled/ssl.load").must_exist.with(
-         :link_type, :symbolic).and(:to, "#{node[:apache][:dir]}/mods-available/ssl.load")
+         :link_type, :symbolic).and(:to, "#{@prefix}/mods-available/ssl.load")
   end
 end

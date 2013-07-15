@@ -4,6 +4,15 @@ describe_recipe 'apache2::mod_dav_svn' do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
+  before :all do
+    @prefix = case node[:platform_family]
+              when 'rhel'
+                node[:apache][:dir]
+              when "debian"
+                ".."
+              end
+  end
+
   it 'installs svn dependencies' do
     case node[:platform]
     when 'centos','redhat','fedora','amazon'
@@ -15,6 +24,6 @@ describe_recipe 'apache2::mod_dav_svn' do
 
   it 'enables mod_dav_svn' do
     link("#{node[:apache][:dir]}/mods-enabled/dav_svn.load").must_exist.with(
-         :link_type, :symbolic).and(:to, "#{node[:apache][:dir]}/mods-available/dav_svn.load")
+         :link_type, :symbolic).and(:to, "#{@prefix}/mods-available/dav_svn.load")
   end
 end
