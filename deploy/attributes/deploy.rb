@@ -15,8 +15,6 @@ default[:opsworks][:rails][:ignore_bundler_groups] = ['test', 'development']
 default[:deploy] = {}
 node[:deploy].each do |application, deploy|
   default[:deploy][application][:deploy_to] = "/srv/www/#{application}"
-  default[:deploy][application][:release] = Time.now.utc.strftime("%Y%m%d%H%M%S")
-  default[:deploy][application][:release_path] = "#{node[:deploy][application][:deploy_to]}/releases/#{node[:deploy][application][:release]}"
   default[:deploy][application][:current_path] = "#{node[:deploy][application][:deploy_to]}/current"
   default[:deploy][application][:document_root] = ''
   default[:deploy][application][:ignore_bundler_groups] = node[:opsworks][:rails][:ignore_bundler_groups]
