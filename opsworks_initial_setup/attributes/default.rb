@@ -41,6 +41,7 @@ default[:opsworks_initial_setup][:limits][:rtprio] = nil
 
 default[:opsworks_initial_setup][:micro][:yum_dump_lock_timeout] = 120
 
+default[:opsworks_initial_setup][:autofs_map_file] = "/etc/auto.opsworks"
 default[:opsworks_initial_setup][:bind_mounts][:mounts] = {
   "/srv/www" => "/mnt/srv/www",
   "/var/www" => "/mnt/var/www",
