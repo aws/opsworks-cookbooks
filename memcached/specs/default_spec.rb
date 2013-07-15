@@ -1,7 +1,3 @@
-# Load in memcached library
-chef_gem 'memcached'
-require 'memcached'
-
 require 'minitest/spec'
 
 describe_recipe 'memcached::default' do
