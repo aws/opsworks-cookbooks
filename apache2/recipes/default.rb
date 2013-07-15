@@ -37,6 +37,12 @@ service 'apache2' do
   action :enable
 end
 
+if platform?("debian","ubuntu")
+  execute "reset permission of #{node[:apache][:log_dir]}" do
+    command "chmod 0755 #{node[:apache][:log_dir]}"
+  end
+end
+
 if platform?('centos', 'redhat', 'fedora', 'amazon')
   directory node[:apache][:log_dir] do
     mode 0755
