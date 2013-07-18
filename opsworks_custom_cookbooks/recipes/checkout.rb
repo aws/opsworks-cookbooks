@@ -46,6 +46,7 @@ scm "Download Custom Cookbooks" do
   repository node[:opsworks_custom_cookbooks][:scm][:repository]
   revision node[:opsworks_custom_cookbooks][:scm][:revision]
   user node[:opsworks_custom_cookbooks][:user]
+  additional_remotes ||= []
 
   not_if do
     node[:opsworks_custom_cookbooks][:scm][:repository].blank? || ::File.directory?(node[:opsworks_custom_cookbooks][:destination])
