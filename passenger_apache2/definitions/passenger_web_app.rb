@@ -4,7 +4,7 @@ define :passenger_web_app do
   application = params[:application]
 
   ruby_block 'Determine Passenger application type' do
-    inner_deploy = deploy.to_hash
+    inner_deploy = deploy
     inner_application = application
     block do
       node.default[:deploy][inner_application][:passenger_handler] = if File.exists?("#{inner_deploy[:deploy_to]}/current/config.ru")
