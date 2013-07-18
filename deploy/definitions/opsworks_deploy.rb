@@ -98,7 +98,7 @@ define :opsworks_deploy do
             OpsWorks::RailsConfiguration.bundle(application, node[:deploy][application], release_path)
           end
 
-          node[:deploy][application][:database][:adapter] = OpsWorks::RailsConfiguration.determine_database_adapter(
+          node.default[:deploy][application][:database][:adapter] = OpsWorks::RailsConfiguration.determine_database_adapter(
             application,
             node[:deploy][application],
             release_path,
