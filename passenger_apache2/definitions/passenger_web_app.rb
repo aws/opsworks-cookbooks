@@ -7,7 +7,7 @@ define :passenger_web_app do
     inner_deploy = deploy.to_hash
     inner_application = application
     block do
-      node.default[:deploy][application][:passenger_handler] = if File.exists?("#{inner_deploy[:deploy_to]}/current/config.ru")
+      node.default[:deploy][inner_application][:passenger_handler] = if File.exists?("#{inner_deploy[:deploy_to]}/current/config.ru")
         Chef::Log.info("Looks like #{inner_application} is a Rack application")
         "Rack"
       else
