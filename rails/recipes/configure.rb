@@ -10,6 +10,7 @@ node[:deploy].each do |application, deploy|
   end
 
   node.default[:deploy][application][:database][:adapter] = OpsWorks::RailsConfiguration.determine_database_adapter(application, node[:deploy][application], "#{node[:deploy][application][:deploy_to]}/current", :force => node[:force_database_adapter_detection])
+  deploy = node[:deploy][application]
 
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
     source "database.yml.erb"
