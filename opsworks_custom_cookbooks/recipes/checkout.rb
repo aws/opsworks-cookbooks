@@ -24,33 +24,39 @@ elsif node[:opsworks_custom_cookbooks][:scm][:type].to_s == 's3'
   }
 end
 
-scm "Download Custom Cookbooks" do
-  user node[:opsworks_custom_cookbooks][:user]
-  group node[:opsworks_custom_cookbooks][:group]
-
-  case node[:opsworks_custom_cookbooks][:scm][:type]
-  when 'git'
-    provider Chef::Provider::Git
+case node[:opsworks_custom_cookbooks][:scm][:type]
+when 'git'
+  git "Download Cusstom Cookbooks" do
     enable_submodules node[:opsworks_custom_cookbooks][:enable_submodules]
     depth nil
-  when 'svn'
-    provider Chef::Provider::Subversion
+
+    user node[:opsworks_custom_cookbooks][:user]
+    group node[:opsworks_custom_cookbooks][:group]
+    action :checkout
+    destination node[:opsworks_custom_cookbooks][:destination]
+    repository node[:opsworks_custom_cookbooks][:scm][:repository]
+    revision node[:opsworks_custom_cookbooks][:scm][:revision]
+    not_if do
+      node[:opsworks_custom_cookbooks][:scm][:repository].blank? || ::File.directory?(node[:opsworks_custom_cookbooks][:destination])
+    end
+  end
+when 'svn'
+  subversion "Download Cusstom Cookbooks" do
     svn_username node[:opsworks_custom_cookbooks][:scm][:user]
     svn_password node[:opsworks_custom_cookbooks][:scm][:password]
-  else
-    raise "unsupported SCM type #{node[:opsworks_custom_cookbooks][:scm][:type].inspect}"
-  end
 
-  action :checkout
-  destination node[:opsworks_custom_cookbooks][:destination]
-  repository node[:opsworks_custom_cookbooks][:scm][:repository]
-  revision node[:opsworks_custom_cookbooks][:scm][:revision]
-  user node[:opsworks_custom_cookbooks][:user]
-  additional_remotes ||= []
-
-  not_if do
-    node[:opsworks_custom_cookbooks][:scm][:repository].blank? || ::File.directory?(node[:opsworks_custom_cookbooks][:destination])
+    user node[:opsworks_custom_cookbooks][:user]
+    group node[:opsworks_custom_cookbooks][:group]
+    action :checkout
+    destination node[:opsworks_custom_cookbooks][:destination]
+    repository node[:opsworks_custom_cookbooks][:scm][:repository]
+    revision node[:opsworks_custom_cookbooks][:scm][:revision]
+    not_if do
+      node[:opsworks_custom_cookbooks][:scm][:repository].blank? || ::File.directory?(node[:opsworks_custom_cookbooks][:destination])
+    end
   end
+else
+  raise "unsupported SCM type #{node[:opsworks_custom_cookbooks][:scm][:type].inspect}"
 end
 
 ruby_block 'Move single cookbook contents into appropriate subdirectory' do
