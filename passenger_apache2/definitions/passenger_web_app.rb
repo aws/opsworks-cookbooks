@@ -3,20 +3,6 @@ define :passenger_web_app do
   deploy = params[:deploy]
   application = params[:application]
 
-  ruby_block 'Determine Passenger application type' do
-    inner_deploy = deploy
-    inner_application = application
-    block do
-      node.default[:deploy][inner_application][:passenger_handler] = if File.exists?("#{inner_deploy[:deploy_to]}/current/config.ru")
-        Chef::Log.info("Looks like #{inner_application} is a Rack application")
-        "Rack"
-      else
-        Chef::Log.info("No config.ru found, assuming #{inner_application} is a Rails application")
-        "Rails"
-      end
-    end
-  end
-
   template "#{node[:apache][:dir]}/ssl/#{deploy[:domains].first}.crt" do
     cookbook 'passenger_apache2'
     mode '0600'

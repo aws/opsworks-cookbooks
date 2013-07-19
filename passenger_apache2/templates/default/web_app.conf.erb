@@ -1,3 +1,6 @@
+<%-
+  passenger_handler = File.exists?("#{@params[:deploy][:deploy_to]}/current/config.ru") ? "Rack" : "Rails"
+-%>
 <VirtualHost *:80>
   ServerName <%= @params[:server_name] %>
   <% if @params[:server_aliases] && !@params[:server_aliases].empty? -%>
@@ -6,12 +9,12 @@
   
   <% if @params[:mounted_at] -%>
   DocumentRoot /var/www
-  <%= @params[:deploy][:passenger_handler] -%>BaseURI <%= @params[:mounted_at] %>
+  <%= passenger_handler -%>BaseURI <%= @params[:mounted_at] %>
   <% else -%>
   DocumentRoot <%= @params[:docroot] %>
-  <%= @params[:deploy][:passenger_handler] -%>BaseURI /
+  <%= passenger_handler -%>BaseURI /
   <% end -%>
-  <%= @params[:deploy][:passenger_handler] -%>Env <%= @params[:rails_env] %>
+  <%= passenger_handler -%>Env <%= @params[:rails_env] %>
 
   <Directory <%= @params[:docroot] %>>
     Options FollowSymLinks
@@ -73,12 +76,12 @@
   
   <% if @params[:mounted_at] -%>
   DocumentRoot /var/www
-  <%= @params[:deploy][:passenger_handler] -%>BaseURI <%= @params[:mounted_at] %>
+  <%= passenger_handler -%>BaseURI <%= @params[:mounted_at] %>
   <% else -%>
   DocumentRoot <%= @params[:docroot] %>
-  <%= @params[:deploy][:passenger_handler] -%>BaseURI /
+  <%= passenger_handler -%>BaseURI /
   <% end -%>
-  <%= @params[:deploy][:passenger_handler] -%>Env <%= @params[:rails_env] %>
+  <%= passenger_handler -%>Env <%= @params[:rails_env] %>
 
   <Directory <%= @params[:docroot] %>>
     Options FollowSymLinks
