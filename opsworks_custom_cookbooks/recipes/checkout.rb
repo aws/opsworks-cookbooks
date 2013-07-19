@@ -26,7 +26,7 @@ end
 
 case node[:opsworks_custom_cookbooks][:scm][:type]
 when 'git'
-  git "Download Cusstom Cookbooks" do
+  git "Download Custom Cookbooks" do
     enable_submodules node[:opsworks_custom_cookbooks][:enable_submodules]
     depth nil
 
@@ -41,7 +41,7 @@ when 'git'
     end
   end
 when 'svn'
-  subversion "Download Cusstom Cookbooks" do
+  subversion "Download Custom Cookbooks" do
     svn_username node[:opsworks_custom_cookbooks][:scm][:user]
     svn_password node[:opsworks_custom_cookbooks][:scm][:password]
 
