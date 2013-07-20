@@ -32,12 +32,12 @@ when "debian"
   end
 
   deb_file = "/tmp/#{node[:ganglia][:web_frontend_package]}.deb"
-   remote_file deb_file do
-       source node[:ganglia][:web_frontend_package_url]
-      not_if do
-        `dpkg-query --show  ganglia-webfrontend | cut -f 2`.chomp.eql?(node[:ganglia][:custom_package_version])
-      end
-   end
+  remote_file deb_file do
+    source node[:ganglia][:web_frontend_package_url]
+    not_if do
+      `dpkg-query --show  ganglia-webfrontend | cut -f 2`.chomp.eql?(node[:ganglia][:custom_package_version])
+    end
+  end
   install_and_delete_local_deb_package deb_file
 end
 
