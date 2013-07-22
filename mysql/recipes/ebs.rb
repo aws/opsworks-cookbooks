@@ -9,12 +9,12 @@ if (node[:mysql][:ec2_path] && ! FileTest.directory?(node[:mysql][:ec2_path]))
   end
 
   directory node[:mysql][:ec2_path] do
-    owner "mysql"
-    group "mysql"
+    owner node[:mysql][:user]
+    group node[:mysql][:group]
   end
 
   execute "ensure MySQL data owned by MySQL user" do
-    command "chown -R mysql:mysql #{node[:mysql][:datadir]}"
+    command "chown -R #{node[:mysql][:user]}:#{node[:mysql][:group]} #{node[:mysql][:datadir]}"
     action :run
   end
 
@@ -30,4 +30,9 @@ bash "adding bind mount for #{node[:mysql][:datadir]} to #{node[:mysql][:opswork
     service autofs restart
   EOC
   not_if { ::File.read("#{node[:mysql][:opsworks_autofs_map_file]}").include?("#{node[:mysql][:datadir]}") }
+end
+
+execute "ensure MySQL logdir is owned by MySQL user (even if mounted by autofs)" do
+  command "service autofs restart && sleep 2; ls -l #{node[:mysql][:logdir]} && chown -R #{node[:mysql][:user]}:#{node[:mysql][:group]} #{node[:mysql][:logdir]}"
+  action :run
 end

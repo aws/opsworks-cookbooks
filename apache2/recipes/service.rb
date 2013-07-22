@@ -10,10 +10,10 @@ service 'apache2' do
   ['restart','reload'].each do |srv_cmd|
     send("#{srv_cmd}_command", value_for_platform(
         ['centos','redhat','fedora','amazon'] => {
-          'default' => "/sbin/service httpd #{srv_cmd} && sleep 1"
+          'default' => "sleep 1 && /sbin/service httpd #{srv_cmd} && sleep 1"
         },
         ['debian','ubuntu'] => {
-          'default' => "/etc/init.d/apache2 #{srv_cmd} && sleep 1"
+          'default' => "sleep 1 && /etc/init.d/apache2 #{srv_cmd} && sleep 1"
         }
       )
     )

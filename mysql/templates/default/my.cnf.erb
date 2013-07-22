@@ -12,7 +12,7 @@ socket          = <%= node[:mysql][:socket] %>
 nice            = 0
 
 [mysqld]
-user            = mysql
+user            = <%= node[:mysql][:user] %>
 pid-file        = <%= node[:mysql][:pid_file] %>
 socket          = <%= node[:mysql][:socket] %>
 port            = <%= node[:mysql][:port] %>
@@ -20,7 +20,10 @@ basedir         = <%= node[:mysql][:basedir] %>
 datadir         = <%= node[:mysql][:datadir] %>
 tmpdir          = /tmp
 
-character-set-server		= utf8
+character-set-server    = utf8
+collation-server        = utf8_unicode_ci
+init_connect            = 'SET collation_connection = utf8_unicode_ci'
+init_connect            = 'SET NAMES utf8'
 
 default-storage-engine=innodb
 skip-external-locking
@@ -83,7 +86,7 @@ log-queries-not-using-indexes
 # note: if you are setting up a replication slave, see README.Debian about
 #       other settings you may need to change.
 #server-id              = 1
-#log_bin                        = /var/log/mysql/mysql-bin.log
+#log_bin                        = <%= node[:mysql][:logdir] %>/mysql-bin.log
 expire_logs_days        = 10
 max_binlog_size         = 100M
 #binlog_do_db           = include_database_name
