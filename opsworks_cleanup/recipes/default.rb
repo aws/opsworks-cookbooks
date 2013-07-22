@@ -19,7 +19,7 @@ ruby_block "Clean up old chef log files" do
         system("rm #{log.gsub(/\.log$/, '.json')}")
       end
     else
-      Chef::Log.info("Clean up: There are fewer then #{node[:opsworks_cleanup][:keep_logs]} logs - skipping cleanup")
+      Chef::Log.info("Clean up: There are fewer than #{node[:opsworks_cleanup][:keep_logs]} logs - skipping cleanup")
     end
   end
 
