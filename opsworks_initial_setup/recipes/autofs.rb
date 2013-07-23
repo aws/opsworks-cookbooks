@@ -12,7 +12,7 @@ template node[:opsworks_initial_setup][:autofs_map_file] do
   group "root"
 end
 
-ruby_block "Update autofs configuration for ganglia" do
+ruby_block "Update autofs configuration" do
   block do
     handle_to_master = Chef::Util::FileEdit.new("/etc/auto.master")
     handle_to_master.insert_line_if_no_match(
