@@ -11,8 +11,6 @@ ruby_block "Update autofs configuration for ganglia" do
     handle_to_map_file.insert_line_if_no_match(node[:ganglia][:datadir], node[:ganglia][:autofs_entry])
     handle_to_map_file.write_file
   end
-end
 
-service "autofs" do
-  action :reload
+  notifies :reload, "service[autofs]", :immediately
 end
