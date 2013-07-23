@@ -12,5 +12,5 @@ ruby_block "Update autofs configuration for ganglia" do
     handle_to_map_file.write_file
   end
 
-  notifies :reload, "service[autofs]", :immediately
+  notifies :restart, "service[autofs]", :immediately
 end

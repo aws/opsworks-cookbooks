@@ -21,5 +21,5 @@ ruby_block "Update autofs configuration" do
     )
     handle_to_master.write_file
   end
-  notifies :reload, "service[autofs]", :immediately
+  notifies :restart, "service[autofs]", :immediately
 end

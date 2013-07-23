@@ -29,7 +29,7 @@ ruby_block "adding bind mount for #{node[:mysql][:datadir]} to #{node[:mysql][:o
     handle_to_map_file.write_file
   end
 
-  notifies :reload, "service[autofs]", :immediately
+  notifies :restart, "service[autofs]", :immediately
 end
 
 execute "ensure MySQL logdir is owned by MySQL user (even if mounted by autofs)" do
