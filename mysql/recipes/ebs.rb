@@ -22,14 +22,14 @@ else
   Chef::Log.info("Skipping MySQL EBS setup - using what is already on the EBS volume")
 end
 
-# TODO: after Chef upgrade use Chef::Util::FileEdit
-bash "adding bind mount for #{node[:mysql][:datadir]} to #{node[:mysql][:opsworks_autofs_map_file]}" do
-  user 'root'
-  code <<-EOC
-    echo "#{node[:mysql][:datadir]} -fstype=none,bind,rw :#{node[:mysql][:ec2_path]}" >> #{node[:mysql][:opsworks_autofs_map_file]}
-    service autofs restart
-  EOC
-  not_if { ::File.read("#{node[:mysql][:opsworks_autofs_map_file]}").include?("#{node[:mysql][:datadir]}") }
+ruby_block "adding bind mount for #{node[:mysql][:datadir]} to #{node[:mysql][:opsworks_autofs_map_file]}" do
+  block do
+    handle_to_map_file = Chef::Util::FileEdit.new(node[:mysql][:opsworks_autofs_map_file])
+    handle_to_map_file.insert_line_if_no_match(node[:mysql][:datadir], node[:mysql][:autofs_entry])
+    handle_to_map_file.write_file
+  end
+
+  notifies :reload, "service[autofs]", :immediately
 end
 
 execute "ensure MySQL logdir is owned by MySQL user (even if mounted by autofs)" do

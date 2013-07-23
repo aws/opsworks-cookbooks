@@ -18,6 +18,9 @@ default[:mysql][:debian_sys_maintainer_password] = debian_pw
 default[:mysql][:bind_address]         = '0.0.0.0'
 default[:mysql][:port]                 = 3306
 
+default[:mysql][:autofs_options] = "-fstype=none,bind,rw"
+default[:mysql][:autofs_entry] = "#{node[:mysql][:datadir]} #{node[:mysql][:autofs_options]} :#{node[:mysql][:ec2_path]}"
+
 case node[:platform]
 when 'centos','redhat','fedora','amazon'
   default[:mysql][:datadir]              = '/var/lib/mysql'
