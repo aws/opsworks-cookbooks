@@ -20,6 +20,8 @@ module BlockDevice
       else
         Chef::Log.debug("Not all LVM volume disks seem to be active, waiting 10 more seconds:\n#{lvscan}")
         sleep 10
+        vgchange_status = `vgchange -ay`
+        Chef::Log.debug("Tried to activate all local volume groups:\n#{vgchange_status}")
       end
     end
   end
