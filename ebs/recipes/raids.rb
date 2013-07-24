@@ -86,7 +86,11 @@ node.default[:ebs][:raids].each do |raid_device, options|
     group 'root'
   end
 
-  template '/etc/rc.local' do
+  template 'rc.local script' do
+    path value_for_platform(
+      ['centos','redhat','fedora','amazon'] => {'default' => '/etc/rc.d/rc.local'},
+      'default' => '/etc/rc.local'
+    )
     source 'rc.local.erb'
     mode 0755
     owner 'root'
