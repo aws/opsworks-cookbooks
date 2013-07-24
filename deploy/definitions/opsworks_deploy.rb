@@ -30,18 +30,20 @@ define :opsworks_deploy do
 
     if deploy[:scm][:scm_type].to_s == 'archive'
       repository = prepare_archive_checkouts(deploy[:scm])
-      deploy[:scm] = {
+      node.set[:deploy][application][:scm] = {
         :scm_type => 'git',
         :repository => repository
       }
     elsif deploy[:scm][:scm_type].to_s == 's3'
       repository = prepare_s3_checkouts(deploy[:scm])
-      deploy[:scm] = {
+      node.set[:deploy][application][:scm] = {
         :scm_type => 'git',
         :repository => repository
       }
     end
   end
+
+  deploy = node[:deploy][application]
 
   directory "#{deploy[:deploy_to]}/shared/cached-copy" do
     recursive true
