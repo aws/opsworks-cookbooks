@@ -7,15 +7,16 @@ existing_ssh_users.each do |id, name|
   end
 end
 
-node[:ssh_users].each do |id, ssh_user|
-  if (existing_name = existing_ssh_users[id])
-    unless existing_name == ssh_user[:name]
-      rename_user(existing_name, ssh_user[:name])
+node[:ssh_users].each_key do |id|
+  if existing_ssh_users.has_key?(id)
+    unless existing_ssh_users[id] == node[:ssh_users][id][:name]
+      rename_user(existing_ssh_users[id], node[:ssh_users][id][:name])
     end
   else
-    setup_user(ssh_user.update(:uid => id))
+    node.set[:ssh_users][id][:uid] = id
+    setup_user(node[:ssh_users][id])
   end
-  set_public_key(ssh_user)
+  set_public_key(node[:ssh_users][id])
 end
 
 template '/etc/sudoers' do
