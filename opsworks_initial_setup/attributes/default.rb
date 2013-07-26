@@ -39,8 +39,8 @@ default[:opsworks_initial_setup][:limits][:msgqueue] = nil
 default[:opsworks_initial_setup][:limits][:nice] = nil
 default[:opsworks_initial_setup][:limits][:rtprio] = nil
 
-default[:opsworks_initial_setup][:micro][:yum_dump_file] = File.join(Chef::CHEF_ROOT, "chef", "provider", "package", "yum-dump.py")
-default[:opsworks_initial_setup][:micro][:yum_dump_lock_timeout] = 120
+default[:opsworks_initial_setup][:yum_dump_file] = File.join(Chef::CHEF_ROOT, "chef", "provider", "package", "yum-dump.py")
+default[:opsworks_initial_setup][:yum_dump_lock_timeout] = 120
 
 default[:opsworks_initial_setup][:autofs_map_file] = "/etc/auto.opsworks"
 default[:opsworks_initial_setup][:bind_mounts][:mounts] = {
