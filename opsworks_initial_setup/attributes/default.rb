@@ -39,7 +39,7 @@ default[:opsworks_initial_setup][:limits][:msgqueue] = nil
 default[:opsworks_initial_setup][:limits][:nice] = nil
 default[:opsworks_initial_setup][:limits][:rtprio] = nil
 
-default[:opsworks_initial_setup][:micro][:yum_dump_lock_timeout] = 120
+default[:opsworks_initial_setup][:yum_dump_lock_timeout] = 120
 
 case node[:platform]
 when 'redhat','centos','fedora','amazon'
