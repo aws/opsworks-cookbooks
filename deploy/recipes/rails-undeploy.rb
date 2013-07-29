@@ -58,7 +58,7 @@ node[:deploy].each do |application, deploy|
     end
 
   else
-    raise 'Unsupport Rails stack'
+    raise 'Unsupported Rails stack'
   end
 
   directory "#{deploy[:deploy_to]}" do
