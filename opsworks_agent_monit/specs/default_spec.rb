@@ -1,6 +1,6 @@
 require 'minitest/spec'
 
-describe_recipe 'opsworks-agent-monit::default' do
+describe_recipe 'opsworks_agent_monit::default' do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
