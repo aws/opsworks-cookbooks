@@ -48,4 +48,10 @@ describe_recipe 'opsworks_agent_monit::default' do
   it 'starts monit' do
     service('monit').must_be_running
   end
+
+  it 'will not trigger the out-of-memory killer' do
+    files = ["/var/log/messages", "/var/log/syslog"].select {|f| ::File.exists? f }
+    files.length.must_be :>=, 1
+    files.each {|f| file(f).wont_include "invoked oom-killer" }
+  end
 end
