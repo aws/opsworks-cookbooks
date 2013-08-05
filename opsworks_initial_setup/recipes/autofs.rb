@@ -11,11 +11,18 @@ service 'autofs' do
   action [ :enable, :start ]
 end
 
+execute 'restart_autofs_once' do
+  command '/bin/true'
+  action :nothing
+  notifies :restart, resources(:service => 'autofs'), :immediately
+end
+
 template '/etc/auto.opsworks' do
   source 'automount.opsworks.erb'
   mode 0444
   owner 'root'
   group 'root'
+  notifies :run, resources(:execute => 'restart_autofs_once')
 end
 
 bash "Add auto.opsworks to /etc/auto.master and restart autofs" do
@@ -23,5 +30,6 @@ bash "Add auto.opsworks to /etc/auto.master and restart autofs" do
     echo "/- /etc/auto.opsworks" >> /etc/auto.master
     service autofs restart
   EOF
+  notifies :run, resources(:execute => 'restart_autofs_once')
   not_if { ::File.read('/etc/auto.master').include?('auto.opsworks') }
 end
