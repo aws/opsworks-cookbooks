@@ -25,6 +25,7 @@ when 'debian','ubuntu'
 
 when 'centos','redhat','fedora','amazon'
   package 'ganglia-gmond'
+  package 'ganglia-gmond-python'
 end
 
 execute 'stop gmond with non-updated configuration' do
@@ -50,25 +51,27 @@ end
 include_recipe 'opsworks_ganglia::monitor-fd-and-sockets'
 include_recipe 'opsworks_ganglia::monitor-disk'
 
-case node[:opsworks][:instance][:layers]
-when 'memcached'
-  include_recipe 'opsworks_ganglia::monitor-memcached'
-when 'db-master'
-  include_recipe 'opsworks_ganglia::monitor-mysql'
-when 'lb'
-  include_recipe 'opsworks_ganglia::monitor-haproxy'
-when 'php-app','monitoring-master'
-  include_recipe 'opsworks_ganglia::monitor-apache'
-when 'web'
-  include_recipe 'opsworks_ganglia::monitor-nginx'
-when 'rails-app'
-
-  case node[:opsworks][:rails_stack][:name]
-  when 'apache_passenger'
-    include_recipe 'opsworks_ganglia::monitor-passenger'
+node[:opsworks][:instance][:layers].each do |layer|
+  case layer
+  when 'memcached'
+    include_recipe 'opsworks_ganglia::monitor-memcached'
+  when 'db-master'
+    include_recipe 'opsworks_ganglia::monitor-mysql'
+  when 'lb'
+    include_recipe 'opsworks_ganglia::monitor-haproxy'
+  when 'php-app','monitoring-master'
     include_recipe 'opsworks_ganglia::monitor-apache'
-  when 'nginx_unicorn'
+  when 'web'
     include_recipe 'opsworks_ganglia::monitor-nginx'
-  end
+  when 'rails-app'
 
+    case node[:opsworks][:rails_stack][:name]
+    when 'apache_passenger'
+      include_recipe 'opsworks_ganglia::monitor-passenger'
+      include_recipe 'opsworks_ganglia::monitor-apache'
+    when 'nginx_unicorn'
+      include_recipe 'opsworks_ganglia::monitor-nginx'
+    end
+
+  end
 end
