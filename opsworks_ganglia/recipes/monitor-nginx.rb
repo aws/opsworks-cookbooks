@@ -8,7 +8,7 @@ end
 template 'nginx_status.py' do
   path value_for_platform(
     ['centos','redhat','fedora','amazon'] => {
-      'default' => "/usr/lib#{RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'}/ganglia/python_modules/nginx_status.py"
+      'default' => "/usr/#{RUBY_PLATFORM.match(/64/) ? 'lib64' : 'lib'}/ganglia/python_modules/nginx_status.py"
       },
       ['debian','ubuntu'] => {'default' => '/usr/lib/ganglia/python_modules/nginx_status.py'}
     )
