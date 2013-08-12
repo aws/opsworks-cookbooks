@@ -23,6 +23,11 @@ if platform_family?("rhel")
   end
 end
 
+if (node['ganglia']['web']['password'].blank? rescue true)
+  Chef::Log.error "Bailing out while configuring Ganglia Server. Password for ganglia webfrontend was not defined. Please set a non-empty password and try again."
+  exit 1
+end
+
 execute 'Update htpasswd secret' do
   command "htpasswd -b -c /etc/ganglia-webfrontend/htaccess #{node[:ganglia][:web][:user]} #{node[:ganglia][:web][:password]}"
 end

@@ -45,8 +45,9 @@ default[:ganglia][:nginx][:status_url] = '/nginx_status'
 default[:ganglia][:web][:svn] = 'no'
 default[:ganglia][:web][:url] = '/ganglia'
 default[:ganglia][:web][:welcome_page] = 'ganglia_welcome.html'
-default[:ganglia][:web][:user] = 'opsworks'
-default[:ganglia][:web][:password] = SecureRandom.base64[0...20]
+
+default[:ganglia][:web][:user] = (node['ganglia']['web']['user'].blank? rescue true) ? 'opsworks' : node['ganglia']['web']['user']
+
 default[:ganglia][:web][:destdir] = case node[:platform_family]
                                     when "rhel"
                                       "/usr/share/ganglia"
