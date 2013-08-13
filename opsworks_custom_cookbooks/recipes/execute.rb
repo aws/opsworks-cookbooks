@@ -15,7 +15,7 @@ ruby_block("Compile Custom OpsWorks Run List") do
       self.run_context.load(opsworks_run_list)
 
     rescue Exception => e
-      Chef::Log.error "Caught exception while compiling opsworks custom run list: #{e.class} - #{e.message} - #{e.backtrace.join("\n")}"
+      Chef::Log.error "Caught exception while compiling OpsWorks custom run list: #{e.class} - #{e.message} - #{e.backtrace.join("\n")}"
       raise e
     end
 
