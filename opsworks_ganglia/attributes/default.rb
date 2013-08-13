@@ -23,7 +23,7 @@ when "debian"
   default[:ganglia][:monitor_plugins_package_name] = "ganglia-monitor-python"
 
   default[:ganglia][:custom_package_version] = '3.3.8-1'
-  default[:ganglia][:package_arch] = RUBY_PLATFORM.match(/64/) ? 'amd64':'i386'
+  default[:ganglia][:package_arch] = RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'
   default[:ganglia][:package_base_url] = "#{node[:opsworks_commons][:assets_url]}/packages/#{node[:platform]}/#{node[:platform_version]}"
 
   default[:ganglia][:gmetad_package] = "#{node[:ganglia][:gmetad_package_name]}_#{node[:ganglia][:custom_package_version]}_#{node[:ganglia][:package_arch]}.deb"
@@ -38,6 +38,7 @@ when "debian"
 when "rhel"
   default[:ganglia][:gmetad_package_name] = "ganglia-gmetad"
   default[:ganglia][:monitor_package_name] = "ganglia-gmond"
+  default[:ganglia][:monitor_plugins_package_name] = "ganglia-gmond-python"
   default[:ganglia][:web_frontend_package_name] = "ganglia-web"
 end
 
