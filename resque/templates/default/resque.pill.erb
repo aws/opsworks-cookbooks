@@ -1,0 +1,37 @@
+<% rake_command = (@bundler ? "bundle exec rake" : "/usr/bin/rake") %>
+Bluepill.application("<%= @app %>_resque", :log_file => "/var/log/bluepill.log") do |app|
+  app.uid = "<%= @owner %>"
+  app.gid = "<%= @group %>"
+
+  <% @envs.each_with_index do |env, env_index| %>
+    <%= env[:workers] %>.times do |worker|
+      app.process("<%= @app %>_workers_<%= env_index %>.#{worker}") do |process|
+        process.group = "resque"
+        process.pid_file = "<%= @pids_path %>/resque_workers_<%= env_index %>.#{worker}.pid"
+        process.working_dir = "<%= @path %>/current"
+        process.stdout = process.stderr = "<%= @path %>/shared/log/resque.log"
+        process.start_command = "<%= env[:args] %> <%= rake_command %> environment resque:work"
+        process.stop_command = <<-EOF
+        kill -QUIT {{PID}}
+        sleep_count=0
+        while [ -e /proc/{{PID}} ]; do
+          sleep 1
+          let "sleep_count+=1"
+          if [ $sleep_count -eq 60 ]; then
+            kill -TERM {{PID}}
+          fi
+          if [ $sleep_count -ge 70 ]; then
+            kill -KILL {{PID}}
+          fi
+        done
+        EOF
+        process.start_grace_time = 5.seconds
+        process.stop_grace_time = 75.seconds
+        process.restart_grace_time = 80.seconds
+        process.daemonize = true
+
+        process.checks :mem_usage, :below => <%= @memory_limit %>, :every => <%= @check_every %>, :times => <%= @restart_after %>
+      end
+    end
+  <% end %>
+end

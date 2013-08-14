@@ -1,0 +1,17 @@
+h1. Resque Chef Cookbook using Bluepill
+
+There's only resque_config definition that you need to check out.
+
+It assumes that @RAILS_ENV@, @RACK_ENV@ or @APP_ENV@ are already set in your user environment.
+
+h2. Deploying
+
+Defaults to a Capistrano project structure.
+
+@after_restart.rb@ goes into your @deploy/after_restart.rb@
+
+That should be it!
+
+h2. Credits
+
+Thanks Jonathan Dance from WegoWise for the initial "resque cookbook":http://github.com/wegowise/chef-recipes.

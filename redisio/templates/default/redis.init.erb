@@ -1,0 +1,73 @@
+#!/bin/sh
+#
+# Simple Redis init.d script conceived to work on Linux systems
+# as it does use of the /proc filesystem.
+#
+# description: Redis is an in memory key-value store database
+#
+### BEGIN INIT INFO
+# Provides: redis<%= @port %>
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Description: redis<%= @port %> init script
+### END INIT INFO
+
+REDISNAME=<%= @name %>
+REDISPORT=<%= @port %>
+<% case @platform %>
+<% when 'ubuntu','debian','fedora' %>
+EXEC="sudo -u <%= @user %> /usr/local/bin/redis-server <%= @configdir %>/${REDISNAME}.conf"
+<% else %> 
+EXEC="runuser <%= @user %> -c \"/usr/local/bin/redis-server <%= @configdir %>/${REDISNAME}.conf\""
+<% end %>
+CLIEXEC=/usr/local/bin/redis-cli
+
+<% connection_string = String.new %>
+<% if @unixsocket.nil? %> 
+  <% connection_string << " -p #{@port}" %>
+  <% connection_string << " -h #{@address}" if @address %>
+<% else %>
+  <% connection_string << " -s #{@unixsocket}" %>
+<% end %>
+<% connection_string  << " -a '#{@requirepass}'" unless @requirepass.nil? %>  
+
+PIDFILE=<%= @piddir %>/redis_${REDISNAME}.pid
+
+if [ ! -d <%= @piddir %> ]; then
+    mkdir -p <%= @piddir %>
+    chown <%= @user %>  <%= @piddir %>
+fi
+
+case "$1" in
+    start)
+        if [ -f $PIDFILE ]
+        then
+                echo "$PIDFILE exists, process is already running or crashed"
+        else
+                echo "Starting Redis server..."
+                eval $EXEC
+        fi
+        ;;
+    stop)
+        if [ ! -f $PIDFILE ]
+        then
+                echo "$PIDFILE does not exist, process is not running"
+        else
+                PID=$(cat $PIDFILE)
+                echo "Stopping ..."
+
+                <%= "$CLIEXEC #{connection_string} save" if @shutdown_save %>                 
+                $CLIEXEC <%= connection_string %> shutdown
+
+                while [ -x /proc/${PID} ]
+                do
+                    echo "Waiting for Redis to shutdown ..."
+                    sleep 1
+                done
+                echo "Redis stopped"
+        fi
+        ;;
+    *)
+        echo "Please use start or stop as first argument"
+        ;;
+esac
