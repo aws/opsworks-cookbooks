@@ -36,7 +36,7 @@
 # data_source "my grid" 50 1.3.4.7:8655 grid.org:8651 grid-backup.org:8651
 # data_source "another source" 1.3.4.7:8655  1.3.4.8
 
-data_source "<%= @stack_name.gsub(/[\(\)\[\]]/,'') %>" localhost:<%= node[:ganglia][:tcp_client_port] %>
+data_source "<%= @stack_name.gsub(/\W/,'-') %>" localhost:<%= node[:ganglia][:tcp_client_port] %>
 
 # The name of this Grid. All the data sources above will be wrapped in a GRID
 # tag with this name.
