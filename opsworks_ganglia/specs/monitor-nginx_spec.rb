@@ -7,7 +7,7 @@ describe_recipe 'opsworks_ganglia::monitor-nginx' do
   it "has the nginx ganglia plugin and configuration" do
     plugin_path = case node["platform"]
                   when 'centos','redhat','fedora','amazon'
-                    "/usr/lib#{RUBY_PLATFORM.match[/64/]}/ganglia/python_modules/nginx_status.py"
+                    "/usr/lib#{RUBY_PLATFORM[/64/]}/ganglia/python_modules/nginx_status.py"
                   when 'debian','ubuntu'
                     '/usr/lib/ganglia/python_modules/nginx_status.py'
                   end

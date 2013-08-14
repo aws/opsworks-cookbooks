@@ -31,7 +31,7 @@ end
 
 cookbook_file '/etc/ganglia/python_modules/apache.py' do
   path value_for_platform_family(
-    "rhel" => "/usr/lib#{RUBY_PLATFORM.match[/64/]}/ganglia/python_modules/apache.py",
+    "rhel" => "/usr/lib#{RUBY_PLATFORM[/64/]}/ganglia/python_modules/apache.py",
     "debian" => '/usr/lib/ganglia/python_modules/apache.py'
   )
   source 'apache.py'
