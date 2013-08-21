@@ -21,6 +21,7 @@ else
 end
 
 default[:ruby][:version] = "#{node[:ruby][:full_version]}#{node[:ruby][:patch]}"
+default[:ruby][:executable] = '/usr/local/bin/ruby'
 
 arch = RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'
 default[:ruby][:deb] = "ruby#{node[:ruby][:major_version]}_#{node[:ruby][:full_version]}-#{node[:ruby][:patch]}.#{node[:ruby][:pkgrelease]}_#{arch}.deb"

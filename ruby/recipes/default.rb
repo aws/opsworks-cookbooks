@@ -2,7 +2,15 @@
 # enables updating stack from ruby 1.9 to ruby 2.0
 # currently we only support one user sapce ruby installation
 
-local_ruby_up_to_date = ::File.exists?("/usr/local/bin/ruby") && system("/usr/local/bin/ruby -v | grep -q '#{node['ruby']['version']}'")
+local_ruby_up_to_date = ::File.exists?(node[:ruby][:executable]) && system("#{node[:ruby][:executable]} -v | grep -q '#{node['ruby']['version']}'")
+
+if local_ruby_up_to_date
+  Chef::Log.info("Userspace Ruby version is #{node['ruby']['version']} - up-to-date")
+elsif !::File.exists?(node[:ruby][:executable])
+  Chef::Log.info("Userspace Ruby version is not #{node['ruby']['version']} - #{node[:ruby][:executable]} does not exist")
+else
+  Chef::Log.info("Userspace Ruby version is not #{node['ruby']['version']} - found #{`#{node[:ruby][:executable]} -v`}")
+end
 
 case node['platform']
 when 'debian','ubuntu'
