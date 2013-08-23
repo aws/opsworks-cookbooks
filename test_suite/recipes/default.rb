@@ -20,4 +20,7 @@ if node[:opsworks][:run_cookbook_tests]
   end
 
   Chef::Config.send('report_handlers') << handler
+
+  # trigger internal tests, that don't have specs but recipes
+  include_recipe 'test_suite::internal_tests'
 end
