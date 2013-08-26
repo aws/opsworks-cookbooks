@@ -2,7 +2,7 @@
 <%= env %>:
   adapter: <%= @database[:adapter].to_s.inspect %>
   database: <%= @database[:database].to_s.inspect %>
-  encoding: utf8
+  encoding: <%= @database[:encoding].present? ? @database[:encoding].to_s.inspect : 'utf8' %>
   host: <%= (@database[:host] || 'localhost').to_s.inspect %>
   username: <%= @database[:username].to_s.inspect %>
   password: <%= @database[:password].to_s.inspect %>
