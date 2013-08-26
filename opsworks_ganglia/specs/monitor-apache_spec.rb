@@ -18,6 +18,6 @@ describe_recipe 'opsworks_ganglia::monitor-apache' do
   end
 
   it 'creates /etc/ganglia/python_modules/apache.py' do
-    file('/etc/ganglia/python_modules/apache.py').must_exist.with(:mode, '755')
+    file('/etc/ganglia/python_modules/apache.py').must_exist.with(:mode, '644')
   end
 end

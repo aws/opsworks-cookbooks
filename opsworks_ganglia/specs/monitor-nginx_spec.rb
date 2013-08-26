@@ -13,7 +13,7 @@ describe_recipe 'opsworks_ganglia::monitor-nginx' do
                   end
 
     file(plugin_path).must_exist
-    file('/etc/ganglia/conf.d/nginx_status.pyconf').must_exist
+    file('/etc/ganglia/conf.d/nginx_status.pyconf').must_exist.with(:mode, '644')
   end
 
 end

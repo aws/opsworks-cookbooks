@@ -18,10 +18,10 @@ describe_recipe 'opsworks_ganglia::monitor-mysql' do
   end
 
   it 'creates mysql.py module' do
-    file('/etc/ganglia/python_modules/mysql.py').must_exist.with(:mode, '755')
+    file('/etc/ganglia/python_modules/mysql.py').must_exist.with(:mode, '644')
   end
 
   it 'creates DBUtil.py module' do
-    file('/etc/ganglia/python_modules/DBUtil.py').must_exist.with(:mode, '755')
+    file('/etc/ganglia/python_modules/DBUtil.py').must_exist.with(:mode, '644')
   end
 end

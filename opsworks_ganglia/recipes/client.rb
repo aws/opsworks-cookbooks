@@ -38,7 +38,18 @@ execute 'stop gmond with non-updated configuration' do
   )
 end
 
-['scripts','conf.d','python_modules'].each do |dir|
+link "/etc/ganglia/python_modules" do
+  to value_for_platform_family(
+    "debian" => "/usr/lib/ganglia/python_modules",
+    "rhel" => "/usr/lib#{RUBY_PLATFORM[/64/]}/ganglia/python_modules"
+  )
+end
+
+execute "Normalize ganglia plugin permissions" do
+  command "chmod 644 /etc/ganglia/python_modules/*"
+end
+
+['scripts','conf.d'].each do |dir|
   directory "/etc/ganglia/#{dir}" do
     action :create
     owner "root"

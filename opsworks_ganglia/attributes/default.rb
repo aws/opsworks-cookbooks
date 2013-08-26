@@ -47,7 +47,7 @@ default[:ganglia][:web][:svn] = 'no'
 default[:ganglia][:web][:url] = '/ganglia'
 default[:ganglia][:web][:welcome_page] = 'ganglia_welcome.html'
 
-default[:ganglia][:web][:user] = (node['ganglia']['web']['user'].blank? rescue true) ? 'opsworks' : node['ganglia']['web']['user']
+default[:ganglia][:web][:user] = (node['ganglia']['web']['user'] rescue nil) || 'opsworks'
 
 default[:ganglia][:web][:destdir] = case node[:platform_family]
                                     when "rhel"

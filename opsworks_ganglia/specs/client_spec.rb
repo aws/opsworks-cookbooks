@@ -22,6 +22,14 @@ describe_recipe 'opsworks_ganglia::client' do
   end
 
   it 'creates /etc/ganglia/python_modules' do
-    directory('/etc/ganglia/python_modules').must_exist.with(:owner, 'root').and(:group, 'root').and(:mode, '755')
+    link('/etc/ganglia/python_modules').must_exist.with(:link_type, :symbolic).and(
+        :to,
+       case node[:platform]
+         when 'debian','ubuntu'
+           "/usr/lib/ganglia/python_modules"
+         when 'centos','redhat','fedora','amazon'
+           "/usr/lib#{RUBY_PLATFORM[/64/]}/ganglia/python_modules"
+         end
+      )
   end
 end
