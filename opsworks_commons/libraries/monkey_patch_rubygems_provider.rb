@@ -113,7 +113,7 @@ class Chef
             if OpsWorksInternalGems.internal_gem_installed?(options[:name], options[:version])
               Chef::Log.info "OpsWorks Gem #{options[:name]} #{options[:version]}  is already installed - skipping"
             else
-              OpsWorksInternalGems.install_internal_gem_package(options[:name], options[:version])
+              OpsWorksInternalGems.install_internal_gem_package(options[:name], options[:version], options[:options])
             end
           end
 
