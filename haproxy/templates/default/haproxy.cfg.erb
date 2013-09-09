@@ -278,4 +278,22 @@ frontend https-in
     <% end -%>
   use_backend static_servers_ssl_<%= app_name %> if static_applications_ssl_<%= app_name %>
   <% end -%>
+  
+  <% if !node[:haproxy][:rails_backends].empty? -%>
+    <% node[:haproxy][:rails_applications].first do |app_name, app_config| -%>
+  default_backend rails_app_servers_ssl_<%= app_name %>
+    <% end -%>
+  <% elsif !node[:haproxy][:php_backends].empty? -%>
+    <% node[:haproxy][:php_applications].first do |app_name, app_config| -%>
+  default_backend php_app_servers_ssl_<%= app_name %>
+    <% end -%>
+  <% elsif !node[:haproxy][:nodejs_backends].empty? -%>
+    <% node[:haproxy][:nodejs_applications].first do |app_name, app_config| -%>
+  default_backend nodejs_app_servers_ssl_<%= app_name %>
+    <% end -%>
+  <% elsif !node[:haproxy][:static_backends].empty? -%>
+    <% node[:haproxy][:static_applications].first do |app_name, app_config| -%>
+  default_backend static_app_servers_ssl_<%= app_name %>
+    <% end -%>
+  <% end -%>
 <% end -%>  
