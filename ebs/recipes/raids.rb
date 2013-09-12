@@ -62,7 +62,8 @@ node.set[:ebs][:raids].each do |raid_device, options|
     end
   end
 
-  mount options[:mount_point] do
+  mount "fstab entry for #{options[:mount_point]}" do
+    mount_point options[:mount_point]
     action :enable
     fstype options[:fstype]
     device lvm_device
