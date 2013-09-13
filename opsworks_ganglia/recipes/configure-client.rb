@@ -33,7 +33,7 @@ end
 
 execute 'Stop gmond if there is no monitoring master' do
   command 'pkill gmond'
-  only_if { monitoring_master.nil? && 'pgrep gmond' }
+  only_if { monitoring_master.nil? && system('pgrep gmond') }
 end
 
 if node[:opsworks][:instance][:layers].any?{ |layer|
