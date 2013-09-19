@@ -38,6 +38,13 @@ execute 'stop gmond with non-updated configuration' do
   )
 end
 
+# old broken installations have this empty directory
+# new working ones have a symlink
+directory "/etc/ganglia/python_modules" do
+  action :delete
+  not_if { ::File.symlink?("/etc/ganglia/python_modules")}
+end
+
 link "/etc/ganglia/python_modules" do
   to value_for_platform_family(
     "debian" => "/usr/lib/ganglia/python_modules",
