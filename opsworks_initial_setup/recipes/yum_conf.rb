@@ -1,8 +1,13 @@
-template '/etc/yum.conf' do
-  source 'yum.conf.erb'
-  mode 0444
-  owner 'root'
-  group 'root'
+ruby_block "enable keepcache in yum.conf" do
+  block do
+    rc = Chef::Util::FileEdit.new("/etc/yum.conf")
+    rc.search_file_delete_line(/^\s*keepcache\s*=/)
+    rc.insert_line_after_match(/^\[main\]$/, "keepcache=1")
+    rc.write_file
+  end
+  only_if do
+    ::File.exists?("/etc/yum.conf")
+  end
 end
 
 ruby_block "disable yum update-motd plugin" do
