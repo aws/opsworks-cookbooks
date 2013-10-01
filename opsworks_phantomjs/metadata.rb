@@ -7,6 +7,7 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '0.1.0'
 
 recipe 'phantomjs::default', 'Install phantomjs binary'
+recipe 'phantomjs::start', 'Start phantomjs'
 
 %w(amazon centos debian fedora oracle rhel scientific ubuntu).each do |os|
   supports os
