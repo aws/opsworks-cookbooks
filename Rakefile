@@ -35,16 +35,14 @@ task :validate_attribute_dependencies do
     cookbook_name = file.match(/(\w+)\//)[1]
     loaded_cookbook_attributes = [cookbook_name]
 
-    attribute_file = File.read(file)
-    attribute_file.each do |line|
-
+    File.read(file).each_line do |line|
       # uses other cookbooks attributes
       if line.match(/node\[\:(\w+)\]/) && $1 != cookbook_name
         used_cookbook_attributes << $1
       end
 
       # loads/includes attributes
-      if line.match(/include_attribute [\'\"](\w+)[\'\"]/) || line.match(/include_attribute [\'\"](\w+)::\w+[\'\"]/)
+      if line.match(/include_attribute [\'\"](\w+)(::\w+)?[\'\"]/)
         loaded_cookbook_attributes << $1
       end
     end
