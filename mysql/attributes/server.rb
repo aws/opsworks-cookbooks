@@ -21,7 +21,10 @@ default[:mysql][:port]                 = 3306
 case node[:platform]
 when 'centos','redhat','fedora','amazon'
   default[:mysql][:datadir]              = '/var/lib/mysql'
+  default[:mysql][:logdir]               = '/var/log/mysql'
   default[:mysql][:basedir]              = '/usr'
+  default[:mysql][:user]                 = 'mysql'
+  default[:mysql][:group]                = 'mysql'
   default[:mysql][:root_group]           = 'root'
   default[:mysql][:mysqladmin_bin]       = '/usr/bin/mysqladmin'
   default[:mysql][:mysql_bin]            = '/usr/bin/mysql'
@@ -33,7 +36,10 @@ when 'centos','redhat','fedora','amazon'
   set[:mysql][:grants_path]              = '/etc/mysql_grants.sql'
 when 'debian','ubuntu'
   default[:mysql][:datadir]              = '/var/lib/mysql'
+  default[:mysql][:logdir]               = '/var/log/mysql'
   default[:mysql][:basedir]              = '/usr'
+  default[:mysql][:user]                 = 'mysql'
+  default[:mysql][:group]                = 'mysql'
   default[:mysql][:root_group]           = 'root'
   default[:mysql][:mysqladmin_bin]       = '/usr/bin/mysqladmin'
   default[:mysql][:mysql_bin]            = '/usr/bin/mysql'
@@ -45,9 +51,8 @@ when 'debian','ubuntu'
   set[:mysql][:grants_path]              = '/etc/mysql/grants.sql'
 end
 
-if attribute?(:ec2)
-  default[:mysql][:ec2_path]    = '/mnt/mysql'
-end
+default[:mysql][:ec2_path]                 = '/mnt/mysql'
+default[:mysql][:opsworks_autofs_map_file] = '/etc/auto.opsworks'
 
 # Tunables
 
@@ -75,7 +80,7 @@ default[:mysql][:tunable][:back_log]            = '128'
 default[:mysql][:tunable][:table_cache]         = '2048'
 default[:mysql][:tunable][:max_heap_table_size] = '32M'
 
-default[:mysql][:tunable][:log_slow_queries]    = '/var/log/mysql/mysql-slow.log'
+default[:mysql][:tunable][:log_slow_queries]    = File.join(node[:mysql][:logdir], 'mysql-slow.log')
 default[:mysql][:tunable][:long_query_time]     = 1
 
 default[:mysql][:clients] = []

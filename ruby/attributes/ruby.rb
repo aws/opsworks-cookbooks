@@ -1,11 +1,24 @@
 include_attribute 'opsworks_initial_setup::default'
 include_attribute 'opsworks_commons::default'
 
-# ruby 1.8.7 is ruby-enterprise, os we don't handle it here
-default[:ruby][:major_version] = '1.9'
-default[:ruby][:full_version] = '1.9.3'
-default[:ruby][:patch] = 'p392'
-default[:ruby][:pkgrelease] = '1'
+# ruby_version 1.8.7 is handled by 'ruby-enterprise'
+case node["opsworks"]["ruby_version"]
+when "2.0.0"
+  default[:ruby][:major_version] = '2.0'
+  default[:ruby][:full_version] = '2.0.0'
+  default[:ruby][:patch] = 'p247'
+  default[:ruby][:pkgrelease] = '1'
+when "1.9.3"
+  default[:ruby][:major_version] = '1.9'
+  default[:ruby][:full_version] = '1.9.3'
+  default[:ruby][:patch] = 'p448'
+  default[:ruby][:pkgrelease] = '1'
+else
+  default[:ruby][:major_version] = ''
+  default[:ruby][:full_version] = ''
+  default[:ruby][:patch] = ''
+  default[:ruby][:pkgrelease] = ''
+end
 
 default[:ruby][:version] = "#{node[:ruby][:full_version]}#{node[:ruby][:patch]}"
 

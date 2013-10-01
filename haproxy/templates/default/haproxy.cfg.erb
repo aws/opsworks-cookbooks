@@ -22,7 +22,12 @@ defaults
   timeout queue  <%= node[:haproxy][:queue_timeout] %>              # Don't queue requests too long if saturated.
   timeout connect <%= node[:haproxy][:connect_timeout] %>           # There's no reason to change this one.
   timeout http-request <%= node[:haproxy][:http_request_timeout] %>	# A complete request may never take that long.
+  <% if node[:haproxy][:httpclose] %>
   option          httpclose                                         # disable keepalive (HAProxy does not yet support the HTTP keep-alive mode)
+  <% end %>
+  <% if node[:haproxy][:http_server_close] %>
+  option          http-server-close                                 # enable HTTP connection closing on the server side
+  <% end %>
   option          abortonclose                                      # enable early dropping of aborted requests from pending queue
   option          httpchk                                           # enable HTTP protocol to check on servers health
   <% if node[:haproxy][:enable_stats] -%>
@@ -35,15 +40,14 @@ defaults
 listen application 0.0.0.0:80
   # configure a fake backend as long as there are no real ones
   # this way HAProxy will not fail on a config check
-  balance roundrobin
+  balance <%= node[:haproxy][:balance] %>
   server localhost 127.0.0.1:8080 weight 1 maxconn 5 check
 <% else -%>
 
 <% if !node[:haproxy][:rails_backends].empty? -%>
 backend rails_app_servers
-  balance roundrobin
+  balance <%= node[:haproxy][:balance] %>
   option redispatch
-  option httpclose
   option forwardfor
   option httpchk <%= node[:haproxy][:health_check_method] %> <%= node[:haproxy][:health_check_url] %>
   <% node[:haproxy][:rails_backends].each do |backend| -%>
@@ -54,7 +58,7 @@ backend rails_app_servers
 <% if !node[:haproxy][:rails_backends].empty? -%>
 backend rails_app_servers_ssl
   mode tcp
-  balance roundrobin
+  balance <%= node[:haproxy][:balance] %>
   option redispatch
   option ssl-hello-chk
   <% node[:haproxy][:rails_backends].each do |backend| -%>
@@ -64,9 +68,8 @@ backend rails_app_servers_ssl
   
 <% if !node[:haproxy][:php_backends].empty? -%>  
 backend php_app_servers
-  balance roundrobin
+  balance <%= node[:haproxy][:balance] %>
   option redispatch
-  option httpclose
   option forwardfor
   option httpchk <%= node[:haproxy][:health_check_method] %> <%= node[:haproxy][:health_check_url] %>
   <% node[:haproxy][:php_backends].each do |backend| -%>
@@ -77,7 +80,7 @@ backend php_app_servers
 <% if !node[:haproxy][:php_backends].empty? -%>  
 backend php_app_servers_ssl
   mode tcp
-  balance roundrobin
+  balance <%= node[:haproxy][:balance] %>
   option redispatch
   option ssl-hello-chk
   <% node[:haproxy][:php_backends].each do |backend| -%>
@@ -87,9 +90,8 @@ backend php_app_servers_ssl
 
 <% if !node[:haproxy][:nodejs_backends].empty? -%>
 backend nodejs_app_servers
-  balance roundrobin
+  balance <%= node[:haproxy][:balance] %>
   option redispatch
-  option httpclose
   option forwardfor
   option httpchk <%= node[:haproxy][:health_check_method] %> <%= node[:haproxy][:health_check_url] %>
   <% node[:haproxy][:nodejs_backends].each do |backend| -%>
@@ -100,7 +102,7 @@ backend nodejs_app_servers
 <% if !node[:haproxy][:nodejs_backends].empty? -%>
 backend nodejs_app_servers_ssl
   mode tcp
-  balance roundrobin
+  balance <%= node[:haproxy][:balance] %>
   option redispatch
   option ssl-hello-chk
   <% node[:haproxy][:nodejs_backends].each do |backend| -%>
@@ -110,9 +112,8 @@ backend nodejs_app_servers_ssl
 
 <% if !node[:haproxy][:static_backends].empty? -%>  
 backend static_servers
-  balance roundrobin
+  balance <%= node[:haproxy][:balance] %>
   option redispatch
-  option httpclose
   option forwardfor
   option httpchk GET <%= node[:haproxy][:health_check_url] %> # Nginx doesn't understand OPTIONS
   <% node[:haproxy][:static_backends].each do |backend| -%>
@@ -123,7 +124,7 @@ backend static_servers
 <% if !node[:haproxy][:static_backends].empty? -%>  
 backend static_servers_ssl
   mode tcp
-  balance roundrobin
+  balance <%= node[:haproxy][:balance] %>
   option redispatch
   option ssl-hello-chk
   <% node[:haproxy][:static_backends].each do |backend| -%>

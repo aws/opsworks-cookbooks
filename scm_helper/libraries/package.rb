@@ -22,6 +22,8 @@ module OpsWorks
             package 'perl-Digest-HMAC'
           end
           package 'unzip'
+        elsif scm_type == 'other'
+          Chef::Log.info "scm_type 'other', nothing to install"
         else
           raise "unsupported SCM type #{scm_type}"
         end
