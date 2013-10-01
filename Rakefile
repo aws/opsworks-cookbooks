@@ -69,13 +69,15 @@ end
 
 desc 'check syntax of ruby files'
 task :validate_syntax do
+  found_trouble = false
   Dir['**/*.rb'].each do |file|
-    `ruby -c #{file}`
+    output = `ruby -c #{file}`
     if $?.exitstatus != 0
-      puts "syntax error in #{file}"
-      exit 1
+      puts output
+      found_trouble = true
     end
   end
+  exit 1 if found_trouble
 end
 
 desc 'run all checks'
