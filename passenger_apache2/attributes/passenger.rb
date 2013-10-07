@@ -3,11 +3,11 @@ include_attribute 'rails::rails'
 include_attribute 'packages::packages'
 
 case node[:opsworks][:ruby_version]
-when /1.8/
+when /^1\.8/
   default[:passenger][:gems_path] = '/usr/local/lib/ruby/gems/1.8/gems'
-when /1.9/
+when /^1\.9/
   default[:passenger][:gems_path] = '/usr/local/lib/ruby/gems/1.9.1/gems'
-when /2.0/
+when /^2\.0/
   default[:passenger][:gems_path] = '/usr/local/lib/ruby/gems/2.0.0/gems'
 end
 
