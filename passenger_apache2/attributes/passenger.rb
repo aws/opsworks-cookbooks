@@ -1,3 +1,5 @@
+require 'rubygems/version'
+
 include_attribute 'opsworks_initial_setup::default'
 include_attribute 'rails::rails'
 include_attribute 'packages::packages'
@@ -18,7 +20,9 @@ if platform?('centos','redhat','fedora','amazon') and node[:packages][:dist_only
   default[:passenger][:module_path] = "#{node['apache']['libexecdir']}/mod_passenger.so"
 else
 
- if node[:passenger][:version] =~ /^4/
+ if ::Gem::Version.new(node[:passenger][:version]) >= ::Gem::Version.new("4.0.7")
+   default[:passenger][:module_path] = "#{passenger[:root_path]}/buildout/apache2/mod_passenger.so"
+ elsif ::Gem::Version.new(node[:passenger][:version]) >= ::Gem::Version.new("3.9")
    default[:passenger][:module_path] = "#{passenger[:root_path]}/libout/apache2/mod_passenger.so"
  else
    default[:passenger][:module_path] = "#{passenger[:root_path]}/ext/apache2/mod_passenger.so"
