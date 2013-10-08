@@ -1,0 +1,16 @@
+ This instance is managed with AWS OpsWorks.
+
+   ######  OpsWorks Summary  ######
+   Operating System: <%= `head -1 /etc/issue | sed -e 's/ \\\\.*//'`.chomp %>
+   OpsWorks Instance: <%= @instance[:hostname] %>
+   OpsWorks Instance ID: <%= @instance[:id] %>
+   OpsWorks Layers: <%= @instance[:layers].map{|id| @layers[id][:name] }.join(', ') %>
+   OpsWorks Stack: <%= @stack[:name] %>
+   EC2 Region: <%= @instance[:region] %>
+   EC2 Availability Zone: <%= @instance[:availability_zone] %>
+<% if @stack[:vpc_id] -%>
+   VPC ID: <%= @stack[:vpc_id] %>
+   Subnet ID: <%= @instance[:subnet_id] %>
+<% end -%>
+
+ Visit http://aws.amazon.com/opsworks for more information.
