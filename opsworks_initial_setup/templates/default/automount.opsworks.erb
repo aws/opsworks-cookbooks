@@ -1,4 +1,4 @@
 # Automount configuration for opsworks standard mounts
-<% node[:opsworks_initial_setup][:bind_mounts][:mounts].each do |dir, source| %>
+<% node[:opsworks_initial_setup][:bind_mounts][:mounts].sort.each do |dir, source| %>
 <%= dir %> -fstype=none,bind,rw :<%= source %>
 <% end %>
