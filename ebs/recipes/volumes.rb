@@ -1,5 +1,5 @@
 node[:ebs][:devices].each do |device, options|
-  execute "mkfs" do
+  execute "mkfs_#{device}" do
     command "mkfs -t #{options[:fstype]} #{device}"
     
     not_if do
