@@ -1,0 +1,16 @@
+<% (['development', 'production'] + [@environment]).uniq.each do |env| -%>
+<%= env %>:
+  twitter_key: <%= @config[:twitter_key] %>
+  twitter_secret: <%= @config[:twitter_secret] %>
+  facebook_key: <%= @config[:facebook_key] %>
+  facebook_secret: <%= @config[:facebook_secret] %>
+  linkedin_key: <%= @config[:linkedin_key] %>
+  linkedin_secret: <%= @config[:linkedin_secret] %>
+  google_key: <%= @config[:google_key] %>
+  google_secret: '<%= @config[:google_secret] %>'
+  s3_key: <%= @config[:s3_key] %>
+  s3_secret: <%= @config[:s3_secret] %>
+  s3_bucket: <%= @config[:s3_bucket] %>
+  encryption_key: <%= @config[:encryption_key] %>
+  itg_auth_key: <%= @config[:itg_auth_key] %>
+<% end -%>
