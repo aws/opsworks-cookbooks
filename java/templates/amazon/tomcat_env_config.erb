@@ -1,0 +1,71 @@
+# Copyright 2013 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"). You may not
+# use this file except in compliance with the License. A copy of the License is
+# located at
+#
+#     http://aws.amazon.com/apache2.0/
+#
+# or in the "license" file accompanying this file. This file is distributed on
+# an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+# or implied. See the License for the specific language governing permissions
+# and limitations under the License.
+
+# Service-specific configuration file for tomcat<%= node['tomcat']['base_version'] %>. This will be sourced by
+# the SysV init script after the global configuration file
+# /etc/tomcat6/tomcat<%= node['tomcat']['base_version'] %>.conf, thus allowing values to be overridden in
+# a per-service manner.
+#
+# NEVER change the init script itself. To change values for all services make
+# your changes in /etc/tomcat6/tomcat<%= node['tomcat']['base_version'] %>.conf
+#
+# To change values for a specific service make your edits here.
+# To create a new service create a link from /etc/init.d/<your new service> to
+# /etc/init.d/tomcat<%= node['tomcat']['base_version'] %> (do not copy the init script) and make a copy of the
+# /etc/sysconfig/tomcat<%= node['tomcat']['base_version'] %> file to /etc/sysconfig/<your new service> and change
+# the property values so the two services won't conflict. Register the new
+# service in the system as usual (see chkconfig and similars).
+#
+
+# Where your java installation lives
+#JAVA_HOME="/usr/lib/jvm/java"
+
+# Where your tomcat installation lives
+#CATALINA_BASE="/usr/share/tomcat<%= node['tomcat']['base_version'] %>"
+#CATALINA_HOME="/usr/share/tomcat<%= node['tomcat']['base_version'] %>"
+#JASPER_HOME="/usr/share/tomcat<%= node['tomcat']['base_version'] %>"
+#CATALINA_TMPDIR="/var/cache/tomcat<%= node['tomcat']['base_version'] %>/temp"
+
+# You can pass some parameters to java here if you wish to
+#JAVA_OPTS="-Xminf0.1 -Xmaxf0.3"
+
+# Use JAVA_OPTS to set java.library.path for libtcnative.so
+#JAVA_OPTS="-Djava.library.path=/usr/lib"
+
+JAVA_OPTS="${JAVA_OPTS} <%= node['tomcat']['java_opts'] %>"
+
+# What user should run tomcat
+#TOMCAT_USER="tomcat"
+
+# You can change your tomcat locale here
+#LANG="en_US"
+
+# Run tomcat under the Java Security Manager
+#SECURITY_MANAGER="false"
+
+# Time to wait in seconds, before killing process
+#SHUTDOWN_WAIT="30"
+
+# Whether to annoy the user with "attempting to shut down" messages or not
+#SHUTDOWN_VERBOSE="false"
+
+# Set the TOMCAT_PID location
+#CATALINA_PID="/var/run/tomcat<%= node['tomcat']['base_version'] %>.pid"
+
+# Connector port is 8080 for this tomcat<%= node['tomcat']['base_version'] %> instance
+#CONNECTOR_PORT="<%= node['tomcat']['port'] %>"
+
+# If you wish to further customize your tomcat environment,
+# put your own definitions here
+# (i.e. LD_LIBRARY_PATH for some jdbc drivers)
+

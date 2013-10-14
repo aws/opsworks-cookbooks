@@ -1,0 +1,64 @@
+# Copyright 2013 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"). You may not
+# use this file except in compliance with the License. A copy of the License is
+# located at
+#
+#     http://aws.amazon.com/apache2.0/
+#
+# or in the "license" file accompanying this file. This file is distributed on
+# an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+# or implied. See the License for the specific language governing permissions
+# and limitations under the License.
+
+# Run Tomcat as this user ID. Not setting this or leaving it blank will use the
+# default of tomcat<%= node['tomcat']['base_version'] %>.
+TOMCAT<%= node['tomcat']['base_version'] %>_USER=tomcat<%= node['tomcat']['base_version'] %>
+
+# Run Tomcat as this group ID. Not setting this or leaving it blank will use
+# the default of tomcat<%= node['tomcat']['base_version'] %>.
+TOMCAT<%= node['tomcat']['base_version'] %>_GROUP=tomcat<%= node['tomcat']['base_version'] %>
+
+# The home directory of the Java development kit (JDK). You need at least
+# JDK version 1.5. If JAVA_HOME is not set, some common directories for
+# OpenJDK, the Sun JDK, and various J2SE 1.5 versions are tried.
+#JAVA_HOME=/usr/lib/jvm/openjdk-6-jdk
+
+# You may pass JVM startup parameters to Java here. If unset, the default
+# options will be: -Djava.awt.headless=true -Xmx128m -XX:+UseConcMarkSweepGC
+#
+# Use "-XX:+UseConcMarkSweepGC" to enable the CMS garbage collector (improved
+# response time). If you use that option and you run Tomcat on a machine with
+# exactly one CPU chip that contains one or two cores, you should also add
+# the "-XX:+CMSIncrementalMode" option.
+JAVA_OPTS="<%= node['tomcat']['java_opts'] %>"
+
+# To enable remote debugging uncomment the following line.
+# You will then be able to use a java debugger on port 8000.
+#JAVA_OPTS="${JAVA_OPTS} -Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
+
+# Java compiler to use for translating JavaServer Pages (JSPs). You can use all
+# compilers that are accepted by Ant's build.compiler property.
+#JSP_COMPILER=javac
+
+# Use the Java security manager? (yes/no, default: no)
+#TOMCAT<%= node['tomcat']['base_version'] %>_SECURITY=no
+
+# Number of days to keep logfiles in /var/log/tomcat<%= node['tomcat']['base_version'] %>. Default is 14 days.
+#LOGFILE_DAYS=14
+
+# Location of the JVM temporary directory
+# WARNING: This directory will be destroyed and recreated at every startup !
+#JVM_TMP=/tmp/tomcat<%= node['tomcat']['base_version'] %>-temp
+
+# If you run Tomcat on port numbers that are all higher than 1023, then you
+# do not need authbind.  It is used for binding Tomcat to lower port numbers.
+# NOTE: authbind works only with IPv4.  Do not enable it when using IPv6.
+# (yes/no, default: no)
+#AUTHBIND=no
+
+<% if node['tomcat']['base_version'].to_i < 7 -%>
+# Unset LC_ALL to prevent user environment executing the init script from
+# influencing servlet behavior.  See Debian bug #645221
+unset LC_ALL
+<% end -%>
