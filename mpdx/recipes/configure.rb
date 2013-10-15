@@ -9,6 +9,23 @@ node[:deploy].each do |application, deploy|
     action :nothing
   end
 
+  directory "#{deploy[:deploy_to]}" do
+    action :create
+    recursive true
+    mode "0770"
+    group deploy[:group]
+    owner deploy[:user]
+  end
+
+
+  directory "#{deploy[:deploy_to]}/shared" do
+    action :create
+    recursive true
+    mode "0770"
+    group deploy[:group]
+    owner deploy[:user]
+  end
+
   directory "#{deploy[:deploy_to]}/shared/config" do
     action :create
     recursive true
