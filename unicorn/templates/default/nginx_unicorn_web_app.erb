@@ -17,6 +17,11 @@ server {
 
   location / {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-SSL-Cipher "";
+    proxy_set_header X-SSL-Client-Serial "";
+    proxy_set_header X-SSL-Client-S-DN "";
+    proxy_set_header X-SSL-Client-I-DN "";
+    proxy_set_header X-SSL-Protocol "";
     proxy_set_header Host $http_host;
     proxy_redirect off;
 
@@ -65,12 +70,12 @@ server {
   location / {
     proxy_set_header X-Forwarded-Proto https;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header Host $http_host;
     proxy_set_header X-SSL-Cipher $ssl_cipher;
     proxy_set_header X-SSL-Client-Serial $ssl_client_serial;
     proxy_set_header X-SSL-Client-S-DN $ssl_client_s_dn;
     proxy_set_header X-SSL-Client-I-DN $ssl_client_i_dn;
     proxy_set_header X-SSL-Protocol $ssl_protocol;
+    proxy_set_header Host $http_host;
     proxy_redirect off;
 
     # If you don't find the filename in the static files
