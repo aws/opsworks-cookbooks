@@ -63,6 +63,7 @@ define :opsworks_deploy do
     deploy deploy[:deploy_to] do
       repository deploy[:scm][:repository]
       user deploy[:user]
+      group deploy[:group]
       revision deploy[:scm][:revision]
       migrate deploy[:migrate]
       migration_command deploy[:migrate_command]
@@ -125,7 +126,8 @@ define :opsworks_deploy do
             variables(
               :database => node[:deploy][application][:database],
               :memcached => node[:deploy][application][:memcached],
-              :layers => node[:opsworks][:layers]
+              :layers => node[:opsworks][:layers],
+              :stack_name => node[:opsworks][:stack][:name]
             )
             only_if do
               File.exists?("#{node[:deploy][application][:deploy_to]}/shared/config")

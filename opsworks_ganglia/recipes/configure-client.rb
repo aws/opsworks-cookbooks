@@ -31,11 +31,9 @@ template '/etc/ganglia/gmond.conf' do
   end
 end
 
-if monitoring_master.nil?
-  execute 'Stop gmond if there is no monitoring master' do
-    command 'pkill gmond'
-    only_if 'pgrep gmond'
-  end
+execute 'Stop gmond if there is no monitoring master' do
+  command 'pkill gmond'
+  only_if { monitoring_master.nil? && system('pgrep gmond') }
 end
 
 if node[:opsworks][:instance][:layers].any?{ |layer|
