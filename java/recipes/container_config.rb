@@ -11,7 +11,7 @@
 # or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 
-include_recipe 'tomcat::service'
+include_recipe 'java::service'
 
 template 'tomcat environment configuration' do
   path ::File.join(node['tomcat']['system_env_dir'], "tomcat#{node['tomcat']['base_version']}")

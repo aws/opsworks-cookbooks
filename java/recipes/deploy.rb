@@ -42,7 +42,7 @@ node[:deploy].each do |application, deploy|
     action :create
   end
 
-  include_recipe 'tomcat::service'
+  include_recipe 'java::service'
 
   execute 'trigger tomcat service restart' do
     command '/bin/true'
@@ -51,4 +51,4 @@ node[:deploy].each do |application, deploy|
   end
 end
 
-include_recipe 'tomcat::context'
+include_recipe 'java::context'

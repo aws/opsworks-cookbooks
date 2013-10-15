@@ -11,7 +11,7 @@
 # or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 
-include_recipe 'tomcat::service'
+include_recipe 'java::service'
 
 node[:deploy].each do |application, deploy|
   context_name = deploy[:document_root].blank? ? application : deploy[:document_root]
