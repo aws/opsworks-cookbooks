@@ -9,6 +9,14 @@ node[:deploy].each do |application, deploy|
     action :nothing
   end
 
+  directory "#{deploy[:deploy_to]}/shared/config" do
+    action :create
+    recursive true
+    mode "0770"
+    group deploy[:group]
+    owner deploy[:user]
+  end
+
   template "#{deploy[:deploy_to]}/shared/config/config.yml" do
     source "config.yml.erb"
     cookbook 'mpdx'
@@ -18,10 +26,6 @@ node[:deploy].each do |application, deploy|
     variables(:config => deploy[:config], :environment => deploy[:rails_env])
 
     notifies :run, "execute[restart Rails app #{application}]"
-
-    only_if do
-      File.exists?("#{deploy[:deploy_to]}") && File.exists?("#{deploy[:deploy_to]}/shared/config/")
-    end
   end
 
 end
