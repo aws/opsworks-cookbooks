@@ -51,7 +51,7 @@ node[:deploy].each do |application, deploy|
     mode "0660"
     group deploy[:group]
     owner deploy[:user]
-    variables(:config => deploy[:redis] || {}, :environment => deploy[:rails_env])
+    variables(:redis => deploy[:redis] || {}, :environment => deploy[:rails_env])
 
     notifies :run, "execute[restart Rails app #{application}]"
   end
@@ -62,7 +62,7 @@ node[:deploy].each do |application, deploy|
     mode "0660"
     group deploy[:group]
     owner deploy[:user]
-    variables(:config => deploy[:sidekiq] || {}, :environment => deploy[:rails_env])
+    variables(:sidekiq => deploy[:sidekiq] || {}, :environment => deploy[:rails_env])
 
     notifies :run, "execute[restart Rails app #{application}]"
   end
