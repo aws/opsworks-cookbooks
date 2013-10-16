@@ -1,10 +1,8 @@
-#
-# Cookbook Name:: sidekiq
-# Recipe:: default
-#
+include_recipe "deploy"
 
 node[:deploy].each do |application, deploy|
   template "#{node[:monit][:conf_dir]}/sidekiq_#{application}.monitrc" do
+    cookbook 'sidekiq'
     owner 'root'
     group 'root'
     mode 0644
