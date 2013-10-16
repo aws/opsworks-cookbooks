@@ -1,0 +1,9 @@
+---
+:verbose: <%= @sidekiq[:verbose] || false %>
+:concurrency: <%= @sidekiq[:concurrency] || 2 %>
+:timeout: <%= @sidekiq[:timeout] || 600 %>
+:queues:
+  - [import, 1]
+  - [default, 3]
+  - [facebook, 2]
+  - [general, 5]
