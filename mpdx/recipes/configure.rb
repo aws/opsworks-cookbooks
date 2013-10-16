@@ -45,4 +45,25 @@ node[:deploy].each do |application, deploy|
     notifies :run, "execute[restart Rails app #{application}]"
   end
 
+  template "#{deploy[:deploy_to]}/shared/config/redis.yml" do
+    source "redis.yml.erb"
+    cookbook 'mpdx'
+    mode "0660"
+    group deploy[:group]
+    owner deploy[:user]
+    variables(:config => deploy[:config][:redis] || {}, :environment => deploy[:rails_env])
+
+    notifies :run, "execute[restart Rails app #{application}]"
+  end
+
+  template "#{deploy[:deploy_to]}/shared/config/sidekiq.yml" do
+    source "sidekiq.yml.erb"
+    cookbook 'mpdx'
+    mode "0660"
+    group deploy[:group]
+    owner deploy[:user]
+    variables(:config => deploy[:config][:sidekiq] || {}, :environment => deploy[:rails_env])
+
+    notifies :run, "execute[restart Rails app #{application}]"
+  end
 end
