@@ -1,0 +1,5 @@
+check process sidekiq_<%= @app_name %>
+  with pidfile <%= @deploy[:deploy_to] %>/shared/pids/sidekiq.pid
+  start program = "/usr/bin/sudo su deploy -c 'cd <%= @deploy[:deploy_to] %>/current; RAILS_ENV=production bundle exec sidekiq -d -C config/sidekiq.yml -P <%= @deploy[:deploy_to] %>/shared/pids/sidekiq.pid -L log/sidekiq.log'" with timeout 90 seconds
+  stop program = "/bin/bash -c '/bin/kill -TERM `cat <%= @deploy[:deploy_to] %>/shared/pids/sidekiq.pid`'" with timeout 180 seconds
+  group sidekiq_<%= @app_name %>
