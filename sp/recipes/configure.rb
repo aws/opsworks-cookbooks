@@ -28,6 +28,14 @@ node[:deploy].each do |application, deploy|
     owner deploy[:user]
   end
 
+  directory "#{deploy[:deploy_to]}/shared/config/initializers" do
+    action :create
+    recursive true
+    mode "0770"
+    group deploy[:group]
+    owner deploy[:user]
+  end
+
   template "#{deploy[:deploy_to]}/shared/config/config.yml" do
     source "config.yml.erb"
     cookbook 'sp'
