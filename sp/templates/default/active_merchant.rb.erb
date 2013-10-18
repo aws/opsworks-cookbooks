@@ -1,0 +1,7 @@
+GATEWAY = ActiveMerchant::Billing::AuthorizeNetGateway.new(
+  :login => '<%= @authnet[:login] %>',
+  :password => '<%= @authnet[:password] %>'
+) unless defined? GATEWAY
+<% if @authnet[:live_url] %>
+  ActiveMerchant::Billing::AuthorizeNetGateway.live_url = "<%= @authnet[:live_url] %>"
+<% end %>
