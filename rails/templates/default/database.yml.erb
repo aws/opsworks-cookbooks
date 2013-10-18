@@ -12,3 +12,12 @@
 <% end -%>
 
 <% end %>
+
+peoplesoft:
+  adapter: "<%= @ps[:adapter] || @database[:adapter] %>"
+  database: <%= (@ps[:database] || @database[:database]).to_s.inspect %>
+  encoding: <%= (@database[:encoding] || 'utf8').to_s.inspect %>
+  host: <%= (@database[:host] || 'localhost').to_s.inspect %>
+  username: <%= (@ps[:database] || @database[:username]).to_s.inspect %>
+  password: <%= (@ps[:database] || @database[:password]).to_s.inspect %>
+  reconnect: <%= @database[:reconnect] ? 'true' : 'false' %>
