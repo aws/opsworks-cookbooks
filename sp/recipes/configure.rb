@@ -6,7 +6,7 @@ node[:deploy].each do |application, deploy|
   directory "#{deploy[:deploy_to]}" do
     action :create
     recursive true
-    mode "0770"
+    mode "0775"
     group deploy[:group]
     owner deploy[:user]
   end
@@ -15,7 +15,7 @@ node[:deploy].each do |application, deploy|
   directory "#{deploy[:deploy_to]}/shared" do
     action :create
     recursive true
-    mode "0770"
+    mode "0775"
     group deploy[:group]
     owner deploy[:user]
   end
@@ -23,7 +23,7 @@ node[:deploy].each do |application, deploy|
   directory "#{deploy[:deploy_to]}/shared/config" do
     action :create
     recursive true
-    mode "0770"
+    mode "0775"
     group deploy[:group]
     owner deploy[:user]
   end
@@ -31,7 +31,7 @@ node[:deploy].each do |application, deploy|
   directory "#{deploy[:deploy_to]}/shared/config/initializers" do
     action :create
     recursive true
-    mode "0770"
+    mode "0775"
     group deploy[:group]
     owner deploy[:user]
   end
