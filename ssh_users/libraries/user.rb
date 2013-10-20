@@ -57,7 +57,7 @@ module OpsWorks
         group 'opsworks'
         variables(:public_key => params[:public_key])
         only_if do
-          File.exists?("/home/#{params[:name]}/.ssh")
+          File.exists?("/home/#{params[:name]}/.ssh") && !params[:public_key].nil?
         end
       end
     end
