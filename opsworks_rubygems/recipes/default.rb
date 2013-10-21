@@ -1,8 +1,15 @@
-remote_file "/tmp/rubygems-#{node[:opsworks_rubygems][:version]}.tgz" do
+rubygems_download = remote_file "/tmp/rubygems-#{node[:opsworks_rubygems][:version]}.tgz" do
   source "http://production.cf.rubygems.org/rubygems/rubygems-#{node[:opsworks_rubygems][:version]}.tgz"
   not_if do
     ::File.exists?('/usr/local/bin/gem') && `/usr/local/bin/gem -v`.strip == node[:opsworks_rubygems][:version]
   end
+end
+
+fallback "rubygems download fallback" do
+  resource rubygems_download
+  fallback_options [
+    {:source => "#{node[:opsworks_commons][:assets_url]}/rubygems-#{node[:opsworks_rubygems][:version]}.tgz"}
+  ]
 end
 
 execute "tar xfz rubygems-#{node[:opsworks_rubygems][:version]}.tgz" do
