@@ -35,4 +35,13 @@ node[:deploy].each do |application, deploy|
     variables(:config => deploy[:config], :environment => deploy[:rails_env])
   end
 
+  template "#{deploy[:deploy_to]}/shared/config/redis.yml" do
+    source "redis.yml.erb"
+    cookbook 'mpdx'
+    mode "0660"
+    group deploy[:group]
+    owner deploy[:user]
+    variables(:redis => deploy[:redis] || {}, :environment => deploy[:rails_env])
+  end
+
 end
