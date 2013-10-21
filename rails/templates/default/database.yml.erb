@@ -15,3 +15,18 @@
 <% end -%>
 
 <% end %>
+
+<% if @uscm %>
+uscm:
+  adapter: <%= @uscm[:adapter].to_s.inspect %>
+  database: <%= @uscm[:database].to_s.inspect %>
+  encoding: <%= (@uscm[:encoding] || 'utf8').to_s.inspect %>
+  host: <%= (@uscm[:host] || 'localhost').to_s.inspect %>
+  username: <%= @uscm[:username].to_s.inspect %>
+  password: <%= @uscm[:password].to_s.inspect %>
+  reconnect: <%= @uscm[:reconnect] ? 'true' : 'false' %>
+<% if @uscm[:port] -%>
+  port: <%= @uscm[:port].to_i.inspect %>
+<% end -%>
+
+<% end %>
