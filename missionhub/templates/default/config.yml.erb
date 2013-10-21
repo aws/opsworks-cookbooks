@@ -1,0 +1,23 @@
+<% (['development', 'production'] + [@environment]).uniq.each do |env| -%>
+<%= env %>:
+  twilio_id: <%= @config[:twilio_id] %>
+  twilio_token: <%= @config[:twilio_token] %>
+  resque_username: <%= @config[:resque_username] %>
+  resque_password: <%= @config[:resque_password] %>
+  sms_enabled: <%= @config[:sms_enabled] %>
+  sms_short_code: <%= @config[:sms_short_code] %>
+  sms_api_key: <%= @config[:sms_api_key] %>
+  sms_default_keyword: <%= @config[:sms_default_keyword] %>
+  fb_secret: <%= @config[:fb_secret] %>
+  fb_app_id: <%= @config[:fb_app_id] %>
+  fb_secret_mhub: <%= @config[:fb_secret_mhub] %>
+  fb_app_id_mhub: <%= @config[:fb_app_id_mhub] %>
+  from_email: <%= @config[:from_email] %>
+  predefined_survey: <%= @config[:predefined_survey] %>
+  bitly_username: <%= @config[:bitly_username] %>
+  bitly_key: <%= @config[:bitly_key] %>
+  smseco_username: <%= @config[:smseco_username] %>
+  smseco_password: <%= @config[:smseco_password] %>
+  smseco_url: <%= @config[:smseco_url] %>
+  smseco_gateway_orgs: <%= @config[:smseco_gateway_orgs] %>
+<% end -%>
