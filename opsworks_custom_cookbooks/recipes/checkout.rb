@@ -36,6 +36,7 @@ when 'git'
     destination node[:opsworks_custom_cookbooks][:destination]
     repository node[:opsworks_custom_cookbooks][:scm][:repository]
     revision node[:opsworks_custom_cookbooks][:scm][:revision]
+    retries 2
     not_if do
       node[:opsworks_custom_cookbooks][:scm][:repository].blank? || ::File.directory?(node[:opsworks_custom_cookbooks][:destination])
     end
@@ -51,6 +52,7 @@ when 'svn'
     destination node[:opsworks_custom_cookbooks][:destination]
     repository node[:opsworks_custom_cookbooks][:scm][:repository]
     revision node[:opsworks_custom_cookbooks][:scm][:revision]
+    retries 2
     not_if do
       node[:opsworks_custom_cookbooks][:scm][:repository].blank? || ::File.directory?(node[:opsworks_custom_cookbooks][:destination])
     end
