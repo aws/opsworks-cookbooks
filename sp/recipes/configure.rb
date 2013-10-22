@@ -53,15 +53,6 @@ node[:deploy].each do |application, deploy|
     owner deploy[:user]
     variables(:redis => deploy[:redis] || {}, :environment => deploy[:rails_env])
   end
-
-  template "#{deploy[:deploy_to]}/shared/config/sidekiq.yml" do
-    source "sidekiq.yml.erb"
-    cookbook 'sp'
-    mode "0660"
-    group deploy[:group]
-    owner deploy[:user]
-    variables(:sidekiq => deploy[:sidekiq] || {}, :environment => deploy[:rails_env])
-  end
   
   template "#{deploy[:deploy_to]}/shared/config/amazon_s3.yml" do
     source "amazon_s3.yml.erb"
