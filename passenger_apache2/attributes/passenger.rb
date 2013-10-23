@@ -12,7 +12,7 @@ when /2.0/
 end
 
 default[:passenger][:version] = '3.0.19'
-default[:passenger][:root_path] = "#{node[:passenger][:gems_path]}/passenger-#{passenger[:version]}"
+default[:passenger][:root_path] = "#{node[:passenger][:gems_path]}/passenger-enterprise-server-#{passenger[:version]}"
 
 if platform?('centos','redhat','fedora','amazon') and node[:packages][:dist_only]
   default[:passenger][:module_path] = "#{node['apache']['libexecdir']}/mod_passenger.so"
