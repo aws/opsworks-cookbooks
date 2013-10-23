@@ -54,6 +54,7 @@ end
 ruby_block "ensure only our passenger version is installed by deinstalling any other version" do
   block do
     name = 'passenger-enterprise-server'
+    ensured_version = node[:passenger][:version]
     versions = `#{node[:dependencies][:gem_binary]} list #{name}`
     versions = versions.scan(/(\d[a-zA-Z0-9\.]*)/).flatten.compact
     for version in versions
