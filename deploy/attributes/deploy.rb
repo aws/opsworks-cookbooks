@@ -3,6 +3,8 @@ include_attribute 'deploy::rails_stack'
 
 default[:opsworks][:deploy_user][:shell] = '/bin/bash'
 default[:opsworks][:deploy_user][:user] = 'deploy'
+#default[:opsworks][:deploy_user][:home] = '/home/deploy'
+
 case node[:platform]
 when 'debian','ubuntu'
   default[:opsworks][:deploy_user][:group] = 'www-data'
@@ -25,7 +27,7 @@ node[:deploy].each do |application, deploy|
   else
     default[:deploy][application][:absolute_document_root] = "#{default[:deploy][application][:current_path]}/"
   end
-  
+
   if File.exists?('/usr/local/bin/rake')
     # local Ruby rake is installed
     default[:deploy][application][:rake] = '/usr/local/bin/rake'
@@ -46,19 +48,20 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:user] = node[:opsworks][:deploy_user][:user]
   default[:deploy][application][:group] = node[:opsworks][:deploy_user][:group]
   default[:deploy][application][:shell] = node[:opsworks][:deploy_user][:shell]
-  home = self[:passwd] && 
-         self[:passwd][self[:deploy][application][:user]] &&
-         self[:passwd][self[:deploy][application][:user]][:dir] || "/home/#{self[:deploy][application][:user]}"
-
-  default[:deploy][application][:home] = home
-
+  default[:deploy][application][:home] = if !node[:opsworks][:deploy_user][:home].nil?
+                                           node[:opsworks][:deploy_user][:home]
+                                         elsif self[:passwd] && self[:passwd][self[:deploy][application][:user]] && self[:passwd][self[:deploy][application][:user]][:dir]
+                                           self[:passwd][self[:deploy][application][:user]][:dir]
+                                         else
+                                           "/home/#{self[:deploy][application][:user]}"
+                                         end
   default[:deploy][application][:sleep_before_restart] = 0
   default[:deploy][application][:stack][:needs_reload] = true
   default[:deploy][application][:enable_submodules] = true
   default[:deploy][application][:shallow_clone] = false
   default[:deploy][application][:delete_cached_copy] = true
   default[:deploy][application][:symlink_before_migrate] = {}
-  
+
   default[:deploy][application][:environment] = {"RAILS_ENV" => deploy[:rails_env],
                                                  "RUBYOPT" => "",
                                                  "RACK_ENV" => deploy[:rails_env],
