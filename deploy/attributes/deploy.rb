@@ -3,6 +3,8 @@ include_attribute 'deploy::rails_stack'
 
 default[:opsworks][:deploy_user][:shell] = '/bin/bash'
 default[:opsworks][:deploy_user][:user] = 'deploy'
+default[:opsworks][:deploy_user][:home] = ''
+
 case node[:platform]
 when 'debian','ubuntu'
   default[:opsworks][:deploy_user][:group] = 'www-data'
@@ -23,7 +25,7 @@ node[:deploy].each do |application, deploy|
   else
     default[:deploy][application][:absolute_document_root] = "#{default[:deploy][application][:current_path]}/"
   end
-  
+
   if File.exists?('/usr/local/bin/rake')
     # local Ruby rake is installed
     default[:deploy][application][:rake] = '/usr/local/bin/rake'
@@ -44,9 +46,14 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:user] = node[:opsworks][:deploy_user][:user]
   default[:deploy][application][:group] = node[:opsworks][:deploy_user][:group]
   default[:deploy][application][:shell] = node[:opsworks][:deploy_user][:shell]
-  home = self[:passwd] && 
-         self[:passwd][self[:deploy][application][:user]] &&
-         self[:passwd][self[:deploy][application][:user]][:dir] || "/home/#{self[:deploy][application][:user]}"
+
+  if !node[:opsworks][:deploy_user][:home].empty?
+    home = node[:opsworks][:deploy_user][:home]
+  else
+    home = self[:passwd] &&
+      self[:passwd][self[:deploy][application][:user]] &&
+      self[:passwd][self[:deploy][application][:user]][:dir] || "/home/#{self[:deploy][application][:user]}"
+  end
 
   default[:deploy][application][:home] = home
 
@@ -56,7 +63,7 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:shallow_clone] = false
   default[:deploy][application][:delete_cached_copy] = true
   default[:deploy][application][:symlink_before_migrate] = {}
-  
+
   default[:deploy][application][:environment] = {"RAILS_ENV" => deploy[:rails_env],
                                                  "RUBYOPT" => "",
                                                  "RACK_ENV" => deploy[:rails_env],
