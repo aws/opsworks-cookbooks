@@ -4,34 +4,40 @@ describe_recipe 'ruby_enterprise::default' do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
-  describe 'debian based machines' do
-    it 'removes ruby1.9' do
-      skip unless ['debian','ubuntu'].include?(node[:platform])
-      package('ruby1.9').wont_be_installed
+  case node[:platform]
+  when 'debian','ubuntu'
+    describe 'debian based machines' do
+      it 'removes ruby1.9' do
+        # using "package" generates a failure
+        refute system("dpkg --get-selections 'ruby1.9' | grep install")
+      end
+
+      it 'removes opsworks-ruby1.9' do
+        # using "package" generates a failure
+        refute system("dpkg --get-selections 'opsworks-ruby1.9' | grep install")
+      end
+
+      it 'creates deb file' do
+        arch = RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'
+        file("/tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}").must_exist
+      end
     end
 
-    it 'creates deb file' do
-      skip unless ['debian','ubuntu'].include?(node[:platform])
-      arch = RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'
-      file("/tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}").must_exist
-    end
+  when 'centos','redhat','fedora','amazon'
+    describe 'redhat based machines' do
+      it 'creates rpm file' do
+        arch = node[:kernel][:machine]
+        file("/tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}").must_exist
+      end
 
-    it 'installs libssl0.9.8 if we are using specific ubuntu versions' do
-      skip unless node[:platform].eql?('ubuntu') && ['11.10', '12.04'].include?("#{node[:platform_version]}")
-      package('libssl0.9.8').must_be_installed
-    end
-  end
+      it 'removes ruby19' do
+        package('ruby19').wont_be_installed
+      end
 
-  describe 'redhat based machines' do
-    it 'creates rpm file' do
-      skip unless ['centos','amazon','redhat','fedora','scientific','oracle'].include?(node[:platform])
-      arch = node[:kernel][:machine]
-      file("/tmp/#{File.basename(node[:ruby_enterprise][:url][arch])}").must_exist
-    end
+      it 'removes opsworks-ruby19' do
+        package('opsworks-ruby19').wont_be_installed
+      end
 
-    it 'removes ruby19' do
-      skip unless ['centos','amazon','redhat','fedora','scientific','oracle'].include?(node[:platform])
-      package('ruby19').wont_be_installed
     end
   end
 
