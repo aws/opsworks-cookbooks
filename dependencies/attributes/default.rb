@@ -13,3 +13,12 @@ default[:dependencies][:gem_binary] = "/usr/local/bin/gem"
 
 default["dependencies"]["gem_uninstall_options"] = "--force --executables"
 default["dependencies"]["gem_install_options"] = "--no-ri --no-rdoc"
+
+case node["opsworks"]["ruby_stack"]
+when "ruby"
+  include_attribute "ruby::ruby"
+when "ruby_enterprise"
+  include_attribute "ruby_enterprise::ruby_enterprise"
+end
+
+include_attribute "opsworks_nodejs::opsworks_nodejs" if node["opsworks"]["instance"]["layers"].include?("nodejs-app")
