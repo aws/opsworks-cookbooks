@@ -1,4 +1,6 @@
-local_nodejs_up_to_date = ::File.exists?("/usr/local/bin/node") && system("/usr/local/bin/node -v | grep -q '#{node[:opsworks_nodejs][:version]}'")
+local_nodejs_up_to_date = ::File.exists?("/usr/local/bin/node") &&
+                          system("/usr/local/bin/node -v | grep '#{node[:opsworks_nodejs][:version]}' > /dev/null 2>&1") &&
+                          system("rpm -qa | grep 'opsworks-nodejs' > /dev/null 2>&1")
 
 case node[:platform]
 when 'debian', 'ubuntu'
