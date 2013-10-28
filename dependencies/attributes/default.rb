@@ -21,4 +21,6 @@ when "ruby_enterprise"
   include_attribute "ruby_enterprise::ruby_enterprise"
 end
 
-include_attribute "opsworks_nodejs::opsworks_nodejs" if node["opsworks"]["instance"]["layers"].include?("nodejs-app")
+include_attribute "opsworks_nodejs::opsworks_nodejs" if node["opsworks"].has_key?("instance") &&
+                                                        node["opsworks"]["instance"].has_key?("layers") &&
+                                                        node["opsworks"]["instance"]["layers"].include?("nodejs-app")
