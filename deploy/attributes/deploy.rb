@@ -3,6 +3,7 @@ include_attribute 'deploy::rails_stack'
 
 default[:opsworks][:deploy_user][:shell] = '/bin/bash'
 default[:opsworks][:deploy_user][:user] = 'deploy'
+# the $HOME of the deploy user can be overwritten with this variable.
 #default[:opsworks][:deploy_user][:home] = '/home/deploy'
 
 case node[:platform]
@@ -63,7 +64,7 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:environment] = {"RAILS_ENV" => deploy[:rails_env],
                                                  "RUBYOPT" => "",
                                                  "RACK_ENV" => deploy[:rails_env],
-                                                 "HOME" => home}
+                                                 "HOME" => node[:deploy][application][:home]}
   default[:deploy][application][:ssl_support] = false
   default[:deploy][application][:auto_npm_install_on_deploy] = true
 
