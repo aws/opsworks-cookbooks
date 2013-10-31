@@ -12,6 +12,6 @@
 # and limitations under the License.
 
 include_recipe 'java::context'
-# Optional: Trigger a Tomcat restart in case of a configure event, if relevant
-# settings in custom JSON have changed (e.g. java_opts/JAVA_OPTS):
-#include_recipe 'java::container_config'
+# Optional: Trigger an application server restart in case of a configure event,
+# if relevant settings in custom JSON have changed (e.g. java_opts/JAVA_OPTS):
+#include_recipe "java::#{node['java_app_server']}_container_config"

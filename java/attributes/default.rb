@@ -11,7 +11,19 @@
 # or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 
-default['tomcat']['base_version'] = 6
+default['jvm'] = 'openjdk'
+default['jvm_version'] = '7'
+case node[:platform]
+when 'centos', 'redhat', 'fedora', 'amazon'
+  default['jvm_options'] = ''
+when 'debian', 'ubuntu'
+  default['jvm_options'] = '-Djava.awt.headless=true -XX:+UseConcMarkSweepGC'
+end
+default['java_app_server'] = 'tomcat'
+default['java_app_server_version'] = '7.0'
+
+default['tomcat']['base_version'] = node['java_app_server_version'].to_i
+default['tomcat']['service_name'] = "tomcat#{node['tomcat']['base_version']}"
 default['tomcat']['port'] = 8080
 default['tomcat']['secure_port'] = 8443
 default['tomcat']['ajp_port'] = 8009
@@ -19,16 +31,12 @@ default['tomcat']['shutdown_port'] = 8005
 default['tomcat']['uri_encoding'] = 'UTF-8'
 default['tomcat']['unpack_wars'] = true
 default['tomcat']['auto_deploy'] = true
-case node[:platform]
-when 'centos', 'redhat', 'fedora', 'amazon'
-  default['tomcat']['java_opts'] = ''
-when 'debian', 'ubuntu'
-  default['tomcat']['java_opts'] = '-Djava.awt.headless=true -Xmx128m -XX:+UseConcMarkSweepGC'
-end
+default['tomcat']['java_opts'] = node['jvm_options']
 default['tomcat']['catalina_base_dir'] = "/etc/tomcat#{node['tomcat']['base_version']}"
 default['tomcat']['webapps_base_dir'] = "/var/lib/tomcat#{node['tomcat']['base_version']}/webapps"
 default['tomcat']['lib_dir'] = "/usr/share/tomcat#{node['tomcat']['base_version']}/lib"
 default['tomcat']['java_dir'] = '/usr/share/java'
+default['tomcat']['context_dir'] = ::File.join(node['tomcat']['catalina_base_dir'], 'Catalina', 'localhost')
 default['tomcat']['mysql_connector_jar'] = 'mysql-connector-java.jar'
 default['tomcat']['apache_tomcat_bind_mod'] = 'proxy_http' # or: 'proxy_ajp'
 default['tomcat']['apache_tomcat_bind_config'] = 'tomcat_bind.conf'

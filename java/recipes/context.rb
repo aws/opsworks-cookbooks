@@ -11,20 +11,25 @@
 # or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 
-include_recipe 'java::service'
+include_recipe "java::#{node['java_app_server']}_service"
 
 node[:deploy].each do |application, deploy|
+  if deploy[:application_type] != 'java'
+    Chef::Log.debug("Skipping deploy::java application #{application} as it is not a Java app")
+    next
+  end
+
   context_name = deploy[:document_root].blank? ? application : deploy[:document_root]
 
   template "context file for #{application} (context name: #{context_name})" do
-    path ::File.join(node['tomcat']['catalina_base_dir'], 'Catalina', 'localhost', "#{context_name}.xml")
+    path ::File.join(node[node['java_app_server']]['context_dir'], "#{context_name}.xml")
     source 'webapp_context.xml.erb'
-    owner node['tomcat']['user']
-    group node['tomcat']['group']
+    owner node[node['java_app_server']]['user']
+    group node[node['java_app_server']]['group']
     mode 0640
     backup false
     only_if { node['datasources'][context_name] }
     variables(:resource_name => node['datasources'][context_name], :webapp_name => application)
-    notifies :restart, resources(:service => 'tomcat')
+    notifies :restart, resources(:service => node['java_app_server'])
   end
 end

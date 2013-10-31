@@ -14,6 +14,11 @@
 include_recipe 'deploy'
 
 node[:deploy].each do |application, deploy|
+  if deploy[:application_type] != 'java'
+    Chef::Log.debug("Skipping deploy::java application #{application} as it is not a Java app")
+    next
+  end
+
   opsworks_deploy_dir do
     user deploy[:user]
     group deploy[:group]
@@ -42,12 +47,12 @@ node[:deploy].each do |application, deploy|
     action :create
   end
 
-  include_recipe 'java::service'
+  include_recipe "java::#{node['java_app_server']}_service"
 
-  execute 'trigger tomcat service restart' do
+  execute "trigger #{node['java_app_server']} service restart" do
     command '/bin/true'
-    not_if { node['tomcat']['auto_deploy'].to_s == 'true' }
-    notifies :restart, resources(:service => 'tomcat')
+    not_if { node[node['java_app_server']]['auto_deploy'].to_s == 'true' }
+    notifies :restart, resources(:service => node['java_app_server'])
   end
 end
 

@@ -12,7 +12,7 @@
 # and limitations under the License.
 
 service 'tomcat' do
-  service_name "tomcat#{node['tomcat']['base_version']}"
+  service_name node['tomcat']['service_name']
 
   case node[:platform]
   when 'centos', 'redhat', 'fedora', 'amazon'

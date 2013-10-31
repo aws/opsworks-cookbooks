@@ -11,22 +11,24 @@
 # or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 
-include_recipe 'java::install'
-include_recipe 'java::service'
+include_recipe 'java::tomcat_service'
 
-service 'tomcat' do
-  action :enable
-end
-
-# for EBS-backed instances we rely on autofs
-bash '(re-)start autofs earlier' do
-  user 'root'
-  code <<-EOC
-    service autofs restart
-  EOC
+template 'tomcat environment configuration' do
+  path ::File.join(node['tomcat']['system_env_dir'], "tomcat#{node['tomcat']['base_version']}")
+  source 'tomcat_env_config.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+  backup false
   notifies :restart, resources(:service => 'tomcat')
 end
 
-include_recipe 'java::container_config'
-include_recipe 'apache2'
-include_recipe 'java::apache_tomcat_bind'
+template 'tomcat server configuration' do
+  path ::File.join(node['tomcat']['catalina_base_dir'], 'server.xml')
+  source 'server.xml.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+  backup false
+  notifies :restart, resources(:service => 'tomcat')
+end
