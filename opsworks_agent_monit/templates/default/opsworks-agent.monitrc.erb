@@ -1,30 +1,30 @@
-# restart process if not responsive
 check process opsworks-agent with pidfile "<%= node[:opsworks_agent][:shared_dir] %>/pid/opsworks-agent.pid"
   start program = "/etc/init.d/opsworks-agent start"
   stop program = "/etc/init.d/opsworks-agent stop"
+  depends on opsworks-agent-master-running
+  depends on opsworks-agent-statistic-daemons-log
+  depends on opsworks-agent-process-command-daemons-log
+  depends on opsworks-agent-keep-alive-daemons-log
   group opsworks
 
-# check for running master process
-check process opsworks-agent-master-running matching "opsworks-agent:\smaster" every 3 cycles
-  start program = "/etc/init.d/opsworks-agent start"
-  stop program = "/etc/init.d/opsworks-agent stop"
+check process opsworks-agent-master-running matching "opsworks-agent:\smaster"
+  if not exist for 2 cycles then restart
   group opsworks
 
 # check run of statistic daemon
 check file opsworks-agent-statistic-daemons-log with path "<%= node[:opsworks_agent][:log_dir] %>/opsworks-agent.statistics.log"
-  if timestamp > 2 minutes for 4 cycles then exec "/etc/init.d/opsworks-agent restart"
-  if does not exist        for 4 cycles then exec "/etc/init.d/opsworks-agent restart"
+  if timestamp > 2 minutes for 3 cycles then restart
+  if does not exist for 3 cycles then restart
   group opsworks
 
 # check run of process command daemon
 check file opsworks-agent-process-command-daemons-log with path "<%= node[:opsworks_agent][:log_dir] %>/opsworks-agent.process_command.log"
-  if timestamp > 2 minutes for 3 cycles then exec "/etc/init.d/opsworks-agent restart"
-  if does not exist        for 3 cycles then exec "/etc/init.d/opsworks-agent restart"
+  if timestamp > 2 minutes for 3 cycles then restart
+  if does not exist for 3 cycles then restart
   group opsworks
 
 # check run of keep alive deamon
 check file opsworks-agent-keep-alive-daemons-log with path "<%= node[:opsworks_agent][:log_dir] %>/opsworks-agent.keep_alive.log"
-  if timestamp > 2 minutes for 2 cycles then exec "/etc/init.d/opsworks-agent restart"
-  if does not exist        for 2 cycles then exec "/etc/init.d/opsworks-agent restart"
+  if timestamp > 2 minutes for 3 cycles then restart
+  if does not exist for 3 cycles then restart
   group opsworks
-
