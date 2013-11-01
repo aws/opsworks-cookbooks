@@ -13,14 +13,23 @@
 
 default['jvm'] = 'openjdk'
 default['jvm_version'] = '7'
-case node[:platform]
-when 'centos', 'redhat', 'fedora', 'amazon'
-  default['jvm_options'] = ''
-when 'debian', 'ubuntu'
-  default['jvm_options'] = '-Djava.awt.headless=true -XX:+UseConcMarkSweepGC'
-end
+default['jvm_options'] = ''
 default['java_app_server'] = 'tomcat'
 default['java_app_server_version'] = '7.0'
+
+default['jvm_pkg'] = {}
+case node[:platform_family]
+when 'debian'
+  default['jvm_pkg']['name'] = "openjdk-#{node['jvm_version']}-jdk"
+  default['jvm_pkg']['custom_pkg_file'] = '/tmp/custom_jdk.tgz'
+when 'rhel'
+  default['jvm_pkg']['name'] = "java-1.#{node['jvm_version']}.0-openjdk-devel"
+  default['jvm_pkg']['custom_pkg_file'] = '/tmp/custom_jdk.rpm'
+end
+default['jvm_pkg']['use_custom_pkg_location'] = false
+default['jvm_pkg']['custom_pkg_location_url_debian'] = ''
+default['jvm_pkg']['custom_pkg_location_url_rhel'] = ''
+default['jvm_pkg']['java_home_basedir'] = '/usr/local'
 
 default['tomcat']['base_version'] = node['java_app_server_version'].to_i
 default['tomcat']['service_name'] = "tomcat#{node['tomcat']['base_version']}"
@@ -40,15 +49,15 @@ default['tomcat']['context_dir'] = ::File.join(node['tomcat']['catalina_base_dir
 default['tomcat']['mysql_connector_jar'] = 'mysql-connector-java.jar'
 default['tomcat']['apache_tomcat_bind_mod'] = 'proxy_http' # or: 'proxy_ajp'
 default['tomcat']['apache_tomcat_bind_config'] = 'tomcat_bind.conf'
-default['tomcat']['apache_tomcat_bind_path'] = '/tc/'
+default['tomcat']['apache_tomcat_bind_path'] = '/'
 default['tomcat']['webapps_dir_entries_to_delete'] = %w(config log public tmp)
-case node[:platform]
-when 'centos', 'redhat', 'fedora', 'amazon'
-  default['tomcat']['user'] = 'tomcat'
-  default['tomcat']['group'] = 'tomcat'
-  default['tomcat']['system_env_dir'] = '/etc/sysconfig'
-when 'debian', 'ubuntu'
+case node[:platform_family]
+when 'debian'
   default['tomcat']['user'] = "tomcat#{node['tomcat']['base_version']}"
   default['tomcat']['group'] = "tomcat#{node['tomcat']['base_version']}"
   default['tomcat']['system_env_dir'] = '/etc/default'
+when 'rhel'
+  default['tomcat']['user'] = 'tomcat'
+  default['tomcat']['group'] = 'tomcat'
+  default['tomcat']['system_env_dir'] = '/etc/sysconfig'
 end

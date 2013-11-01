@@ -11,15 +11,5 @@
 # or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 
-service 'tomcat' do
-  service_name node['tomcat']['service_name']
-
-  case node[:platform_family]
-  when 'debian'
-    supports :restart => true, :reload => false, :status => true
-  when 'rhel'
-    supports :restart => true, :reload => true, :status => true
-  end
-
-  action :nothing
-end
+include_recipe 'java::jvm_install'
+include_recipe 'java::tomcat_setup'

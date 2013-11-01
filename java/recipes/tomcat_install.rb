@@ -11,14 +11,9 @@
 # or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 
-tomcat_pkgs = value_for_platform(
-  ['debian', 'ubuntu'] => {
-    'default' => ["tomcat#{node['tomcat']['base_version']}", 'libtcnative-1', 'libmysql-java']
-  },
-  ['centos', 'redhat', 'fedora', 'amazon'] => {
-    'default' => ["tomcat#{node['tomcat']['base_version']}", 'tomcat-native', 'mysql-connector-java']
-  },
-  'default' => ["tomcat#{node['tomcat']['base_version']}"]
+tomcat_pkgs = value_for_platform_family(
+  'debian' => ["tomcat#{node['tomcat']['base_version']}", 'libtcnative-1', 'libmysql-java'],
+  'rhel' => ["tomcat#{node['tomcat']['base_version']}", 'tomcat-native', 'mysql-connector-java']
 )
 
 tomcat_pkgs.each do |pkg|
