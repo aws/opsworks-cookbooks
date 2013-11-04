@@ -12,4 +12,3 @@
 # and limitations under the License.
 
 include_recipe 'java::jvm_install'
-include_recipe 'java::tomcat_setup'

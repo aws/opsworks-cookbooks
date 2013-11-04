@@ -13,11 +13,11 @@
 
 # Service-specific configuration file for tomcat<%= node['tomcat']['base_version'] %>. This will be sourced by
 # the SysV init script after the global configuration file
-# /etc/tomcat6/tomcat<%= node['tomcat']['base_version'] %>.conf, thus allowing values to be overridden in
+# /etc/tomcat<%= node['tomcat']['base_version'] %>/tomcat<%= node['tomcat']['base_version'] %>.conf, thus allowing values to be overridden in
 # a per-service manner.
 #
 # NEVER change the init script itself. To change values for all services make
-# your changes in /etc/tomcat6/tomcat<%= node['tomcat']['base_version'] %>.conf
+# your changes in /etc/tomcat<%= node['tomcat']['base_version'] %>/tomcat<%= node['tomcat']['base_version'] %>.conf
 #
 # To change values for a specific service make your edits here.
 # To create a new service create a link from /etc/init.d/<your new service> to
@@ -28,7 +28,7 @@
 #
 
 # Where your java installation lives
-#JAVA_HOME="/usr/lib/jvm/java"
+JAVA_HOME="<%= "#{::File.expand_path(::File.join(`readlink -f /usr/bin/java`, '..', '..'))}" %>"
 
 # Where your tomcat installation lives
 #CATALINA_BASE="/usr/share/tomcat<%= node['tomcat']['base_version'] %>"

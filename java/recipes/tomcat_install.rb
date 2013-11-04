@@ -23,7 +23,7 @@ tomcat_pkgs.each do |pkg|
 end
 
 link ::File.join(node['tomcat']['lib_dir'], node['tomcat']['mysql_connector_jar']) do
-  to ::File.join(node['tomcat']['java_dir'], node['tomcat']['mysql_connector_jar'])
+  to ::File.join(node['tomcat']['java_shared_lib_dir'], node['tomcat']['mysql_connector_jar'])
   action :create
 end
 

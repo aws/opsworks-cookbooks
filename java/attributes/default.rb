@@ -18,17 +18,15 @@ default['java_app_server'] = 'tomcat'
 default['java_app_server_version'] = '7.0'
 
 default['jvm_pkg'] = {}
-case node[:platform_family]
-when 'debian'
-  default['jvm_pkg']['name'] = "openjdk-#{node['jvm_version']}-jdk"
-  default['jvm_pkg']['custom_pkg_file'] = '/tmp/custom_jdk.tgz'
-when 'rhel'
-  default['jvm_pkg']['name'] = "java-1.#{node['jvm_version']}.0-openjdk-devel"
-  default['jvm_pkg']['custom_pkg_file'] = '/tmp/custom_jdk.rpm'
-end
 default['jvm_pkg']['use_custom_pkg_location'] = false
 default['jvm_pkg']['custom_pkg_location_url_debian'] = ''
 default['jvm_pkg']['custom_pkg_location_url_rhel'] = ''
+case node[:platform_family]
+when 'debian'
+  default['jvm_pkg']['name'] = "openjdk-#{node['jvm_version']}-jdk"
+when 'rhel'
+  default['jvm_pkg']['name'] = "java-1.#{node['jvm_version']}.0-openjdk-devel"
+end
 default['jvm_pkg']['java_home_basedir'] = '/usr/local'
 
 default['tomcat']['base_version'] = node['java_app_server_version'].to_i
@@ -44,7 +42,7 @@ default['tomcat']['java_opts'] = node['jvm_options']
 default['tomcat']['catalina_base_dir'] = "/etc/tomcat#{node['tomcat']['base_version']}"
 default['tomcat']['webapps_base_dir'] = "/var/lib/tomcat#{node['tomcat']['base_version']}/webapps"
 default['tomcat']['lib_dir'] = "/usr/share/tomcat#{node['tomcat']['base_version']}/lib"
-default['tomcat']['java_dir'] = '/usr/share/java'
+default['tomcat']['java_shared_lib_dir'] = '/usr/share/java'
 default['tomcat']['context_dir'] = ::File.join(node['tomcat']['catalina_base_dir'], 'Catalina', 'localhost')
 default['tomcat']['mysql_connector_jar'] = 'mysql-connector-java.jar'
 default['tomcat']['apache_tomcat_bind_mod'] = 'proxy_http' # or: 'proxy_ajp'

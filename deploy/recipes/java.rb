@@ -52,7 +52,7 @@ node[:deploy].each do |application, deploy|
   execute "trigger #{node['java_app_server']} service restart" do
     command '/bin/true'
     not_if { node[node['java_app_server']]['auto_deploy'].to_s == 'true' }
-    notifies :restart, resources(:service => node['java_app_server'])
+    notifies :restart, "service[#{node['java_app_server']}]"
   end
 end
 

@@ -32,5 +32,5 @@ template 'tomcat thru apache binding' do
   group 'root'
   mode 0644
   backup false
-  notifies :restart, resources(:service => 'apache2')
+  notifies :restart, 'service[apache2]'
 end

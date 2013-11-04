@@ -20,7 +20,7 @@ template 'tomcat environment configuration' do
   group 'root'
   mode 0644
   backup false
-  notifies :restart, resources(:service => 'tomcat')
+  notifies :restart, 'service[tomcat]'
 end
 
 template 'tomcat server configuration' do
@@ -30,5 +30,5 @@ template 'tomcat server configuration' do
   group 'root'
   mode 0644
   backup false
-  notifies :restart, resources(:service => 'tomcat')
+  notifies :restart, 'service[tomcat]'
 end
