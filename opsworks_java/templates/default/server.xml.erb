@@ -50,7 +50,7 @@
               type="org.apache.catalina.UserDatabase"
               description="User database that can be updated and saved"
               factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
-              pathname="conf/tomcat-users.xml" />
+              pathname="<%= node['opsworks_java']['tomcat']['userdatabase_pathname'] %>" />
   </GlobalNamingResources>
 
   <!-- A "Service" is a collection of one or more "Connectors" that share
@@ -61,10 +61,14 @@
   <Service name="Catalina">
 
     <!--The connectors can use a shared executor, you can define one or more named thread pools-->
+<% unless node['opsworks_java']['tomcat']['use_threadpool'] -%>
     <!--
+<% end -%>
     <Executor name="tomcatThreadPool" namePrefix="catalina-exec-"
-        maxThreads="150" minSpareThreads="4"/>
+        maxThreads="<%= node['opsworks_java']['tomcat']['threadpool_max_threads'] %>" minSpareThreads="<%= node['opsworks_java']['tomcat']['threadpool_min_spare_threads'] %>"/>
+<% unless node['opsworks_java']['tomcat']['use_threadpool'] -%>
     -->
+<% end -%>
 
 
     <!-- A "Connector" represents an endpoint by which requests are received
@@ -74,28 +78,42 @@
          APR (HTTP/AJP) Connector: /docs/apr.html
          Define a non-SSL HTTP/1.1 Connector on port <%= node['opsworks_java']['tomcat']['port'] %>
     -->
+<% if node['opsworks_java']['tomcat']['use_threadpool'] -%>
+    <!--
+<% end -%>
     <Connector port="<%= node['opsworks_java']['tomcat']['port'] %>" protocol="HTTP/1.1"
-               connectionTimeout="20000"
+               connectionTimeout="<%= node['opsworks_java']['tomcat']['connection_timeout'] %>"
                URIEncoding="<%= node['opsworks_java']['tomcat']['uri_encoding'] %>"
                redirectPort="<%= node['opsworks_java']['tomcat']['secure_port'] %>" />
+<% if node['opsworks_java']['tomcat']['use_threadpool'] -%>
+    -->
+<% end -%>
     <!-- A "Connector" using the shared thread pool-->
+<% unless node['opsworks_java']['tomcat']['use_threadpool'] -%>
     <!--
+<% end -%>
     <Connector executor="tomcatThreadPool"
                port="<%= node['opsworks_java']['tomcat']['port'] %>" protocol="HTTP/1.1"
-               connectionTimeout="20000"
+               connectionTimeout="<%= node['opsworks_java']['tomcat']['connection_timeout'] %>"
                URIEncoding="<%= node['opsworks_java']['tomcat']['uri_encoding'] %>"
                redirectPort="<%= node['opsworks_java']['tomcat']['secure_port'] %>" />
+<% unless node['opsworks_java']['tomcat']['use_threadpool'] -%>
     -->
+<% end -%>
     <!-- Define a SSL HTTP/1.1 Connector on port <%= node['opsworks_java']['tomcat']['secure_port'] %>
          This connector uses the JSSE configuration, when using APR, the
          connector should be using the OpenSSL style configuration
          described in the APR documentation -->
+<% unless node['opsworks_java']['tomcat']['use_ssl_connector'] -%>
     <!--
+<% end -%>
     <Connector port="<%= node['opsworks_java']['tomcat']['secure_port'] %>" protocol="HTTP/1.1" SSLEnabled="true"
-               maxThreads="150" scheme="https" secure="true"
+               maxThreads="<%= node['opsworks_java']['tomcat']['threadpool_max_threads'] %>" scheme="https" secure="true"
                URIEncoding="<%= node['opsworks_java']['tomcat']['uri_encoding'] %>"
                clientAuth="false" sslProtocol="TLS" />
+<% unless node['opsworks_java']['tomcat']['use_ssl_connector'] -%>
     -->
+<% end -%>
 
     <!-- Define an AJP 1.3 Connector on port <%= node['opsworks_java']['tomcat']['ajp_port'] %> -->
     <Connector port="<%= node['opsworks_java']['tomcat']['ajp_port'] %>" protocol="AJP/1.3"
