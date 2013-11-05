@@ -14,7 +14,7 @@
 include_recipe 'opsworks_java::tomcat_service'
 
 template 'tomcat environment configuration' do
-  path ::File.join(node['tomcat']['system_env_dir'], "tomcat#{node['tomcat']['base_version']}")
+  path ::File.join(node['opsworks_java']['tomcat']['system_env_dir'], "tomcat#{node['opsworks_java']['tomcat']['base_version']}")
   source 'tomcat_env_config.erb'
   owner 'root'
   group 'root'
@@ -24,7 +24,7 @@ template 'tomcat environment configuration' do
 end
 
 template 'tomcat server configuration' do
-  path ::File.join(node['tomcat']['catalina_base_dir'], 'server.xml')
+  path ::File.join(node['opsworks_java']['tomcat']['catalina_base_dir'], 'server.xml')
   source 'server.xml.erb'
   owner 'root'
   group 'root'

@@ -53,12 +53,12 @@
 
   Include <%= @params[:local_config] %>*
 
-  <% if node['tomcat']['apache_tomcat_bind_mod'] == 'proxy_ajp' -%>
-  ProxyPass <%= node['tomcat']['apache_tomcat_bind_path'] %> ajp://localhost:<%= node['tomcat']['ajp_port'] %>/
-  ProxyPassReverse <%= node['tomcat']['apache_tomcat_bind_path'] %> ajp://localhost:<%= node['tomcat']['ajp_port'] %>/
+  <% if node['opsworks_java']['tomcat']['apache_tomcat_bind_mod'] == 'proxy_ajp' -%>
+  ProxyPass <%= node['opsworks_java']['tomcat']['apache_tomcat_bind_path'] %> ajp://localhost:<%= node['opsworks_java']['tomcat']['ajp_port'] %>/
+  ProxyPassReverse <%= node['opsworks_java']['tomcat']['apache_tomcat_bind_path'] %> ajp://localhost:<%= node['opsworks_java']['tomcat']['ajp_port'] %>/
   <% else %>
-  ProxyPass <%= node['tomcat']['apache_tomcat_bind_path'] %> http://localhost:<%= node['tomcat']['port'] %>/
-  ProxyPassReverse <%= node['tomcat']['apache_tomcat_bind_path'] %> http://localhost:<%= node['tomcat']['port'] %>/
+  ProxyPass <%= node['opsworks_java']['tomcat']['apache_tomcat_bind_path'] %> http://localhost:<%= node['opsworks_java']['tomcat']['port'] %>/
+  ProxyPassReverse <%= node['opsworks_java']['tomcat']['apache_tomcat_bind_path'] %> http://localhost:<%= node['opsworks_java']['tomcat']['port'] %>/
   <% end -%>
 </VirtualHost>
 
@@ -114,12 +114,12 @@
 
   Include <%= @params[:local_config] %>-ssl*
 
-  <% if node['tomcat']['apache_tomcat_bind_mod'] == 'proxy_ajp' -%>
-  ProxyPass <%= node['tomcat']['apache_tomcat_bind_path'] %> ajp://localhost:<%= node['tomcat']['ajp_port'] %>/
-  ProxyPassReverse <%= node['tomcat']['apache_tomcat_bind_path'] %> ajp://localhost:<%= node['tomcat']['ajp_port'] %>/
+  <% if node['opsworks_java']['tomcat']['apache_tomcat_bind_mod'] == 'proxy_ajp' -%>
+  ProxyPass <%= node['opsworks_java']['tomcat']['apache_tomcat_bind_path'] %> ajp://localhost:<%= node['opsworks_java']['tomcat']['ajp_port'] %>/
+  ProxyPassReverse <%= node['opsworks_java']['tomcat']['apache_tomcat_bind_path'] %> ajp://localhost:<%= node['opsworks_java']['tomcat']['ajp_port'] %>/
   <% else %>
-  ProxyPass <%= node['tomcat']['apache_tomcat_bind_path'] %> http://localhost:<%= node['tomcat']['port'] %>/
-  ProxyPassReverse <%= node['tomcat']['apache_tomcat_bind_path'] %> http://localhost:<%= node['tomcat']['port'] %>/
+  ProxyPass <%= node['opsworks_java']['tomcat']['apache_tomcat_bind_path'] %> http://localhost:<%= node['opsworks_java']['tomcat']['port'] %>/
+  ProxyPassReverse <%= node['opsworks_java']['tomcat']['apache_tomcat_bind_path'] %> http://localhost:<%= node['opsworks_java']['tomcat']['port'] %>/
   <% end -%>
 </VirtualHost>
 <% end -%>

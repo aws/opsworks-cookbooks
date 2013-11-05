@@ -11,7 +11,7 @@
 # or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 
-include_recipe "opsworks_java::#{node['java_app_server']}_service"
+include_recipe "opsworks_java::#{node['opsworks_java']['java_app_server']}_service"
 
 node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'java'
@@ -19,17 +19,15 @@ node[:deploy].each do |application, deploy|
     next
   end
 
-  context_name = deploy[:document_root].blank? ? application : deploy[:document_root]
-
-  template "context file for #{application} (context name: #{context_name})" do
-    path ::File.join(node[node['java_app_server']]['context_dir'], "#{context_name}.xml")
+  template "context file for #{application}" do
+    path ::File.join(node['opsworks_java'][node['opsworks_java']['java_app_server']]['context_dir'], "#{application}.xml")
     source 'webapp_context.xml.erb'
-    owner node[node['java_app_server']]['user']
-    group node[node['java_app_server']]['group']
+    owner node['opsworks_java'][node['opsworks_java']['java_app_server']]['user']
+    group node['opsworks_java'][node['opsworks_java']['java_app_server']]['group']
     mode 0640
     backup false
-    only_if { node['datasources'][context_name] }
-    variables(:resource_name => node['datasources'][context_name], :webapp_name => application)
-    notifies :restart, "service[#{node['java_app_server']}]"
+    only_if { node['opsworks_java']['datasources'][application] }
+    variables(:resource_name => node['opsworks_java']['datasources'][application], :webapp_name => application)
+    notifies :restart, "service[#{node['opsworks_java']['java_app_server']}]"
   end
 end
