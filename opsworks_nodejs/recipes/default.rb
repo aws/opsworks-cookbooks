@@ -1,6 +1,10 @@
 local_nodejs_up_to_date = ::File.exists?("/usr/local/bin/node") &&
                           system("/usr/local/bin/node -v | grep '#{node[:opsworks_nodejs][:version]}' > /dev/null 2>&1") &&
-                          system("rpm -qa | grep 'opsworks-nodejs' > /dev/null 2>&1")
+                          if ['debian','ubuntu'].include?(node[:platform])
+                            system("dpkg --get-selections | grep -v deinstall | grep 'opsworks-nodejs' > /dev/null 2>&1")
+                          else
+                            system("rpm -qa | grep 'opsworks-nodejs' > /dev/null 2>&1")
+                          end
 
 case node[:platform]
 when 'debian', 'ubuntu'
