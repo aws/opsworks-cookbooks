@@ -1,4 +1,4 @@
-AWS OpsWorks Tomcat Example Cookbook
+AWS OpsWorks Java Cookbook
 
 <https://github.com/aws/>
 

@@ -31,7 +31,7 @@ node[:deploy].each do |application, deploy|
   end
 
   current_dir = ::File.join(deploy[:deploy_to], 'current')
-  webapp_dir = ::File.join(node['tomcat']['webapps_base_dir'], deploy[:document_root].blank? ? application : deploy[:document_root])
+  webapp_dir = ::File.join(node['tomcat']['webapps_base_dir'], application)
 
   # opsworks_deploy creates some stub dirs, which are not needed for typical webapps
   ruby_block "remove unnecessary directory entries in #{current_dir}" do
@@ -56,4 +56,5 @@ node[:deploy].each do |application, deploy|
   end
 end
 
+include_recipe 'java::web_app'
 include_recipe 'java::context'

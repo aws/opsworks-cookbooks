@@ -75,18 +75,21 @@ directory node['jvm_pkg']['java_home_basedir'] do
   action :nothing
 end
 
+rpm_package local_custom_pkg_file do
+  action :nothing
+  notifies :run, 'bash[update the Java alternatives]', :immediately
+  only_if { node[:platform_family] == 'rhel' }
+end
+
 remote_file local_custom_pkg_file do
   source node['jvm_pkg']["custom_pkg_location_url_#{node[:platform_family]}"]
   only_if { node['jvm_pkg']['use_custom_pkg_location'] }
-  unless ::File.extname(local_custom_pkg_file) == '.rpm'
+  if ::File.extname(local_custom_pkg_file) == '.rpm'
+    notifies :install, "rpm_package[#{local_custom_pkg_file}]", :immediately
+  else
     notifies :create, "directory[#{node['jvm_pkg']['java_home_basedir']}]", :immediately
     notifies :run, "execute[extract #{local_custom_pkg_file} to #{node['jvm_pkg']['java_home_basedir']}]", :immediately
   end
-end
-
-rpm_package local_custom_pkg_file do
-  notifies :run, 'bash[update the Java alternatives]', :immediately
-  only_if { node[:platform_family] == 'rhel' }
 end
 
 include_recipe 'java::tomcat_setup'

@@ -46,7 +46,6 @@ default['tomcat']['java_shared_lib_dir'] = '/usr/share/java'
 default['tomcat']['context_dir'] = ::File.join(node['tomcat']['catalina_base_dir'], 'Catalina', 'localhost')
 default['tomcat']['mysql_connector_jar'] = 'mysql-connector-java.jar'
 default['tomcat']['apache_tomcat_bind_mod'] = 'proxy_http' # or: 'proxy_ajp'
-default['tomcat']['apache_tomcat_bind_config'] = 'tomcat_bind.conf'
 default['tomcat']['apache_tomcat_bind_path'] = '/'
 default['tomcat']['webapps_dir_entries_to_delete'] = %w(config log public tmp)
 case node[:platform_family]
