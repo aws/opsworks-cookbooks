@@ -47,7 +47,7 @@ node[:deploy].each do |application, deploy|
     action :create
   end
 
-  include_recipe "java::#{node['java_app_server']}_service"
+  include_recipe "opsworks_java::#{node['java_app_server']}_service"
 
   execute "trigger #{node['java_app_server']} service restart" do
     command '/bin/true'
@@ -56,5 +56,5 @@ node[:deploy].each do |application, deploy|
   end
 end
 
-include_recipe 'java::web_app'
-include_recipe 'java::context'
+include_recipe 'opsworks_java::web_app'
+include_recipe 'opsworks_java::context'

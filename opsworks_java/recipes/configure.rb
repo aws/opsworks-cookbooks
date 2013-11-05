@@ -11,7 +11,4 @@
 # or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 
-include_recipe 'java::context'
-# Optional: Trigger an application server restart in case of a configure event,
-# if relevant settings in custom JSON have changed (e.g. java_opts/JAVA_OPTS):
-#include_recipe "java::#{node['java_app_server']}_container_config"
+include_recipe 'opsworks_java::context'

@@ -28,4 +28,4 @@ link ::File.join(node['tomcat']['lib_dir'], node['tomcat']['mysql_connector_jar'
 end
 
 # remove the ROOT webapp, if it got installed by default
-include_recipe 'java::remove_root_webapp'
+include_recipe 'opsworks_java::remove_root_webapp'

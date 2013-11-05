@@ -11,7 +11,7 @@
 # or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 
-include_recipe "java::#{node['java_app_server']}_service"
+include_recipe "opsworks_java::#{node['java_app_server']}_service"
 
 node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'java'

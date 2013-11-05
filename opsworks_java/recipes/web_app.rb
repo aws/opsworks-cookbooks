@@ -72,4 +72,4 @@ node[:deploy].each do |application, deploy|
 
 end
 
-include_recipe 'java::context'
+include_recipe 'opsworks_java::context'

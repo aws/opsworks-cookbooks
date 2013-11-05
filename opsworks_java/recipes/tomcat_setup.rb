@@ -11,8 +11,8 @@
 # or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 
-include_recipe 'java::tomcat_install'
-include_recipe 'java::tomcat_service'
+include_recipe 'opsworks_java::tomcat_install'
+include_recipe 'opsworks_java::tomcat_service'
 
 service 'tomcat' do
   action :enable
@@ -27,6 +27,6 @@ bash '(re-)start autofs earlier' do
   notifies :restart, 'service[tomcat]'
 end
 
-include_recipe 'java::tomcat_container_config'
+include_recipe 'opsworks_java::tomcat_container_config'
 include_recipe 'apache2'
-include_recipe 'java::apache_tomcat_bind'
+include_recipe 'opsworks_java::apache_tomcat_bind'
