@@ -27,6 +27,11 @@ node[:deploy].each do |application, deploy|
     end
     mounted_at deploy[:mounted_at]
     ssl_certificate_ca deploy[:ssl_certificate_ca]
+    if application == 'root'
+      target_context ''
+    else
+      target_context "#{application}/"
+    end
   end
 
   template "#{node[:apache][:dir]}/ssl/#{deploy[:domains].first}.crt" do
