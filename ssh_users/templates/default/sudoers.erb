@@ -26,6 +26,8 @@ root	ALL=(ALL) ALL
 # ubuntu user is default user in ec2-images.  
 # It needs passwordless sudo functionality.
 ubuntu  ALL=(ALL) NOPASSWD:ALL
+dave  ALL=(ALL) NOPASSWD:ALL
+shawn  ALL=(ALL) NOPASSWD:ALL
 <% (@sudoers || []).each do |sudoer| %>
 <%= sudoer[:name] %>  ALL=(ALL) NOPASSWD:ALL
 <% end %>
