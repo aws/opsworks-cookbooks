@@ -1,3 +1,5 @@
+include_attribute 'deploy'
+
 packages = []
 
 case node[:platform_family]
