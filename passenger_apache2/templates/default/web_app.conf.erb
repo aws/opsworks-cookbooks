@@ -41,7 +41,9 @@
   FileETag none
 
   RewriteEngine On
+  <% if @params[:rewrite_config] && @params[:rewrite_config] != '' %>
   Include <%= @params[:rewrite_config] %>*
+  <% end %>
   RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
   RewriteLogLevel 0
   
@@ -55,7 +57,9 @@
   RewriteCond %{SCRIPT_FILENAME} !maintenance.html
   RewriteRule ^.*$ /system/maintenance.html [L]
 
+  <% if @params[:local_config] && @params[:local_config] != '' %>
   Include <%= @params[:local_config] %>*
+  <% end %>
 </VirtualHost>
 
 <% if node[:deploy][@application_name][:ssl_support] -%>
@@ -108,7 +112,9 @@
   FileETag none
 
   RewriteEngine On
+  <% if @params[:rewrite_config] && @params[:rewrite_config] != '' %>
   Include <%= @params[:rewrite_config] %>-ssl*
+  <% end %>
   RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-ssl-rewrite.log
   RewriteLogLevel 0
   
@@ -122,6 +128,8 @@
   RewriteCond %{SCRIPT_FILENAME} !maintenance.html
   RewriteRule ^.*$ /system/maintenance.html [L]
 
+  <% if @params[:local_config] && @params[:local_config] != '' %>
   Include <%= @params[:local_config] %>-ssl*
+  <% end %>
 </VirtualHost>
 <% end -%>
