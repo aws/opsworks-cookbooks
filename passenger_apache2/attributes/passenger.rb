@@ -47,3 +47,4 @@ default[:passenger][:max_requests] = 0
 default[:passenger][:high_performance_mode] = 'off'
 default[:passenger][:rails_spawn_method] = 'smart-lv2'
 default[:passenger][:max_pool_size] = 8 # usually will be set by OpsWorks directy. Override if you need a custom size
+default[:passenger][:friendly_error_pages] = 'off'
