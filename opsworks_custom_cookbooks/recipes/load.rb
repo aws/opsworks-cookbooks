@@ -4,6 +4,8 @@ else
   directory node[:opsworks_custom_cookbooks][:destination] do
     action :delete
     recursive true
+
+    only_if {node[:opsworks_custom_cookbooks][:destination]}
   end
 end
 
