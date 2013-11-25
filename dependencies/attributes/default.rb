@@ -14,6 +14,7 @@ default[:dependencies][:gem_binary] = "/usr/local/bin/gem"
 default["dependencies"]["gem_uninstall_options"] = "--force --executables"
 default["dependencies"]["gem_install_options"] = "--no-ri --no-rdoc"
 
+default["opsworks"] = {}
 if node["opsworks"].has_key?("ruby_stack")
   case node["opsworks"]["ruby_stack"]
   when "ruby"

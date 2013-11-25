@@ -50,7 +50,7 @@ when 'centos','redhat','fedora','amazon'
     end
   end
 
-  ['opsworks-ruby1.9','opsworks-ruby2.0','ruby-enterprise','ruby19','ruby20'].each do |pkg|
+  ['opsworks-ruby19','opsworks-ruby20','ruby-enterprise','ruby19','ruby20'].each do |pkg|
     package pkg do
       action :remove
       ignore_failure true
