@@ -1,5 +1,7 @@
-maintainer 'Amazon Web Services'
+name        "ssh_users"
 description 'Create system users for OpsWorks users with personal SSH keys'
-version '0.1'
+maintainer  "AWS OpsWorks"
+license     "Apache 2.0"
+version     "1.0.0"
 
 depends 'opsworks_initial_setup'

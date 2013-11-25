@@ -1,8 +1,9 @@
-maintainer        "AWS OpsWorks"
-license           "Apache 2.0"
-description       "Manage unicorn"
-version           "0.1"
+name        "unicorn"
+description "Manage unicorn"
+maintainer  "AWS OpsWorks"
+license     "Apache 2.0"
+version     "1.0.0"
 
-['centos','redhat','fedora','amazon','debian','ubuntu'].each do |os|
-  supports os
-end
+depends 'apache2'
+depends 'nginx'
+depends 'rails'

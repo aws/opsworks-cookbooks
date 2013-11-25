@@ -1,8 +1,7 @@
-maintainer       "Amazon Web Services"
-license          "Apache 2.0"
-description      "Installs/Configures Apache with mod_php5"
-version          "0.1"
-
-supports "ubuntu"
+name        "mod_php5_apache2"
+description "Installs/Configures Apache with mod_php5"
+maintainer  "AWS OpsWorks"
+license     "Apache 2.0"
+version     "1.0.0"
 
 depends "apache2"
