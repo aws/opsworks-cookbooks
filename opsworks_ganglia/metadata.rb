@@ -13,3 +13,7 @@ recipe "opsworks_ganglia::monitor-mysql", "Monitor MySQL"
 recipe "opsworks_ganglia::monitor-fd-and-sockets", "Monitor File Descriptors and Sockets"
 recipe "opsworks_ganglia::monitor-disk", "Monitor Disk Stats"
 recipe "opsworks_ganglia::monitor-apache", "Monitor Apache Stats"
+
+depends 'apache2'
+depends 'opsworks_commons'
+depends 'opsworks_initial_setup'

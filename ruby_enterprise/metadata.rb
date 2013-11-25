@@ -6,3 +6,4 @@ version     "1.0.0"
 
 depends 'opsworks_rubygems'
 depends 'opsworks_bundler'
+depends 'opsworks_commons'
