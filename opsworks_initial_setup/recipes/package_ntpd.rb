@@ -1,6 +1,4 @@
 case node[:platform]
-when 'centos','redhat','fedora','amazon'
+when 'centos','redhat','fedora','amazon','debian','ubuntu'
   package 'ntp'
-when 'debian','ubuntu'
-  package 'openntpd'
 end
