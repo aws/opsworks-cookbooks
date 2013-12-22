@@ -1,5 +1,7 @@
 GC.disable unless node[:opsworks] && node[:opsworks][:instance] && node[:opsworks][:instance][:instance_type] == 't1.micro'
 
+include_attribute "opsworks_commons::default"
+
 # this values must match the ones respective ones in the agent configuration
 default[:opsworks_agent][:base_dir] = '/opt/aws/opsworks'
 default[:opsworks_agent][:current_dir] = "#{node[:opsworks_agent][:base_dir]}/current"
@@ -7,10 +9,6 @@ default[:opsworks_agent][:shared_dir] = '/var/lib/aws/opsworks'
 default[:opsworks_agent][:log_dir] = '/var/log/aws/opsworks'
 default[:opsworks_agent][:user] = 'aws'
 default[:opsworks_agent][:group] = 'aws'
-
-default[:opsworks][:ruby_stack] = 'ruby_enterprise'
-default[:opsworks][:ruby_version] = '1.9.3'
-default[:opsworks][:run_cookbook_tests] = false
 
 default[:opsworks_initial_setup][:sysctl] = Mash.new
 default[:opsworks_initial_setup][:sysctl]['net.core.somaxconn'] = 1024           # 128
