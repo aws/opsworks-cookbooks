@@ -1,7 +1,10 @@
 # Apache request monitoring with http://vuksan.com/linux/ganglia/index.html
 case node[:platform]
 when 'centos','redhat','fedora','suse','amazon'
-  package 'logcheck'
+  package 'logcheck' do
+    action :install
+    ignore_failure true # handle EPEL not available
+  end
 when 'debian','ubuntu'
   package 'logtail'
 end
