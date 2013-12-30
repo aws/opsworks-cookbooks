@@ -3,11 +3,13 @@
    ######  OpsWorks Summary  ######
    Operating System: <%= `head -1 /etc/issue | sed -e 's/ \\\\.*//'`.chomp %>
    OpsWorks Instance: <%= @instance[:hostname] %>
-   OpsWorks Instance ID: <%= @instance[:id] %>
+   OpsWorks Instance ID: <%= @instance[:id] %> (Instance ID: <%= @instance[:aws_instance_id] %>)
    OpsWorks Layers: <%= @instance[:layers].map{|id| @layers[id][:name] }.join(', ') %>
    OpsWorks Stack: <%= @stack[:name] %>
    EC2 Region: <%= @instance[:region] %>
    EC2 Availability Zone: <%= @instance[:availability_zone] %>
+   Public IP: <%= @instance[:ip] %>
+   Private IP: <%= @instance[:private_ip] %>
 <% if @stack[:vpc_id] -%>
    VPC ID: <%= @stack[:vpc_id] %>
    Subnet ID: <%= @instance[:subnet_id] %>
