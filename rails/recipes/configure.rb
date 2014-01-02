@@ -52,7 +52,7 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     owner deploy[:user]
     variables(
-      :memcached => deploy[:memcached] || {},
+      :sidekiq => deploy[:sidekiq] || {},
       :environment => deploy[:rails_env]
     )
 
