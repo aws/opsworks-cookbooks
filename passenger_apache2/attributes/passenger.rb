@@ -13,7 +13,7 @@ when /^2\.0/
   default[:passenger][:gems_path] = '/usr/local/lib/ruby/gems/2.0.0/gems'
 end
 
-default[:passenger][:version] = '3.0.19'
+default[:passenger][:version] = '4.0.33'
 default[:passenger][:root_path] = "#{node[:passenger][:gems_path]}/passenger-#{passenger[:version]}"
 
 if platform?('centos','redhat','fedora','amazon') and node[:packages][:dist_only]
