@@ -63,6 +63,17 @@ default[:apache][:timeout] = 120
 default[:apache][:keepalive] = 'Off'
 default[:apache][:keepaliverequests] = 100
 default[:apache][:keepalivetimeout] = 3
+default[:apache][:deflate_types] = ['application/javascript',
+                                    'application/json',
+                                    'application/x-javascript',
+                                    'application/xhtml+xml',
+                                    'application/xml',
+                                    'application/xml+rss',
+                                    'text/css',
+                                    'text/html',
+                                    'text/javascript',
+                                    'text/plain',
+                                    'text/xml']
 
 # Security
 default[:apache][:servertokens] = 'Prod'
