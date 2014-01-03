@@ -30,10 +30,10 @@ default[:nginx][:gzip_types] = ['application/javascript',
                                 'application/xml',
                                 'application/xml+rss',
                                 'text/css',
-                                'text/html',
                                 'text/javascript',
                                 'text/plain',
                                 'text/xml']
+# NGinx will compress 'text/html' by default
 
 default[:nginx][:keepalive] = 'on'
 default[:nginx][:keepalive_timeout] = 65
