@@ -7,7 +7,7 @@ when "debian"
     remote_file "/tmp/#{package_name}.deb" do
       source "#{node[:ganglia][:package_base_url]}/#{package_name}_#{node[:ganglia][:custom_package_version]}_#{node[:ganglia][:package_arch]}.deb"
       not_if do
-        `dpkg-query --show #{package_name} | cut -f 2`.chomp.eql?(node[:ganglia][:package_arch])
+        `dpkg-query --show #{package_name} | cut -f 2`.chomp.eql?(node[:ganglia][:custom_package_version])
       end
     end
 
