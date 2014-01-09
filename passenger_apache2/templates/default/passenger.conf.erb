@@ -12,4 +12,8 @@ PassengerPoolIdleTime <%= node[:passenger][:pool_idle_time] %>
 PassengerMaxInstancesPerApp <%= node[:passenger][:max_instances_per_app] %>
 PassengerMaxRequests <%= node[:passenger][:max_requests] %>
 PassengerHighPerformance <%= node[:passenger][:high_performance_mode] %>
-RailsSpawnMethod <%= node[:passenger][:rails_spawn_method] %>
+<% if node[:passenger][:version] =~ /^4/ %>
+RailsSpawnMethod <%= node[:passenger][:rails_spawn_method]  %>
+<% else %>
+PassengerSpawnMethod <%= node[:passenger][:passenger_spawn_method] || node[:passenger][:rails_spawn_method] %>
+<% end %>
