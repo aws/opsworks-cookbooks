@@ -17,10 +17,10 @@
   smarty_auth_token: <%= @config[:smarty_auth_token] %>
   prayer_letters_key: <%= @config[:prayer_letters_key] %>
   prayer_letters_secret: <%= @config[:prayer_letters_secret] %>
-  smtp_user_name: <%= @config[:host] || 'localhost' %>
-  smtp_password: <%= @config[:port] || 25 %>
-  smtp_address: <%= @config[:address] %>
-  smtp_authentication: <%= @config[:authentication] %>
-  smtp_enable_starttls_auto: <%= @config[:enable_starttls_auto] %>
-  smtp_port: <%= @config[:port] %>
+  smtp_user_name: <%= @config[:smtp_user_name] || 'localhost' %>
+  smtp_password: <%= @config[:smtp_password] || 25 %>
+  smtp_address: <%= @config[:smtp_address] %>
+  smtp_authentication: <%= @config[:smtp_authentication] %>
+  smtp_enable_starttls_auto: <%= @config[:smtp_enable_starttls_auto] %>
+  smtp_port: <%= @config[:smtp_port] %>
 <% end -%>
