@@ -45,4 +45,13 @@ node[:deploy].each do |application, deploy|
     owner deploy[:user]
     variables(:redis => deploy[:redis] || {}, :environment => deploy[:rails_env])
   end
+
+  template "#{deploy[:deploy_to]}/shared/config/cloudinary.yml" do
+    source "cloudinary.yml.erb"
+    cookbook 'mpdx'
+    mode "0660"
+    group deploy[:group]
+    owner deploy[:user]
+    variables(:cloudinary => deploy[:cloudinary] || {}, :environment => deploy[:rails_env])
+  end
 end
