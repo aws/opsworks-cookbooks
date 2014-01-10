@@ -63,7 +63,7 @@ define :opsworks_deploy do
   if deploy[:scm] && deploy[:scm][:scm_type] != 'other'
     Chef::Log.debug("Checking out source code of application #{application} with type #{deploy[:application_type]}")
     deploy deploy[:deploy_to] do
-      provider deploy[:chef_provider]
+      provider Chef::Provider::Deploy.const_get(deploy[:chef_provider])
       repository deploy[:scm][:repository]
       user deploy[:user]
       group deploy[:group]
