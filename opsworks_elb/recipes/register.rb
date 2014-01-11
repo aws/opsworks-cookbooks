@@ -1,4 +1,4 @@
-include_recipe "opsworks-elb"
+include_recipe "opsworks_elb"
 
 java_home = node['aws']['elb']['java_home']
 

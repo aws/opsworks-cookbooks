@@ -6,9 +6,9 @@ Chef cookbook to dynamically register and unregister an instance from ELB
 Recipes
 ------------------
 
-`opsworks-elb::register` registers with elb
+`opsworks_elb::register` registers with elb
 
-`opsworks-elb::deregister` tells elb to un register
+`opsworks_elb::deregister` tells elb to un register
 
 Databag
 -------------------

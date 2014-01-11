@@ -1,4 +1,4 @@
-include_attribute 'java'
+include_attribute 'opsworks_java'
 
 default[:aws][:elb][:load_balancer_name] = "set_me_in_opsworks_elb_databag"
 default[:aws][:elb][:cli_download_filename] = "ElasticLoadBalancing.zip"
