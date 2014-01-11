@@ -5,6 +5,6 @@
 <% if @sidekiq[:queues] %>
 :queues:
 <% @sidekiq[:queues].each do |name, weight| %>
-  - [<%= name %>, <% weight %>]
+  - [<%= name %>, <%= weight %>]
 <% end %>
 <% end %>
