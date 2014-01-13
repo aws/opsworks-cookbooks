@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'minitest/spec'
 
 describe_recipe 'memcached::default' do
