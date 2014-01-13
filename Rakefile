@@ -1,11 +1,11 @@
 #/usr/bin/env rake
-# encoding: utf-8
 
-Encoding.default_external = Encoding::UTF_8
-Encoding.default_internal = Encoding::UTF_8
+Encoding.default_external = Encoding::UTF_8 unless RUBY_VERSION.start_with? "1.8"
+Encoding.default_internal = Encoding::UTF_8 unless RUBY_VERSION.start_with? "1.8"
 
 desc 'check literal recipe includes'
 task :validate_literal_includes do
+  puts "Check literal recipe includes"
   found_issue = false
   Dir['**/*.rb'].each do |file|
     begin
@@ -40,6 +40,7 @@ KNOWN_COOKBOOK_ATTRIBUTES = {
 
 desc 'check declared attribute dependencies'
 task :validate_attribute_dependencies do
+  puts "Validate attribute dependencies"
   Dir['**/*.rb'].each do |file|
     next unless file.match(/\/attributes\//)
     used_cookbook_attributes = []
@@ -62,9 +63,7 @@ task :validate_attribute_dependencies do
 
     used_cookbook_attributes.uniq!
     loaded_cookbook_attributes.uniq!
-
     used_cookbook_attributes_without_include = used_cookbook_attributes - loaded_cookbook_attributes
-
     used_cookbook_attributes_without_include.delete_if{|cookbook_attribute| KNOWN_COOKBOOK_ATTRIBUTES[cookbook_attribute] == :any || loaded_cookbook_attributes.include?(KNOWN_COOKBOOK_ATTRIBUTES[cookbook_attribute]) }
 
     if used_cookbook_attributes_without_include.size > 0
@@ -72,14 +71,13 @@ task :validate_attribute_dependencies do
       found_trouble = true
     end
 
-    if found_trouble
-      exit 1
-    end
+    exit 1 if found_trouble
   end
 end
 
 desc 'check syntax of ruby files'
 task :validate_syntax do
+  puts "Check syntax of Ruby files"
   found_trouble = false
   Dir['**/*.rb'].each do |file|
     output = `ruby -c #{file}`
@@ -91,5 +89,16 @@ task :validate_syntax do
   exit 1 if found_trouble
 end
 
+desc 'check cookbooks with Foodcritic'
+task :validate_best_practises do
+  if RUBY_VERSION.start_with? "1.8"
+    warn "Foodcritic requires Ruby 1.9+. You run 1.8. Skipping..."
+  else
+    puts "Check Cookbooks with Foodcritic"
+    system "foodcritic ."
+    exit 1 unless $?.success?
+  end
+end
+
 desc 'run all checks'
-task :default => [:validate_literal_includes, :validate_syntax, :validate_attribute_dependencies]
+task :default => [:validate_syntax, :validate_literal_includes, :validate_best_practises, :validate_attribute_dependencies]
