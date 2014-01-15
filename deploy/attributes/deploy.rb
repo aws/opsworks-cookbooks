@@ -1,8 +1,22 @@
 include_attribute 'deploy::logrotate'
 include_attribute 'deploy::rails_stack'
 
+
 default[:opsworks][:deploy_user][:shell] = '/bin/bash'
 default[:opsworks][:deploy_user][:user] = 'deploy'
+
+# The deploy provider used. Set to one of
+# - "Branch"      - enables deploy_branch (Chef::Provider::Deploy::Branch)
+# - "Revision"    - enables deploy_revision (Chef::Provider::Deploy::Revision)
+# - "Timestamped" - enables deploy (default, Chef::Provider::Deploy::Timestamped)
+# Deploy provider can also be set at application level.
+default[:opsworks][:deploy_chef_provider] = 'Timestamped'
+
+valid_deploy_chef_providers = ['Timestamped', 'Revision', 'Branch']
+unless valid_deploy_chef_providers.include?(node[:opsworks][:deploy_chef_provider])
+  raise "Invalid deploy_chef_provider: #{node[:opsworks][:deploy_chef_provider]}. Valid providers: #{valid_deploy_chef_providers.join(', ')}."
+end
+
 # the $HOME of the deploy user can be overwritten with this variable.
 #default[:opsworks][:deploy_user][:home] = '/home/deploy'
 
@@ -18,6 +32,10 @@ default[:opsworks][:rails][:ignore_bundler_groups] = ['test', 'development']
 default[:deploy] = {}
 node[:deploy].each do |application, deploy|
   default[:deploy][application][:deploy_to] = "/srv/www/#{application}"
+  default[:deploy][application][:chef_provider] = node[:deploy][application][:chef_provider] ? node[:deploy][application][:chef_provider] : node[:opsworks][:deploy_chef_provider]
+  unless valid_deploy_chef_providers.include?(node[:deploy][application][:chef_provider])
+    raise "Invalid chef_provider for app #{application}: #{node[:deploy][application][:chef_provider]}. Valid providers: #{valid_deploy_chef_providers.join(', ')}."
+  end
   default[:deploy][application][:current_path] = "#{node[:deploy][application][:deploy_to]}/current"
   default[:deploy][application][:document_root] = ''
   default[:deploy][application][:ignore_bundler_groups] = node[:opsworks][:rails][:ignore_bundler_groups]

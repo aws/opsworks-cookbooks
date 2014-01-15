@@ -1,9 +1,9 @@
-maintainer       "Amazon Web Services"
-license          "Apache 2.0"
-description      "Installs/Configures ruby-enterprise"
-version          "0.1"
-
-supports "ubuntu"
+name        "ruby_enterprise"
+description "Installs/Configures ruby-enterprise"
+maintainer  "AWS OpsWorks"
+license     "Apache 2.0"
+version     "1.0.0"
 
 depends 'opsworks_rubygems'
 depends 'opsworks_bundler'
+depends 'opsworks_commons'

@@ -1,3 +1,5 @@
-maintainer        "Amazon Web Services"
-description       "Offers a few library functions to simplify dealing with RubyGems"
-version           "0.1"
+name        "gem_support"
+description "Offers a few library functions to simplify dealing with RubyGems"
+maintainer  "AWS OpsWorks"
+license     "Apache 2.0"
+version     "1.0.0"

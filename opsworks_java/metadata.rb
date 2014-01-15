@@ -1,6 +1,7 @@
-maintainer        'Amazon Web Services'
-license           'Apache 2.0'
-description       'Installs and configures a Java application server'
-version           '0.1'
+name        "opsworks_java"
+description 'Installs and configures a Java application server'
+maintainer  "AWS OpsWorks"
+license     "Apache 2.0"
+version     "1.0.0"
 
-depends           'apache2'
+depends 'apache2'

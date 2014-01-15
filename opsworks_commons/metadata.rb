@@ -1,6 +1,7 @@
-name "opsworks_commons"
-maintainer "Amazon Web Services"
+name        "opsworks_commons"
 description "Common recipes and libraries"
-version "0.1"
+maintainer  "AWS OpsWorks"
+license     "Apache 2.0"
+version     "1.0.0"
 
 depends "dependencies"

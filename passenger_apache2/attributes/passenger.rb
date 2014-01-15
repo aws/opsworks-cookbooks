@@ -11,9 +11,14 @@ when /^1\.9/
   default[:passenger][:gems_path] = '/usr/local/lib/ruby/gems/1.9.1/gems'
 when /^2\.0/
   default[:passenger][:gems_path] = '/usr/local/lib/ruby/gems/2.0.0/gems'
+when /^2\.1/
+  default[:passenger][:gems_path] = '/usr/local/lib/ruby/gems/2.1.0/gems'
+else
+  Chef::Log.warn "Unsupported Ruby version '#{node[:opsworks][:ruby_version]}'. Unable to set passenger gems_path."
+  default[:passenger][:gems_path] = '/'
 end
 
-default[:passenger][:version] = '3.0.19'
+default[:passenger][:version] = '4.0.33'
 default[:passenger][:root_path] = "#{node[:passenger][:gems_path]}/passenger-#{passenger[:version]}"
 
 if platform?('centos','redhat','fedora','amazon') and node[:packages][:dist_only]

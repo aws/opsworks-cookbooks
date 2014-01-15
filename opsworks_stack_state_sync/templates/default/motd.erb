@@ -8,6 +8,9 @@
    OpsWorks Stack: <%= @stack[:name] %>
    EC2 Region: <%= @instance[:region] %>
    EC2 Availability Zone: <%= @instance[:availability_zone] %>
+   EC2 Instance ID: <%= @instance[:aws_instance_id] %>
+   Public IP: <%= @instance[:ip] %>
+   Private IP: <%= @instance[:private_ip] %>
 <% if @stack[:vpc_id] -%>
    VPC ID: <%= @stack[:vpc_id] %>
    Subnet ID: <%= @instance[:subnet_id] %>
