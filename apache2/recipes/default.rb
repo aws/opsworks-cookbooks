@@ -55,6 +55,12 @@ if platform?('centos', 'redhat', 'fedora', 'amazon')
     action :create
   end
 
+  directory '/usr/local/bin'  do
+    mode 0755
+    action :create
+    recursive true
+  end
+
   cookbook_file '/usr/local/bin/apache2_module_conf_generate.pl' do
     source 'apache2_module_conf_generate.pl'
     mode 0755
