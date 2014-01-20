@@ -23,7 +23,7 @@ node[:deploy].each do |application, deploy|
     notifies :run, "execute[restart Rails app #{application}]"
 
     only_if do
-      File.exists?("#{deploy[:deploy_to]}") && File.exists?("#{deploy[:deploy_to]}/shared/config/")
+      node[:opsworks][:layers].has_key?('db-master') && File.exists?("#{deploy[:deploy_to]}") && File.exists?("#{deploy[:deploy_to]}/shared/config/")
     end
   end
 
@@ -41,7 +41,7 @@ node[:deploy].each do |application, deploy|
     notifies :run, "execute[restart Rails app #{application}]"
 
     only_if do
-      File.exists?("#{deploy[:deploy_to]}") && File.exists?("#{deploy[:deploy_to]}/shared/config/")
+      node[:opsworks][:layers].has_key?('memcached') && File.exists?("#{deploy[:deploy_to]}") && File.exists?("#{deploy[:deploy_to]}/shared/config/")
     end
   end
 end
