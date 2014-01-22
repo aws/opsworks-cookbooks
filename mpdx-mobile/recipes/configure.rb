@@ -1,6 +1,6 @@
 include_recipe "deploy"
 
-deploy = node[:deploy][:mpdx]
+deploy = node[:deploy]['mpdx-mobile']
 
 template "#{deploy[:deploy_to]}/current/www/js/secure.js" do
   source "secure.js.erb"
