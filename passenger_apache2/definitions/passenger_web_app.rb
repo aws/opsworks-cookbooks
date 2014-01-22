@@ -1,6 +1,5 @@
 define :passenger_web_app do
   include_recipe "apache2::service"
-  raise params.inspect
   deploy = params[:deploy]
   application = params[:application]
 
