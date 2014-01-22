@@ -3,6 +3,11 @@ define :passenger_web_app do
   deploy = params[:deploy]
   application = params[:application]
 
+  Chef::Log.debug(deploy)
+  Chef::Log.debug(application)
+  Chef::Log.debug(params)
+  Chef::Log.debug(node)
+
   template "#{node['apache']['dir']}/ssl/#{deploy['domains'].first}.crt" do
     cookbook 'passenger_apache2'
     mode '0600'
