@@ -2,6 +2,8 @@ define :passenger_web_app do
   include_recipe "apache2::service"
   deploy = params[:deploy]
   application = params[:application]
+  
+  raise deploy.inspect
 
   template "#{node[:apache][:dir]}/ssl/#{deploy[:domains].first}.crt" do
     cookbook 'passenger_apache2'
