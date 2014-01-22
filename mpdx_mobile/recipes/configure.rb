@@ -1,10 +1,10 @@
 include_recipe "deploy"
 
-deploy = node[:deploy]['mpdx-mobile']
+deploy = node[:deploy]['mpdx_mobile']
 
 template "#{deploy[:deploy_to]}/current/www/js/secure.js" do
   source "secure.js.erb"
-  cookbook 'mpdx-mobile'
+  cookbook 'mpdx_mobile'
   mode "0660"
   group deploy[:group]
   owner deploy[:user]
