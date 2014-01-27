@@ -17,3 +17,5 @@ RailsSpawnMethod <%= node[:passenger][:rails_spawn_method]  %>
 <% else %>
 PassengerSpawnMethod <%= node[:passenger][:passenger_spawn_method] || node[:passenger][:rails_spawn_method] %>
 <% end %>
+PassengerRollingRestarts on
+PassengerResistDeploymentErrors on
