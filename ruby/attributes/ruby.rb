@@ -6,7 +6,7 @@ case node["opsworks"]["ruby_version"]
 when "2.0.0"
   default[:ruby][:major_version] = '2.0'
   default[:ruby][:full_version] = '2.0.0'
-  default[:ruby][:patch] = 'p247'
+  default[:ruby][:patch] = 'p353'
   default[:ruby][:pkgrelease] = '1'
 when "1.9.3"
   default[:ruby][:major_version] = '1.9'
