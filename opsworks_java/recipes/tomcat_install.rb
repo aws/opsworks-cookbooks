@@ -28,6 +28,12 @@ end
     mode "0644"
     cookbook 'opsworks_java'
   end
+  
+  link "{['opsworks_java']['tomcat']['lib_dir_ext']}/activation.jar" do
+    to "{['opsworks_java']['tomcat']['java_shared_lib_dir_ext']}/activation.jar"
+    not_if { !::File.exists?("{['opsworks_java']['tomcat']['java_shared_lib_dir_ext']}/activation.jar") }
+  end
+
   cookbook_file "{['opsworks_java']['tomcat']['java_shared_lib_dir_ext']}/ccpp.jar" do
     source "ccpp.jar"
     mode "0644"
