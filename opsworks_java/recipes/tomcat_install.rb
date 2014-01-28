@@ -63,8 +63,8 @@ end
     source "mysql.jar"
     mode "0644"
   end
-  cookbook_file "/usr/share/java/ext/persistance.jar" do
-    source "persistance.jar"
+  cookbook_file "/usr/share/java/ext/persistence.jar" do
+    source "persistence.jar"
     mode "0644"
   end
   cookbook_file "/usr/share/java/ext/portal-service.jar" do
