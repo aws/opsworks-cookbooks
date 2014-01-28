@@ -23,9 +23,7 @@ default[:nginx][:gzip_disable] = 'MSIE [1-6].(?!.*SV1)'
 default[:nginx][:gzip_http_version] = '1.0'
 default[:nginx][:gzip_comp_level] = '2'
 default[:nginx][:gzip_proxied] = 'any'
-default[:nginx][:gzip_types] = ['application/javascript',
-                                'application/json',
-                                'application/x-javascript',
+default[:nginx][:gzip_types] = ['application/x-javascript',
                                 'application/xhtml+xml',
                                 'application/xml',
                                 'application/xml+rss',

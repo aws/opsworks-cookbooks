@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 
+require 'etc'
 require 'digest/md5'
 
 ROOT_PATH="<%= @deploy[:deploy_to] %>"
@@ -83,6 +84,9 @@ def status_unicorn
 		return false
   end
 end
+
+Process::Sys.setuid(uid = Etc.getpwnam("<%= @deploy[:user] %>").uid)
+puts "Set Unicorn process UID to #{uid}"
 
 case ARGV[0]
 when "start"

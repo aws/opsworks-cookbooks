@@ -118,6 +118,10 @@ define :opsworks_deploy do
               :database => node[:deploy][application][:database],
               :environment => node[:deploy][application][:rails_env]
             )
+
+            only_if do
+              node[:opsworks][:layers].has_key?('db-master')
+            end
           end.run_action(:create)
         elsif deploy[:application_type] == 'php'
           template "#{node[:deploy][application][:deploy_to]}/shared/config/opsworks.php" do

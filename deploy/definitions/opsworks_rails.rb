@@ -12,6 +12,10 @@ define :opsworks_rails do
     owner deploy[:user]
     group deploy[:group]
     variables(:memcached => (deploy[:memcached] || {}), :environment => deploy[:rails_env])
+
+    only_if do
+      node[:opsworks][:layers].has_key?('memcached')
+    end
   end
 
   execute "symlinking subdir mount if necessary" do
