@@ -20,4 +20,10 @@
   smseco_password: <%= @config[:smseco_password] %>
   smseco_url: <%= @config[:smseco_url] %>
   smseco_gateway_orgs: <%= @config[:smseco_gateway_orgs] %>
+  smtp_user_name: <%= @config[:smtp_user_name] || 'localhost' %>
+  smtp_password: <%= @config[:smtp_password] || 25 %>
+  smtp_address: <%= @config[:smtp_address] %>
+  smtp_authentication: <%= @config[:smtp_authentication] %>
+  smtp_enable_starttls_auto: <%= @config[:smtp_enable_starttls_auto] %>
+  smtp_port: <%= @config[:smtp_port] %>
 <% end -%>
