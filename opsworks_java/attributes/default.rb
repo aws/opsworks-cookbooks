@@ -42,7 +42,7 @@ default['opsworks_java']['tomcat']['lib_dir'] = "/usr/share/tomcat#{node['opswor
 default['opsworks_java']['tomcat']['java_shared_lib_dir'] = '/usr/share/java'
 default['opsworks_java']['tomcat']['context_dir'] = ::File.join(node['opsworks_java']['tomcat']['catalina_base_dir'], 'Catalina', 'localhost')
 default['opsworks_java']['tomcat']['mysql_connector_jar'] = 'mysql-connector-java.jar'
-default['opsworks_java']['tomcat']['apache_tomcat_bind_mod'] = 'proxy_http' # or: 'proxy_ajp'
+default['opsworks_java']['tomcat']['apache_tomcat_bind_mod'] = 'proxy_ajp'
 default['opsworks_java']['tomcat']['apache_tomcat_bind_path'] = '/'
 default['opsworks_java']['tomcat']['webapps_dir_entries_to_delete'] = %w(config log public tmp)
 case node[:platform_family]
