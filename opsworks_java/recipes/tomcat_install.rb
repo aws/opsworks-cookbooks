@@ -9,6 +9,20 @@ tomcat_pkgs.each do |pkg|
   end
 end
 
+directory node['opsworks_java']['tomcat']['lib_dir_ext'] do
+  owner 'root'
+  group 'root'
+  mode 0755
+  action :create
+end
+
+directory node['opsworks_java']['tomcat']['java_shared_lib_dir_ext'] do
+  owner 'root'
+  group 'root'
+  mode 0755
+  action :create
+end
+
 link ::File.join(node['opsworks_java']['tomcat']['lib_dir'], node['opsworks_java']['tomcat']['mysql_connector_jar']) do
   to ::File.join(node['opsworks_java']['tomcat']['java_shared_lib_dir'], node['opsworks_java']['tomcat']['mysql_connector_jar'])
   action :create
