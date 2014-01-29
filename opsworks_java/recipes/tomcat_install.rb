@@ -84,11 +84,6 @@ end
     mode "0644"
   end
   
-  link "/usr/share/tomcat7/lib/ext" do
-    to "/usr/share/java/ext/support-tomcat.jar"
-    not_if { !::File.exists?("/usr/share/java/ext/support-tomcat.jar") }
-  end
-
 
 link ::File.join(node['opsworks_java']['tomcat']['lib_dir'], node['opsworks_java']['tomcat']['mysql_connector_jar']) do
   to ::File.join(node['opsworks_java']['tomcat']['java_shared_lib_dir'], node['opsworks_java']['tomcat']['mysql_connector_jar'])
