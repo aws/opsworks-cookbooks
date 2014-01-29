@@ -134,6 +134,40 @@ end
     mode "0644"
   end
 
+  cookbook_file "/usr/share/java/ext/support-tomcat.jar" do
+    source "support-tomcat.jar"
+    mode "0644"
+  end
+
+  cookbook_file "/usr/share/tomcat7/bin/setenv.sh" do
+  owner 'root'
+  group 'root'
+    source "setenv.sh"
+    mode "0644"
+  end
+
+  cookbook_file "/usr/share/tomcat7/bin/commons-daemon.jar" do
+  owner 'root'
+  group 'root'
+    source "commons-daemon.jar"
+    mode "0644"
+  end
+
+  cookbook_file "/usr/share/tomcat7/bin/commons-daemon-native.tar.gz" do
+  owner 'root'
+  group 'root'
+    source "commons-daemon-native.tar.gz"
+    mode "0644"
+  end
+
+  cookbook_file "/usr/share/tomcat7/bin/tomcat-native.tar.gz" do
+  owner 'root'
+  group 'root'
+    source "tomcat-native.tar.gz"
+    mode "0644"
+  end
+
+
   
 
 link ::File.join(node['opsworks_java']['tomcat']['lib_dir'], node['opsworks_java']['tomcat']['mysql_connector_jar']) do
