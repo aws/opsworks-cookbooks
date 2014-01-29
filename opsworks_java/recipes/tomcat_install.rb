@@ -24,46 +24,50 @@ directory node['opsworks_java']['tomcat']['java_shared_lib_dir_ext'] do
 end
 
 directory "/var/lib/tomcat7/temp" do
-  owner 'tomcat'
-  group 'tomcat'
+  owner 'tomcat7'
+  group 'tomcat7'
   mode 0755
   action :create
 end
 
 directory "/opt/liferay" do
-  owner 'tomcat'
-  group 'tomcat'
+  owner 'tomcat7'
+  group 'tomcat7'
   mode 0755
   action :create
 end
 
 directory "/opt/liferay/license" do
-  owner 'tomcat'
-  group 'tomcat'
+  owner 'tomcat7'
+  group 'tomcat7'
   mode 0755
   action :create
 end
 
 directory "/opt/liferay/data" do
-  owner 'tomcat'
-  group 'tomcat'
+  owner 'tomcat7'
+  group 'tomcat7'
   mode 0755
   action :create
 end
 
 directory "/opt/liferay/data/hsql" do
-  owner 'tomcat'
-  group 'tomcat'
+  owner 'tomcat7'
+  group 'tomcat7'
   mode 0755
   action :create
 end
 
   cookbook_file "/opt/liferay/data/hsql/lportal.properties" do
+  owner 'tomcat7'
+  group 'tomcat7'
     source "lportal.properties"
     mode "0755"
   end
 
   cookbook_file "/opt/liferay/data/hsql/lportal.script" do
+  owner 'tomcat7'
+  group 'tomcat7'
     source "lportal.script"
     mode "0755"
   end
@@ -130,10 +134,6 @@ end
     mode "0644"
   end
 
-
-  cookbook_file "/etc/tomcat7/catalina.properties" do
-    source "catalina.properties"
-  end
   
 
 link ::File.join(node['opsworks_java']['tomcat']['lib_dir'], node['opsworks_java']['tomcat']['mysql_connector_jar']) do
