@@ -31,8 +31,8 @@ directory "/var/lib/tomcat7/temp" do
 end
 
 directory "/opt/liferay" do
-  owner 'tomcat7'
-  group 'tomcat7'
+  owner 'root'
+  group 'root'
   mode 0755
   action :create
 end
