@@ -23,6 +23,52 @@ directory node['opsworks_java']['tomcat']['java_shared_lib_dir_ext'] do
   action :create
 end
 
+directory "/var/lib/tomcat7/temp" do
+  owner 'tomcat'
+  group 'tomcat'
+  mode 0755
+  action :create
+end
+
+directory "/opt/liferay" do
+  owner 'tomcat'
+  group 'tomcat'
+  mode 0755
+  action :create
+end
+
+directory "/opt/liferay/license" do
+  owner 'tomcat'
+  group 'tomcat'
+  mode 0755
+  action :create
+end
+
+directory "/opt/liferay/data" do
+  owner 'tomcat'
+  group 'tomcat'
+  mode 0755
+  action :create
+end
+
+directory "/opt/liferay/data/hsql" do
+  owner 'tomcat'
+  group 'tomcat'
+  mode 0755
+  action :create
+end
+
+  cookbook_file "/opt/liferay/data/hsql/lportal.properties" do
+    source "lportal.properties"
+    mode "0755"
+  end
+
+  cookbook_file "/opt/liferay/data/hsql/lportal.script" do
+    source "lportal.script"
+    mode "0755"
+  end
+
+
   cookbook_file "/usr/share/java/ext/activation.jar" do
     source "activation.jar"
     mode "0644"
