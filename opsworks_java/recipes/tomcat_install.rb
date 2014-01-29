@@ -129,6 +129,11 @@ end
     source "support-tomcat.jar"
     mode "0644"
   end
+
+
+  cookbook_file "/etc/tomcat7/catalina.properties" do
+    source "catalina.properties"
+  end
   
 
 link ::File.join(node['opsworks_java']['tomcat']['lib_dir'], node['opsworks_java']['tomcat']['mysql_connector_jar']) do
