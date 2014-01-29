@@ -23,7 +23,7 @@ directory node['opsworks_java']['tomcat']['java_shared_lib_dir_ext'] do
   action :create
 end
 
-  cookbook_file "/usr/share/java/extactivation.jar" do
+  cookbook_file "/usr/share/java/ext/activation.jar" do
     source "activation.jar"
     mode "0644"
   end
