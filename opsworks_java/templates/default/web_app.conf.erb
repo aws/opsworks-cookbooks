@@ -1,5 +1,5 @@
 <VirtualHost *:80>
-  ServerName <%= @params[:server_name] %>
+  ServerName aws.theathleticoffice.com
   <% if @params[:server_aliases] && !@params[:server_aliases].empty? -%>
   ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>
   <% end -%>
@@ -40,23 +40,10 @@
 
   Include <%= @params[:local_config] %>*
 
-<% if @params[:server_aliases] && !@params[:server_aliases].empty? -%>
-  <% if node['opsworks_java']['tomcat']['apache_tomcat_bind_mod'] == 'proxy_ajp' -%>
-  ProxyPass <%= node['opsworks_java']['tomcat']['apache_tomcat_bind_path'] %> ajp://localhost:<%= node['opsworks_java']['tomcat']['ajp_port'] %>/<%= @params[:target_context] %>
-  ProxyPassReverse <%= node['opsworks_java']['tomcat']['apache_tomcat_bind_path'] %> ajp://localhost:<%= node['opsworks_java']['tomcat']['ajp_port'] %>/<%= @params[:target_context] %>
-  <% else %>
-  ProxyPass <%= node['opsworks_java']['tomcat']['apache_tomcat_bind_path'] %> http://localhost:<%= node['opsworks_java']['tomcat']['port'] %>/<%= @params[:target_context] %>
-  ProxyPassReverse <%= node['opsworks_java']['tomcat']['apache_tomcat_bind_path'] %> http://localhost:<%= node['opsworks_java']['tomcat']['port'] %>/<%= @params[:target_context] %>
-  <% end -%>
-<% else -%>
-  <% if node['opsworks_java']['tomcat']['apache_tomcat_bind_mod'] == 'proxy_ajp' -%>
-  ProxyPass <%= node['opsworks_java']['tomcat']['apache_tomcat_bind_path'] %><%= @params[:target_context] %> ajp://localhost:<%= node['opsworks_java']['tomcat']['ajp_port'] %>/<%= @params[:target_context] %>
-  ProxyPassReverse <%= node['opsworks_java']['tomcat']['apache_tomcat_bind_path'] %><%= @params[:target_context] %> ajp://localhost:<%= node['opsworks_java']['tomcat']['ajp_port'] %>/<%= @params[:target_context] %>
-  <% else %>
-  ProxyPass <%= node['opsworks_java']['tomcat']['apache_tomcat_bind_path'] %><%= @params[:target_context] %> http://localhost:<%= node['opsworks_java']['tomcat']['port'] %>/<%= @params[:target_context] %>
-  ProxyPassReverse <%= node['opsworks_java']['tomcat']['apache_tomcat_bind_path'] %><%= @params[:target_context] %> http://localhost:<%= node['opsworks_java']['tomcat']['port'] %>/<%= @params[:target_context] %>
-  <% end -%>
-<% end -%>
+<Location />
+ ProxyPass ajp://localhost:8009/
+</Location>
+
 </VirtualHost>
 
 <% if node[:deploy][@application_name][:ssl_support] -%>
