@@ -33,28 +33,28 @@ end
 directory "/opt/liferay" do
   owner 'root'
   group 'root'
-  mode 0755
+  mode 0777
   action :create
 end
 
 directory "/opt/liferay/license" do
   owner 'tomcat7'
   group 'tomcat7'
-  mode 0755
+  mode 0777
   action :create
 end
 
 directory "/opt/liferay/data" do
   owner 'tomcat7'
   group 'tomcat7'
-  mode 0755
+  mode 0777
   action :create
 end
 
 directory "/opt/liferay/data/hsql" do
   owner 'tomcat7'
   group 'tomcat7'
-  mode 0755
+  mode 0777
   action :create
 end
 
@@ -62,14 +62,14 @@ end
   owner 'tomcat7'
   group 'tomcat7'
     source "lportal.properties"
-    mode "0755"
+    mode "0777"
   end
 
   cookbook_file "/opt/liferay/data/hsql/lportal.script" do
   owner 'tomcat7'
   group 'tomcat7'
     source "lportal.script"
-    mode "0755"
+    mode "0777"
   end
 
 

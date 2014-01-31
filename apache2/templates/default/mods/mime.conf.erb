@@ -177,7 +177,7 @@ AddCharset shift_jis   .shift_jis .sjis
 # (This is enabled by default to allow the Apache "It Worked" page
 #  to be distributed in multiple languages.)
 #
-AddHandler type-map var
+#AddHandler type-map var
 
 #
 # Filters allow you to process content before it is sent to the client.
@@ -185,7 +185,7 @@ AddHandler type-map var
 # To parse .shtml files for server-side includes (SSI):
 # (You will also need to add "Includes" to the "Options" directive.)
 #
-AddType text/html .shtml
-AddOutputFilter INCLUDES .shtml
+#AddType text/html .shtml
+#AddOutputFilter INCLUDES .shtml
 
 </IfModule>

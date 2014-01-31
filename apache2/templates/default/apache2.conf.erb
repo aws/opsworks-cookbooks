@@ -224,8 +224,3 @@ Include <%= node[:apache][:dir] %>/conf.d/
 # Include the virtual host configurations:
 Include <%= node[:apache][:dir] %>/sites-enabled/
 
-<IfModule headers_module>
-  Header always unset "Server"
-  Header always unset "X-Powered-By"
-  Header always unset "X-Runtime"
-</IfModule>
