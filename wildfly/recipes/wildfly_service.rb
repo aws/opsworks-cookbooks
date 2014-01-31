@@ -1,5 +1,5 @@
 service 'wildfly' do
-  service_name node['opsworks_java']['wildfly']['service_name']
+  service_name node['wildfly']['service_name']
 
   case node[:platform_family]
     when 'debian'
@@ -11,13 +11,15 @@ service 'wildfly' do
   action :nothing
 end
 
-cookbook_file "/tmp/wildfly-service.sh" do
+template "/tmp/wildfly-service.sh" do
+  backup false
   source "service.sh.erb"
   mode 0755
 end
 
-execute "install wildly service" do
+execute "install wildfly service" do
   user "root"
-  command "sh /tmp/wildfly-service.sh"
+  command "sudo sh /tmp/wildfly-service.sh"
+  :run
   notifies :start, "service[wildfly]"
 end
