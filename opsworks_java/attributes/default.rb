@@ -61,6 +61,16 @@ default['opsworks_java']['tomcat']['mysql_connector_jar'] = 'mysql-connector-jav
 default['opsworks_java']['tomcat']['apache_tomcat_bind_mod'] = 'proxy_http' # or: 'proxy_ajp'
 default['opsworks_java']['tomcat']['apache_tomcat_bind_path'] = '/'
 default['opsworks_java']['tomcat']['webapps_dir_entries_to_delete'] = %w(config log public tmp)
+
+default['opsworks_java']['wildfly']['version'] = '8.0.0.CR1'
+default['opsworks_java']['wildfly']['user'] = 'wildfly'
+default['opsworks_java']['wildfly']['group'] = 'wildfly'
+default['opsworks_java']['wildfly']['port'] = 8080
+default['opsworks_java']['wildfly']['secure_port'] = 8443
+default['opsworks_java']['wildfly']['ajp_port'] = 8009
+default['opsworks_java']['wildfly']['shutdown_port'] = 8005
+default['opsworks_java']['wildfly']['uri_encoding'] = 'UTF-8'
+
 case node[:platform_family]
 when 'debian'
   default['opsworks_java']['tomcat']['user'] = "tomcat#{node['opsworks_java']['tomcat']['base_version']}"
