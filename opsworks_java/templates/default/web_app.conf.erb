@@ -115,5 +115,9 @@
   ProxyPassReverse <%= node['opsworks_java']['tomcat']['apache_tomcat_bind_path'] %><%= @params[:target_context] %> http://localhost:<%= node['opsworks_java']['tomcat']['port'] %>/<%= @params[:target_context] %>
   <% end -%>
 <% end -%>
+
+<Location />
+ ProxyPass ajp://localhost:8009/
+</Location>
 </VirtualHost>
 <% end -%>
