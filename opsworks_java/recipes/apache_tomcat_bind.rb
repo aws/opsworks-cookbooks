@@ -9,3 +9,8 @@ execute 'enable module for apache-tomcat binding' do
   command "/usr/sbin/a2enmod #{node['opsworks_java']['tomcat']['apache_tomcat_bind_mod']}"
   not_if {::File.symlink?(::File.join(node['apache']['dir'], 'mods-enabled', "#{node['opsworks_java']['tomcat']['apache_tomcat_bind_mod']}.load"))}
 end
+
+execute 'enable module for apache-tomcat binding' do
+  command "/usr/sbin/a2enmod proxy_http"
+  not_if {::File.symlink?(::File.join(node['apache']['dir'], 'mods-enabled', "proxy_http.load"))}
+end
