@@ -11,6 +11,38 @@ execute 'enable module for apache-tomcat binding' do
 end
 
 execute 'enable module for apache-tomcat binding' do
+  command "/usr/sbin/a2enmod proxy_balancer"
+  not_if {::File.symlink?(::File.join(node['apache']['dir'], 'mods-enabled', "proxy_balancer.load"))}
+end
+
+execute 'enable module for apache-tomcat binding' do
+  command "/usr/sbin/a2enmod proxy_connect"
+  not_if {::File.symlink?(::File.join(node['apache']['dir'], 'mods-enabled', "proxy_connect.load"))}
+end
+
+execute 'enable module for apache-tomcat binding' do
+  command "/usr/sbin/a2enmod proxy_ftp"
+  not_if {::File.symlink?(::File.join(node['apache']['dir'], 'mods-enabled', "proxy_ftp.load"))}
+end
+
+execute 'enable module for apache-tomcat binding' do
   command "/usr/sbin/a2enmod proxy_http"
   not_if {::File.symlink?(::File.join(node['apache']['dir'], 'mods-enabled', "proxy_http.load"))}
 end
+
+execute 'enable module for apache-tomcat binding' do
+  command "/usr/sbin/a2enmod proxy_express"
+  not_if {::File.symlink?(::File.join(node['apache']['dir'], 'mods-enabled', "proxy_express.load"))}
+end
+
+execute 'enable module for apache-tomcat binding' do
+  command "/usr/sbin/a2enmod proxy_fcig"
+  not_if {::File.symlink?(::File.join(node['apache']['dir'], 'mods-enabled', "proxy_fcig.load"))}
+end
+
+execute 'enable module for apache-tomcat binding' do
+  command "/usr/sbin/a2enmod proxy_wstunnel"
+  not_if {::File.symlink?(::File.join(node['apache']['dir'], 'mods-enabled', "proxy_wstunnel.load"))}
+end
+
+
