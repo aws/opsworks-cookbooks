@@ -10,5 +10,11 @@
 <% if @database[:port] -%>
   port: <%= @database[:port].to_i.inspect %>
 <% end -%>
+<% if @database[:pool] -%>
+  pool: <%= @database[:pool].to_i.inspect %>
+<% end -%>
+<% if @database[:wait_timeout] -%>
+  wait_timeout: <%= @database[:wait_timeout].to_i.inspect %>
+<% end -%>
 
 <% end %>
