@@ -1,6 +1,6 @@
 #Adapted from script by Dmitriy Sukharev on 2013-12-22 by Ryan Carlson on 2014-1-31
 
-WILDFLY_VERSION=<% node['wildfly']['version'] %>
+WILDFLY_VERSION=<%= node[:wildfly][:version] %>
 WILDFLY_FILENAME=wildfly-$WILDFLY_VERSION
 WILDFLY_ARCHIVE_NAME=$WILDFLY_FILENAME.tar.gz
 
@@ -8,18 +8,14 @@ INSTALL_DIR=/opt
 WILDFLY_FULL_DIR=$INSTALL_DIR/$WILDFLY_FILENAME
 WILDFLY_DIR=$INSTALL_DIR/wildfly-$WILDFLY_VERSION
 
-WILDFLY_USER=<% node ['wildfly']['user']%>
-WILDFLY_SERVICE=<% node ['wildfly']['service_name']%>
+WILDFLY_USER=<%= node[:wildfly][:user]%>
+WILDFLY_SERVICE=<%= node[:wildfly][:service_name]%>
 
 WILDFLY_STARTUP_TIMEOUT=240
 WILDFLY_SHUTDOWN_TIMEOUT=30
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-if [[ $EUID -ne 0 ]]; then
-echo "This script must be run as root."
-exit 1
-fi
 
 echo "Cleaning up..."
 
@@ -84,13 +80,13 @@ fi
 
 chmod 755 /etc/init.d/$WILDFLY_SERVICE
 
-if [ ! -z "$WILDFLY_SERVICE_CONF" ]; then
+#if [ ! -z "$WILDFLY_SERVICE_CONF" ]; then
 #echo "Configuring service..."
 #echo JBOSS_HOME=\"$WILDFLY_DIR\" > $WILDFLY_SERVICE_CONF
 #echo JBOSS_USER=$WILDFLY_USER >> $WILDFLY_SERVICE_CONF
 #echo STARTUP_WAIT=$WILDFLY_STARTUP_TIMEOUT >> $WILDFLY_SERVICE_CONF
 #echo SHUTDOWN_WAIT=$WILDFLY_SHUTDOWN_TIMEOUT >> $WILDFLY_SERVICE_CONF
-fi
+#fi
 
 echo "Configuring application server..."
 #sed -i -e 's,<deployment-scanner path="deployments" relative-to="jboss.server.base.dir" scan-interval="5000"/>,<deployment-scanner path="deployments" relative-to="jboss.server.base.dir" scan-interval="5000" deployment-timeout="'$WILDFLY_STARTUP_TIMEOUT'"/>,g' $WILDFLY_DIR/standalone/configuration/standalone.xml
