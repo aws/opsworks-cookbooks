@@ -30,19 +30,5 @@ execute 'enable module for apache-tomcat binding' do
   not_if {::File.symlink?(::File.join(node['apache']['dir'], 'mods-enabled', "proxy_http.load"))}
 end
 
-execute 'enable module for apache-tomcat binding' do
-  command "/usr/sbin/a2enmod proxy_express"
-  not_if {::File.symlink?(::File.join(node['apache']['dir'], 'mods-enabled', "proxy_express.load"))}
-end
-
-execute 'enable module for apache-tomcat binding' do
-  command "/usr/sbin/a2enmod proxy_fcig"
-  not_if {::File.symlink?(::File.join(node['apache']['dir'], 'mods-enabled', "proxy_fcig.load"))}
-end
-
-execute 'enable module for apache-tomcat binding' do
-  command "/usr/sbin/a2enmod proxy_wstunnel"
-  not_if {::File.symlink?(::File.join(node['apache']['dir'], 'mods-enabled', "proxy_wstunnel.load"))}
-end
 
 
