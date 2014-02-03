@@ -1,4 +1,4 @@
-default['wildfly']['version'] = '8.0.0.CR1x'
+default['wildfly']['version'] = '8.0.0.CR1'
 default['wildfly']['user'] = 'wildfly'
 default['wildfly']['group'] = 'wildfly'
 default['wildfly']['service_name'] = 'wildfly'
