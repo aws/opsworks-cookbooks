@@ -17,6 +17,18 @@ template "/tmp/wildfly-service.sh" do
   mode 0755
 end
 
+directory 'log-directory' do
+  path '/opt/wildfly-' + node['wildfly']['version'] + '/standalone/log'
+  owner 'wildfly'
+  group 'wildfly'
+end
+
+directory 'data-directory' do
+  path '/opt/wildfly-' + node['wildfly']['version'] + '/standalone/data'
+  owner 'wildfly'
+  group 'wildfly'
+end
+
 execute "install wildfly service" do
   user "root"
   command "sudo sh /tmp/wildfly-service.sh"
