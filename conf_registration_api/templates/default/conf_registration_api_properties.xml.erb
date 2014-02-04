@@ -3,8 +3,10 @@
 <properties>
 
     <entry key="clientUrl"><%= node['crs-api']['client-url']%></entry>
-    <entry key="permissionActivationUrl"><%= node['crs-api']['permission-activation-url-path']%></entry>
-    <entry key="registerUrlPath"><%= node['crs-api']['register-url-path']%></entry>
+    <entry key="permissionActivationUrlPath"><%= node['crs-api']['permission-activation-url-path']%></entry>
+    <entry key="authUrlPath"><%= node['crs-api']['auth-url-path']%></entry>
+
+    <entry key="maxSessionLength"><%= node['crs-api']['max-session-length']%></entry>
 
     <entry key="facebookAppId"><%= node['crs-api']['facebook-app-id']%></entry>
     <entry key="facebookAppSecret"><%= node['crs-api']['facebook-app-secret']%></entry>
@@ -22,7 +24,10 @@
     <!-- authorize.net test account info -->
     <entry key="authnetTestId"><%= node['crs-api']['authnet-test-id']%></entry>
     <entry key="authnetTestToken"><%= node['crs-api']['authnet-test-token']%></entry>
-    <entry key="authnetTestApiUrl"><%= node['crs-api']['authnet-url']%></entry>
+    <entry key="authnetUrl"><%= node['crs-api']['authnet-url']%></entry>
+    <entry key="authnetTestMode"><%= node['crs-api']['authnet-test-mode']%></entry>
+
+    <entry key="currencyCode"><% node['crs-api']['currency-code'] %></entry>
 
     <!-- errbit config info -->
     <entry key="errbitEndpoint"><%= node['crs-api']['errbit-endpoint']%></entry>
