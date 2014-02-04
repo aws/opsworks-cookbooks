@@ -11,6 +11,7 @@ default['crs-api']['mail-server'] = 'email-smtp.us-east-1.amazonaws.com'
 default['crs-api']['mail-server-username'] = 'AKIAJEGKFOK7SWWYQRQA'
 
 default['crs-api']['authnet-test-id'] = '9H59j8uV7'
+default['crs-api']['authnet-url'] ='https://test.authorize.net/gateway/transact.dll'
 
 default['crs-api']['errbit-endpoint'] = 'https://errors.uscm.org/notifier_api/v2/notices'
 default['crs-api']['errbit-environment'] = 'production'
