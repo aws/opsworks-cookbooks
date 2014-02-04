@@ -120,7 +120,7 @@ define :opsworks_deploy do
             )
 
             only_if do
-              node[:opsworks][:layers].has_key?('db-master')
+              deploy[:database][:host].present?
             end
           end.run_action(:create)
         elsif deploy[:application_type] == 'php'
