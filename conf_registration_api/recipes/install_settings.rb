@@ -12,11 +12,11 @@ directory '/apps/apps-config' do
   action :create
 end
 
-template '/apps/apps-config/conf-registration-api-settings.xml' do
+template '/apps/apps-config/conf_registration_api-settings.xml' do
   owner 'wildfly'
   group 'wildfly'
   mode 0744
   backup false
-  source 'conf-registration-api-settings.xml.erb'
+  source 'conf_registration_api_settings.xml.erb'
   action :create
 end
