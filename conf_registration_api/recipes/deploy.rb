@@ -13,8 +13,8 @@ git '/tmp/artifacts/crs-api' do
 end
 
 execute 'move file to server' do
-	command 'mv *.war /opt/wildfly-8.0.0.CR1/standalone/deployments/crs-http-json-api.war'
-	cwd '/tmp/artifacts/crs-api/conf-registration-api/org/cru/crs-http-json-api/' + default['crs-api']['version']
+	command 'mv *.war /opt/wildfly-' + node['wildfly']['version'] + '/standalone/deployments/crs-http-json-api.war'
+	cwd '/tmp/artifacts/crs-api/conf-registration-api/org/cru/crs-http-json-api/' + node['crs-api']['version']
 	group 'wildfly'
 	user 'wildfly'
 	
