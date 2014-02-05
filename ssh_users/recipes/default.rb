@@ -19,11 +19,20 @@ node[:ssh_users].each_key do |id|
   set_public_key(node[:ssh_users][id])
 end
 
+system_sudoer = case node[:platform]
+                when 'debian'
+                  'admin'
+                when 'ubuntu'
+                  'ubuntu'
+                when 'redhat','centos','fedora','amazon'
+                   'ec2-user'
+                end
+
 template '/etc/sudoers' do
   backup false
   source 'sudoers.erb'
   owner 'root'
   group 'root'
   mode 0440
-  variables :sudoers => node[:sudoers]
+  variables :sudoers => node[:sudoers], :system_sudoer => system_sudoer
 end
