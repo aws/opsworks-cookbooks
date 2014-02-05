@@ -16,8 +16,6 @@ git '/tmp/artifacts/crs-api' do
   depth 5
   repository 'git@github.com:CruGlobal/conf-registration-api.git'
   revision 'mvn-repo'
-  user node['wildfly']['user']
-  group node['wildfly']['group']
 end
 
 execute 'move file to server' do
