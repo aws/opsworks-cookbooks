@@ -16,13 +16,13 @@ git '/tmp/artifacts/crs-api' do
   depth 5
   repository 'git@github.com:CruGlobal/conf-registration-api.git'
   revision 'mvn-repo'
-  owner node['wildfly']['user']
+  user node['wildfly']['user']
   group node['wildfly']['group']
 end
 
 execute 'move file to server' do
   command 'mv *.war /opt/wildfly-' + node['wildfly']['version'] + '/standalone/deployments/crs-http-json-api.war'
   cwd '/tmp/artifacts/crs-api/conf-registration-api/org/cru/crs-http-json-api/' + node['crs-api']['version']
-  owner node['wildfly']['user']
+  user node['wildfly']['user']
   group node['wildfly']['group']
 end
