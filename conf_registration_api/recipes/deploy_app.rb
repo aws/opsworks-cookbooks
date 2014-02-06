@@ -7,7 +7,7 @@ directory 'tmp/artifacts' do
   action :create
 end
 
-directory '/tmp/artifacts/crs-api' do
+directory '/tmp/artifacts/conf-registration-api' do
   owner node['crs-api']['user']
   group node['crs-api']['group']
   mode 0755
@@ -24,7 +24,7 @@ end
 
 execute 'move file to server' do
   command 'mv *.war /opt/wildfly-' + node['wildfly']['version'] + '/standalone/deployments/crs-http-json-api.war'
-  cwd '/tmp/artifacts/crs-api/org/cru/crs-http-json-api/' + node['crs-api']['version']
+  cwd '/tmp/artifacts/conf-registration-api/org/cru/crs-http-json-api/' + node['crs-api']['version']
   user node['wildfly']['user']
   group node['wildfly']['group']
 end
