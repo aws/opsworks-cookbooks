@@ -14,7 +14,7 @@ directory '/tmp/artifacts/conf-registration-api' do
   action :create
 end
 
-git '/tmp/artifacts/crs-api' do
+git '/tmp/artifacts/conf-registration-api' do
   depth 5
   repository 'http://github.com/CruGlobal/conf-registration-api'
   revision 'mvn-repo'
