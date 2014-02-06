@@ -32,8 +32,8 @@ end
 execute 'rename war for deploy' do
   command 'mv *.war /tmp/artifacts/deploy/crs-http-json-api.war'
   cwd '/tmp/artifacts/conf-registration-api/org/cru/crs-http-json-api/' + node['crs-api']['version']
-  user node['wildfly']['user']
-  group node['wildfly']['group']
+  user node['crs-api']['user']
+  group node['crs-api']['group']
 end
 
 execute 'deploy war' do
