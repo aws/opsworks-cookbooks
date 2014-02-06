@@ -1,6 +1,6 @@
 user 'wildfly' do
-  home "/Users/wildfly"
-  shell "/bin/bash"
+  home '/home/wildfly'
+  shell '/bin/bash'
   :create
 end
 
