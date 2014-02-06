@@ -1,13 +1,16 @@
+include_recipe 'conf_registration_api::user'
+include_recipe 'conf_registration_api::ssh_key'
+
 directory 'tmp/artifacts' do
-  owner node['wildfly']['user']
-  group node['wildfly']['group']
+  owner node['crs-api']['user']
+  group node['crs-api']['group']
   mode 0744
   action :create
 end
 
 directory '/tmp/artifacts/crs-api' do
-  owner node['wildfly']['user']
-  group node['wildfly']['group']
+  owner node['crs-api']['user']
+  group node['crs-api']['group']
   mode 0744
   action :create
 end
