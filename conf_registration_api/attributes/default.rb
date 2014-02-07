@@ -6,6 +6,7 @@ default['crs-api']['version'] = '1.0.0-SNAPSHOT'
 default['crs-api']['client-url'] = 'http://cruglobal.github.io/conf-registration-web/#'
 default['crs-api']['permission-activation-url-path'] = '/activatePermission'
 default['crs-api']['auth-url-path'] = '/auth'
+default['crs-api']['register-url-path'] = '/register'
 
 default['crs-api']['max-session-length'] = 4
 
