@@ -1,0 +1,94 @@
+#Adapted from script by Dmitriy Sukharev on 2013-12-22 by Ryan Carlson on 2014-1-31
+
+WILDFLY_VERSION=<%= node[:wildfly][:version] %>
+WILDFLY_FILENAME=wildfly-$WILDFLY_VERSION
+WILDFLY_ARCHIVE_NAME=$WILDFLY_FILENAME.tar.gz
+
+INSTALL_DIR=/opt
+WILDFLY_FULL_DIR=$INSTALL_DIR/$WILDFLY_FILENAME
+WILDFLY_DIR=$INSTALL_DIR/wildfly-$WILDFLY_VERSION
+
+WILDFLY_USER=<%= node[:wildfly][:user]%>
+WILDFLY_SERVICE=<%= node[:wildfly][:service_name]%>
+
+WILDFLY_STARTUP_TIMEOUT=240
+WILDFLY_SHUTDOWN_TIMEOUT=30
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+
+echo "Cleaning up..."
+
+echo "Installation..."
+
+echo "Registrating Wildfly as service..."
+# if Debian-like distribution
+if [ -r /lib/lsb/init-functions ]; then
+cp $WILDFLY_DIR/bin/init.d/wildfly-init-debian.sh /etc/init.d/$WILDFLY_SERVICE
+sed -i -e 's,NAME=wildfly,NAME='$WILDFLY_SERVICE',g' /etc/init.d/$WILDFLY_SERVICE
+WILDFLY_SERVICE_CONF=/etc/default/$WILDFLY_SERVICE
+fi
+
+# if RHEL-like distribution
+if [ -r /etc/init.d/functions ]; then
+cp $WILDFLY_DIR/bin/init.d/wildfly-init-redhat.sh /etc/init.d/$WILDFLY_SERVICE
+WILDFLY_SERVICE_CONF=/etc/default/wildfly.conf
+fi
+
+# if neither Debian nor RHEL like distribution
+if [ ! -r /lib/lsb/init-functions -a ! -r /etc/init.d/functions ]; then
+cat > /etc/init.d/$WILDFLY_SERVICE << "EOF"
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides: ${WILDFLY_SERVICE}
+# Required-Start: $local_fs $remote_fs $network $syslog
+# Required-Stop: $local_fs $remote_fs $network $syslog
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Start/Stop ${WILDFLY_FILENAME}
+### END INIT INFO
+
+WILDFLY_USER=${WILDFLY_USER}
+WILDFLY_DIR=${WILDFLY_DIR}
+
+case "$1" in
+start)
+echo "Starting ${WILDFLY_FILENAME}..."
+start-stop-daemon --start --background --chuid $WILDFLY_USER --exec $WILDFLY_DIR/bin/standalone.sh
+exit $?
+;;
+stop)
+echo "Stopping ${WILDFLY_FILENAME}..."
+
+start-stop-daemon --start --quiet --background --chuid $WILDFLY_USER --exec $WILDFLY_DIR/bin/jboss-cli.sh -- --connect command=:shutdown
+exit $?
+;;
+log)
+echo "Showing server.log..."
+tail -500f $WILDFLY_DIR/standalone/log/server.log
+;;
+*)
+echo "Usage: /etc/init.d/wildfly {start|stop}"
+exit 1
+;;
+esac
+exit 0
+EOF
+sed -i -e 's,${WILDFLY_USER},'$WILDFLY_USER',g; s,${WILDFLY_FILENAME},'$WILDFLY_FILENAME',g; s,${WILDFLY_SERVICE},'$WILDFLY_SERVICE',g; s,${WILDFLY_DIR},'$WILDFLY_DIR',g' /etc/init.d/$WILDFLY_SERVICE
+fi
+
+chmod 755 /etc/init.d/$WILDFLY_SERVICE
+
+if [ ! -z "$WILDFLY_SERVICE_CONF" ]; then
+echo "Configuring service..."
+echo JBOSS_HOME=\"$WILDFLY_DIR\" > $WILDFLY_SERVICE_CONF
+echo JBOSS_USER=$WILDFLY_USER >> $WILDFLY_SERVICE_CONF
+echo STARTUP_WAIT=$WILDFLY_STARTUP_TIMEOUT >> $WILDFLY_SERVICE_CONF
+echo SHUTDOWN_WAIT=$WILDFLY_SHUTDOWN_TIMEOUT >> $WILDFLY_SERVICE_CONF
+fi
+
+echo "Configuring application server..."
+sed -i -e 's,<inet-address value="${jboss.bind.address:127.0.0.1}"/>,<inet-address value="${jboss.bind.address:0.0.0.0}"/>,g' $WILDFLY_DIR/standalone/configuration/standalone.xml
+
+echo "Done."

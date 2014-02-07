@@ -1,4 +1,5 @@
 define :opsworks_deploy do
+  Chef::Log.debug(params)
   application = params[:app]
   deploy = params[:deploy_data]
 

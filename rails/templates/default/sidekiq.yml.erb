@@ -1,0 +1,10 @@
+---
+:verbose: <%= @sidekiq[:verbose] || false %>
+:concurrency: <%= @sidekiq[:concurrency] || 1 %>
+:timeout: <%= @sidekiq[:timeout] || 600 %>
+<% if @sidekiq[:queues] %>
+:queues:
+<% @sidekiq[:queues].each do |name, weight| %>
+  - [<%= name %>, <%= weight %>]
+<% end %>
+<% end %>

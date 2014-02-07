@@ -1,0 +1,9 @@
+default['wildfly']['version'] = '8.0.0.CR1'
+default['wildfly']['user'] = 'wildfly'
+default['wildfly']['group'] = 'wildfly'
+default['wildfly']['service_name'] = 'wildfly'
+default['wildfly']['port'] = 8080
+default['wildfly']['secure_port'] = 8443
+default['wildfly']['ajp_port'] = 8009
+default['wildfly']['shutdown_port'] = 8005
+default['wildfly']['uri_encoding'] = 'UTF-8'

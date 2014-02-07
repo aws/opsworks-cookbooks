@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+    <entry key="clientUrl"><%= node['crs-api']['client-url']%></entry>
+    <entry key="permissionActivationUrlPath"><%= node['crs-api']['permission-activation-url-path']%></entry>
+    <entry key="authUrlPath"><%= node['crs-api']['auth-url-path']%></entry>
+    <entry key="registerUrlPath"><%= node['crs-api']['register-url-path']%></entry>
+
+    <entry key="maxSessionLength"><%= node['crs-api']['max-session-length']%></entry>
+
+    <entry key="facebookAppId"><%= node['crs-api']['facebook-app-id']%></entry>
+    <entry key="facebookAppSecret"><%= node['crs-api']['facebook-app-secret']%></entry>
+
+    <!-- database server connection info -->
+    <entry key="databaseUrl"><%= node['crs-api']['database-url']%></entry>
+    <entry key="databaseUsername"><%= node['crs-api']['database-username']%></entry>
+    <entry key="databasePassword"><%= node['crs-api']['database-password']%></entry>
+
+    <!-- email server configuration -->
+    <entry key="mailServer"><%= node['crs-api']['mail-server']%></entry>
+    <entry key="mailServerUsername"><%= node['crs-api']['mail-server-username']%></entry>
+    <entry key="mailServerPassword"><%= node['crs-api']['mail-server-password']%></entry>
+
+    <!-- authorize.net test account info -->
+    <entry key="authnetTestId"><%= node['crs-api']['authnet-test-id']%></entry>
+    <entry key="authnetTestToken"><%= node['crs-api']['authnet-test-token']%></entry>
+    <entry key="authnetUrl"><%= node['crs-api']['authnet-url']%></entry>
+    <entry key="authnetTestMode"><%= node['crs-api']['authnet-test-mode']%></entry>
+
+    <entry key="currencyCode"><% node['crs-api']['currency-code'] %></entry>
+
+    <!-- errbit config info -->
+    <entry key="errbitEndpoint"><%= node['crs-api']['errbit-endpoint']%></entry>
+    <entry key="errbitApiKey"><%= node['crs-api']['errbit-api-key']%></entry>
+    <entry key="errbitEnvironment"><%= node['crs-api']['errbit-environment']%></entry>
+
+    <entry key="crsEmail"><%= node['crs-api']['crs-email']%></entry>
+
+    <entry key="mode">debug</entry>
+
+</properties>

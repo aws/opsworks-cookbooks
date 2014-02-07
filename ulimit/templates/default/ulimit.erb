@@ -1,0 +1,14 @@
+# Limits settings for <%= @ulimit_user %>
+
+<% unless @filehandle_limit.nil? -%>
+<%= @ulimit_user -%> - nofile <%= @filehandle_limit %>
+<% end -%>
+
+<% unless @process_limit.nil? -%>
+<%= @ulimit_user -%> - nproc <%= @process_limit %>
+<% end -%>
+
+<% unless @memory_limit.nil? -%>
+<%= @ulimit_user -%> - memlock <%= @memory_limit %>
+<% end -%>
+
