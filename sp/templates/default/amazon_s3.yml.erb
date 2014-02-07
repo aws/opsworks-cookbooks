@@ -1,0 +1,6 @@
+<% (['development', 'production'] + [@environment]).uniq.each do |env| -%>
+<%= env %>:
+  bucket: <%= @amazon[:bucket] %>
+  access_key_id: <%= @amazon[:access_key_id] %>
+  secret_access_key: <%= @amazon[:secret_access_key] %>
+<% end -%>

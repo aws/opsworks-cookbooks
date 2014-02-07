@@ -79,4 +79,6 @@ remote_file local_custom_pkg_file do
   end
 end
 
-include_recipe 'opsworks_java::tomcat_setup'
+#if someone wants tomcat, that recipe can be invoked.
+#it should not, IMO be included as part of java install/setup.
+#include_recipe 'opsworks_java::tomcat_setup'

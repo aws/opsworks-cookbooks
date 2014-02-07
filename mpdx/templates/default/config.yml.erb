@@ -1,0 +1,28 @@
+<% (['development', 'production'] + [@environment]).uniq.each do |env| -%>
+<%= env %>:
+  twitter_key: <%= @config[:twitter_key] %>
+  twitter_secret: <%= @config[:twitter_secret] %>
+  facebook_key: <%= @config[:facebook_key] %>
+  facebook_secret: <%= @config[:facebook_secret] %>
+  linkedin_key: <%= @config[:linkedin_key] %>
+  linkedin_secret: <%= @config[:linkedin_secret] %>
+  google_key: <%= @config[:google_key] %>
+  google_secret: '<%= @config[:google_secret] %>'
+  s3_key: <%= @config[:s3_key] %>
+  s3_secret: <%= @config[:s3_secret] %>
+  s3_bucket: <%= @config[:s3_bucket] %>
+  encryption_key: <%= @config[:encryption_key] %>
+  mailchimp_key: <%= @config[:mailchimp_key] %>
+  mailchimp_list: <%= @config[:mailchimp_list] %>
+  itg_auth_key: <%= @config[:itg_auth_key] %>
+  smarty_auth_id: <%= @config[:smarty_auth_id] %>
+  smarty_auth_token: <%= @config[:smarty_auth_token] %>
+  prayer_letters_key: <%= @config[:prayer_letters_key] %>
+  prayer_letters_secret: <%= @config[:prayer_letters_secret] %>
+  smtp_user_name: <%= @config[:smtp_user_name] || 'localhost' %>
+  smtp_password: <%= @config[:smtp_password] || 25 %>
+  smtp_address: <%= @config[:smtp_address] %>
+  smtp_authentication: <%= @config[:smtp_authentication] %>
+  smtp_enable_starttls_auto: <%= @config[:smtp_enable_starttls_auto] %>
+  smtp_port: <%= @config[:smtp_port] %>
+<% end -%>

@@ -1,0 +1,48 @@
+{
+    "recommendations": {
+    },
+    "attributes": {
+    },
+    "maintainer": "Brightcove, Inc.",
+    "suggestions": {
+    },
+    "dependencies": {
+    },
+    "maintainer_email": "bhatfield@brightcove.com",
+    "conflicting": {
+    },
+    "platforms": {
+      "debian": [
+
+      ],
+      "fedora": [
+
+      ],
+      "centos": [
+
+      ],
+      "ubuntu": [
+
+      ],
+      "suse": [
+
+      ],
+      "redhat": [
+
+      ]
+    },
+    "license": "Apache 2.0",
+    "version": "0.1.4",
+    "providing": {
+    },
+    "recipes": {
+      "ulimit": "configures ulimit ability for operating systems that disable it by default"
+    },
+    "replacing": {
+    },
+    "name": "ulimit",
+    "description": "Provides user_ulimit resource",
+    "groupings": {
+    },
+    "long_description": ""
+  }
