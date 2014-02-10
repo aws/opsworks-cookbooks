@@ -9,11 +9,17 @@
   end
 
 
-  bin_dir = :: '/usr/share/tomcat7/bin')
+  bin_dir = '/usr/share/tomcat7/bin'
   server_bin_dir = '/opt/athleticoffice/servers/alpha/bin'
 
 
   link server_bin_dir do
     to bin_dir
     action :create
+  end
+  
+  
+    execute 'download solr' do
+    action :run
+    command "wget http://www.springblox.com/wp-content/uploads/solr-4.6.1_01.tgz"
   end
