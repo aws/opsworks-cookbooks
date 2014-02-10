@@ -9,13 +9,8 @@
   end
 
 
-  bin_dir = '/usr/share/tomcat7/bin'
-  server_bin_dir = '/opt/athleticoffice/servers/alpha/bin'
-
-
-  link server_bin_dir do
-    to bin_dir
-    action :create
+  link '/opt/athleticoffice/servers/alpha/bin' do
+    to '/opt/athleticoffice/servers/alpha/bin'
   end
   
   
