@@ -24,5 +24,4 @@ end
 
 execute 'restart service' do
   command 'sudo service ' + node['crs-api']['service_name'] + ' restart'
-  user node['crs-api']['user']
 end
