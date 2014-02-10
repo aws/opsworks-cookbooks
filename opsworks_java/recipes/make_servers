@@ -1,0 +1,4 @@
+  execute 'create alpha tomcat server' do
+    action :run
+    command "tomcat7-instance-create -p 8081 -c 8006 alpha"
+  end
