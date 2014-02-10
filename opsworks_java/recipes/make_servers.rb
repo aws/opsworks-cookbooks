@@ -9,8 +9,8 @@
   end
 
 
-  bin_dir = ::File.join('/usr/share/tomcat7', 'bin')
-  server_bin_dir = ::File.join('/opt/athleticoffice/servers/alpha', 'bin')
+  bin_dir = :: '/usr/share/tomcat7/bin')
+  server_bin_dir = '/opt/athleticoffice/servers/alpha/bin'
 
 
   link server_bin_dir do
