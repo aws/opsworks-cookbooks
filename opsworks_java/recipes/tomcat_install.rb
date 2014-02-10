@@ -23,54 +23,34 @@ directory node['opsworks_java']['tomcat']['java_shared_lib_dir_ext'] do
   action :create
 end
 
-directory "/var/lib/tomcat7/temp" do
-  owner 'tomcat7'
-  group 'tomcat7'
-  mode 0755
-  action :create
-end
-
-directory "/opt/liferay" do
+directory "/opt/athleticoffice" do
   owner 'root'
   group 'root'
-  mode 0777
+  mode 0775
   action :create
 end
 
-directory "/opt/liferay/license" do
-  owner 'tomcat7'
-  group 'tomcat7'
-  mode 0777
+directory "/opt/athleticoffice/app-data" do
+  owner 'root'
+  group 'root'
+  mode 0775
   action :create
 end
 
-directory "/opt/liferay/data" do
+directory "/opt/athleticoffice/app-data/data" do
   owner 'tomcat7'
   group 'tomcat7'
-  mode 0777
+  mode 0775
   action :create
 end
 
-directory "/opt/liferay/data/hsql" do
-  owner 'tomcat7'
-  group 'tomcat7'
-  mode 0777
+directory "/opt/athleticoffice/servers" do
+  owner 'root'
+  group 'root'
+  mode 0775
   action :create
 end
 
-  cookbook_file "/opt/liferay/data/hsql/lportal.properties" do
-  owner 'tomcat7'
-  group 'tomcat7'
-    source "lportal.properties"
-    mode "0777"
-  end
-
-  cookbook_file "/opt/liferay/data/hsql/lportal.script" do
-  owner 'tomcat7'
-  group 'tomcat7'
-    source "lportal.script"
-    mode "0777"
-  end
 
 
   cookbook_file "/usr/share/java/ext/activation.jar" do
