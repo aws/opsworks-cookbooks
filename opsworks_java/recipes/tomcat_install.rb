@@ -23,6 +23,7 @@ directory node['opsworks_java']['tomcat']['java_shared_lib_dir_ext'] do
   action :create
 end
 
+ 
 directory "/opt/athleticoffice" do
   owner 'root'
   group 'root'
@@ -30,19 +31,15 @@ directory "/opt/athleticoffice" do
   action :create
 end
 
-directory "/opt/athleticoffice/solr" do
-  owner 'root'
-  group 'root'
-  mode 0775
-  action :create
+['app-data','solr','servers'].each do |dir|
+    directory "/opt/athleticoffice/#{dir}" do
+      mode 0755
+      owner 'root'
+      group 'root'
+      action :create
+    end
 end
 
-directory "/opt/athleticoffice/app-data" do
-  owner 'root'
-  group 'root'
-  mode 0775
-  action :create
-end
 
 directory "/opt/athleticoffice/app-data/data" do
   owner 'tomcat7'
@@ -50,14 +47,6 @@ directory "/opt/athleticoffice/app-data/data" do
   mode 0775
   action :create
 end
-
-directory "/opt/athleticoffice/servers" do
-  owner 'root'
-  group 'root'
-  mode 0775
-  action :create
-end
-
 
 
   cookbook_file "/usr/share/java/ext/activation.jar" do
