@@ -23,5 +23,5 @@ template '/apps/apps-config/conf-registration-api-properties.xml' do
 end
 
 execute 'restart service' do
-  command 'sudo service ' + node['crs-api']['service_name'] + ' restart'
+  command 'sudo service ' + node['crs-api']['service-name'] + ' restart'
 end
