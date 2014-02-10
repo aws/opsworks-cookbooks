@@ -30,6 +30,13 @@ directory "/opt/athleticoffice" do
   action :create
 end
 
+directory "/opt/athleticoffice/solr" do
+  owner 'root'
+  group 'root'
+  mode 0775
+  action :create
+end
+
 directory "/opt/athleticoffice/app-data" do
   owner 'root'
   group 'root'
