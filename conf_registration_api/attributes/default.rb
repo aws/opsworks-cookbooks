@@ -12,7 +12,7 @@ default['crs-api']['max-session-length'] = 4
 
 default['crs-api']['facebook-app-id'] = '217890171695297'
 
-default['crs-api']['database-url'] = 'jdbc:postgresql://10.91.175.60/crs_dev'
+default['crs-api']['database-url'] = 'jdbc:postgresql://10.7.196.222/crs_dev'
 default['crs-api']['database-username'] = 'crsuser'
 
 default['crs-api']['mail-server'] = 'email-smtp.us-east-1.amazonaws.com'
