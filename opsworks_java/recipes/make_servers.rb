@@ -10,7 +10,7 @@
 
 
   link '/opt/athleticoffice/servers/alpha/bin' do
-    to '/opt/athleticoffice/servers/alpha/bin'
+    to '/usr/share/tomcat7/bin'
   end
   
   
