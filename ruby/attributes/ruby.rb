@@ -1,9 +1,17 @@
 include_attribute 'opsworks_initial_setup::default'
 include_attribute 'opsworks_commons::default'
 
-# ruby_version 1.8.7 is handled by 'ruby-enterprise'
+_platform = node[:platform]
+_platform_version = node[:platform_version]
 arch = RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'
 rhel_arch = RUBY_PLATFORM.match(/64/) ? 'x86_64' : 'i686'
+
+# Hack to get RedHat 6 to online state until we have proper userspace
+# Ruby packages or removed Ruby dependency from custom layer.
+if ["redhat", "centos"].include?(_platform)
+  _platform = "amazon"
+  _platform_version = "2013.09"
+end
 
 # ruby_version 1.8.7 is handled by 'ruby-enterprise'
 case node["opsworks"]["ruby_version"]
@@ -37,7 +45,7 @@ end
 default[:ruby][:version] = "#{node[:ruby][:full_version]}#{node[:ruby][:patch]}" unless node[:ruby][:version]
 
 default[:ruby][:deb] = "opsworks-ruby#{node[:ruby][:major_version]}_#{node[:ruby][:full_version]}-#{node[:ruby][:patch]}.#{node[:ruby][:pkgrelease]}_#{arch}.deb" unless node[:ruby][:deb]
-default[:ruby][:deb_url] = "#{node[:opsworks_commons][:assets_url]}/packages/#{node[:platform]}/#{node[:platform_version]}/#{node[:ruby][:deb]}"
+default[:ruby][:deb_url] = "#{node[:opsworks_commons][:assets_url]}/packages/#{_platform}/#{_platform_version}/#{node[:ruby][:deb]}"
 
 default[:ruby][:rpm] = "opsworks-ruby#{node[:ruby][:major_version].delete('.')}-#{node[:ruby][:full_version]}-#{node[:ruby][:patch]}-#{node[:ruby][:pkgrelease]}.#{rhel_arch}.rpm" unless node[:ruby][:rpm]
-default[:ruby][:rpm_url] = "#{node[:opsworks_commons][:assets_url]}/packages/#{node[:platform]}/#{node[:platform_version]}/#{node[:ruby][:rpm]}"
+default[:ruby][:rpm_url] = "#{node[:opsworks_commons][:assets_url]}/packages/#{_platform}/#{_platform_version}/#{node[:ruby][:rpm]}"

@@ -1,0 +1,22 @@
+check process opsworks-agent with pidfile "<%= node[:opsworks_agent][:shared_dir] %>/pid/opsworks-agent.pid"
+  start program = "/etc/init.d/opsworks-agent start"
+  stop program = "/etc/init.d/opsworks-agent stop"
+  depends on opsworks-agent-statistic-daemons-log
+  depends on opsworks-agent-process-command-daemons-log
+  depends on opsworks-agent-keep-alive-daemons-log
+  group opsworks
+
+# check run of statistic daemon
+check file opsworks-agent-statistic-daemons-log with path "<%= node[:opsworks_agent][:log_dir] %>/opsworks-agent.statistics.log"
+  if timestamp > 2 minutes for 3 cycles then restart
+  group opsworks
+
+# check run of process command daemon
+check file opsworks-agent-process-command-daemons-log with path "<%= node[:opsworks_agent][:log_dir] %>/opsworks-agent.process_command.log"
+  if timestamp > 2 minutes for 3 cycles then restart
+  group opsworks
+
+# check run of keep alive deamon
+check file opsworks-agent-keep-alive-daemons-log with path "<%= node[:opsworks_agent][:log_dir] %>/opsworks-agent.keep_alive.log"
+  if timestamp > 2 minutes for 3 cycles then restart
+  group opsworks

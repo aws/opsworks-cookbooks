@@ -14,7 +14,7 @@ define :opsworks_rails do
     variables(:memcached => (deploy[:memcached] || {}), :environment => deploy[:rails_env])
 
     only_if do
-      node[:opsworks][:layers].has_key?('memcached')
+      deploy[:memcached][:host].present?
     end
   end
 
