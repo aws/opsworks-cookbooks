@@ -9,8 +9,8 @@
   end
 
 ['alpha','omega'].each do |server|
-template '/opt/athleticoffice/servers/#{server}/conf/server.xml' do
-  source 'servers/#{server}.xml.erb'
+template "/opt/athleticoffice/servers/#{server}/conf/server.xml" do
+  source "servers/#{server}.xml.erb"
   owner 'root'
   group 'root'
   mode 0644
@@ -19,10 +19,10 @@ end
 end
 
 ['alpha','omega'].each do |server|
-template '/etc/init.d/#{server}' do
-  source 'servers/startup-script.erb'
+template "/etc/init.d/#{server}" do
+  source "servers/startup-script.erb"
   variables({
-    :x_server => '#{server}'
+    :x_server => "#{server}"
   })
 end
 end
