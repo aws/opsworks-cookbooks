@@ -16,15 +16,20 @@ template "/opt/athleticoffice/servers/#{server}/conf/server.xml" do
   mode 0644
   backup false
 end
-end
-
-['alpha','omega'].each do |server|
 template "/etc/init.d/#{server}" do
   source "servers/startup-script.erb"
   variables({
     :x_server => "#{server}"
   })
 end
+ execute 'copy tomcat server bin' do
+    action :run
+    command "cp -R /usr/share/tomcat7/bin /opt/athleticoffice/servers/#{server}"
+  end
+   execute 'copy tomcat conf policy' do
+    action :run
+    command "cp -R /etc/tomcat7/policy.d /opt/athleticoffice/servers/#{server}/conf"
+  end
 end
 
   
