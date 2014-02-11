@@ -8,16 +8,17 @@
     command "tomcat7-instance-create -p 8082 -c 8007 /opt/athleticoffice/servers/omega"
   end
 
-
-template 'alpha server configuration' do
-  path ::File.join('/opt/athleticoffice/servers/alpha/bin', 'server.xml')
-  source 'servers/alpha.xml.erb'
+['alpha','omega'].each do |server|
+template '#{server} server configuration' do
+  path ::File.join('/opt/athleticoffice/servers/#{server}/conf', 'server.xml')
+  source 'servers/#{server}.xml.erb'
   owner 'root'
   group 'root'
   mode 0644
   backup false
 end
-  
+end
+
   
     execute 'download solr' do
     action :run
