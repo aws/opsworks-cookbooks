@@ -1,5 +1,7 @@
 #/usr/bin/env rake
 
+require 'fileutils'
+
 Encoding.default_external = Encoding::UTF_8 unless RUBY_VERSION.start_with? "1.8"
 Encoding.default_internal = Encoding::UTF_8 unless RUBY_VERSION.start_with? "1.8"
 
@@ -100,5 +102,31 @@ task :validate_best_practises do
   end
 end
 
+desc 'Check that all cookbooks include a customize.rb'
+task :validate_customize do
+  errors = []
+  Dir.glob("*/attributes/*.rb").map do |file|
+    next if File.basename(file) == "customize.rb"
+
+    found = false
+    IO.readlines(file).each do |line|
+      # loads/includes attributes
+      if line.match(/include_attribute [\'\"](\w+)::(\w+)?[\'\"]/)
+        if $1 == file.split('/').first && $2 == "customize"
+          found = true
+        end
+      end
+    end
+
+    errors << file unless found
+    puts "OK: #{file}" if found
+  end
+
+  if errors.any?
+    errors.each { |e| warn "Does not include customize.rb: #{e}" }
+    exit 1
+  end
+end
+
 desc 'run all checks'
-task :default => [:validate_syntax, :validate_literal_includes, :validate_best_practises, :validate_attribute_dependencies]
+task :default => [:validate_syntax, :validate_literal_includes, :validate_best_practises, :validate_attribute_dependencies, :validate_customize]
