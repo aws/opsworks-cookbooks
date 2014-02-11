@@ -9,9 +9,14 @@
   end
 
 
-  link "/opt/athleticoffice/servers/alpha/bin" do
-    to "/usr/share/tomcat7/bin"
-  end
+template 'alpha server configuration' do
+  path ::File.join('/opt/athleticoffice/servers/alpha/bin', 'server.xml')
+  source 'servers/alpha.xml.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+  backup false
+end
   
   
     execute 'download solr' do
