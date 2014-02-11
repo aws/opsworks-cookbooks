@@ -17,6 +17,13 @@ template '#{server} server configuration' do
   mode 0644
   backup false
 end
+template '#{server} server startup script' do
+  path ::File.join('/etc/init.d', '#{server}')
+  source 'servers/startup-script.erb'
+  variables({
+    :x_server => "#{server}"
+  })
+end
 end
 
   
