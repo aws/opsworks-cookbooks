@@ -24,9 +24,9 @@
 set -e
 
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
-NAME=tomcat7
-DESC="Tomcat servlet engine"
-DEFAULT=/etc/default/$NAME
+NAME=<%= @x_server %>
+DESC="Tomcat <%= @x_server %> servlet engine"
+DEFAULT=/etc/default/tomcat7
 JVM_TMP=/tmp/tomcat7-$NAME-tmp
 
 if [ `id -u` -ne 0 ]; then
@@ -89,10 +89,10 @@ done
 export JAVA_HOME
 
 # Directory where the Tomcat 6 binary distribution resides
-CATALINA_HOME=/usr/share/$NAME
+CATALINA_HOME=/usr/share/tomcat7
 
 # Directory for per-instance configuration files and webapps
-CATALINA_BASE=/var/lib/$NAME
+CATALINA_BASE=/opt/athleticoffice/servers/$NAME
 
 # Use the Java security manager? (yes/no)
 TOMCAT7_SECURITY=no
