@@ -17,7 +17,22 @@
 # limitations under the License.
 #
 
-# Where the various parts of apache are
+###
+# Do not use this file to override the apache2 cookbook's default
+# attributes.  Instead, please use the customize.rb attributes file,
+# which will keep your adjustments separate from the AWS OpsWorks
+# codebase and make it easier to upgrade.
+#
+# However, you should not edit customize.rb directly. Instead, create
+# "apache2/attributes/customize.rb" in your cookbook repository and
+# put the overrides in YOUR customize.rb file.
+#
+# Do NOT create an 'apache2/attributes/apache.rb' in your cookbooks. Doing so
+# would completely override this file and might cause upgrade issues.
+#
+# See also: http://docs.aws.amazon.com/opsworks/latest/userguide/customizing.html
+###
+
 case node[:platform]
 when 'redhat','centos','fedora','amazon'
   default[:apache][:dir]         = '/etc/httpd'
@@ -50,11 +65,6 @@ when 'debian','ubuntu'
 else
   raise 'Bailing out, unknown platform.'
 end
-
-###
-# These settings need the unless, since we want them to be tunable,
-# and we don't want to override the tunings.
-###
 
 # General settings
 default[:apache][:listen_ports] = [ '80','443' ]
@@ -103,3 +113,5 @@ default[:apache][:logrotate][:delaycompress] = true
 default[:apache][:logrotate][:mode] = '640'
 default[:apache][:logrotate][:owner] = 'root'
 default[:apache][:logrotate][:group] = 'adm'
+
+include_attribute 'apache2::customize'
