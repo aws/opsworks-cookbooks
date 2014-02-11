@@ -21,5 +21,13 @@ end
   
     execute 'download solr' do
     action :run
+    cwd "/opt/athleticoffice/solr"
     command "wget http://www.springblox.com/wp-content/uploads/solr-4.6.1_01.tgz"
   end
+  
+  execute 'install solr' do
+    action :run
+    cwd "/opt/athleticoffice/solr"
+    command "tar -zxvf solr-4.6.1_01.tgz"
+  end
+
