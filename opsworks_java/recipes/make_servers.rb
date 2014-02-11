@@ -17,6 +17,9 @@ template '#{server} server configuration' do
   mode 0644
   backup false
 end
+end
+
+['alpha','omega'].each do |server|
 template '/etc/init.d/#{server}' do
   source 'servers/startup-script.erb'
   variables({
