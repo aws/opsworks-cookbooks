@@ -41,11 +41,25 @@ end
 end
 
 
-directory "/opt/athleticoffice/app-data/data" do
+directory "/opt/athleticoffice/app-data/fita" do
   owner 'tomcat7'
   group 'tomcat7'
   mode 0775
   action :create
+end
+
+directory "/opt/athleticoffice/app-data/fita/data" do
+  owner 'tomcat7'
+  group 'tomcat7'
+  mode 0775
+  action :create
+end
+
+  remote_file "/opt/athleticoffice/app-data/fita/portal-setup-wizard.properties" do
+  source "https://s3.amazonaws.com/ao-setup-wizard/portal-setup-wizard.properties"
+  owner 'tomcat7'
+  group 'tomcat7'
+  mode '0644'
 end
 
 
@@ -142,7 +156,7 @@ end
     source "tomcat-native.tar.gz"
     mode "0644"
   end
-
+  
 
   
 
