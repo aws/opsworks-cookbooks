@@ -24,4 +24,13 @@ node[:deploy].each do |application, deploy|
     variables(:resource_name => node['opsworks_java']['datasources'][application], :application => application)
     notifies :restart, "service[#{node['opsworks_java']['java_app_server']}]"
   end
+  
+  ['alpha','omega'].each do |server|
+  execute "create webapps to #{server} tomcat server" do
+    action :run
+    command "cp -R /srv/www/fita/ /opt/athleticoffice/servers/#{server}/webapps"
+  end
+end
+
+  
 end
