@@ -9,8 +9,7 @@
   end
 
 ['alpha','omega'].each do |server|
-template '#{server} server configuration' do
-  path ::File.join('/opt/athleticoffice/servers/#{server}/conf', 'server.xml')
+template '/opt/athleticoffice/servers/#{server}/conf/server.xml' do
   source 'servers/#{server}.xml.erb'
   owner 'root'
   group 'root'
