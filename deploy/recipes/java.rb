@@ -14,8 +14,8 @@ node[:deploy].each do |application, deploy|
   end
 
   opsworks_deploy_dir do
-    user deploy[:user]
-    group deploy[:group]
+    user "tomcat7"
+    group "tomcat7"
     path deploy[:deploy_to]
   end
 
