@@ -13,7 +13,7 @@ template "/opt/athleticoffice/servers/#{server}/conf/server.xml" do
   source "servers/#{server}.xml.erb"
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0755
   backup false
 end
 template "/etc/init.d/#{server}" do
