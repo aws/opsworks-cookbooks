@@ -45,3 +45,10 @@ end
     command "tar -zxvf solr-4.6.1_01.tgz"
   end
 
+template "/opt/athleticoffice/solr/solr-4.6.1_01/example/example-DIH/solr/solr/conf/schema.xml" do
+  source "schema.xml.erb"
+  owner 'root'
+  group 'root'
+  mode 0644
+  backup false
+end
