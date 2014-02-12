@@ -4,7 +4,8 @@ default[:opsworks_custom_cookbooks][:enabled] = false
 default[:opsworks_custom_cookbooks][:user] = 'root'
 default[:opsworks_custom_cookbooks][:group] = 'root'
 default[:opsworks_custom_cookbooks][:home] = '/root'
-default[:opsworks_custom_cookbooks][:destination] = Chef::Config[:cookbook_path].select{|dir| dir =~ /site-cookbooks/}.first
+# TODO: Eval cookbook_path out of Chef::Config[:config_file].
+default[:opsworks_custom_cookbooks][:destination] = ::File.join(Chef::Config[:file_cache_path], '..', 'site-cookbooks')
 
 default[:opsworks_custom_cookbooks][:recipes] = []
 
