@@ -3,7 +3,7 @@ default['crs-api']['group'] = 'crs-api'
 
 default['crs-api']['version'] = '1.0.0-SNAPSHOT'
 
-default['crs-api']['client-url'] = 'http://wmd-static-1218698041.us-east-1.elb.amazonaws.com/#'
+default['crs-api']['client-url'] = 'http://dev.formvent.org/#'
 default['crs-api']['permission-activation-url-path'] = '/activatePermission'
 default['crs-api']['auth-url-path'] = '/auth'
 default['crs-api']['register-url-path'] = '/register'
