@@ -55,7 +55,7 @@ directory "/opt/athleticoffice/app-data/fita/data" do
   action :create
 end
 
-  remote_file "/opt/athleticoffice/app-data/fita/portal-setup-wizard.properties" do
+  remote_file "/opt/athleticoffice/app-data/fita/data/portal-setup-wizard.properties" do
   source "https://s3.amazonaws.com/ao-setup-wizard/portal-setup-wizard.properties"
   owner 'tomcat7'
   group 'tomcat7'
