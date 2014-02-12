@@ -28,7 +28,7 @@ node[:deploy].each do |application, deploy|
   ['alpha','omega'].each do |server|
   execute "create webapps to #{server} tomcat server" do
     action :run
-    command "cp -R /srv/www/fita/ /opt/athleticoffice/servers/#{server}/webapps"
+    command "rsync -ar --exclude '/.git' --exclude 'README.md' /srv/www/fita/current/ /opt/athleticoffice/servers/#{server}/webapps/"
   end
 end
 
