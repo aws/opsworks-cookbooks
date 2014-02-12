@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+
+<schema name="liferay" version="1.1">
+	<types>
+		<fieldType class="solr.StrField" name="string" omitNorms="true" sortMissingLast="true" />
+		<fieldType class="solr.TextField" name="string_lowercase" omitNorms="true" sortMissingLast="true">
+			<analyzer>
+				<tokenizer class="solr.WhitespaceTokenizerFactory" />
+				<filter class="solr.LowerCaseFilterFactory" />
+				<filter catenateAll="0" catenateNumbers="1" catenateWords="1" class="solr.WordDelimiterFilterFactory" generateNumberParts="1" generateWordParts="1" />
+			</analyzer>
+		</fieldType>
+		<fieldType class="solr.BoolField" name="boolean" omitNorms="true" sortMissingLast="true" />
+		<fieldType class="solr.IntField" name="integer" omitNorms="true" />
+		<fieldType class="solr.LongField" name="long" omitNorms="true" />
+		<fieldType class="solr.FloatField" name="float" omitNorms="true" />
+		<fieldType class="solr.DoubleField" name="double" omitNorms="true" />
+		<fieldType class="solr.SortableIntField" name="sint" omitNorms="true" sortMissingLast="true" />
+		<fieldType class="solr.SortableLongField" name="slong" omitNorms="true" sortMissingLast="true" />
+		<fieldType class="solr.SortableFloatField" name="sfloat" omitNorms="true" sortMissingLast="true" />
+		<fieldType class="solr.SortableDoubleField" name="sdouble" omitNorms="true" sortMissingLast="true" />
+		<fieldType class="solr.DateField" name="date" omitNorms="true" sortMissingLast="true" />
+		<fieldType class="solr.TextField" name="text_ws" positionIncrementGap="100">
+			<analyzer>
+				<tokenizer class="solr.WhitespaceTokenizerFactory" />
+			</analyzer>
+		</fieldType>
+		<fieldType class="solr.TextField" name="text" positionIncrementGap="100">
+			<analyzer type="index">
+				<tokenizer class="solr.WhitespaceTokenizerFactory" />
+				<filter class="solr.LowerCaseFilterFactory" />
+				<filter class="solr.RemoveDuplicatesTokenFilterFactory" />
+				<filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+				<filter catenateAll="0" catenateNumbers="1" catenateWords="1" class="solr.WordDelimiterFilterFactory" generateNumberParts="1" generateWordParts="1" />
+			</analyzer>
+			<analyzer type="query">
+				<tokenizer class="solr.WhitespaceTokenizerFactory" />
+				<filter class="solr.LowerCaseFilterFactory" />
+				<filter class="solr.RemoveDuplicatesTokenFilterFactory" />
+				<filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+				<filter class="solr.SynonymFilterFactory" expand="true" ignoreCase="true" synonyms="synonyms.txt" />
+				<filter catenateAll="0" catenateNumbers="0" catenateWords="0" class="solr.WordDelimiterFilterFactory" generateNumberParts="1" generateWordParts="1" />
+			</analyzer>
+		</fieldType>
+		<fieldType class="solr.TextField" name="textTight" positionIncrementGap="100">
+			<analyzer>
+				<tokenizer class="solr.WhitespaceTokenizerFactory" />
+				<filter class="solr.LowerCaseFilterFactory" />
+				<filter class="solr.RemoveDuplicatesTokenFilterFactory" />
+				<filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+				<filter class="solr.SynonymFilterFactory" expand="false" ignoreCase="true" synonyms="synonyms.txt" />
+				<filter catenateAll="0" catenateNumbers="1" catenateWords="1" class="solr.WordDelimiterFilterFactory" generateNumberParts="0" generateWordParts="0" />
+			</analyzer>
+		</fieldType>
+		<fieldType class="solr.TextField" name="alphaOnlySort" omitNorms="true" sortMissingLast="true">
+			<analyzer>
+				<tokenizer class="solr.KeywordTokenizerFactory" />
+				<filter class="solr.LowerCaseFilterFactory" />
+				<filter class="solr.PatternReplaceFilterFactory" pattern="([^a-z])" replace="all" replacement="" />
+				<filter class="solr.TrimFilterFactory" />
+			</analyzer>
+		</fieldType>
+		<fieldtype class="solr.StrField" indexed="false" name="ignored" stored="false" />
+		<fieldType class="solr.TextField" name="textAuto" positionIncrementGap="100">
+			<analyzer type="index">
+				<tokenizer class="solr.KeywordTokenizerFactory" />
+				<filter class="solr.EdgeNGramFilterFactory" maxGramSize="25" minGramSize="1" />
+				<filter class="solr.LowerCaseFilterFactory" />
+			</analyzer>
+			<analyzer type="query">
+				<tokenizer class="solr.KeywordTokenizerFactory" />
+				<filter class="solr.LowerCaseFilterFactory" />
+			</analyzer>
+		</fieldType>
+		<fieldType class="solr.TextField" name="textSpell" omitNorms="true" positionIncrementGap="100">
+			<analyzer type="index">
+				<tokenizer class="solr.StandardTokenizerFactory" />
+				<filter class="solr.LowerCaseFilterFactory" />
+				<filter class="solr.StandardFilterFactory" />
+				<filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+			</analyzer>
+			<analyzer type="query">
+				<tokenizer class="solr.StandardTokenizerFactory" />
+				<filter class="solr.LowerCaseFilterFactory" />
+				<filter class="solr.StandardFilterFactory" />
+				<filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+				<filter class="solr.SynonymFilterFactory" expand="true" ignoreCase="true" synonyms="synonyms.txt" />
+			</analyzer>
+		</fieldType>
+	</types>
+	<fields>
+		<field indexed="true" name="articleId" stored="true" type="string" />
+		<field indexed="true" name="comments" stored="true" type="text" />
+		<field indexed="true" name="companyId" omitNorms="false" stored="true" type="long" />
+		<field indexed="true" name="content" stored="true" type="text" />
+		<field indexed="true" name="createDate" stored="true" type="text" />
+		<field indexed="true" name="description" stored="true" type="text" />
+		<field indexed="true" name="entryClassPK" omitNorms="false" stored="true" type="string" />
+		<field indexed="true" name="entryClassName" omitNorms="false" stored="true" type="string" />
+		<field indexed="true" name="firstName" stored="true" type="string_lowercase" />
+		<field indexed="true" name="folderId" omitNorms="false" stored="true" type="string" />
+		<field indexed="true" multiValued="true" name="groupId" omitNorms="false" stored="true" type="string" />
+		<field indexed="true" name="id" stored="true" type="string" />
+		<field indexed="true" name="keywordSearch" omitNorms="true" omitTermFreqAndPositions="true" stored="true" type="textAuto" />
+		<field indexed="true" name="languageId" stored="true" type="string" />
+		<field indexed="true" name="lastName" stored="true" type="string_lowercase" />
+		<field indexed="true" name="leftOrganizationId" stored="true" type="slong" />
+		<field indexed="true" name="name" stored="true" type="string" />
+		<field indexed="true" name="nodeId" stored="true" type="string" />
+		<field indexed="true" name="path" stored="true" type="string" />
+		<field indexed="true" name="portletId" omitNorms="false" stored="true" type="string" />
+		<field indexed="true" name="properties" stored="true" type="string" />
+		<field indexed="true" name="rightOrganizationId" stored="true" type="slong" />
+		<field indexed="true" multiValued="true" name="scopeGroupId" omitNorms="false" stored="true" type="string" />
+		<field indexed="true" name="spellCheckWeight" stored="true" type="string" />
+		<field indexed="true" multiValued="true" name="spellCheckWord" stored="true" type="textSpell" />
+		<field indexed="true" name="title" stored="true" type="text" />
+		<field indexed="true" name="type" stored="true" type="string" />
+		<field indexed="true" name="uid" stored="true" type="string" />
+		<field indexed="true" name="url" stored="true" type="string" />
+		<field indexed="true" name="userName" stored="true" type="string" />
+		<field indexed="true" name="version" stored="true" type="string" />
+		<field indexed="true" multiValued="false" name="_version_" stored="true" type="string" />
+		<dynamicField indexed="true" multiValued="true" name="*CategoryNames" stored="true" type="string" />
+		<dynamicField indexed="true" multiValued="true" name="*CategoryIds" stored="true" type="string" />
+		<dynamicField indexed="true" multiValued="false" name="*_sortable" stored="true" type="string" />
+		<dynamicField indexed="true" multiValued="true" name="expando/*" stored="true" type="text" />
+		<dynamicField indexed="true" name="web_content/*" stored="true" type="text" />
+
+		<!--
+		This must be the last entry since the fields element is an ordered set.
+		-->
+
+		<dynamicField indexed="true" multiValued="true" name="*" stored="true" type="string" />
+	</fields>
+	<uniqueKey>uid</uniqueKey>
+	<defaultSearchField>content</defaultSearchField>
+	<solrQueryParser defaultOperator="OR" />
+</schema>
