@@ -1,3 +1,19 @@
+###
+# Do not use this file to override the opsworks_ganglia cookbook's default
+# attributes.  Instead, please use the customize.rb attributes file,
+# which will keep your adjustments separate from the AWS OpsWorks
+# codebase and make it easier to upgrade.
+#
+# However, you should not edit customize.rb directly. Instead, create
+# "opsworks_ganglia/attributes/customize.rb" in your cookbook repository and
+# put the overrides in YOUR customize.rb file.
+#
+# Do NOT create an 'opsworks_ganglia/attributes/default.rb' in your cookbooks. Doing so
+# would completely override this file and might cause upgrade issues.
+#
+# See also: http://docs.aws.amazon.com/opsworks/latest/userguide/customizing.html
+###
+
 require 'securerandom'
 
 include_attribute 'opsworks_initial_setup::default'
@@ -29,7 +45,7 @@ when "debian"
   default[:ganglia][:gmetad_package] = "#{node[:ganglia][:gmetad_package_name]}_#{node[:ganglia][:custom_package_version]}_#{node[:ganglia][:package_arch]}.deb"
   default[:ganglia][:web_frontend_package] = "#{node[:ganglia][:web_frontend_package_name]}_#{node[:ganglia][:custom_package_version]}_all.deb"
   default[:ganglia][:monitor_plugins_package] = "#{node[:ganglia][:monitor_plugins_package_name]}_#{node[:ganglia][:custom_package_version]}_all.deb"
- 
+
   default[:ganglia][:gmetad_package_url] = "#{node[:ganglia][:package_base_url]}/#{node[:ganglia][:gmetad_package]}"
   default[:ganglia][:web_frontend_package_url] = "#{node[:ganglia][:package_base_url]}/#{node[:ganglia][:web_frontend_package]}"
   default[:ganglia][:monitor_plugins_package_url] = "#{node[:ganglia][:package_base_url]}/#{node[:ganglia][:monitor_plugins_package]}"
@@ -54,4 +70,6 @@ default[:ganglia][:web][:destdir] = case node[:platform_family]
                                       "/usr/share/ganglia"
                                     when "debian"
                                       "/usr/share/ganglia-webfrontend"
-                                    end 
+                                    end
+
+include_attribute "opsworks_ganglia::customize"

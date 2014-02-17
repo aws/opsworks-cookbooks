@@ -1,3 +1,19 @@
+###
+# Do not use this file to override the passenger_apache2 cookbook's default
+# attributes.  Instead, please use the customize.rb attributes file,
+# which will keep your adjustments separate from the AWS OpsWorks
+# codebase and make it easier to upgrade.
+#
+# However, you should not edit customize.rb directly. Instead, create
+# "passenger_apache2/attributes/customize.rb" in your cookbook repository and
+# put the overrides in YOUR customize.rb file.
+#
+# Do NOT create an 'passenger_apache2/attributes/passenger.rb' in your cookbooks. Doing so
+# would completely override this file and might cause upgrade issues.
+#
+# See also: http://docs.aws.amazon.com/opsworks/latest/userguide/customizing.html
+###
+
 require 'rubygems/version'
 
 include_attribute 'opsworks_initial_setup::default'
@@ -47,3 +63,5 @@ default[:passenger][:max_requests] = 0
 default[:passenger][:high_performance_mode] = 'off'
 default[:passenger][:rails_spawn_method] = 'smart-lv2'
 default[:passenger][:max_pool_size] = 8 # usually will be set by OpsWorks directy. Override if you need a custom size
+
+include_attribute "passenger_apache2::customize"

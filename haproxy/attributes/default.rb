@@ -1,3 +1,19 @@
+###
+# Do not use this file to override the haproxy cookbook's default
+# attributes.  Instead, please use the customize.rb attributes file,
+# which will keep your adjustments separate from the AWS OpsWorks
+# codebase and make it easier to upgrade.
+#
+# However, you should not edit customize.rb directly. Instead, create
+# "haproxy/attributes/customize.rb" in your cookbook repository and
+# put the overrides in YOUR customize.rb file.
+#
+# Do NOT create an 'haproxy/attributes/default.rb' in your cookbooks. Doing so
+# would completely override this file and might cause upgrade issues.
+#
+# See also: http://docs.aws.amazon.com/opsworks/latest/userguide/customizing.html
+###
+
 include_attribute 'opsworks_commons::default'
 
 rhel_arch = RUBY_PLATFORM.match(/64/) ? 'x86_64' : 'i686'
@@ -50,3 +66,5 @@ default[:haproxy][:stats_password] = random_haproxy_pw
 default[:haproxy][:enable_stats] = false
 
 default[:haproxy][:balance] = 'roundrobin'
+
+include_attribute "haproxy::customize"

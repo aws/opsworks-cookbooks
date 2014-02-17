@@ -1,3 +1,19 @@
+###
+# Do not use this file to override the nginx cookbook's default
+# attributes.  Instead, please use the customize.rb attributes file,
+# which will keep your adjustments separate from the AWS OpsWorks
+# codebase and make it easier to upgrade.
+#
+# However, you should not edit customize.rb directly. Instead, create
+# "nginx/attributes/customize.rb" in your cookbook repository and
+# put the overrides in YOUR customize.rb file.
+#
+# Do NOT create an 'nginx/attributes/nginx.rb' in your cookbooks. Doing so
+# would completely override this file and might cause upgrade issues.
+#
+# See also: http://docs.aws.amazon.com/opsworks/latest/userguide/customizing.html
+###
+
 case node[:platform]
 when 'debian','ubuntu'
   default[:nginx][:dir]     = '/etc/nginx'
@@ -39,3 +55,5 @@ default[:nginx][:keepalive_timeout] = 65
 default[:nginx][:worker_processes] = 10
 default[:nginx][:worker_connections] = 1024
 default[:nginx][:server_names_hash_bucket_size] = 64
+
+include_attribute "nginx::customize"
