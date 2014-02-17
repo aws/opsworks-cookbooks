@@ -1,3 +1,19 @@
+###
+# Do not use this file to override the opsworks_java cookbook's default
+# attributes.  Instead, please use the customize.rb attributes file,
+# which will keep your adjustments separate from the AWS OpsWorks
+# codebase and make it easier to upgrade.
+#
+# However, you should not edit customize.rb directly. Instead, create
+# "opsworks_java/attributes/customize.rb" in your cookbook repository and
+# put the overrides in YOUR customize.rb file.
+#
+# Do NOT create an 'opsworks_java/attributes/default.rb' in your cookbooks. Doing so
+# would completely override this file and might cause upgrade issues.
+#
+# See also: http://docs.aws.amazon.com/opsworks/latest/userguide/customizing.html
+###
+
 default['opsworks_java'] = {}
 
 default['opsworks_java']['jvm'] = 'openjdk'
@@ -55,3 +71,5 @@ when 'rhel'
   default['opsworks_java']['tomcat']['group'] = 'tomcat'
   default['opsworks_java']['tomcat']['system_env_dir'] = '/etc/sysconfig'
 end
+
+include_attribute "opsworks_java::customize"
