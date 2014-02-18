@@ -18,6 +18,16 @@ stdout_path "<%= @deploy[:deploy_to]%>/shared/log/unicorn.stdout.log"
 preload_app <%= node[:unicorn][:preload_app] %>
 GC.copy_on_write_friendly = true if GC.respond_to?(:copy_on_write_friendly=)
 
+# Any environment variables for the application are set here
+<% if @deploy[:env] %>
+  <% @deploy[:env].each_pair do |env_var, var_val| %>
+    <% unless env_var == 'PORT' || env_var == 'RACK_ENV' %>
+      ENV['<%= env_var %>'] = '<%= var_val %>'
+    <% end %>
+  <% end %>
+<% end %>
+
+
 # ensure Unicorn doesn't use a stale Gemfile when restarting
 # more info: https://willj.net/2011/08/02/fixing-the-gemfile-not-found-bundlergemfilenotfound-error/
 before_exec do |server|

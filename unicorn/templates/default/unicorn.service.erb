@@ -38,10 +38,10 @@ end
 def start_unicorn
   if File.exists?("#{ROOT_PATH}/current/Gemfile")
     puts "OpsWorks: Gemfile detected - running Unicorn with bundle exec"
-    run_and_ignore_exitcode_and_print_command "cd #{ROOT_PATH}/current && /usr/local/bin/bundle exec unicorn_rails --env <%= @deploy[:rails_env] %> --daemonize -c #{ROOT_PATH}/shared/config/unicorn.conf"
+    run_and_ignore_exitcode_and_print_command "cd #{ROOT_PATH}/current && <%= @deploy[:bundle_command] ? @deploy[:bundle_command] : '/usr/local/bin/bundle' %> exec <%= @deploy[:application_type] == 'sinatra' ? 'unicorn' : 'unicorn_rails' %> --env <%= @deploy[:rack_env] || @deploy[:rails_env] %> --daemonize -c #{ROOT_PATH}/shared/config/unicorn.conf"
   else
     puts "OpsWorks: no Gemfile detected - running plain Unicorn"
-    run_and_ignore_exitcode_and_print_command "cd #{ROOT_PATH}/current && unicorn_rails --env <%= @deploy[:rails_env] %> --daemonize -c #{ROOT_PATH}/shared/config/unicorn.conf"
+    run_and_ignore_exitcode_and_print_command "cd #{ROOT_PATH}/current && <%= @deploy[:application_type] == 'sinatra' ? 'unicorn' : 'unicorn_rails' %> --env <%= @deploy[:rack_env] || @deploy[:rails_env] %> --daemonize -c #{ROOT_PATH}/shared/config/unicorn.conf"
   end
 end
 
