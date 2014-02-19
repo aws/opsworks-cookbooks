@@ -20,6 +20,13 @@ server {
     proxy_set_header Host $http_host;
     proxy_redirect off;
 
+  <% if node[:nginx] && node[:nginx][:proxy_read_timeout] -%>
+    proxy_read_timeout <%= node[:nginx][:proxy_read_timeout] %>;
+  <% end -%>
+  <% if node[:nginx] && node[:nginx][:proxy_send_timeout] -%>
+    proxy_send_timeout <%= node[:nginx][:proxy_send_timeout] %>;
+  <% end -%>
+
     # If you don't find the filename in the static files
     # Then request it from the unicorn server
     if (!-f $request_filename) {
@@ -67,6 +74,13 @@ server {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_redirect off;
+
+  <% if node[:nginx] && node[:nginx][:proxy_read_timeout] -%>
+    proxy_read_timeout <%= node[:nginx][:proxy_read_timeout] %>;
+  <% end -%>
+  <% if node[:nginx] && node[:nginx][:proxy_send_timeout] -%>
+    proxy_send_timeout <%= node[:nginx][:proxy_send_timeout] %>;
+  <% end -%>
 
     # If you don't find the filename in the static files
     # Then request it from the unicorn server

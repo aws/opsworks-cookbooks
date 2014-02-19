@@ -56,4 +56,7 @@ default[:nginx][:worker_processes] = 10
 default[:nginx][:worker_connections] = 1024
 default[:nginx][:server_names_hash_bucket_size] = 64
 
+default[:nginx][:proxy_read_timeout] = 60
+default[:nginx][:proxy_send_timeout] = 60
+
 include_attribute "nginx::customize"
