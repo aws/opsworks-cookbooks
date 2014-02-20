@@ -77,6 +77,24 @@ ruby_block 'Move single cookbook contents into appropriate subdirectory' do
   end
 end
 
+execute 'install berkshelf' do
+  command "/opt/aws/opsworks/local/bin/gem install --no-ri --no-rdoc berkshelf --version #{node[:opsworks_custom_cookbooks][:berkshelf_version]}"
+  creates '/opt/aws/opsworks/local/bin/berks'
+
+  only_if do
+    node[:opsworks_custom_cookbooks][:manage_berkshelf] && ::File.exists?(File.join(node[:opsworks_custom_cookbooks][:destination], 'Berksfile'))
+  end
+end
+
+execute 'run berks install' do
+  command '/opt/aws/opsworks/local/bin/berks install --path .'
+  cwd node[:opsworks_custom_cookbooks][:destination]
+
+  only_if do
+    node[:opsworks_custom_cookbooks][:manage_berkshelf] && ::File.exists?(File.join(node[:opsworks_custom_cookbooks][:destination], 'Berksfile'))
+  end
+end
+
 execute "ensure correct permissions of custom cookbooks" do
   command "chmod -R go-rwx #{node[:opsworks_custom_cookbooks][:destination]}"
   only_if do
