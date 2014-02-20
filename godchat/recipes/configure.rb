@@ -1,7 +1,7 @@
 include_recipe "deploy"
 include_recipe "rails::configure"
 
-deploy = node[:deploy][:mpdx]
+deploy = node[:deploy][:godchat]
 
 directory "#{deploy[:deploy_to]}" do
   action :create
