@@ -36,3 +36,12 @@ template "#{deploy[:deploy_to]}/shared/config/settings.local.yml" do
   owner deploy[:user]
   variables(:secrets => deploy[:secrets], :environment => deploy[:rails_env])
 end
+
+template "#{deploy[:deploy_to]}/shared/config/newrelic.yml" do
+  source "newrelic.yml.erb"
+  cookbook 'global_registry'
+  mode "0660"
+  group deploy[:group]
+  owner deploy[:user]
+  variables(:secrets => deploy[:secrets], :environment => deploy[:rails_env])
+end
