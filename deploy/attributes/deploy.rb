@@ -20,6 +20,7 @@ include_attribute 'deploy::rails_stack'
 
 default[:opsworks][:deploy_user][:shell] = '/bin/bash'
 default[:opsworks][:deploy_user][:user] = 'deploy'
+default[:opsworks][:deploy_keep_releases] = 5
 
 # The deploy provider used. Set to one of
 # - "Branch"      - enables deploy_branch (Chef::Provider::Deploy::Branch)
@@ -52,6 +53,7 @@ node[:deploy].each do |application, deploy|
   unless valid_deploy_chef_providers.include?(node[:deploy][application][:chef_provider])
     raise "Invalid chef_provider for app #{application}: #{node[:deploy][application][:chef_provider]}. Valid providers: #{valid_deploy_chef_providers.join(', ')}."
   end
+  default[:deploy][application][:keep_releases] = node[:deploy][application][:keep_releases] ? node[:deploy][application][:keep_releases] : node[:opsworks][:deploy_keep_releases]
   default[:deploy][application][:current_path] = "#{node[:deploy][application][:deploy_to]}/current"
   default[:deploy][application][:document_root] = ''
   default[:deploy][application][:ignore_bundler_groups] = node[:opsworks][:rails][:ignore_bundler_groups]
