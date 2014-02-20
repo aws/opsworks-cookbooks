@@ -1,0 +1,8 @@
+<% (['development', 'production'] + [@environment]).uniq.each do |env| -%>
+<%= env %>:
+  defaults: &defaults
+  secret_token:  <%= @secrets[:secret_token] %>
+  aws_access_key: <%= @secrets[:aws_access_key] %>
+  aws_secret_access_key: <%= @secrets[:aws_secret_access_key] %>
+<% end -%>
+
