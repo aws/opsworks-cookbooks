@@ -30,7 +30,7 @@ end
 
 template "#{deploy[:deploy_to]}/shared/config/secrets.yml" do
   source "secrets.yml.erb"
-  cookbook 'mpdx'
+  cookbook 'godchat'
   mode "0660"
   group deploy[:group]
   owner deploy[:user]
