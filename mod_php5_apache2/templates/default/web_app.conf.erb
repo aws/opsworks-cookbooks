@@ -22,7 +22,7 @@
     Deny from all
   </Directory>
 
-  LogLevel info
+  LogLevel error
   ErrorLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log
   CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-access.log combined
   CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-ganglia.log ganglia
@@ -75,7 +75,7 @@
     Deny from all
   </Directory>
 
-  LogLevel info
+  LogLevel error
   ErrorLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log
   CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-access.log combined
   CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-ssl-ganglia.log ganglia
