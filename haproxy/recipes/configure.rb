@@ -9,7 +9,18 @@ template "/etc/haproxy/haproxy.cfg" do
   owner "root"
   group "root"
   mode 0644
-  notifies :reload, resources(:service => "haproxy")
+  notifies :run, "bash[reload haproxy]"
+end
+
+bash "reload haproxy" do
+  code <<-EOH
+    iptables -I INPUT -p tcp --dport 80 --syn -j DROP
+    iptables -I INPUT -p tcp --dport 443 --syn -j DROP
+    sleep 1
+    service haproxy reload
+    iptables -D INPUT -p tcp --dport 80 --syn -j DROP
+    iptables -D INPUT -p tcp --dport 443 --syn -j DROP
+  EOH
 end
 
 execute "echo 'checking if HAProxy is not running - if so start it'" do
