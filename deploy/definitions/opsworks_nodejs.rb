@@ -1,6 +1,22 @@
+Chef::Log.info("Using override for opsworks_nodejs")
 define :opsworks_nodejs do
   deploy = params[:deploy_data]
   application = params[:app]
+
+  #-------------- environment vars (temp location) --------------
+  env_vars = Array.new
+  unless node[:custom_env].nil?
+    node[:custom_env].each do |k, v|
+      env_vars.push("#{k}=#{v}")
+      Chef::Log.info("added env var: #{k}=#{v}")
+    end
+  end
+
+  env_vars.push("MEMC_PORT=#{deploy[:memcached][:port]}")
+  env_vars.push("MEMC_HOST=#{deploy[:memcached][:host]}")
+
+  Chef::Log.info("/\\/\\/\\/\\/\\ env vars for node 2: #{env_vars.join(' ')}")
+  #------------------------------------
 
   service 'monit' do
     action :nothing
@@ -28,6 +44,7 @@ define :opsworks_nodejs do
     group 'root'
     mode '0644'
     variables(
+      :environment_vars => env_vars.join(' '),
       :deploy => deploy,
       :application_name => application,
       :monitored_script => "#{deploy[:deploy_to]}/current/server.js"
