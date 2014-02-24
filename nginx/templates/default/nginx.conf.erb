@@ -12,6 +12,12 @@ http {
   include       <%= node[:nginx][:dir] %>/mime.types;
   default_type  application/octet-stream;
 
+  <% if node[:nginx][:log_format] %>
+    <% node[:nginx][:log_format].each do |name, format| %>
+  log_format <%= name %> <%= format %>;
+    <% end %>
+  <% end %>
+
   access_log	<%= node[:nginx][:log_dir] %>/access.log;
 
   sendfile on;
