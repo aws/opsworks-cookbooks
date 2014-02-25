@@ -25,29 +25,7 @@ node[:deploy].each do |application, deploy|
     notifies :restart, "service[#{node['opsworks_java']['java_app_server']}]"
   end
   
-  ['alpha','omega'].each do |server|
-  execute "create webapps to #{server} tomcat server" do
-    action :run
-    command "rsync -ar --exclude '/.git' --exclude 'README.md' /srv/www/fita/current/ /opt/athleticoffice/servers/#{server}/webapps/"
-  end
-    execute "chown webapps to #{server} tomcat server" do
-    action :run
-    command "chown tomcat7:tomcat7 -R /opt/athleticoffice/servers/#{server}/webapps"
-  end
-      execute "chown webapps to #{server} tomcat server" do
-    action :run
-    command "chown tomcat7:tomcat7 -R /opt/athleticoffice/servers/#{server}/work"
-  end
-        execute "chown webapps to #{server} tomcat server" do
-    action :run
-    command "chown tomcat7:tomcat7 -R /opt/athleticoffice/servers/#{server}/logs"
-  end
-          execute "chown webapps to #{server} tomcat server" do
-    action :run
-    command "chown tomcat7:tomcat7 /opt/athleticoffice/servers/#{server}/conf"
-  end
-  
-end
+
 
   
 end
