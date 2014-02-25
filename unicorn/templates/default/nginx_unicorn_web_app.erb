@@ -5,7 +5,14 @@ upstream unicorn_<%= @application[:domains].first %> {
 server {
   listen 80;
   server_name <%= @application[:domains].join(" ") %> <%= node[:hostname] %>;
-  access_log <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>.access.log;
+  <% if @application[:log_format] %>
+    <% @application[:log_format].each do |name, format| %>
+      log_format <%= name %>  <%= format %>;
+      access_log  <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>.access.<%= name %>.log <%= name %>;
+    <% end %>
+  <% else %>
+     access_log <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>.access.log;
+  <% end %>
 
   keepalive_timeout 5;
 
