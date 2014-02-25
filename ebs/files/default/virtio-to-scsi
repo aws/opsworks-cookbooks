@@ -1,6 +1,0 @@
-#!/bin/bash
-# create a block device w/ the block id 
-# eg : if i add a vdb, i get a sdb
-
-name=$1
-echo ${name/vd/sd}

@@ -1,1 +1,0 @@
-include_attribute 'deploy'
