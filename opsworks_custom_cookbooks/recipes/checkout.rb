@@ -78,7 +78,7 @@ ruby_block 'Move single cookbook contents into appropriate subdirectory' do
 end
 
 execute 'run berks install' do
-  command '/opt/aws/opsworks/current/bin/berks install --path .'
+  command '/opt/aws/opsworks/current/bin/berks install --path /var/lib/aws/opsworks/berkshelf-cookbooks'
   cwd node[:opsworks_custom_cookbooks][:destination]
 
   only_if do
