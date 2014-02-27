@@ -77,8 +77,25 @@ ruby_block 'Move single cookbook contents into appropriate subdirectory' do
   end
 end
 
+remote_file "/tmp/#{node[:opsworks_custom_cookbooks][:berkshelf_package_file]}" do
+  source node[:opsworks_custom_cookbooks][:berkshelf_package_url]
+
+  only_if do
+    node[:opsworks_custom_cookbooks][:manage_berkshelf] && ::File.exists?(File.join(node[:opsworks_custom_cookbooks][:destination], 'Berksfile'))
+  end
+end
+
+package 'berkshelf' do
+  source "/tmp/#{node[:opsworks_custom_cookbooks][:berkshelf_package_file]}"
+  provider Chef::Provider::Package::Dpkg if ['ubuntu', 'debian'].include?(node[:platform])
+
+  only_if do
+    ::File.exists?("/tmp/#{node[:opsworks_custom_cookbooks][:berkshelf_package_file]}")
+  end
+end
+
 execute 'run berks install' do
-  command '/opt/aws/opsworks/current/bin/berks install --path /var/lib/aws/opsworks/berkshelf-cookbooks'
+  command "#{node[:opsworks_custom_cookbooks][:berkshelf_binary]} install --path #{node[:opsworks_custom_cookbooks][:berkshelf_cookbook_path]}"
   cwd node[:opsworks_custom_cookbooks][:destination]
 
   only_if do
