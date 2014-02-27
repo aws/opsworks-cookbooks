@@ -51,7 +51,7 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:deploy_to] = "/srv/www/#{application}"
   default[:deploy][application][:chef_provider] = node[:deploy][application][:chef_provider] ? node[:deploy][application][:chef_provider] : node[:opsworks][:deploy_chef_provider]
   unless valid_deploy_chef_providers.include?(node[:deploy][application][:chef_provider])
-    raise "Invalid chef_provider for app #{application}: #{node[:deploy][application][:chef_provider]}. Valid providers: #{valid_deploy_chef_providers.join(', ')}."
+    raise "Invalid chef_provider '#{node[:deploy][application][:chef_provider]}' for app '#{application}'. Valid providers: #{valid_deploy_chef_providers.join(', ')}."
   end
   default[:deploy][application][:keep_releases] = node[:deploy][application][:keep_releases] ? node[:deploy][application][:keep_releases] : node[:opsworks][:deploy_keep_releases]
   default[:deploy][application][:current_path] = "#{node[:deploy][application][:deploy_to]}/current"
