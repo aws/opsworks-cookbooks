@@ -3,7 +3,7 @@
   ServerAdmin <%= node[:apache][:contact] %>
 
   DocumentRoot /var/www/
-  
+
   <Directory />
     Options FollowSymLinks
     AllowOverride None
@@ -34,7 +34,7 @@
     Allow from 127.0.0.0/255.0.0.0 ::1/128
   </Location>
 
-  ErrorLog <%= node[:apache][:log_dir] %>/error.log 
+  ErrorLog <%= node[:apache][:log_dir] %>/error.log
 
   # Possible values include: debug, info, notice, warn, error, crit,
   # alert, emerg.

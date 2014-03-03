@@ -91,8 +91,8 @@ Group <%= node[:apache][:user] %>
 AccessFileName .htaccess
 
 #
-# The following lines prevent .htaccess and .htpasswd files from being 
-# viewed by Web clients. 
+# The following lines prevent .htaccess and .htpasswd files from being
+# viewed by Web clients.
 #
 <Files ~ "^\.ht">
     Order allow,deny
@@ -168,7 +168,7 @@ LogFormat "%v %A %a %u %{%Y-%m-%dT%H:%M:%S}t %c %s %>s %B %D cookie \"Referer\" 
 # Putting this all together, we can internationalize error responses.
 #
 # We use Alias to redirect any /error/HTTP_<error>.html.var response to
-# our collection of by-error message multi-language collections.  We use 
+# our collection of by-error message multi-language collections.  We use
 # includes to substitute the appropriate text.
 #
 # You can modify the messages' appearance without changing any of the
@@ -177,7 +177,7 @@ LogFormat "%v %A %a %u %{%Y-%m-%dT%H:%M:%S}t %c %s %>s %B %D cookie \"Referer\" 
 #   Alias /error/include/ "/your/include/path/"
 #
 # which allows you to create your own set of files by starting with the
-# /usr/share/apache2/error/include/ files and copying them to /your/include/path/, 
+# /usr/share/apache2/error/include/ files and copying them to /your/include/path/,
 # even on a per-VirtualHost basis.  The default include files will display
 # your Apache version number and your ServerAdmin email address regardless
 # of the setting of ServerSignature.

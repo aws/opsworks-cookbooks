@@ -5,14 +5,14 @@
   <% end -%>
   DocumentRoot <%= @params[:docroot] %>
   RewriteEngine On
-  
+
   <Directory <%= @params[:docroot] %>>
     Options FollowSymLinks
     AllowOverride All
     Order allow,deny
     Allow from all
   </Directory>
-  
+
   <Directory />
     Options FollowSymLinks
     AllowOverride All
