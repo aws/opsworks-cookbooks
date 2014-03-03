@@ -38,7 +38,7 @@
 
   # Possible values include: debug, info, notice, warn, error, crit,
   # alert, emerg.
-  LogLevel warn
+  LogLevel <%= node[:apache][:log_level] %>
 
   CustomLog <%= node[:apache][:log_dir] %>/access.log combined
 

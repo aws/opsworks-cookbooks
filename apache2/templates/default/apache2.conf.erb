@@ -127,14 +127,14 @@ HostnameLookups Off
 # logged here.  If you *do* define an error logfile for a <VirtualHost>
 # container, that host's errors will be logged there and not here.
 #
-ErrorLog <%= node[:apache][:log_dir] %>/error.log 
+ErrorLog <%= node[:apache][:log_dir] %>/error.log
 
 #
 # LogLevel: Control the number of messages logged to the error_log.
 # Possible values include: debug, info, notice, warn, error, crit,
 # alert, emerg.
 #
-LogLevel warn
+LogLevel <%= node[:apache][:log_level] %>
 
 # Include module configuration:
 Include <%= node[:apache][:dir] %>/mods-enabled/*.load
