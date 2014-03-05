@@ -94,12 +94,29 @@ package 'berkshelf' do
   end
 end
 
+package 'opsworks-berkshelf' do
+  action :remove
+
+  not_if do
+    node[:opsworks_custom_cookbooks][:manage_berkshelf]
+  end
+end
+
 execute 'run berks install' do
   command "#{node[:opsworks_custom_cookbooks][:berkshelf_binary]} install --path #{node[:opsworks_custom_cookbooks][:berkshelf_cookbook_path]}"
   cwd node[:opsworks_custom_cookbooks][:destination]
 
   only_if do
     node[:opsworks_custom_cookbooks][:manage_berkshelf] && ::File.exists?(File.join(node[:opsworks_custom_cookbooks][:destination], 'Berksfile'))
+  end
+end
+
+directory node[:opsworks_custom_cookbooks][:berkshelf_cookbook_path] do
+  action :delete
+  recursive true
+
+  not_if do
+    node[:opsworks_custom_cookbooks][:manage_berkshelf]
   end
 end
 
