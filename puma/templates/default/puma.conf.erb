@@ -1,0 +1,50 @@
+workers <%= node[:puma][:workers] %>
+
+# We want puma to daemonize
+daemonize
+
+# The working directory should be the current release's directory
+directory <%= #{@deploy[:deploy_to]/current}.inspect %>
+
+# Put the PID file into the shared directory
+pidfile <%= #{@deploy[:deploy_to]/shared/pids/puma.pid}.inspect %>
+
+# Redirect stdout, stderr in append mode (last param)
+stdout_redirect <%= #{@deploy[:deploy_to]/shared/log/puma.stderr.log}.inspect %>,
+                <%= #{@deploy[:deploy_to]/shared/log/puma.stdout.log}.inspect %>,
+                true
+
+# We don't want to log every single request, nginx should do this for us
+quiet
+
+# Min and max threads to use within puma
+threads <%= node[:puma][:threads_min] %>, <%= node[:puma][:threads_max] %>
+
+rackup <%= #{@deploy[:deploy_to]/current/config.ru}.inspect %>
+environment <%= @deploy[:rails_env].inspect %>
+
+# Bind to a unix socket without umask definitions
+bind <%= #{@deploy[:deploy_to]/shared/sockets/puma.sock}.inspect %>
+
+# Make use of the advanced GC in 2.0 (?)
+GC.copy_on_write_friendly = true if GC.respond_to?(:copy_on_write_friendly=)
+
+<% # Only preload the app if we want it to %>
+<% if node[:puma][:preload_app] %>
+preload_app!
+<% end %>
+
+on_worker_boot do
+  # the following is highly recomended for Rails + "preload_app true"
+  # as there's no need for the master process to hold a connection
+  if defined?(ActiveRecord::Base)
+    ActiveRecord::Base.connection.disconnect!
+  end
+end
+
+after_worker_boot do
+  # the following is *required* for Rails + "preload_app true",
+  if defined?(ActiveRecord::Base)
+    ActiveRecord::Base.establish_connection
+  end
+end

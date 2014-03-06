@@ -1,0 +1,80 @@
+upstream puma_<%= @application[:domains].first %> {
+ server unix:<%= @application[:deploy_to]%>/shared/sockets/puma.sock fail_timeout=0;
+}
+
+server {
+  listen 80;
+  server_name <%= @application[:domains].join(" ") %> <%= node[:hostname] %>;
+  access_log <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>.access.log;
+  root <%= @application[:absolute_document_root] %>;
+
+  keepalive_timeout 5
+
+  location /nginx_status {
+    stub_status on;
+    access_log off;
+    allow 127.0.0.1;
+    deny all;
+  }
+
+  <% if @application[:nginx] && @application[:nginx][:client_max_body_size] %>
+  client_max_body_size <%= @application[:nginx][:client_max_body_size] %>;
+  <% end %>
+
+  location / {
+    try_files $uri @puma;
+  }
+
+  location @puma {
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+    proxy_pass http://puma_<%= @application[:domains].first %>;
+  }
+
+  error_page 500 502 503 504 /500.html;
+  location = /500.html {
+    root <%= @application[:absolute_document_root] %>;
+  }
+
+}
+
+<% if @application[:ssl_support] %>
+server {
+  listen 443;
+  server_name <%= @application[:domains].join(" ") %> <%= node[:hostname] %>;
+  access_log <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>-ssl.access.log;
+  root <%= @application[:absolute_document_root] %>;
+
+  keepalive_timeout 5;
+
+  ssl on;
+  ssl_certificate /etc/nginx/ssl/<%= @application[:domains].first %>.crt;
+  ssl_certificate_key /etc/nginx/ssl/<%= @application[:domains].first %>.key;
+  <% if @application[:ssl_certificate_ca] -%>
+  ssl_client_certificate /etc/nginx/ssl/<%= @application[:domains].first %>.ca;
+  <% end -%>
+
+  <% if @application[:nginx] && @application[:nginx][:client_max_body_size] %>
+  client_max_body_size <%= @application[:nginx][:client_max_body_size] %>;
+  <% end %>
+
+  location / {
+    try_files $uri @puma;
+  }
+
+  location @puma {
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+    proxy_pass http://puma_<%= @application[:domains].first %>;
+  }
+
+  error_page 500 502 503 504 /500.html;
+  location = /500.html {
+    root <%= @application[:absolute_document_root] %>;
+  }
+}
+<% end %>
