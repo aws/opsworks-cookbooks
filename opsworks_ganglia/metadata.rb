@@ -4,6 +4,8 @@ maintainer  "AWS OpsWorks"
 license     "Apache 2.0"
 version     "1.0.0"
 
+depends "apache2"
+
 recipe "opsworks_ganglia::server", "Ganglia server"
 recipe "opsworks_ganglia::configure-server", "Reconfigure Ganglia server with correct clients"
 recipe "opsworks_ganglia::client", "Ganglia client"
