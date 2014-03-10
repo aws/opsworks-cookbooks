@@ -28,6 +28,9 @@ default[:opsworks][:ruby_stack] = 'ruby_enterprise'
 default[:opsworks][:ruby_version] = '1.9.3'
 default[:opsworks][:run_cookbook_tests] = false
 
+default['opsworks_initial_setup']['swapfile_name'] = '/var/swapfile'
+default['opsworks_initial_setup']['swapfile_size_mb'] = 256
+
 default[:opsworks_initial_setup][:sysctl] = Mash.new
 default[:opsworks_initial_setup][:sysctl]['net.core.somaxconn'] = 1024           # 128
 default[:opsworks_initial_setup][:sysctl]['net.core.netdev_max_backlog'] = 3072  # 1000
