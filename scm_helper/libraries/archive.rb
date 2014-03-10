@@ -28,7 +28,7 @@ module OpsWorks
 
         execute 'create git repository' do
           cwd "#{tmpdir}/archive.d"
-          command "find . -type d -name .git -exec rm -rf {} \\;; git init; git add .; git commit -m 'Create temporary repository from downloaded contents.'"
+          command "find . -type d -name .git -exec rm -rf {} \\;; find . -type f -name .gitignore -exec rm -f {} \\;; git init; git add .; git commit -m 'Create temporary repository from downloaded contents.'"
         end
 
         "#{tmpdir}/archive.d"

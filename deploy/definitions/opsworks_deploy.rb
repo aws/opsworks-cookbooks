@@ -64,6 +64,9 @@ define :opsworks_deploy do
     Chef::Log.debug("Checking out source code of application #{application} with type #{deploy[:application_type]}")
     deploy deploy[:deploy_to] do
       provider Chef::Provider::Deploy.const_get(deploy[:chef_provider])
+      if deploy[:keep_releases]
+        keep_releases deploy[:keep_releases]
+      end
       repository deploy[:scm][:repository]
       user deploy[:user]
       group deploy[:group]
