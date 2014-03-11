@@ -77,8 +77,19 @@ ruby_block 'Move single cookbook contents into appropriate subdirectory' do
   end
 end
 
+ruby_block 'inform about berkshelf installation with pre-built package' do
+  block do
+    Chef::Log.info "Trying to download and install pre-built package for berkshelf version #{node[:opsworks_custom_cookbooks][:berkshelf_version]}"
+  end
+
+  only_if do
+    node[:opsworks_custom_cookbooks][:manage_berkshelf] && !::File.exists?(node[:opsworks_custom_cookbooks][:berkshelf_binary])
+  end
+end
+
 remote_file "/tmp/#{node[:opsworks_custom_cookbooks][:berkshelf_package_file]}" do
   source node[:opsworks_custom_cookbooks][:berkshelf_package_url]
+  ignore_failure true
 
   only_if do
     node[:opsworks_custom_cookbooks][:manage_berkshelf] && ::File.exists?(File.join(node[:opsworks_custom_cookbooks][:destination], 'Berksfile'))
@@ -88,9 +99,29 @@ end
 package 'berkshelf' do
   source "/tmp/#{node[:opsworks_custom_cookbooks][:berkshelf_package_file]}"
   provider Chef::Provider::Package::Dpkg if ['ubuntu', 'debian'].include?(node[:platform])
+  ignore_failure true
 
   only_if do
     ::File.exists?("/tmp/#{node[:opsworks_custom_cookbooks][:berkshelf_package_file]}")
+  end
+end
+
+ruby_block 'inform about berkshelf installation with gem install' do
+  block do
+    Chef::Log.info "No pre-built package found for berkshelf version #{node[:opsworks_custom_cookbooks][:berkshelf_version]}, trying to install from rubygems.org" if node[:opsworks_custom_cookbooks][:manage_berkshelf] && !::File.exists?(node[:opsworks_custom_cookbooks][:berkshelf_binary])
+  end
+
+  only_if do
+    node[:opsworks_custom_cookbooks][:manage_berkshelf] && !::File.exists?(node[:opsworks_custom_cookbooks][:berkshelf_binary])
+  end
+end
+
+execute 'install berkshelf using gem install' do
+  command "/opt/aws/opsworks/local/bin/gem install berkshelf --version #{node[:opsworks_custom_cookbooks][:berkshelf_version]} --bindir /opt/aws/opsworks/local/bin"
+
+  only_if do
+    node[:opsworks_custom_cookbooks][:manage_berkshelf] &&
+    !::File.exists?(node[:opsworks_custom_cookbooks][:berkshelf_binary])
   end
 end
 
