@@ -103,7 +103,7 @@ package 'opsworks-berkshelf' do
 end
 
 execute 'run berks install' do
-  command "#{node[:opsworks_custom_cookbooks][:berkshelf_binary]} install --path #{node[:opsworks_custom_cookbooks][:berkshelf_cookbook_path]}"
+  command "#{node[:opsworks_custom_cookbooks][:berkshelf_binary]} #{node[:opsworks_custom_cookbooks][:berkshelf_command]}"
   cwd node[:opsworks_custom_cookbooks][:destination]
 
   only_if do
