@@ -1,11 +1,7 @@
 <% (['development', 'production'] + [@environment]).uniq.each do |env| -%>
 <%= env %>:
-  merchant_login: <%= @config[:merchant_login] %>
-  merchant_password: <%= @config[:merchant_password] %>
-  session_secret: <%= @config[:session_secret] %>
-  siebel_token: <%= @config[:siebel_token] %>
-  cas_username: <%= @config[:cas_username] %>
-  cas_password: <%= @config[:cas_password] %>
-  linker_username: <%= @config[:linker_username] %>
-  linker_password: '<%= @config[:linker_password] %>'
+<% @config.each do |key, value| %>
+  <%= key %>: <%= value %>
 <% end -%>
+<% end -%>
+
