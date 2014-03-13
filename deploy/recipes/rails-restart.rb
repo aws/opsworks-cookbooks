@@ -13,6 +13,7 @@ node[:deploy].each do |application, deploy|
   
   execute "restart Server" do
     cwd deploy[:current_path]
+    environment deploy[:environment]
     command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:rails_stack][:restart_command]}"
     action :run
     
