@@ -1,4 +1,4 @@
-include_recipe 'conf_registration_api::user'
+include_recipe 'godtools_api::user'
 
 directory 'tmp/artifacts' do
   owner node['godtools']['user']
