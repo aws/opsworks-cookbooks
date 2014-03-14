@@ -20,7 +20,7 @@ default[:opsworks_custom_cookbooks][:enabled] = false
 default[:opsworks_custom_cookbooks][:user] = 'root'
 default[:opsworks_custom_cookbooks][:group] = 'root'
 default[:opsworks_custom_cookbooks][:home] = '/root'
-default[:opsworks_custom_cookbooks][:destination] = ChefClientConfigSimpleParser.get_attribute(Chef::Config[:config_file], 'cookbook_path').select{|dir| dir =~ /site-cookbooks/}.first
+normal[:opsworks_custom_cookbooks][:destination] = OpsworksInstanceAgentConfig.get_site_cookbooks_dir
 
 default[:opsworks_custom_cookbooks][:recipes] = []
 
