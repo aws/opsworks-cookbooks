@@ -23,14 +23,13 @@ attribute "passenger/module_path",
   :display_name => "Passenger Module Path",
   :description => "Location of the compiled Apache module",
   :default => "passenger_root_path/ext/apache2/mod_passenger.so"
-  
+
 attribute "passenger/ruby_bin",
   :display_name => "Passenger Ruby Path",
   :description => "Location of the Ruby binary to use",
   :default => "/usr/bin/local/ruby"
-  
+
 attribute "passenger/gem_bin",
   :display_name => "Passenger Gem Path",
   :description => "Location of the Gem binary to use",
   :default => "/usr/bin/local/gem"
-
