@@ -16,7 +16,7 @@
 
 include_attribute 'opsworks_initial_setup::default'
 
-default['opsworks_rubygems']['version'] = '2.1.7'
+default['opsworks_rubygems']['version'] = '2.2.2'
 
 # set LC_ALL and LANG to workaround US-ASCII errors with rubygems 2.0.3 on opsworks
 case node['opsworks']['ruby_version']

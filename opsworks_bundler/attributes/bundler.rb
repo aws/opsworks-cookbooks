@@ -14,7 +14,7 @@
 # See also: http://docs.aws.amazon.com/opsworks/latest/userguide/customizing.html
 ###
 
-default[:opsworks_bundler][:version] = '1.5.1'
+default[:opsworks_bundler][:version] = '1.5.3'
 default[:opsworks_bundler][:executable] = '/usr/local/bin/bundle'
 
 include_attribute "opsworks_bundler::customize"
