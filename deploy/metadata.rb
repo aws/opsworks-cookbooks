@@ -15,6 +15,7 @@ depends "passenger_apache2"
 depends "unicorn"
 depends "opsworks_java"
 depends "php"
+depends "mysql"
 
 recipe "deploy::rails", "Deploy a Rails application"
 recipe "deploy::php", "Deploy a PHP application"
