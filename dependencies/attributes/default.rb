@@ -32,12 +32,7 @@ default["dependencies"]["gem_install_options"] = "--no-ri --no-rdoc"
 
 default["opsworks"] = {}
 if node["opsworks"].has_key?("ruby_stack")
-  case node["opsworks"]["ruby_stack"]
-  when "ruby"
-    include_attribute "ruby::ruby"
-  when "ruby_enterprise"
-    include_attribute "ruby_enterprise::ruby_enterprise"
-  end
+  include_attribute "ruby::ruby"
 end
 
 include_attribute "opsworks_nodejs::opsworks_nodejs" if node["opsworks"].has_key?("instance") &&
