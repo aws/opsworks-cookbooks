@@ -77,6 +77,12 @@ ruby_block 'Move single cookbook contents into appropriate subdirectory' do
   end
 end
 
+ruby_block 'uninstall other versions of berkshelf' do
+  block do
+    uninstall_other_gem_versions('berkshelf', node[:opsworks_custom_cookbooks][:berkshelf_version])
+  end
+end
+
 ruby_block 'inform about berkshelf installation with pre-built package' do
   block do
     Chef::Log.info "Trying to download and install pre-built package for berkshelf version #{node[:opsworks_custom_cookbooks][:berkshelf_version]}"

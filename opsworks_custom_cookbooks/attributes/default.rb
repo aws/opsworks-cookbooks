@@ -45,6 +45,9 @@ end
 default[:opsworks_custom_cookbooks][:berkshelf_pkg_release] = '1'
 default[:opsworks_custom_cookbooks][:berkshelf_binary] = '/opt/aws/opsworks/local/bin/berks'
 
+default[:opsworks_custom_cookbooks][:gem_binary] = '/opt/aws/opsworks/local/bin/gem'
+default[:opsworks_custom_cookbooks][:gem_uninstall_options] = '--force --executables'
+
 case node[:platform]
 when 'redhat', 'centos', 'fedora', 'amazon'
   arch = RUBY_PLATFORM.match(/64/) ? 'x86_64' : 'i686'
