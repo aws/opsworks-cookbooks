@@ -77,6 +77,12 @@ ruby_block 'Move single cookbook contents into appropriate subdirectory' do
   end
 end
 
+ruby_block 'uninstall other versions of berkshelf' do
+  block do
+    uninstall_other_gem_versions('berkshelf', node[:opsworks_custom_cookbooks][:berkshelf_version])
+  end
+end
+
 ruby_block 'inform about berkshelf installation with pre-built package' do
   block do
     Chef::Log.info "Trying to download and install pre-built package for berkshelf version #{node[:opsworks_custom_cookbooks][:berkshelf_version]}"
@@ -133,21 +139,17 @@ package 'opsworks-berkshelf' do
   end
 end
 
+directory node[:opsworks_custom_cookbooks][:berkshelf_cookbook_path] do
+  action :delete
+  recursive true
+end
+
 execute 'run berks install' do
   command "#{node[:opsworks_custom_cookbooks][:berkshelf_binary]} #{node[:opsworks_custom_cookbooks][:berkshelf_command]}"
   cwd node[:opsworks_custom_cookbooks][:destination]
 
   only_if do
     node[:opsworks_custom_cookbooks][:manage_berkshelf] && ::File.exists?(File.join(node[:opsworks_custom_cookbooks][:destination], 'Berksfile'))
-  end
-end
-
-directory node[:opsworks_custom_cookbooks][:berkshelf_cookbook_path] do
-  action :delete
-  recursive true
-
-  not_if do
-    node[:opsworks_custom_cookbooks][:manage_berkshelf]
   end
 end
 

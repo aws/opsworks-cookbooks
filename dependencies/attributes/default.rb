@@ -35,8 +35,6 @@ if node["opsworks"].has_key?("ruby_stack")
   case node["opsworks"]["ruby_stack"]
   when "ruby"
     include_attribute "ruby::ruby"
-  when "ruby_enterprise"
-    include_attribute "ruby_enterprise::ruby_enterprise"
   end
 end
 

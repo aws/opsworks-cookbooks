@@ -24,7 +24,7 @@ default[:opsworks_agent][:log_dir] = '/var/log/aws/opsworks'
 default[:opsworks_agent][:user] = 'aws'
 default[:opsworks_agent][:group] = 'aws'
 
-default[:opsworks][:ruby_stack] = 'ruby_enterprise'
+default[:opsworks][:ruby_stack] = 'ruby'
 default[:opsworks][:ruby_version] = '1.9.3'
 default[:opsworks][:run_cookbook_tests] = false
 

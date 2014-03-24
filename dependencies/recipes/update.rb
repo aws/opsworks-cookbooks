@@ -5,8 +5,6 @@
 case node["opsworks"]["ruby_stack"]
 when "ruby"
   include_recipe "ruby"
-when "ruby_enterprise"
-  include_recipe "ruby_enterprise"
 end
 
 include_recipe "opsworks_nodejs" if node["opsworks"]["instance"]["layers"].include?("nodejs-app")

@@ -29,7 +29,6 @@ if ["redhat", "centos"].include?(_platform)
   _platform_version = "2013.09"
 end
 
-# ruby_version 1.8.7 is handled by 'ruby-enterprise'
 case node["opsworks"]["ruby_version"]
 when "2.1"
   default[:ruby][:major_version] = '2'
