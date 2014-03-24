@@ -7,8 +7,15 @@ if node[:opsworks][:run_cookbook_tests]
     action :install
   end
 
+  chef_gem "awesome_print install two" do
+    Chef::Log.info "[TEST] Asked to install rubygem awesome_print 2nd time. Should not trigger install."
+    version '= 1.2.0'
+    package_name "awesome_print"
+    action :install
+  end
+
   if require "awesome_print"
-    Chef::Log.debug "[TEST] Sucessfully loaded awesome_print installed with chef_gem"
+    Chef::Log.info "[TEST] Sucessfully loaded awesome_print installed with chef_gem"
     ap({:foo => "bar", "bazz" => [1,2,3]})
   else
    raise "Failed to load chef_gem installed rubygem."
@@ -16,15 +23,20 @@ if node[:opsworks][:run_cookbook_tests]
 
   chef_gem "awesome_print uninstall" do
     Chef::Log.info "[TEST] Deinstalling awesome_print rubygem to test chef_gem"
-    version '= 1.2.0'
+    version '1.2.0'
     package_name "awesome_print"
     action :remove
   end
 
-  if require "awesome_print" || $LOAD_PATH.grep(/awesome_print/)
-   raise "Failed to uninstall chef_gem."
+  available = begin
+                false
+              rescue LoadError
+                true
+              end
+  unless !available && $LOAD_PATH.grep(/awesome_print/).empty?
+    raise "Failed to uninstall chef_gem: #{available} (LOAD_PATH: #{$LOAD_PATH.inspect})"
   else
-   Chef::Log.debug "[TEST] Sucessfully uninstalled awesome_print using chef_gem"
+    Chef::Log.info "[TEST] Sucessfully uninstalled awesome_print using chef_gem"
   end
 
 end
