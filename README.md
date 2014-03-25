@@ -10,6 +10,9 @@ The branches are organized as follows and depend on the
 [configuration manager](http://docs.aws.amazon.com/opsworks/latest/APIReference/API_CreateStack.html)
 used by your stack.
 
+- Chef 11.10
+  - [release-chef-11.10](https://github.com/aws/opsworks-cookbooks/tree/release-chef-11.10): Cookbooks for the current release.
+  - [master-chef-11.10](https://github.com/aws/opsworks-cookbooks/tree/master-chef-11.10): Cookbooks for the next release.
 - Chef 11.4
   - [release-chef-11.4](https://github.com/aws/opsworks-cookbooks/tree/release-chef-11.4): Cookbooks for the current release.
   - [master-chef-11.4](https://github.com/aws/opsworks-cookbooks/tree/master-chef-11.4): Cookbooks for the next release.
