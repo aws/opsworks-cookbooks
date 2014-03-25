@@ -20,7 +20,7 @@ default[:opsworks_custom_cookbooks][:enabled] = false
 default[:opsworks_custom_cookbooks][:user] = 'root'
 default[:opsworks_custom_cookbooks][:group] = 'root'
 default[:opsworks_custom_cookbooks][:home] = '/root'
-normal[:opsworks_custom_cookbooks][:destination] = OpsworksInstanceAgentConfig.site_cookbooks_dir
+normal[:opsworks_custom_cookbooks][:destination] = OpsworksInstanceAgentConfig.site_cookbooks_path
 
 default[:opsworks_custom_cookbooks][:recipes] = []
 
@@ -34,12 +34,12 @@ default[:opsworks_custom_cookbooks][:scm][:repository] = nil
 default[:opsworks_custom_cookbooks][:scm][:revision] = 'HEAD'
 default[:opsworks_custom_cookbooks][:enable_submodules] = true
 
-default[:opsworks_custom_cookbooks][:berkshelf_cookbook_path] = OpsworksInstanceAgentConfig.berkshelf_cookbooks_dir
+default[:opsworks_custom_cookbooks][:berkshelf_cookbooks_path] = OpsworksInstanceAgentConfig.berkshelf_cookbooks_path
 default[:opsworks_custom_cookbooks][:berkshelf_version] = '2.0.14'
 if node[:opsworks_custom_cookbooks][:berkshelf_version].to_i >= 3
-  default[:opsworks_custom_cookbooks][:berkshelf_command] = "vendor #{node[:opsworks_custom_cookbooks][:berkshelf_cookbook_path]}"
+  default[:opsworks_custom_cookbooks][:berkshelf_command] = "vendor #{node[:opsworks_custom_cookbooks][:berkshelf_cookbooks_path]}"
 else
-  default[:opsworks_custom_cookbooks][:berkshelf_command] = "install --path #{node[:opsworks_custom_cookbooks][:berkshelf_cookbook_path]}"
+  default[:opsworks_custom_cookbooks][:berkshelf_command] = "install --path #{node[:opsworks_custom_cookbooks][:berkshelf_cookbooks_path]}"
 end
 
 default[:opsworks_custom_cookbooks][:berkshelf_pkg_release] = '1'

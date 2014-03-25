@@ -139,7 +139,7 @@ package 'opsworks-berkshelf' do
   end
 end
 
-directory node[:opsworks_custom_cookbooks][:berkshelf_cookbook_path] do
+directory node[:opsworks_custom_cookbooks][:berkshelf_cookbooks_path] do
   action :delete
   recursive true
 end

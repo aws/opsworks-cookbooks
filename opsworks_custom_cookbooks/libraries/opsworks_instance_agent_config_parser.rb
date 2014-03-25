@@ -1,11 +1,13 @@
 module OpsworksInstanceAgentConfig
   require 'yaml'
 
-  def self.site_cookbooks_dir
-    YAML.load_file('/etc/aws/opsworks/instance-agent.yml')[:site_cookbooks_dir]
+  CHEF_CONFIG_YAML='/var/lib/aws/opsworks/client.yml'
+
+  def self.site_cookbooks_path
+    YAML.load_file(CHEF_CONFIG_YAML)[:site_cookbooks_path]
   end
 
-  def self.berkshelf_cookbooks_dir
-    YAML.load_file('/etc/aws/opsworks/instance-agent.yml')[:berkshelf_cookbooks_dir]
+  def self.berkshelf_cookbooks_path
+    YAML.load_file(CHEF_CONFIG_YAML)[:berkshelf_cookbooks_path]
   end
 end
