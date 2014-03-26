@@ -145,7 +145,7 @@ directory node[:opsworks_custom_cookbooks][:berkshelf_cookbooks_path] do
 end
 
 execute 'run berks install' do
-  command "#{node[:opsworks_custom_cookbooks][:berkshelf_binary]} #{node[:opsworks_custom_cookbooks][:berkshelf_command]}"
+  command "BERKSHELF_PATH=#{OpsworksInstanceAgentConfig.berkshelf_cache_path} #{node[:opsworks_custom_cookbooks][:berkshelf_binary]} #{node[:opsworks_custom_cookbooks][:berkshelf_command]}"
   cwd node[:opsworks_custom_cookbooks][:destination]
 
   only_if do
