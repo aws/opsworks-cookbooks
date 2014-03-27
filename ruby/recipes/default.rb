@@ -79,12 +79,11 @@ execute "Install Ruby #{node[:ruby][:full_version]}" do
   end
 end
 
-execute 'Delete downloaded ruby packages' do
-  command "rm -vf /tmp/#{node[:ruby][:deb]} /tmp/#{node[:ruby][:rpm]}"
-  only_if do
-     ::File.exists?("/tmp/#{node[:ruby][:deb]}") ||
-     ::File.exists?("/tmp/#{node[:ruby][:rpm]}")
-   end
+# Delete downloaded ruby packages
+["/tmp/#{node[:ruby][:deb]}" "/tmp/#{node[:ruby][:rpm]}"].each do |package|
+  file package do
+    action :delete
+  end
 end
 
 include_recipe 'opsworks_rubygems'
