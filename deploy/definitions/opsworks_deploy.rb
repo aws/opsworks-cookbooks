@@ -143,7 +143,7 @@ define :opsworks_deploy do
           end
         elsif deploy[:application_type] == 'nodejs'
           if deploy[:auto_npm_install_on_deploy]
-            OpsWorks::NodejsConfiguration.npm_install(application, node[:deploy][application], release_path)
+            OpsWorks::NodejsConfiguration.npm_install(application, node[:deploy][application], release_path, node[:opsworks_nodejs][:npm_install_options])
           end
         end
 

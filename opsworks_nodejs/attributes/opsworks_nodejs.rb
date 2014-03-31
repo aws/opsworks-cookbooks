@@ -28,4 +28,6 @@ rhel_arch = RUBY_PLATFORM.match(/64/) ? 'x86_64' : 'i686'
 default[:opsworks_nodejs][:rpm] = "opsworks-nodejs-#{node[:opsworks_nodejs][:version]}-#{node[:opsworks_nodejs][:pkgrelease]}.#{rhel_arch}.rpm"
 default[:opsworks_nodejs][:rpm_url] = "#{node[:opsworks_commons][:assets_url]}/packages/#{node[:platform]}/#{node[:platform_version]}/#{node[:opsworks_nodejs][:rpm]}"
 
+default[:opsworks_nodejs][:npm_install_options] = 'install --production'
+
 include_attribute "opsworks_nodejs::customize"
