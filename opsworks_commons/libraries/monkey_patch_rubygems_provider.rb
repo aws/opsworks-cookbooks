@@ -25,7 +25,7 @@ class Chef
 
         class CurrentGemEnvironment < GemEnvironment
           def with_env(options = {})
-            old_env = ENV.clone
+            old_env = ENV.to_h
             ENV.update(options)
             result = yield
             ENV.clear
