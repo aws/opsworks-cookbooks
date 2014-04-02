@@ -1,4 +1,4 @@
-if node[:opsworks][:layers]['monitoring-master']
+if node[:opsworks][:layers].has_key?('monitoring-master')
   case node[:platform_family]
   when "debian"
     package 'libapr1'
