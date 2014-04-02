@@ -11,6 +11,7 @@ recipe "opsworks_custom_cookbooks::update", "Update custom Cookbooks"
 
 depends "scm_helper"
 depends "opsworks_initial_setup"
+depends "opsworks_commons"
 
 attribute "opsworks_custom_cookbooks/repository",
   :display_name => "URL to you Chef cookbooks",

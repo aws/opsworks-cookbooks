@@ -11,9 +11,18 @@ if node[:opsworks][:run_cookbook_tests]
 
   require 'minitest-chef-handler'
 
+  merged_cookbooks_path = OpsworksInstanceAgentConfig.merged_cookbooks_path
+  specs = run_context.loaded_recipes.map do |loaded_recipe|
+    cookbook, recipe = loaded_recipe.split('::')
+    recipe ||= 'default'
+    ::File.join(merged_cookbooks_path, cookbook, 'specs/**', "#{recipe}_spec.rb")
+  end
+
   Chef::Log.info('Enabling minitest-chef-handler as a report handler')
-  handler = MiniTest::Chef::Handler.new({
-    :verbose => true})
+  handler = MiniTest::Chef::Handler.new(
+    :path => specs,
+    :verbose => true
+  )
 
   Chef::Config.send('report_handlers').delete_if do |v|
     v.class.to_s.include? MiniTest::Chef::Handler
