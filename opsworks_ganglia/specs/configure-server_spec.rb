@@ -9,7 +9,7 @@ describe_recipe 'opsworks_ganglia::configure-server' do
   end
 
   it 'makes sure stack name is set in gmetad.conf' do
-    file('/etc/ganglia/gmetad.conf').must_include node[:opsworks][:stack][:name]
+    file('/etc/ganglia/gmetad.conf').must_include node[:opsworks][:stack][:name].gsub(/\W/,'-')
   end
 
   it 'ensures gmetad is running' do
@@ -17,7 +17,7 @@ describe_recipe 'opsworks_ganglia::configure-server' do
   end
 
   it 'creates /etc/ganglia-webfrontend' do
-    file('/etc/ganglia-webfrontend').must_exist.with(:mode, '755')
+    directory('/etc/ganglia-webfrontend').must_exist.with(:mode, '755')
   end
 
   it 'updates htaccess' do

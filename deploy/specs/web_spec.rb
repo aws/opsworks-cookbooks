@@ -19,14 +19,6 @@ describe_recipe 'deploy::web' do
         end
       end
     end
-
-    it 'should delete cached copy for static apps if toggled on' do
-      node[:deploy].each do |app, deploy|
-        if deploy[:delete_cached_copy] && deploy[:application_type].eql?('static')
-          directory("#{deploy[:deploy_to]}/shared/cached-copy").wont_exist
-        end
-      end
-    end
   end
 
   describe 'files' do
