@@ -123,7 +123,7 @@ ruby_block 'inform about berkshelf installation with gem install' do
 end
 
 execute 'install berkshelf using gem install' do
-  command "/opt/aws/opsworks/local/bin/gem install berkshelf --version #{node[:opsworks_custom_cookbooks][:berkshelf_version]} --bindir /opt/aws/opsworks/local/bin"
+  command "/opt/aws/opsworks/local/bin/gem install berkshelf --version #{node[:opsworks_custom_cookbooks][:berkshelf_version]} --bindir /opt/aws/opsworks/local/bin --no-ri --no-rdoc"
 
   only_if do
     node[:opsworks_custom_cookbooks][:manage_berkshelf] &&
