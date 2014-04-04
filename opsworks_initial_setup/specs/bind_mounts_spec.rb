@@ -32,9 +32,11 @@ describe_recipe 'opsworks_initial_setup::bind_mounts' do
       httpd_logs_path = '/var/log/apache2'
     end
 
-    mount('/var/log/mysql', :device => "#{ephemeral_mount_point}/var/log/mysql").must_be_mounted
-    mount('/srv/www', :device => "#{ephemeral_mount_point}/srv/www").must_be_mounted
-    mount('/var/www', :device => "#{ephemeral_mount_point}/var/www").must_be_mounted
-    mount(httpd_logs_path, :device => "#{ephemeral_mount_point}/var/log/apache2").must_be_mounted
+    ephemeral_device = `grep #{ephemeral_mount_point} /proc/mounts`.split.first
+
+    file('/proc/mounts').must_match %r{^#{ephemeral_device}\s/var/log/mysql\s}
+    file('/proc/mounts').must_match %r{^#{ephemeral_device}\s/srv/www\s}
+    file('/proc/mounts').must_match %r{^#{ephemeral_device}\s/var/www\s}
+    file('/proc/mounts').must_match %r{^#{ephemeral_device}\s#{httpd_logs_path}\s}
   end
 end
