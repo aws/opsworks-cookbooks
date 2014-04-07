@@ -1,14 +1,4 @@
 # Apache request monitoring with http://vuksan.com/linux/ganglia/index.html
-case node["platform_family"]
-when "rhel"
-  package 'logcheck' do
-    action :install
-    ignore_failure true # handle EPEL not available
-  end
-when "debian"
-  package 'logtail'
-end
-
 cookbook_file '/tmp/ganglia-logtailer.tar.gz' do
   source 'ganglia-logtailer.tar.gz'
 end
