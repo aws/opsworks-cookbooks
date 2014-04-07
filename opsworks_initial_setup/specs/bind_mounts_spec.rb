@@ -32,11 +32,10 @@ describe_recipe 'opsworks_initial_setup::bind_mounts' do
       httpd_logs_path = '/var/log/apache2'
     end
 
-    ephemeral_device = `grep #{ephemeral_mount_point} /proc/mounts`.split.first
+    ephemeral_device = OpsWorks::ShellOut.shellout("df #{ephemeral_mount_point} | grep ^/").split.first
 
-    file('/proc/mounts').must_match %r{^#{ephemeral_device}\s/var/log/mysql\s}
-    file('/proc/mounts').must_match %r{^#{ephemeral_device}\s/srv/www\s}
-    file('/proc/mounts').must_match %r{^#{ephemeral_device}\s/var/www\s}
-    file('/proc/mounts').must_match %r{^#{ephemeral_device}\s#{httpd_logs_path}\s}
+    ['/var/log/mysql', '/srv/www', '/var/www', httpd_logs_path].each do |bind_mount_dir|
+      OpsWorks::ShellOut.shellout("findmnt -c #{bind_mount_dir}").must_match %r{^#{bind_mount_dir}\s#{ephemeral_device}}
+    end
   end
 end
