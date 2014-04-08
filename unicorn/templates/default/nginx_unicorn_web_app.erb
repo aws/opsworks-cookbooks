@@ -27,6 +27,7 @@ server {
   location / {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
+    proxy_set_header X-Request-Start "t=${msec}";
     proxy_redirect off;
 
   <% if node[:nginx] && node[:nginx][:proxy_read_timeout] -%>
@@ -82,6 +83,7 @@ server {
     proxy_set_header X-Forwarded-Proto https;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
+    proxy_set_header X-Request-Start "t=${msec}";
     proxy_redirect off;
 
   <% if node[:nginx] && node[:nginx][:proxy_read_timeout] -%>
