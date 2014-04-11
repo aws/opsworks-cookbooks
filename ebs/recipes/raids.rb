@@ -14,6 +14,20 @@ node[:ebs][:raids].each do |raid_device, options|
     BlockDevice::wait_for(disk_device)
   end
 
+  execute "mkfs_#{lvm_device}" do
+    command "test \"$(blkid -s TYPE -o value #{lvm_device})\" = \"#{options[:fstype]}\" || mkfs -t #{options[:fstype]} #{lvm_device}"
+    action :nothing
+  end
+
+  ruby_block "Create or attach LVM volume out of #{raid_device}" do
+    block do
+      BlockDevice.create_lvm(raid_device, options)
+      BlockDevice.wait_for(lvm_device)
+    end
+    action :nothing
+    notifies :run, resources(:execute => "mkfs_#{lvm_device}"), :immediately
+  end
+
   ruby_block "Create or resume RAID array #{raid_device}" do
     block do
       if BlockDevice.existing_raid_at?(raid_device)
@@ -28,25 +42,11 @@ node[:ebs][:raids].each do |raid_device, options|
       end
       BlockDevice.set_read_ahead(raid_device, node[:ebs][:md_read_ahead])
     end
-  end
-
-  ruby_block "Create or attach LVM volume out of #{raid_device}" do
-    block do
-      BlockDevice.create_lvm(raid_device, options)
-    end
-  end
-
-  execute 'mkfs' do
-    command "mkfs -t #{options[:fstype]} #{lvm_device}"
-    not_if do
-      # check volume filesystem
-      system("test $(blkid -s TYPE -o value #{lvm_device}) = #{options[:fstype]}")
-    end
+    notifies :create, resources(:ruby_block => "Create or attach LVM volume out of #{raid_device}"), :immediately
   end
 
   directory options[:mount_point] do
     recursive true
-    action :create
     mode 0755
   end
 
@@ -62,17 +62,13 @@ node[:ebs][:raids].each do |raid_device, options|
     end
   end
 
-  mount options[:mount_point] do
+  mount "fstab entry for #{options[:mount_point]}" do
+    mount_point options[:mount_point]
     action :enable
     fstype options[:fstype]
     device lvm_device
     options 'noatime'
     pass 0
-    not_if do
-      File.read('/etc/mtab').split("\n").any? do |line| 
-        line.match(" #{options[:mount_point]} ")
-      end
-    end
   end
 
   template 'mdadm configuration' do

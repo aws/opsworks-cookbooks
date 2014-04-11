@@ -19,6 +19,7 @@ KNOWN_COOKBOOK_ATTRIBUTES = {
   'sudoers' => 'ssh_users',
   'opsworks' => :any,
   'platform' => :any,
+  'platform_family' => :any,
   'platform_version' => :any,
   'apache' => 'apache2',
   'kernel' => 'apache2'
@@ -34,16 +35,14 @@ task :validate_attribute_dependencies do
     cookbook_name = file.match(/(\w+)\//)[1]
     loaded_cookbook_attributes = [cookbook_name]
 
-    attribute_file = File.read(file)
-    attribute_file.each do |line|
-
+    File.read(file).each_line do |line|
       # uses other cookbooks attributes
       if line.match(/node\[\:(\w+)\]/) && $1 != cookbook_name
         used_cookbook_attributes << $1
       end
 
       # loads/includes attributes
-      if line.match(/include_attribute [\'\"](\w+)[\'\"]/) || line.match(/include_attribute [\'\"](\w+)::\w+[\'\"]/)
+      if line.match(/include_attribute [\'\"](\w+)(::\w+)?[\'\"]/)
         loaded_cookbook_attributes << $1
       end
     end
@@ -68,13 +67,15 @@ end
 
 desc 'check syntax of ruby files'
 task :validate_syntax do
+  found_trouble = false
   Dir['**/*.rb'].each do |file|
-    `ruby -c #{file}`
+    output = `ruby -c #{file}`
     if $?.exitstatus != 0
-      puts "syntax error in #{file}"
-      exit 1
+      puts output
+      found_trouble = true
     end
   end
+  exit 1 if found_trouble
 end
 
 desc 'run all checks'

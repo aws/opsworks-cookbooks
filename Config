@@ -1,0 +1,26 @@
+# -*-perl-*-
+
+package.CharlieCookbooks = {
+    interfaces = (1.0);
+
+    build-system = braziltools;
+    build-tools = {
+        1.0 = {
+            BrazilTools = 2.2;
+        };
+    };
+
+    dependencies = {
+        1.0 = {
+        };
+    };
+
+    targets = {
+        # Congratulations on your new Brazil package!  If you are unsure of
+        # how to get started, please refer to the Config file documentation:
+        # https://w.amazon.com/?BrazilBuildSystem/Reference/ConfigFile
+        #
+        # Once you are ready to start adding targets to your new package, see:
+        # https://w.amazon.com/?BrazilBuildSystem/Reference/TargetTypeDefinitions
+    };
+};

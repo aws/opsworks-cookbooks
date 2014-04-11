@@ -7,7 +7,11 @@ global
   #quiet
   user haproxy
   group haproxy
-  stats socket /tmp/haproxy.sock
+  <% if node[:haproxy][:stats_socket_level] %>
+  stats socket <%= node[:haproxy][:stats_socket_path] %> level <%= node[:haproxy][:stats_socket_level] %>
+  <% else %>
+  stats socket <%= node[:haproxy][:stats_socket_path] %>
+  <% end %>
 
 defaults
   log             global

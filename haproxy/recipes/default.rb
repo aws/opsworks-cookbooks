@@ -16,30 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-case node[:platform]
-   when 'ubuntu'
-     package 'haproxy' do
-        action :install
-     end
-
-   when 'amazon'
-     remote_file "/tmp/#{node[:haproxy][:rpm]}" do
-       source node[:haproxy][:rpm_url]
-       action :create_if_missing
-
-        not_if do
-          system("rpm -q haproxy | grep -q 'haproxy-#{node[:haproxy][:version]}-#{node[:haproxy][:patchlevel]}'")
-        end
-     end
-
-     rpm_package 'haproxy' do
-       action :install
-       source "/tmp/#{node[:haproxy][:rpm]}"
-
-       not_if do
-         system("rpm -q haproxy | grep -q 'haproxy-#{node[:haproxy][:version]}-#{node[:haproxy][:patchlevel]}'")
-       end
-     end
+package 'haproxy' do
+  action :install
 end
 
 if platform?('debian','ubuntu')
