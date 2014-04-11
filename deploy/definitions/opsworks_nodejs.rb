@@ -2,6 +2,14 @@ define :opsworks_nodejs do
   deploy = params[:deploy_data]
   application = params[:app]
 
+  env_vars = Array.new
+  unless node[:custom_env].nil?
+    node[:custom_env].each do |k, v|
+      env_vars.push("#{k}=#{v}")
+      Chef::Log.info("Added environment variable: #{k}=#{v}")
+    end
+  end
+
   service 'monit' do
     action :nothing
   end
@@ -28,6 +36,7 @@ define :opsworks_nodejs do
     group 'root'
     mode '0644'
     variables(
+      :environment_vars => env_vars.join(' '),
       :deploy => deploy,
       :application_name => application,
       :monitored_script => "#{deploy[:deploy_to]}/current/server.js"
