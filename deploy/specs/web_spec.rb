@@ -9,25 +9,16 @@ describe_recipe 'deploy::web' do
       node[:deploy].each do |app, deploy|
         if deploy[:application_type].eql?('static')
           directory("#{deploy[:deploy_to]}").must_exist.with(:mode, '775').and(
-                    :user, deploy[:user]).and(:group, deploy[:group])
+                    :owner, deploy[:user]).and(:group, deploy[:group])
           directory("#{deploy[:deploy_to]}/shared").must_exist.with(:mode, '770').and(
-                    :user, deploy[:user]).and(:group, deploy[:group])
+                    :owner, deploy[:user]).and(:group, deploy[:group])
           ['log','config','system','pids','scripts','sockets'].each do |dir_name|
             directory("#{deploy[:deploy_to]}/shared/#{dir_name}").must_exist.with(
-                      :mode, '770').and(:user, deploy[:user]).and(:group, deploy[:group])
+                      :mode, '770').and(:owner, deploy[:user]).and(:group, deploy[:group])
           end
         end
       end
     end
-
-    it 'should delete cached copy for static apps if toggled on' do
-      node[:deploy].each do |app, deploy|
-        if deploy[:delete_cached_copy] && deploy[:application_type].eql?('static')
-          directory("#{deploy[:deploy_to]}/shared/cached-copy").wont_exist
-        end
-      end
-    end
-  end
 
   describe 'files' do
     it 'should create a logrotate with the required contents' do
