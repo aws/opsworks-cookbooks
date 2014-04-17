@@ -42,6 +42,11 @@ execute 'Stop gmond if there is no monitoring master' do
   only_if { monitoring_master.nil? && system('pgrep gmond') }
 end
 
+service 'gmond' do
+  action :start
+  not_if { monitoring_master.nil? }
+end
+
 if node[:opsworks][:instance][:layers].any?{ |layer|
   ['php-app', 'monitoring-master'].include?(layer)
 } || (node[:opsworks][:instance][:layers].include?('rails-app') && node[:opsworks][:rails_stack][:name] == 'apache_passenger')
