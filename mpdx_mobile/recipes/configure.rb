@@ -11,3 +11,13 @@ template "#{deploy[:deploy_to]}/current/www/js/secure.js" do
   variables(:config => deploy[:config], :environment => deploy[:rails_env])
 end
 
+bash "npm install --production" do
+  cwd "#{deploy[:deploy_to]}/current"
+  code "npm install --production"
+end
+
+bash "grunt" do
+  cwd "#{deploy[:deploy_to]}/current"
+  code "grunt default imagemin"
+end
+
