@@ -4,7 +4,7 @@ S3=/home/ubuntu/s3
 
 #vnc起動
 
-/usr/bin/vncserver
+sudo -u ubuntu /usr/bin/vncserver
 
 
 #insyncの同期終了確認
@@ -48,4 +48,4 @@ fi
 #ゴミ箱の削除
 rm -fr /home/ubuntu/S3/Googledrive/.insync-trash
 
-sudo /sbin/shutdown -h now
+/sbin/shutdown -h now
