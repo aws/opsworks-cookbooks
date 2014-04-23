@@ -34,7 +34,7 @@ else
   default[:passenger][:gems_path] = '/'
 end
 
-default[:passenger][:version] = '4.0.39'
+default[:passenger][:version] = '4.0.41'
 default[:passenger][:root_path] = "#{node[:passenger][:gems_path]}/passenger-#{passenger[:version]}"
 
 if platform?('centos','redhat','fedora','amazon') and node[:packages][:dist_only]

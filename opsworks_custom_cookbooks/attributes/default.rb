@@ -20,7 +20,7 @@ default[:opsworks_custom_cookbooks][:enabled] = false
 default[:opsworks_custom_cookbooks][:user] = 'root'
 default[:opsworks_custom_cookbooks][:group] = 'root'
 default[:opsworks_custom_cookbooks][:home] = '/root'
-normal[:opsworks_custom_cookbooks][:destination] = OpsworksInstanceAgentConfig.site_cookbooks_path
+normal[:opsworks_custom_cookbooks][:destination] = Opsworks::InstanceAgent::Environment.site_cookbooks_path
 
 default[:opsworks_custom_cookbooks][:recipes] = []
 
@@ -34,29 +34,7 @@ default[:opsworks_custom_cookbooks][:scm][:repository] = nil
 default[:opsworks_custom_cookbooks][:scm][:revision] = 'HEAD'
 default[:opsworks_custom_cookbooks][:enable_submodules] = true
 
-default[:opsworks_custom_cookbooks][:berkshelf_cookbooks_path] = OpsworksInstanceAgentConfig.berkshelf_cookbooks_path
-default[:opsworks_custom_cookbooks][:berkshelf_version] = '2.0.14'
-if node[:opsworks_custom_cookbooks][:berkshelf_version].to_i >= 3
-  default[:opsworks_custom_cookbooks][:berkshelf_command] = "vendor #{node[:opsworks_custom_cookbooks][:berkshelf_cookbooks_path]}"
-else
-  default[:opsworks_custom_cookbooks][:berkshelf_command] = "install --path #{node[:opsworks_custom_cookbooks][:berkshelf_cookbooks_path]}"
-end
-
-default[:opsworks_custom_cookbooks][:berkshelf_pkg_release] = '1'
-default[:opsworks_custom_cookbooks][:berkshelf_binary] = '/opt/aws/opsworks/local/bin/berks'
-
 default[:opsworks_custom_cookbooks][:gem_binary] = '/opt/aws/opsworks/local/bin/gem'
 default[:opsworks_custom_cookbooks][:gem_uninstall_options] = '--force --executables'
-
-case node[:platform]
-when 'redhat', 'centos', 'fedora', 'amazon'
-  arch = RUBY_PLATFORM.match(/64/) ? 'x86_64' : 'i686'
-  default[:opsworks_custom_cookbooks][:berkshelf_package_file] = "berkshelf_#{node[:opsworks_custom_cookbooks][:berkshelf_version]}.rpm"
-  default[:opsworks_custom_cookbooks][:berkshelf_package_url] = "#{node[:opsworks_commons][:assets_url]}/packages/#{node[:platform]}/#{node[:platform_version]}/opsworks-berkshelf-#{node[:opsworks_custom_cookbooks][:berkshelf_version]}-#{node[:opsworks_custom_cookbooks][:berkshelf_pkg_release]}.#{arch}.rpm"
-when 'ubuntu', 'debian'
-  arch = RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'
-  default[:opsworks_custom_cookbooks][:berkshelf_package_file] = "berkshelf_#{node[:opsworks_custom_cookbooks][:berkshelf_version]}.deb"
-  default[:opsworks_custom_cookbooks][:berkshelf_package_url] = "#{node[:opsworks_commons][:assets_url]}/packages/#{node[:platform]}/#{node[:platform_version]}/opsworks-berkshelf_#{node[:opsworks_custom_cookbooks][:berkshelf_version]}-#{node[:opsworks_custom_cookbooks][:berkshelf_pkg_release]}_#{arch}.deb"
-end
 
 include_attribute "opsworks_custom_cookbooks::customize"

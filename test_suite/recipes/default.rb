@@ -11,7 +11,7 @@ if node[:opsworks][:run_cookbook_tests]
 
   require 'minitest-chef-handler'
 
-  merged_cookbooks_path = OpsworksInstanceAgentConfig.merged_cookbooks_path
+  merged_cookbooks_path = Opsworks::InstanceAgent::Environment.merged_cookbooks_path
   specs = run_context.loaded_recipes.map do |loaded_recipe|
     cookbook, recipe = loaded_recipe.split('::')
     recipe ||= 'default'
