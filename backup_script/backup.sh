@@ -1,10 +1,10 @@
-!/bin/sh
+#!/bin/sh
 
 S3=/home/ubuntu/s3
 
 #vnc起動
 
-sudo -u ubuntu /usr/bin/vncserver
+/usr/bin/vncserver
 
 
 #insyncの同期終了確認
