@@ -4,7 +4,7 @@ S3=/home/ubuntu/s3
 
 #vnc起動
 
-/usr/bin/vncserver
+su -l ubuntu -c /usr/bin/vncserver
 
 
 #insyncの同期終了確認
