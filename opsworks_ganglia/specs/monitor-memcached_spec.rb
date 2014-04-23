@@ -16,7 +16,7 @@ describe_recipe 'opsworks_ganglia::monitor-memcached' do
   end
 
   it 'creates memcached monitor script' do
-    file('/etc/ganglia/scripts/memcached').must_exist.with(:owner, 'root').and(:group, 'root').and(:mode, '744')
+    file('/etc/ganglia/scripts/memcached').must_exist.with(:owner, 'root').and(:group, 'root').and(:mode, '755')
   end
 
   it 'creates memcached monitor cron' do

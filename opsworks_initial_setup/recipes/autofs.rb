@@ -6,8 +6,8 @@ package 'Install automounter' do
   action :install
 end
 
-service 'autofs' do
-  supports :status => true, :restart => true, :reload => true
+service "autofs" do
+  supports :status => true, :restart => false, :reload => true
   action [ :enable, :start ]
 end
 
