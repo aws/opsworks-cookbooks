@@ -13,5 +13,8 @@
 <% if @database[:port] -%>
   port: <%= @database[:port].to_i.inspect %>
 <% end -%>
+<% if @database[:sslca] -%>
+  sslca: <%= @database[:sslca].to_s.inspect %>
+<% end -%>
 
 <% end %>
