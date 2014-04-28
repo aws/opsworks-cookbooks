@@ -44,12 +44,21 @@ module BlockDevice
     if raids.match(device)
       Chef::Log.debug("Checking for running RAID arrays at #{device}: #{raids}")
       Chef::Log.info("Checking for running RAID arrays at #{device}: true")
-      true
+      clean_raid_at?(device)
     else
       Chef::Log.debug("Checking for running RAID arrays at #{device}: #{raids}")
       Chef::Log.info("Checking for running RAID arrays at #{device}: false")
       false
     end
+  end
+
+  def self.clean_raid_at?(raid_device)
+    OpsWorks::ShellOut.shellout("mdadm --detail --test #{raid_device} > /dev/null")
+    Chef::Log.info("RAID array at #{raid_device} is clean")
+    true
+  rescue
+    Chef::Log.info("RAID array at #{raid_device} is not clean")
+    false
   end
 
   def self.assemble_raid(raid_device, options)
@@ -63,10 +72,12 @@ module BlockDevice
         if md_device
           physical_volume_info = `pvdisplay -c /dev/#{md_device}`.lines.first
           if physical_volume_info
-            volume_group = physical_volume_info.split(':')[1]
-            affected_volume_groups << volume_group if volume_group
-            Chef::Log.info "Deactivating volume group #{volume_group}"
-            exec_command("vgchange --available n #{volume_group}")
+            volume_group = physical_volume_info.split(':')[1] rescue nil
+            if volume_group
+              affected_volume_groups << volume_group
+              Chef::Log.info "Deactivating volume group #{volume_group}"
+              exec_command("vgchange --available n #{volume_group}")
+            end
           end
           Chef::Log.info "Stopping /dev/#{md_device}"
           exec_command("mdadm --stop --verbose /dev/#{md_device}")
