@@ -3,10 +3,6 @@
             maxActive="20" maxIdle="5" maxWait="10000"
             username="<%= node['deploy'][@application]['database']['username'] %>" password="<%= node['deploy'][@application]['database']['password'] %>"
             driverClassName="com.mysql.jdbc.Driver"
-<% if node['deploy'][@application]['database']['port'] %>
-              url="jdbc:mysql://<%= node['deploy'][@application]['database']['host'] %>:<%= if node['deploy'][@application]['database']['port'] %>/<%= node['deploy'][@application]['database']['database'] %>"
-<% else %>
-            url="jdbc:mysql://<%= node['deploy'][@application]['database']['host'] %>:3306/<%= node['deploy'][@application]['database']['database'] %>"
-<% end %>
+            url="jdbc:mysql://<%= node['deploy'][@application]['database']['host'] %>:<%= node['deploy'][@application]['database']['port'] %>/<%= node['deploy'][@application]['database']['database'] %>"
             factory="org.apache.commons.dbcp.BasicDataSourceFactory" />
 </Context>
