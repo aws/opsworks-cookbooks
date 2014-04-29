@@ -11,10 +11,8 @@ describe_recipe 'rails::configure' do
           application[:database][:data_source_provider] == 'rds'
         end
 
-        skip unless check_apps.length > 0
-
         check_apps.each do |name, application|
-          adapter = node[:deploy][name]["database"]["adapter"]
+          adapter = node[:deploy][name][:database]["adapter"]
 
           expected_adapter = adapter == 'postgres' ? 'postgresql' : adapter
 
@@ -33,7 +31,7 @@ describe_recipe 'rails::configure' do
         skip if node[:force_database_adapter_detection]
 
         check_apps.each do |name, application|
-          assert_equal node[:deploy][name]["database"]["adapter"], OpsWorks::RailsConfiguration.determine_database_adapter(name, node[:deploy][name], "#{node[:deploy][application][:deploy_to]}/current", :force => node[:force_database_adapter_detection])
+          assert_equal node[:deploy][name][:database]["adapter"], OpsWorks::RailsConfiguration.determine_database_adapter(name, node[:deploy][name], "#{node[:deploy][application][:deploy_to]}/current", :force => node[:force_database_adapter_detection])
         end
       end
     end

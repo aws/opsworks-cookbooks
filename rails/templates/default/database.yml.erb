@@ -1,10 +1,6 @@
 <% (['development', 'production'] + [@environment]).uniq.each do |env| -%>
 <%= env %>:
-  <% if @database[:adapter].to_s == "postgres" %>
-  adapter: "postgresql"
-  <% else %>
   adapter: <%= @database[:adapter].to_s.inspect %>
-  <% end %>
   database: <%= @database[:database].to_s.inspect %>
   encoding: <%= (@database[:encoding] || 'utf8').to_s.inspect %>
   host: <%= (@database[:host] || 'localhost').to_s.inspect %>
