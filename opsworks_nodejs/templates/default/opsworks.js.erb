@@ -1,2 +1,3 @@
 exports.db = <%= @database.to_json %>
 exports.memcached = <%= @memcached.to_json %>
+exports.stack_map = {<%= @layers.map {|layer_short_name, layer| "\"#{layer_short_name}\": [#{layer['instances'].values.map {|instance| "\"#{instance['private_ip']}\""}.join(', ')}]"}.join(', ') %>}
