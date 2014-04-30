@@ -1,4 +1,13 @@
 action :berks_install do
+  directory Opsworks::InstanceAgent::Environment.berkshelf_cookbooks_path do
+    action :delete
+    recursive true
+
+    only_if do
+      node['opsworks_berkshelf']['version'].to_i >= 3
+    end
+  end
+
   execute 'Install the cookbooks specified in the Berksfile and their dependencies' do
     command berks_install_command
     cwd Opsworks::InstanceAgent::Environment.site_cookbooks_path
