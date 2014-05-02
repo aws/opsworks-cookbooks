@@ -20,3 +20,4 @@ default['opsworks_berkshelf']['version'] = node["opsworks_custom_cookbooks"]["be
 default['opsworks_berkshelf']['pkg_release'] = '1'
 
 default['opsworks_berkshelf']['rubygems_options'] = ''
+default['opsworks_berkshelf']['debug'] = false
