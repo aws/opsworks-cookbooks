@@ -7,7 +7,7 @@ define :opsworks_nodejs do
   env_vars = Array.new
   unless node[:custom_env].nil?
     node[:custom_env].each do |k, v|
-      env_vars.push("#{k}=#{v}")
+      env_vars.push("#{k}=\"#{v}\"")
       Chef::Log.info("added env var: #{k}=#{v}")
     end
   end
