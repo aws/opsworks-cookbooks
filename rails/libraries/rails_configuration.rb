@@ -11,7 +11,10 @@ module OpsWorks
       adapter = app_config["database"]["adapter"]
       data_source_provider = app_config["database"]["data_source_provider"]
 
-      return adapter if data_source_provider == 'rds'
+      if data_source_provider == 'rds'
+        return adapter == 'mysql' ? 'mysql2' : 'postgresql'
+      end
+
       return adapter unless options[:force]
 
       Chef::Log.info("No database adapter specified for #{app_name}, guessing")
