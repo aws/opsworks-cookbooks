@@ -1,4 +1,3 @@
-module OpsWorks
   module RailsConfiguration
     
 
@@ -15,7 +14,11 @@ module OpsWorks
         return adapter == 'mysql' ? 'mysql2' : 'postgresql'
       end
 
-      return adapter unless options[:force]
+      # ensure that if a customer has set an adapter in the custom JSON,
+      # it will not be not overridden
+      return adapter unless ['postgresql', 'mysql'].include? adapter
+
+      return 'mysql2' unless options[:force]
 
       Chef::Log.info("No database adapter specified for #{app_name}, guessing")
       adapter = ''
