@@ -1,2 +1,6 @@
+var stack_map = {<%= @layers.map {|layer_short_name, layer| "\"#{layer_short_name}\": [#{layer['instances'].values.map {|instance| "\"#{instance['private_ip']}\""}.join(', ')}]"}.join(', ') %>};
+
 exports.db = <%= @database.to_json %>
 exports.memcached = <%= @memcached.to_json %>
+exports.layers = function() { return Object.keys(stack_map); };
+exports.hosts = function(layer) { return stack_map[layer]; };

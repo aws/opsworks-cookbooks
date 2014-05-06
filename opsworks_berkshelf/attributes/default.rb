@@ -14,9 +14,10 @@
 # See also: http://docs.aws.amazon.com/opsworks/latest/userguide/customizing.html
 ###
 include_attribute 'opsworks_commons::default'
-default['opsworks_berkshelf']['prebuilt_versions'] = ['2.0.14']
+default['opsworks_berkshelf']['prebuilt_versions'] = ['2.0.14', '3.0.1', '3.1.1']
 
-default['opsworks_berkshelf']['version'] = node["opsworks_custom_cookbooks"]["berkshelf_version"] || node['opsworks_berkshelf']['prebuilt_versions'].last
+default['opsworks_berkshelf']['version'] = node['opsworks_custom_cookbooks']['berkshelf_version'] || node['opsworks_berkshelf']['prebuilt_versions'].last
 default['opsworks_berkshelf']['pkg_release'] = '1'
 
 default['opsworks_berkshelf']['rubygems_options'] = ''
+default['opsworks_berkshelf']['debug'] = false
