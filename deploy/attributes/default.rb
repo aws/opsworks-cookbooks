@@ -15,4 +15,9 @@
 ###
 
 include_attribute "deploy::deploy"
+
+node[:deploy].each do |application, deploy|
+  default[:deploy][application][:database][:data_source_provider] = 'stack'
+end
+
 include_attribute "deploy::customize"
