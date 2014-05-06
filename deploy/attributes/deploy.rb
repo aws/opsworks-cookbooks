@@ -48,7 +48,6 @@ default[:opsworks][:rails][:ignore_bundler_groups] = ['test', 'development']
 
 default[:deploy] = {}
 node[:deploy].each do |application, deploy|
-  default[:deploy][application][:database][:port] = 3306 
   default[:deploy][application][:deploy_to] = "/srv/www/#{application}"
   default[:deploy][application][:chef_provider] = node[:deploy][application][:chef_provider] ? node[:deploy][application][:chef_provider] : node[:opsworks][:deploy_chef_provider]
   unless valid_deploy_chef_providers.include?(node[:deploy][application][:chef_provider])
