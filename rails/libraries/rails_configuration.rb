@@ -15,7 +15,7 @@ module OpsWorks
 
       # ensure that if a customer has set an adapter in the custom JSON,
       # it will not be not overridden
-      return adapter unless ['postgresql', 'mysql'].include? adapter
+      return adapter if adapter && adapter != 'mysql'
 
       return 'mysql2' unless options[:force]
 
