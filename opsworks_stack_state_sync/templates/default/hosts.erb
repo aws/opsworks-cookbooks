@@ -10,16 +10,17 @@ ff02::2 ip6-allrouters
 ff02::3 ip6-allhosts
 
 # OpsWorks Layer State
-127.0.0.1 <%= @localhost_name %>.localdomain <%= @localhost_name %> localhost.localdomain localhost
+127.0.0.1 localhost.localdomain localhost
+127.0.1.1 <%= @localhost_name %>.localdomain <%= @localhost_name %>
 
 <% @nodes.each do |node| -%>
 <% if node.attributes.attribute?(:private_ip) && node.attributes.private_ip && Resolv.getaddress(node.attributes.private_ip) -%>
-<%= node.attributes.private_ip %> <%= node.hostname %> <%= node.name %>
+<%= node.attributes.private_ip %> <%= node.name %> <%= node.hostname %>
 <% else -%>
 <%= "# Unable to resolve IP '#{node.attributes.private_ip}' for hostname '#{node.name}'" %>
 <% end -%>
 <% if node.attributes.attribute?(:ip) && node.attributes.ip && Resolv.getaddress(node.attributes.ip) -%>
-<%= node.attributes.ip %> <%= node.hostname %>-ext <%= node.name %>-ext
+<%= node.attributes.ip %> <%= node.name %>-ext <%= node.hostname %>-ext
 <% else -%>
 <%= "# Unable to resolve IP '#{node.attributes.ip}' for hostname '#{node.name}'" %>
 <% end -%>
