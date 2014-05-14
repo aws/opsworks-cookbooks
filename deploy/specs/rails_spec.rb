@@ -28,8 +28,7 @@ describe_recipe 'deploy::rails' do
       skip unless deploy[:database][:host].present?
       cfg = YAML.load_file("#{deploy[:deploy_to]}/shared/config/database.yml")
       ["development", "production", deploy[:rails_env]].uniq.each do |env|
-        expected_adapter = deploy[:database][:adapter].to_s == 'postgres' ? 'postgresql' : deploy[:database][:adapter].to_s
-        cfg[env]['adapter'].must_equal expected_adapter
+        cfg[env]['adapter'].must_equal deploy[:database][:adapter].to_s
         cfg[env]['database'].must_equal deploy[:database][:database].to_s
         cfg[env]['host'].must_equal((deploy[:database][:host] || 'localhost').to_s)
         cfg[env]['username'].must_equal deploy[:database][:username].to_s
