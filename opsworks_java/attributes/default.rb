@@ -14,8 +14,6 @@
 # See also: http://docs.aws.amazon.com/opsworks/latest/userguide/customizing.html
 ###
 
-include_attribute 'deploy'
-
 default['opsworks_java'] = {}
 
 default['opsworks_java']['jvm'] = 'openjdk'
