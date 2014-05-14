@@ -7,6 +7,8 @@ class OpsWorksDb {
     $this->database = '<%= @database[:database] %>';
     $this->encoding = 'utf8';
     $this->host = '<%= @database[:host] %>';
+    $this->host = '<%= @database[:port] %>';
+    $this->host = '<%= @database[:host] %>';
     $this->username = '<%= @database[:username] %>';
     $this->password = '<%= @database[:password] %>';
     $this->reconnect = '<%= @database[:reconnect] ? 'true' : 'false' %>';
