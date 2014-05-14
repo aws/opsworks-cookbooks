@@ -16,6 +16,10 @@
 
 include_attribute 'deploy'
 
+node[:deploy].each do |application, deploy|
+  default[:deploy][application][:database][:port] = 3306 
+end
+
 default['opsworks_java'] = {}
 
 default['opsworks_java']['jvm'] = 'openjdk'

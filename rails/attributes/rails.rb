@@ -18,4 +18,9 @@ include_attribute "deploy"
 
 default[:rails][:version] = "2.3.5"
 
+node[:deploy].each do |application, deploy|
+  default[:deploy][application][:database][:port] = 3306 
+end
+
+
 include_attribute "rails::customize"
