@@ -120,8 +120,7 @@ define :opsworks_deploy do
             group node[:deploy][application][:group]
             variables(
               :database => node[:deploy][application][:database],
-              :environment => node[:deploy][application][:rails_env],
-              :database_adapter => OpsWorks::RailsConfiguration.determine_database_adapter(application, node[:deploy][application], "#{node[:deploy][application][:deploy_to]}/current", :force => node[:force_database_adapter_detection])
+              :environment => node[:deploy][application][:rails_env]
             )
 
             only_if do
