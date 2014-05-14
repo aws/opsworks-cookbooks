@@ -1,5 +1,6 @@
-module OpsWorks
   module RailsConfiguration
+    
+
     def self.determine_database_adapter(app_name, app_config, app_root_path, options = {})
       options = {
         :consult_gemfile => true,
