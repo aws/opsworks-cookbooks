@@ -16,7 +16,7 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     owner deploy[:user]
     variables(
-      :database => deploy[:database],
+      :database => database_info,
       :environment => deploy[:rails_env],
       :database_adapter => OpsWorks::RailsConfiguration.determine_database_adapter(application, node[:deploy][application], "#{node[:deploy][application][:deploy_to]}/current", :force => node[:force_database_adapter_detection])
     )
