@@ -1,5 +1,5 @@
 module OpsWorks
-  module Bershelf
+  module Berkshelf
     class << self
       def berkshelf_binary
         "#{Opsworks::InstanceAgent::Environment.embedded_bin_path}/berks"
@@ -18,7 +18,7 @@ module OpsWorks
           # for berkshelf v2.x the expected string to work with is i.e. "Berkshelf (2.0.14)"
           # for berkshelf v3.x the expected string to work with is i.e. "3.0.1"
 
-          OpsWorks::ShellOut.shellout("#{OpsWorks::Bershelf.berkshelf_binary} version | head -n 1").strip.match(/\d+\.\d+\.\d+[^)]*/).to_s
+          OpsWorks::ShellOut.shellout("#{OpsWorks::Berkshelf.berkshelf_binary} version | head -n 1").strip.match(/\d+\.\d+\.\d+[^)]*/).to_s
         end
       end
     end

@@ -1,5 +1,5 @@
 def up_to_date?
-  OpsWorks::Bershelf.berkshelf_installed? && node['opsworks_berkshelf']['version'] == OpsWorks::Bershelf.current_version
+  OpsWorks::Berkshelf.berkshelf_installed? && node['opsworks_berkshelf']['version'] == OpsWorks::Berkshelf.current_version
 end
 
 unless up_to_date?
@@ -42,7 +42,7 @@ unless up_to_date?
 
     action :install
     not_if do
-      OpsWorks::Bershelf.berkshelf_installed?
+      OpsWorks::Berkshelf.berkshelf_installed?
     end
   end
 end
