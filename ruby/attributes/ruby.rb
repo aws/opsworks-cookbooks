@@ -43,7 +43,7 @@ when "2.1"
 when "2.0.0"
   default[:ruby][:major_version] = '2.0'
   default[:ruby][:full_version] = '2.0.0'
-  default[:ruby][:patch] = 'p451'
+  default[:ruby][:patch] = platform?('ubuntu') && node[:platform_version] == '14.04' ? 'p481' : 'p451'
   default[:ruby][:pkgrelease] = '1'
 when "1.9.3"
   default[:ruby][:major_version] = '1.9'
