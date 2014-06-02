@@ -48,7 +48,17 @@ def asset_name
 end
 
 def asset_url
-  @asset_url ||= URI.parse("#{node[:opsworks_commons][:assets_url]}/packages/#{node[:platform]}/#{node[:platform_version]}/#{asset_name}")
+  _platform = node[:platform]
+  _platform_version = node[:platform_version]
+  # Hack to get RedHat 6 to online state until we have proper userspace
+  # Ruby packages or removed Ruby dependency from custom layer.
+  if ["redhat", "centos"].include?(_platform)
+    _platform = "amazon"
+    #ToDo: this should be a global attribute in the commons cookbook
+    _platform_version = "2013.09"
+  end
+
+  @asset_url ||= URI.parse("#{node[:opsworks_commons][:assets_url]}/packages/#{_platform}/#{_platform_version}/#{asset_name}")
 end
 
 # download assets using the downloader.sh
