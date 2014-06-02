@@ -90,5 +90,6 @@ fi
 
 echo "Configuring application server..."
 sed -i -e 's,<inet-address value="${jboss.bind.address:127.0.0.1}"/>,<inet-address value="${jboss.bind.address:0.0.0.0}"/>,g' $WILDFLY_DIR/standalone/configuration/standalone.xml
+sed -i -e 's,<inet-address value="${jboss.bind.address.management:127.0.0.1}"/>,<inet-address value="${jboss.bind.address.management:0.0.0.0}"/>,g' $WILDFLY_DIR/standalone/configuration/standalone.xml
 
 echo "Done."
