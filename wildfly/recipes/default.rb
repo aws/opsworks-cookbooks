@@ -20,4 +20,6 @@ execute 'chown-wildfly' do
   cwd '/opt'
   command 'chown -R wildfly:wildfly /opt/wildfly-' + node['wildfly']['version']
 end
+
 include_recipe 'wildfly::wildfly_service'
+include_recipe 'wildfly::add_deploy_user'
