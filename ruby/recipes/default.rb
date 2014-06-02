@@ -1,88 +1,48 @@
-# remove installed version if it's no the one we want to install
-# enables updating stack from ruby 1.9 to ruby 2.0
-# currently we only support one user sapce ruby installation
+# Remove installed version, if it's not the one that should be installed.
+# We only support one user space ruby installation
 
-local_ruby_up_to_date = ::File.exists?(node[:ruby][:executable]) &&
-                        system("#{node[:ruby][:executable]} -v | grep '#{node['ruby']['version']}' > /dev/null 2>&1") &&
-                        if ['debian','ubuntu'].include?(node[:platform])
-                          system("dpkg --get-selections | grep -v deinstall | grep 'opsworks-ruby' > /dev/null 2>&1")
-                        else
-                          system("rpm -qa | grep 'opsworks-ruby' > /dev/null 2>&1")
-                        end
+PACKAGE_BASENAME = "opsworks-ruby"
+package_name = case node[:platform_family]
+               when "rhel"
+                 PACKAGE_BASENAME + [node[:ruby][:major_version], node[:ruby][:minor_version]].join('')
+               when "debian"
+                 PACKAGE_BASENAME + [node[:ruby][:major_version], node[:ruby][:minor_version]].join('.')
+               end
 
-if local_ruby_up_to_date
-  Chef::Log.info("Userspace Ruby version is #{node['ruby']['version']} - up-to-date")
-elsif !::File.exists?(node[:ruby][:executable])
-  Chef::Log.info("Userspace Ruby version is not #{node['ruby']['version']} - #{node[:ruby][:executable]} does not exist")
+LECAGY_PACKAGES = ["ruby-enterprise"]
+
+pm_helper = OpsWorks::PackageManagerHelper.new(node)
+current_package_info = pm_helper.summary(package_name)
+
+if current_package_info.version && current_package_info.version =~ /#{node[:ruby][:full_version]}.#{node[:ruby][:patch_version]}.#{node[:ruby][:pkgrelease]}/
+  Chef::Log.info("Userspace Ruby version is up-to-date (#{node[:ruby][:full_version]} patch #{node[:ruby][:patch]} release #{node[:ruby][:pkgrelease]})")
 else
-  Chef::Log.info("Userspace Ruby version is not #{node['ruby']['version']} - found #{`#{node[:ruby][:executable]} -v`}")
-end
 
-case node['platform']
-when 'debian','ubuntu'
-  remote_file "/tmp/#{node[:ruby][:deb]}" do
-    source node[:ruby][:deb_url]
-    action :create_if_missing
-
-    not_if do
-      local_ruby_up_to_date
-    end
+  packages_to_remove = pm_helper.installed_packages.select do |pkg, version|
+    pkg.include?(PACKAGE_BASENAME) || LECAGY_PACKAGES.include?(pkg)
   end
 
-  ['opsworks-ruby1.9','opsworks-ruby2.0','opsworks-ruby2.1','ruby-enterprise','ruby1.9','ruby2.0'].each do |pkg|
-    package pkg do
+  packages_to_remove.each do |pkg, version|
+    package "Remove outdated package #{pkg}" do
+      package_name pkg
       action :remove
-      ignore_failure true
-
-      only_if do
-       ::File.exists?("/tmp/#{node['ruby']['deb']}")
-      end
     end
   end
 
-when 'centos','redhat','fedora','amazon'
-  remote_file "/tmp/#{node[:ruby][:rpm]}" do
-    source node[:ruby][:rpm_url]
-    action :create_if_missing
+  log "downloading" do
+    message "Download and install Ruby version #{node[:ruby][:full_version]} patch #{node[:ruby][:patch]} release #{node[:ruby][:pkgrelease]}"
+    level :info
 
-    not_if do
-      local_ruby_up_to_date
-    end
+    action :nothing
   end
 
-  ['opsworks-ruby19','opsworks-ruby20','opsworks-ruby21','ruby-enterprise','ruby19','ruby20'].each do |pkg|
-    package pkg do
-      action :remove
-      ignore_failure true
+  opsworks_commons_assets_installer "Install user space OpsWorks ruby package" do
+    asset package_name
+    version node[:ruby][:version]
+    release node[:ruby][:pkgrelease]
 
-      only_if do
-        ::File.exists?("/tmp/#{node['ruby']['rpm']}")
-      end
-    end
-  end
-end
-
-execute "Install Ruby #{node[:ruby][:full_version]}" do
-  cwd "/tmp"
-  case node[:platform]
-  when 'centos','redhat','fedora','amazon'
-    command "rpm -Uvh /tmp/#{node['ruby']['rpm']}"
-    only_if do
-      ::File.exists?("/tmp/#{node['ruby']['rpm']}")
-    end
-
-  when 'debian','ubuntu'
-    command "dpkg -i /tmp/#{node['ruby']['deb']}"
-    only_if do
-      ::File.exists?("/tmp/#{node['ruby']['deb']}")
-    end
-  end
-end
-
-# Delete downloaded ruby packages
-["/tmp/#{node[:ruby][:deb]}" "/tmp/#{node[:ruby][:rpm]}"].each do |package|
-  file package do
-    action :delete
+    notifies :write, "log[downloading]", :immediately
+    action :install
   end
 end
 
