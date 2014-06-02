@@ -135,7 +135,29 @@ backend static_servers_ssl
   server <%= backend['name'] %> <%= backend['ip'] %>:443 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] * node[:haproxy][:maxcon_factor_static_ssl] %> check inter <%= node[:haproxy][:check_interval] %> 
   <% end -%>
 <% end -%>
-  
+
+<% if node[:opsworks][:layers][:wildfly] && node[:opsworks][:layers][:wildfly][:instances].any? -%>
+  backend wildfly_app_servers
+  mode tcp
+  balance roundrobin
+  option redispatch
+  option ssl-hello-chk
+  <% node[:opsworks][:layers][:wildfly][:instances].each do |server, options| -%>
+    server <%= server %> <%= options['ip'] %>:8080 weight
+  <% end -%>
+<% end -%>
+
+<% if node[:opsworks][:layers][:java] && node[:opsworks][:layers][:java][:instances].any? -%>
+  backend java_app_servers_ssl
+  mode tcp
+  balance roundrobin
+  option redispatch
+  option ssl-hello-chk
+  <% node[:opsworks][:layers][:java][:instances].each do |server, options| -%>
+    server <%= server %> <%= options['ip'] %>:443 weight
+  <% end -%>
+<% end -%>
+
 frontend http-in
   bind :80
   
