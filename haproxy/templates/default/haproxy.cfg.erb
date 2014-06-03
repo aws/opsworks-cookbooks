@@ -145,7 +145,7 @@ backend static_servers_ssl
   option redispatch
   option ssl-hello-chk
   <% node[:opsworks][:layers][:wildfly][:instances].each do |server, options| -%>
-    server <%= server %> <%= options['ip'] %>:8080 weight
+    server <%= server %> <%= options['private_ip'] %>:8080 weight
   <% end -%>
 <% end -%>
 
@@ -251,7 +251,7 @@ frontend http-in
       <% end -%>
     <% end -%>
   <% end -%>
-    
+
   <% if !node[:haproxy][:rails_backends].empty? -%>
   default_backend rails_app_servers
   <% elsif !node[:haproxy][:php_backends].empty? -%>
@@ -260,6 +260,8 @@ frontend http-in
   default_backend nodejs_app_servers
   <% elsif !node[:haproxy][:static_backends].empty? -%>
   default_backend static_servers
+  <% elsif node[:opsworks][:layers]['wildfly'][:instances].any? -%>
+  default_backend wildfly_app_servers
   <% end -%>
   
 frontend https-in
