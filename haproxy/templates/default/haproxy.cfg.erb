@@ -33,14 +33,16 @@ defaults
   option          http-server-close                                 # enable HTTP connection closing on the server side
   <% end %>
   option          abortonclose                                      # enable early dropping of aborted requests from pending queue
-  option          httpchk                                           # enable HTTP protocol to check on servers health
+  #option          httpchk                                           # enable HTTP protocol to check on servers health
+                                                                    #RTC - disabled httpchk b/c it was making wildfly servers appear to be
+                                                                    #down when they weren't. see:
   <% if node[:haproxy][:enable_stats] -%>
   stats auth <%= node[:haproxy][:stats_user] %>:<%= node[:haproxy][:stats_password] %>
   stats uri <%= node[:haproxy][:stats_url] %>
   <% end -%>
         
 # Set up application listeners here.
-<% if node[:haproxy][:rails_backends].blank? && node[:haproxy][:php_backends].blank? && node[:haproxy][:nodejs_backends].blank? && node[:haproxy][:static_backends].blank? -%>
+<% if node[:haproxy][:rails_backends].blank? && node[:haproxy][:php_backends].blank? && node[:haproxy][:nodejs_backends].blank? && node[:haproxy][:static_backends].blank? && node[:opsworks][:layers]['wildfly'].blank?-%>
 listen application 0.0.0.0:80
   # configure a fake backend as long as there are no real ones
   # this way HAProxy will not fail on a config check
@@ -136,7 +138,7 @@ backend static_servers_ssl
   <% end -%>
 <% end -%>
 
-<% if node[:opsworks][:layers][:wildfly] && node[:opsworks][:layers][:wildfly][:instances].any? -%>
+<% if node[:opsworks][:layers]['wildfly'] && node[:opsworks][:layers]['wildfly'][:instances].any? -%>
   backend wildfly_app_servers
   mode tcp
   balance roundrobin
