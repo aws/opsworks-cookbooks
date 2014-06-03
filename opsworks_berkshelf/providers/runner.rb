@@ -12,7 +12,7 @@ action :berks_install do
     block do
       Chef::Log.info OpsWorks::ShellOut.shellout(
         berks_install_command,
-        :cwd => Opsworks::InstanceAgent::Environment.site_cookbooks_path,
+        :cwd => ::File.dirname(OpsWorks::Berkshelf.berksfile),
         :environment  => {
           "BERKSHELF_PATH" => Opsworks::InstanceAgent::Environment.berkshelf_cache_path
         }
