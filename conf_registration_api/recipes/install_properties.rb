@@ -1,13 +1,4 @@
-directory '/apps' do
-  owner node['crs-api']['user']
-  group node['crs-api']['group']
-  mode 0755
-  action :create
-end
-
 directory '/apps/apps-config' do
-  owner node['crs-api']['user']
-  group node['crs-api']['group']
   mode 0755
   action :create
 end

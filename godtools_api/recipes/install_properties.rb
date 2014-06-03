@@ -1,8 +1,3 @@
-directory '/apps' do
-  mode 0755
-  action :create
-end
-
 directory '/apps/apps-config' do
   mode 0755
   action :create

@@ -1,6 +1,3 @@
-default['crs-api']['user'] = 'crs-api'
-default['crs-api']['group'] = 'crs-api'
-
 default['crs-api']['version'] = '1.0.0-SNAPSHOT'
 
 default['crs-api']['client-url'] = 'http://dev.formvent.org/#'
