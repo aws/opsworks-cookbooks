@@ -1,6 +1,8 @@
-directory '/apps/apps-config' do
-  mode 0755
-  action :create
+%w[ /apps /apps/apps-config ].each do |path|
+  directory path do
+    mode 0755
+    action :create
+  end
 end
 
 template '/apps/apps-config/conf-registration-api-properties.xml' do
