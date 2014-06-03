@@ -140,7 +140,7 @@ backend static_servers_ssl
 
 <% if node[:opsworks][:layers]['wildfly'] && node[:opsworks][:layers]['wildfly'][:instances].any? -%>
   backend wildfly_app_servers
-  mode tcp
+  mode http
   balance roundrobin
   option redispatch
   option ssl-hello-chk
