@@ -20,7 +20,7 @@ module OpsWorks
       # shipped with version 1.3.0
       #
       # http://www.rubydoc.info/github/opscode/mixlib-shellout/Mixlib/ShellOut#error%3F-instance_method
-      unless cmd.valid_exit_codes.include?(cmd.exitstatus)
+      if !cmd.error?
         # Hash like: {"package-name" => "version", ...}
         return Hash[cmd.stdout.scan(/(\S+)\s(\S+)/)]
       else
@@ -73,11 +73,9 @@ module OpsWorks
         # shipped with version 1.3.0
         #
         # http://www.rubydoc.info/github/opscode/mixlib-shellout/Mixlib/ShellOut#error%3F-instance_method
-        unless cmd.valid_exit_codes.include?(cmd.exitstatus)
+        unless cmd.error?
           # rpm and dpkg deliver the package information on a multiline, colon separated string
-          return Hash[cmd.stdout.split("\n").map{|e| e.split(":", 2).map(&:strip)}]
-        else
-          cmd.error!
+          Hash[cmd.stdout.split("\n").map{|e| e.split(":", 2).map(&:strip)}]
         end
       end
     end
