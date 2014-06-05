@@ -2,7 +2,20 @@ define :opsworks_awsflowruby do
   deploy = params[:deploy_data]
   application = params[:app]
 
-  # FIXME: is this redundant?
+  # FIXME: is it correct to call/use all these opsworks definitions from here?
+
+
+  opsworks_deploy_dir do
+    user deploy[:user]
+    group deploy[:group]
+    path deploy[:deploy_to]
+  end
+
+  opsworks_deploy do
+    deploy_data deploy
+    app application
+  end
+
   opsworks_deploy_user do
     deploy_data deploy
   end
@@ -14,12 +27,12 @@ define :opsworks_awsflowruby do
   end
 
   # the init script that controls the runner
-  template "#{deploy[:deploy_to]}/current/runner.initrc" do
+  template "#{deploy[:deploy_to]}/current/runner-#{application}.initrc" do
     source 'aws_flow_ruby_app.initrc.erb'
     cookbook 'opsworks_awsflowruby'
     owner 'root'
     group 'root'
-    mode '0644'
+    mode '0655'
     variables(
       :deploy => deploy,
       :application_name => application
@@ -36,8 +49,7 @@ define :opsworks_awsflowruby do
     mode '0644'
     variables(
       :deploy => deploy,
-      :application_name => application,
-      :monitored_script => "#{deploy[:deploy_to]}/current/server.js"
+      :application_name => application
     )
     notifies :restart, "service[monit]", :immediately
   end

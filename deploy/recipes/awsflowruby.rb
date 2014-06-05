@@ -11,16 +11,11 @@ node[:deploy].each do |application, deploy|
 
   Chef::Log.info("Doing deploy::awsflowruby application #{application}")
 
-  opsworks_deploy_dir do
-    user deploy[:user]
-    group deploy[:group]
-    path deploy[:deploy_to]
+  # create the initrc and monit files
+  opsworks_awsflowruby do
+    deploy_data deploy
+    app application
   end
-
-#  opsworks_deploy do
-#    deploy_data deploy
-#    app application
-#  end
 
   Chef::Log.info("The runner config is #{deploy[:runner_config]}")
 
@@ -31,12 +26,4 @@ node[:deploy].each do |application, deploy|
     content "#{deploy[:runner_config].to_json}"
   end
 
-  # create the initrc and monit files
-  opsworks_awsflowruby do
-    deploy_data deploy
-    app application
-  end
-  
-
-  # TODO
 end

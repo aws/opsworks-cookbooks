@@ -1,7 +1,4 @@
-check host node_web_app_<%= @application_name %> with address 127.0.0.1
-  start program = "/bin/sh -c 'cd <%= @deploy[:deploy_to] %>/current; /usr/bin/env NODE_PATH=<%= @deploy[:deploy_to] %>/current/node_modules:<%= @deploy[:deploy_to] %>/current /usr/local/bin/node <%= @monitored_script %>'"
-  stop program  = "/usr/bin/pkill -f 'node <%= @monitored_script %>'"
-  if failed port 80 protocol HTTP
-    request /
-    with timeout 10 seconds
-    then restart
+check process ruby_flow_runner-<%= @application_name %> with pidfile "/var/run/<%= @application_name %>.pid"
+  start program = "#{deploy[:deploy_to]}/current/runner-#{application}.initrc start"
+  stop program  = "#{deploy[:deploy_to]}/current/runner-#{application}.initrc stop"
+  if 5 restarts within 5 cycles then timeout
