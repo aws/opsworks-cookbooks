@@ -17,13 +17,4 @@ node[:deploy].each do |application, deploy|
     app application
   end
 
-  Chef::Log.info("The runner config is #{deploy[:runner_config]}")
-
-  # snapshot the runner configuration 
-  file "#{deploy[:deploy_to]}/current/runner_config.json" do
-    user deploy[:user]
-    group deploy[:group] 
-    content "#{deploy[:runner_config].to_json}"
-  end
-
 end

@@ -20,13 +20,26 @@ define :opsworks_awsflowruby do
     deploy_data deploy
   end
 
-  # FIXME/TODO: run bundle install
+  # make sure the app is properly installed by running "bundle install"
+  # on the Gemfile if there is one
+  # TODO: FIXME
+
+
+  # snapshot the config for the runner
+  Chef::Log.info("The runner config is #{deploy[:runner_config]}")
+
+  file "#{deploy[:deploy_to]}/current/runner_config.json" do
+    user deploy[:user]
+    group deploy[:group] 
+    content "#{deploy[:runner_config].to_json}"
+  end
+
 
   service 'monit' do
     action :nothing
   end
 
-  # the init script that controls the runner
+  # create the init script that controls the runner
   template "#{deploy[:deploy_to]}/current/runner-#{application}.initrc" do
     source 'aws_flow_ruby_app.initrc.erb'
     cookbook 'opsworks_awsflowruby'
@@ -39,8 +52,7 @@ define :opsworks_awsflowruby do
     )    
   end
 
-  # the monit part, which will supervise the init script that controls the runner
-  # TODO: finish
+  # create the monit script that will use the init script
   template "#{node.default[:monit][:conf_dir]}/aws_flow_ruby-#{application}.monitrc" do
     source 'aws_flow_ruby_app.monitrc.erb'
     cookbook 'opsworks_awsflowruby'
@@ -53,4 +65,5 @@ define :opsworks_awsflowruby do
     )
     notifies :restart, "service[monit]", :immediately
   end
+
 end
