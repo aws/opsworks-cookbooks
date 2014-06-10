@@ -16,7 +16,7 @@ bash "npm install --production" do
   code "npm install --production"
 end
 
-bash "sudo npm install -g grunt-cli" do
+execute "sudo npm install -g grunt-cli" do
 
 end
 
