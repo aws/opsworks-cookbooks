@@ -16,6 +16,10 @@ bash "npm install --production" do
   code "npm install --production"
 end
 
+bash "sudo npm install -g grunt-cli" do
+
+end
+
 bash "grunt" do
   cwd "#{deploy[:deploy_to]}/current"
   code "grunt default imagemin"
