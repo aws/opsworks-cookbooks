@@ -35,7 +35,8 @@ unless up_to_date?
 
   gem_package 'berkshelf' do
     gem_binary Opsworks::InstanceAgent::Environment.gem_binary
-    options("--bindir #{Opsworks::InstanceAgent::Environment.embedded_bin_path} --no-document --version '= #{node['opsworks_berkshelf']['version']}' #{node['opsworks_berkshelf']['rubygems_options']}")
+    version node['opsworks_berkshelf']['version']
+    options("--bindir #{Opsworks::InstanceAgent::Environment.embedded_bin_path} --no-document #{node['opsworks_berkshelf']['rubygems_options']}")
     ignore_failure false
 
     notifies :write, "log[installing gem]", :immediately
