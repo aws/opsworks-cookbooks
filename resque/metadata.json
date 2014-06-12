@@ -1,0 +1,30 @@
+{
+    "groupings": {
+    },
+    "recommendations": {
+    },
+    "recipes": {
+      "resque::default": "Installs resque from rubygems and manages it via bluepill, defaults to Capistrano setup. REE aware."
+    },
+    "long_description": "h1. Resque Chef Cookbook using Bluepill\n\nThere's only resque_config definition that you need to check out.\n\nIt assumes that @RAILS_ENV@, @RACK_ENV@ or @APP_ENV@ are already set in your user environment.\n\nh2. Deploying\n\nDefaults to a Capistrano project structure.\n\n@after_restart.rb@ goes into your @deploy/after_restart.rb@\n\nThat should be it!\n\nh2. Credits\n\nThanks Jonathan Dance from WegoWise for the initial \"resque cookbook\":http://github.com/wegowise/chef-recipes.",
+    "description": "Installs resque from rubygems and manages it via bluepill",
+    "suggestions": {
+    },
+    "attributes": {
+    },
+    "conflicting": {
+    },
+    "dependencies": {
+    },
+    "providing": {
+    },
+    "platforms": {
+    },
+    "maintainer": "Paper Cavalier",
+    "name": "resque",
+    "version": "0.1.0",
+    "replacing": {
+    },
+    "license": "Apache 2.0",
+    "maintainer_email": "code@papercavalier.com"
+  }

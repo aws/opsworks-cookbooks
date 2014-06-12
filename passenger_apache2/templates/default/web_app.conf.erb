@@ -1,12 +1,17 @@
 <%-
   passenger_handler = File.exists?("#{@params[:deploy][:deploy_to]}/current/config.ru") ? "Rack" : "Rails"
+  max_pool_size = (node[:rails][:max_pool_size] ? node[:rails][:max_pool_size] : node[:passenger][:max_pool_size]) || 1
+  default_min_instances = (max_pool_size / node[:deploy].keys.length) - 5 # leave some buffer room
+  default_min_instances = 1 if default_min_instances <= 0 # always pre-start at least 1 instance
 -%>
+
+PassengerPreStart http://<%= @params[:server_name] %>/
 <VirtualHost *:80>
   ServerName <%= @params[:server_name] %>
   <% if @params[:server_aliases] && !@params[:server_aliases].empty? -%>
   ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>
   <% end -%>
-  
+
   <% if @params[:mounted_at] -%>
   DocumentRoot /var/www
   <%= passenger_handler -%>BaseURI <%= @params[:mounted_at] %>
@@ -16,18 +21,22 @@
   <% end -%>
   <%= passenger_handler -%>Env <%= @params[:rails_env] %>
 
+  <% if node[:deploy][@application_name][:passenger_min_instances] %>
+    PassengerMinInstances <%= node[:deploy][@application_name][:passenger_min_instances] || default_min_instances %>
+  <% end %>
+
   <Directory <%= @params[:docroot] %>>
     Options FollowSymLinks
-    AllowOverride None
+    AllowOverride All
     Order allow,deny
     Allow from all
   </Directory>
-  
+
   <Directory ~ "\.svn">
     Order allow,deny
     Deny from all
   </Directory>
-  
+
   <Directory ~ "\.git">
     Order allow,deny
     Deny from all
@@ -46,7 +55,7 @@
   <% end %>
   RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
   RewriteLogLevel 0
-  
+
   # Canonical host
   #RewriteCond %{HTTP_HOST}   !^<%= @params[:server_name] %> [NC]
   #RewriteCond %{HTTP_HOST}   !^$
@@ -68,7 +77,7 @@
   <% if @params[:server_aliases] && !@params[:server_aliases].empty? -%>
   ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>
   <% end -%>
-  
+
   SSLEngine on
   SSLProxyEngine on
   SSLCertificateFile <%= node[:apache][:dir] %>/ssl/<%= @params[:server_name] %>.crt
@@ -77,7 +86,7 @@
   SSLCACertificateFile <%= node[:apache][:dir] %>/ssl/<%= @params[:server_name] %>.ca
   <% end -%>
   SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown downgrade-1.0 force-response-1.0
-  
+
   <% if @params[:mounted_at] -%>
   DocumentRoot /var/www
   <%= passenger_handler -%>BaseURI <%= @params[:mounted_at] %>
@@ -93,12 +102,12 @@
     Order allow,deny
     Allow from all
   </Directory>
-  
+
   <Directory ~ "\.svn">
     Order allow,deny
     Deny from all
   </Directory>
-  
+
   <Directory ~ "\.git">
     Order allow,deny
     Deny from all
@@ -117,7 +126,7 @@
   <% end %>
   RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-ssl-rewrite.log
   RewriteLogLevel 0
-  
+
   # Canonical host
   #RewriteCond %{HTTP_HOST}   !^<%= @params[:server_name] %> [NC]
   #RewriteCond %{HTTP_HOST}   !^$

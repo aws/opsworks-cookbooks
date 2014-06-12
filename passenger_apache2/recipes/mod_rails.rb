@@ -51,6 +51,14 @@ template "#{node[:apache][:dir]}/mods-available/passenger.conf" do
   mode 0644
 end
 
+template "/etc/passenger-enterprise-license" do
+  cookbook "passenger_apache2"
+  source "passenger-enterprise-license.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 apache_module 'passenger' do
   module_path node[:passenger][:module_path]
 end

@@ -1,4 +1,4 @@
-<% (['development', 'production'] + [@environment]).uniq.each do |env| -%>
+<% (['development', 'staging', 'production', 'peoplesoft'] + [@environment]).uniq.each do |env| -%>
 <%= env %>:
   adapter: <%= @database[:adapter].to_s.inspect %>
   database: <%= @database[:database].to_s.inspect %>
@@ -10,6 +10,36 @@
 <% if @database[:pool] -%>
   pool: <%= @database[:pool].to_i.inspect %>
 <% end -%>
+<% if @database[:port] -%>
+  port: <%= @database[:port].to_i.inspect %>
+<% end -%>
+
+<% end %>
+
+<% if @uscm %>
+uscm:
+  adapter: <%= @uscm[:adapter].to_s.inspect %>
+  database: <%= @uscm[:database].to_s.inspect %>
+  encoding: <%= (@uscm[:encoding] || 'utf8').to_s.inspect %>
+  host: <%= (@uscm[:host] || 'localhost').to_s.inspect %>
+  username: <%= @uscm[:username].to_s.inspect %>
+  password: <%= @uscm[:password].to_s.inspect %>
+  reconnect: <%= @uscm[:reconnect] ? 'true' : 'false' %>
+<% if @uscm[:port] -%>
+  port: <%= @uscm[:port].to_i.inspect %>
+<% end -%>
+
+<% else %>
+
+uscm:
+  adapter: <%= @database[:adapter].to_s.inspect %>
+  database: <%= @database[:database].to_s.inspect %>
+  encoding: <%= (@database[:encoding] || 'utf8').to_s.inspect %>
+  host: <%= (@database[:host] || 'localhost').to_s.inspect %>
+  username: <%= @database[:username].to_s.inspect %>
+  password: <%= @database[:password].to_s.inspect %>
+  reconnect: <%= @database[:reconnect] ? 'true' : 'false' %>
+  pool: <%= @database[:pool] || 30 %>
 <% if @database[:port] -%>
   port: <%= @database[:port].to_i.inspect %>
 <% end -%>

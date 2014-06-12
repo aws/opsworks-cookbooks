@@ -53,7 +53,21 @@ end
 
 ruby_block "ensure only our passenger version is installed by deinstalling any other version" do
   block do
-    ensure_only_gem_version('passenger', node[:passenger][:version])
+    name = 'passenger-enterprise-server'
+    ensured_version = node[:passenger][:version]
+    versions = `#{node[:dependencies][:gem_binary]} list #{name}`
+    versions = versions.scan(/(\d[a-zA-Z0-9\.]*)/).flatten.compact
+    for version in versions
+      next if version == ensured_version
+      Chef::Log.info("Uninstalling version #{version} of Rubygem #{name}")
+      system("#{node[:dependencies][:gem_binary]} uninstall #{name} -v=#{version} #{node['dependencies']['gem_uninstall_options']}")
+    end
+    if versions.include?(ensured_version)
+      Chef::Log.info("Skipping installation of version #{ensured_version} of Rubygem #{name}: already installed")
+    else
+      Chef::Log.info("Installing version #{ensured_version} of Rubygem #{name}")
+      system("#{node[:dependencies][:gem_binary]} install #{name} -v=#{ensured_version} --source https://#{node[:passenger][:order]}@www.phusionpassenger.com/enterprise_gems/ #{node['dependencies']['gem_install_options']}")
+    end
   end
 end
 

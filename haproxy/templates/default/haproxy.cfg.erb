@@ -34,13 +34,15 @@ defaults
   <% end %>
   option          abortonclose                                      # enable early dropping of aborted requests from pending queue
   option          httpchk                                           # enable HTTP protocol to check on servers health
+                                                                    #RTC - disabled httpchk b/c it was making wildfly servers appear to be
+                                                                    #down when they weren't. see:
   <% if node[:haproxy][:enable_stats] -%>
   stats auth <%= node[:haproxy][:stats_user] %>:<%= node[:haproxy][:stats_password] %>
   stats uri <%= node[:haproxy][:stats_url] %>
   <% end -%>
         
 # Set up application listeners here.
-<% if node[:haproxy][:rails_backends].blank? && node[:haproxy][:php_backends].blank? && node[:haproxy][:nodejs_backends].blank? && node[:haproxy][:static_backends].blank? -%>
+<% if node[:haproxy][:rails_backends].blank? && node[:haproxy][:php_backends].blank? && node[:haproxy][:nodejs_backends].blank? && node[:haproxy][:static_backends].blank? && node[:opsworks][:layers]['wildfly'].blank?-%>
 listen application 0.0.0.0:80
   # configure a fake backend as long as there are no real ones
   # this way HAProxy will not fail on a config check
@@ -135,7 +137,30 @@ backend static_servers_ssl
   server <%= backend['name'] %> <%= backend['ip'] %>:443 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] * node[:haproxy][:maxcon_factor_static_ssl] %> check inter <%= node[:haproxy][:check_interval] %> 
   <% end -%>
 <% end -%>
-  
+
+<% if node[:opsworks][:layers]['wildfly'] && node[:opsworks][:layers]['wildfly'][:instances].any? -%>
+backend wildfly_app_servers
+  mode http
+  balance roundrobin
+  option redispatch
+  option ssl-hello-chk
+  <% node[:opsworks][:layers][:wildfly][:instances].each do |server, options| -%>
+    server <%= server %> <%= options['private_ip'] %>:8080
+  <% end -%>
+<% end -%>
+
+
+<% if node[:opsworks][:layers]['wildfly'] && node[:opsworks][:layers]['wildfly'][:instances].any? -%>
+backend wildfly_app_servers_ssl
+  mode tcp
+  balance roundrobin
+  option redispatch
+  option ssl-hello-chk
+  <% node[:opsworks][:layers][:wildfly][:instances].each do |server, options| -%>
+    server <%= server %> <%= options['private_ip'] %>:8443
+  <% end -%>
+<% end -%>
+
 frontend http-in
   bind :80
   
@@ -227,7 +252,7 @@ frontend http-in
       <% end -%>
     <% end -%>
   <% end -%>
-    
+
   <% if !node[:haproxy][:rails_backends].empty? -%>
   default_backend rails_app_servers
   <% elsif !node[:haproxy][:php_backends].empty? -%>
@@ -236,6 +261,8 @@ frontend http-in
   default_backend nodejs_app_servers
   <% elsif !node[:haproxy][:static_backends].empty? -%>
   default_backend static_servers
+  <% elsif node[:opsworks][:layers]['wildfly'][:instances].any? -%>
+  default_backend wildfly_app_servers
   <% end -%>
   
 frontend https-in
@@ -291,6 +318,8 @@ frontend https-in
   default_backend nodejs_app_servers_ssl
   <% elsif !node[:haproxy][:static_backends].empty? -%>
   default_backend static_servers_ssl
+  <% elsif node[:opsworks][:layers]['wildfly'][:instances].any? -%>
+  default_backend wildfly_app_servers_ssl
   <% end -%>
 
 <% end -%>  

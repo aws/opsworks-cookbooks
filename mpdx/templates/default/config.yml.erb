@@ -1,0 +1,15 @@
+<% (['development', 'production'] + [@environment]).uniq.each do |env| -%>
+<%= env %>:
+<% @config.each do |key, value| %>
+  <% if value.is_a?(Array) %>
+  <%= key %>:
+  <% value.each do |v| %>
+    - <%= v %>
+  <% end %>
+  <% else %>
+  <%= key %>: <%= value.inspect %>
+  <% end %>
+<% end -%>
+<% end -%>
+
+
