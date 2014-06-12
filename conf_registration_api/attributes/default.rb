@@ -25,3 +25,6 @@ default['crs-api']['errbit-endpoint'] = 'https://errors.uscm.org/notifier_api/v2
 default['crs-api']['errbit-environment'] = 'production'
 
 default['crs-api']['crs-email'] = 'cru-dev@cru.org'
+
+default['crs-api']['api-server-protocol'] = 'https'
+default['crs-api']['api-server-port'] = '443'
