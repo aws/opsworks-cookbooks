@@ -16,29 +16,35 @@ when "rhel"
   package node[:ganglia][:web_frontend_package_name]
 
 when "debian"
-  package 'librrd4'
+  if platform?('ubuntu') && node[:platform_version] == '14.04'
+    package node[:ganglia][:gmetad_package_name]
+    package node[:ganglia][:web_frontend_package_name]
+    package 'apache2-utils'
+  else
+    package 'librrd4'
 
-  deb_file = "/tmp/#{node[:ganglia][:gmetad_package_name]}.deb"
-  remote_file deb_file do
-    source node[:ganglia][:gmetad_package_url]
-    not_if do
-      `dpkg-query --show gmetad | cut -f 2`.chomp.eql?(node[:ganglia][:custom_package_version])
+    deb_file = "/tmp/#{node[:ganglia][:gmetad_package_name]}.deb"
+    remote_file deb_file do
+      source node[:ganglia][:gmetad_package_url]
+      not_if do
+        `dpkg-query --show gmetad | cut -f 2`.chomp.eql?(node[:ganglia][:custom_package_version])
+      end
     end
-  end
-  install_and_delete_local_deb_package deb_file
+    install_and_delete_local_deb_package deb_file
 
-  node[:ganglia][:web_frontend_dependencies].each do |web_frontend_dependency|
-    package web_frontend_dependency
-  end
-
-  deb_file = "/tmp/#{node[:ganglia][:web_frontend_package]}.deb"
-  remote_file deb_file do
-    source node[:ganglia][:web_frontend_package_url]
-    not_if do
-      `dpkg-query --show  ganglia-webfrontend | cut -f 2`.chomp.eql?(node[:ganglia][:custom_package_version])
+    node[:ganglia][:web_frontend_dependencies].each do |web_frontend_dependency|
+      package web_frontend_dependency
     end
+
+    deb_file = "/tmp/#{node[:ganglia][:web_frontend_package]}.deb"
+    remote_file deb_file do
+      source node[:ganglia][:web_frontend_package_url]
+      not_if do
+        `dpkg-query --show  ganglia-webfrontend | cut -f 2`.chomp.eql?(node[:ganglia][:custom_package_version])
+      end
+    end
+    install_and_delete_local_deb_package deb_file
   end
-  install_and_delete_local_deb_package deb_file
 end
 
 execute "Ensure permission and ownership of web frontend" do
