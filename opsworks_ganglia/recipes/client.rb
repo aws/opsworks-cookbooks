@@ -1,30 +1,35 @@
 if node[:opsworks][:layers].has_key?('monitoring-master')
   case node[:platform_family]
   when "debian"
-    package 'libapr1'
-    package 'libconfuse0'
+    if node[:platform_version] == '14.04'
+      package node[:ganglia][:monitor_package_name]
+      package node[:ganglia][:monitor_plugins_package_name]
+    else
+      package 'libapr1'
+      package 'libconfuse0'
 
-    ['libganglia1','ganglia-monitor'].each do |package_name|
-      remote_file "/tmp/#{package_name}.deb" do
-        source "#{node[:ganglia][:package_base_url]}/#{package_name}_#{node[:ganglia][:custom_package_version]}_#{node[:ganglia][:package_arch]}.deb"
-        not_if do
-          `dpkg-query --show #{package_name} | cut -f 2`.chomp.eql?(node[:ganglia][:custom_package_version])
+      ['libganglia1','ganglia-monitor'].each do |package_name|
+        remote_file "/tmp/#{package_name}.deb" do
+          source "#{node[:ganglia][:package_base_url]}/#{package_name}_#{node[:ganglia][:custom_package_version]}_#{node[:ganglia][:package_arch]}.deb"
+          not_if do
+            `dpkg-query --show #{package_name} | cut -f 2`.chomp.eql?(node[:ganglia][:custom_package_version])
+          end
+        end
+
+        execute "install #{package_name}" do
+          command "dpkg -i /tmp/#{package_name}.deb && rm /tmp/#{package_name}.deb"
+          only_if { ::File.exists?("/tmp/#{package_name}.deb") }
         end
       end
 
-      execute "install #{package_name}" do
-        command "dpkg -i /tmp/#{package_name}.deb && rm /tmp/#{package_name}.deb"
-        only_if { ::File.exists?("/tmp/#{package_name}.deb") }
+      remote_file '/tmp/ganglia-monitor-python.deb' do
+        source node[:ganglia][:monitor_plugins_package_url]
+        not_if { ::File.exists?('/tmp/ganglia-monitor-python.deb') }
       end
-    end
-
-    remote_file '/tmp/ganglia-monitor-python.deb' do
-      source node[:ganglia][:monitor_plugins_package_url]
-      not_if { ::File.exists?('/tmp/ganglia-monitor-python.deb') }
-    end
-    execute 'install ganglia-monitor-python' do
-      command 'dpkg -i /tmp/ganglia-monitor-python.deb && rm /tmp/ganglia-monitor-python.deb'
-      only_if { ::File.exists?('/tmp/ganglia-monitor-python.deb') }
+      execute 'install ganglia-monitor-python' do
+        command 'dpkg -i /tmp/ganglia-monitor-python.deb && rm /tmp/ganglia-monitor-python.deb'
+        only_if { ::File.exists?('/tmp/ganglia-monitor-python.deb') }
+      end
     end
 
   when "rhel"
