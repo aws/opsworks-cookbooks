@@ -1,7 +1,7 @@
 if node[:opsworks][:layers].has_key?('monitoring-master')
   case node[:platform_family]
   when "debian"
-    if node[:platform_version] == '14.04'
+    if platform?('ubuntu') && node[:platform_version] == '14.04'
       package node[:ganglia][:monitor_package_name]
       package node[:ganglia][:monitor_plugins_package_name]
     else
@@ -40,7 +40,10 @@ if node[:opsworks][:layers].has_key?('monitoring-master')
   execute 'stop gmond with non-updated configuration' do
     command value_for_platform_family(
       "rhel" => '/etc/init.d/gmond stop',
-      "debian" => '/etc/init.d/ganglia-monitor stop'
+      "debian" =>
+        platform?('ubuntu') && node[:platform_version] == '14.04' ? \
+          'service ganglia-monitor status | grep stop || service ganglia-monitor stop' : \
+          '/etc/init.d/ganglia-monitor stop'
     )
   end
 
