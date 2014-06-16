@@ -14,10 +14,10 @@ describe_recipe 'apache2::mod_dav_svn' do
   end
 
   it 'installs svn dependencies' do
-    case node[:platform]
-    when 'centos','redhat','fedora','amazon'
+    case node[:platform_family]
+    when 'rhel'
       package('mod_dav_svn').must_be_installed
-    when 'debian','ubuntu'
+    when 'debian'
       package('libapache2-svn').must_be_installed
     end
   end

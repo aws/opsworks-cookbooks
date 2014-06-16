@@ -33,37 +33,48 @@
 # See also: http://docs.aws.amazon.com/opsworks/latest/userguide/customizing.html
 ###
 
-case node[:platform]
-when 'redhat','centos','fedora','amazon'
-  default[:apache][:dir]         = '/etc/httpd'
-  default[:apache][:log_dir]     = '/var/log/httpd'
-  default[:apache][:user]        = 'apache'
-  default[:apache][:group]       = 'apache'
-  default[:apache][:binary]      = '/usr/sbin/httpd'
-  default[:apache][:icondir]     = '/var/www/icons/'
-  default[:apache][:init_script] = '/etc/init.d/httpd'
-  if node['platform_version'].to_f >= 6 then
-    default[:apache][:pid_file] = '/var/run/httpd/httpd.pid'
-  else
-    default[:apache][:pid_file] = '/var/run/httpd.pid'
-  end
-  default[:apache][:lib_dir]    = node[:kernel][:machine] =~ /^i[36']86$/ ? '/usr/lib/httpd' : '/usr/lib64/httpd'
-  default[:apache][:libexecdir] = "#{node[:apache][:lib_dir]}/modules"
+case node[:platform_family]
+when 'rhel'
+  default[:apache][:dir]           = '/etc/httpd'
+  default[:apache][:log_dir]       = '/var/log/httpd'
+  default[:apache][:user]          = 'apache'
+  default[:apache][:group]         = 'apache'
+  default[:apache][:binary]        = '/usr/sbin/httpd'
+  default[:apache][:icondir]       = '/var/www/icons/'
+  default[:apache][:init_script]   = '/etc/init.d/httpd'
+  default[:apache][:version]       = '2.2'
+  default[:apache][:conf_available_dir]  = "#{node[:apache][:dir]}/conf.d"
+  default[:apache][:conf_enabled_dir]    = "#{node[:apache][:dir]}/conf.d"
+  default[:apache][:pid_file]      = '/var/run/httpd/httpd.pid'
+  default[:apache][:lock_dir]      = 'log'
+  default[:apache][:lib_dir]       = node[:kernel][:machine] =~ /^i[36']86$/ ? '/usr/lib/httpd' : '/usr/lib64/httpd'
+  default[:apache][:libexecdir]    = "#{node[:apache][:lib_dir]}/modules"
   default[:apache][:document_root] = '/var/www/html'
-when 'debian','ubuntu'
-  default[:apache][:dir]         = '/etc/apache2'
-  default[:apache][:log_dir]     = '/var/log/apache2'
-  default[:apache][:user]        = 'www-data'
-  default[:apache][:group]       = 'www-data'
-  default[:apache][:binary]      = '/usr/sbin/apache2'
-  default[:apache][:icondir]     = '/usr/share/apache2/icons'
-  default[:apache][:init_script] = '/etc/init.d/apache2'
-  default[:apache][:pid_file]    = '/var/run/apache2.pid'
-  default[:apache][:lib_dir]     = '/usr/lib/apache2'
-  default[:apache][:libexecdir]  = "#{node[:apache][:lib_dir]}/modules"
+when 'debian'
+  default[:apache][:dir]           = '/etc/apache2'
+  default[:apache][:log_dir]       = '/var/log/apache2'
+  default[:apache][:user]          = 'www-data'
+  default[:apache][:group]         = 'www-data'
+  default[:apache][:binary]        = '/usr/sbin/apache2'
+  default[:apache][:icondir]       = '/usr/share/apache2/icons'
+  default[:apache][:init_script]   = '/etc/init.d/apache2'
+  if platform?('ubuntu') && node[:platform_version] == '14.04'
+    default[:apache][:version]             = '2.4'
+    default[:apache][:conf_available_dir]  = "#{node[:apache][:dir]}/conf-available"
+    default[:apache][:conf_enabled_dir]    = "#{node[:apache][:dir]}/conf-enabled"
+    default[:apache][:pid_file]            = '/var/run/apache2/apache2.pid'
+  else
+    default[:apache][:version]             = '2.2'
+    default[:apache][:conf_available_dir]  = "#{node[:apache][:dir]}/conf.d"
+    default[:apache][:conf_enabled_dir]    = "#{node[:apache][:dir]}/conf.d"
+    default[:apache][:pid_file]            = '/var/run/apache2.pid'
+  end
+  default[:apache][:lock_dir]      = '/var/lock/apache2'
+  default[:apache][:lib_dir]       = '/usr/lib/apache2'
+  default[:apache][:libexecdir]    = "#{node[:apache][:lib_dir]}/modules"
   default[:apache][:document_root] = '/var/www'
 else
-  raise 'Bailing out, unknown platform.'
+  raise "Bailing out, unknown platform '#{node[:platform_family]}'."
 end
 
 # General settings
@@ -97,15 +108,19 @@ default[:apache][:prefork][:minspareservers] = 16
 default[:apache][:prefork][:maxspareservers] = 32
 default[:apache][:prefork][:serverlimit] = 400
 default[:apache][:prefork][:maxclients] = 400
+default[:apache][:prefork][:maxrequestworkers] = 400
 default[:apache][:prefork][:maxrequestsperchild] = 10000
+default[:apache][:prefork][:maxconnectionsperchild] = 10000
 
 # Worker Attributes
 default[:apache][:worker][:startservers] = 4
 default[:apache][:worker][:maxclients] = 1024
+default[:apache][:worker][:maxrequestworkers] = 1024
 default[:apache][:worker][:minsparethreads] = 64
 default[:apache][:worker][:maxsparethreads] = 192
 default[:apache][:worker][:threadsperchild] = 64
 default[:apache][:worker][:maxrequestsperchild] = 10000
+default[:apache][:worker][:maxconnectionsperchild] = 10000
 
 # logrotate
 default[:apache][:logrotate][:schedule] = 'daily'
