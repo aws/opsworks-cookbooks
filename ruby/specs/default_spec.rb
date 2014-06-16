@@ -13,6 +13,7 @@ describe_recipe 'ruby::default' do
   end
 
   it 'must be the right version' do
-    assert_match node['ruby']['version'], `/usr/local/bin/ruby -v`.chomp
+    ruby_version_pattern = %r(#{node['ruby']['version'].sub!('-', '-?')})
+    assert_match ruby_version_pattern, `/usr/local/bin/ruby -v`.chomp
   end
 end
