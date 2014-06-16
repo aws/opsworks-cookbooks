@@ -14,10 +14,10 @@ describe_recipe 'apache2::mod_python' do
   end
 
   it 'installs dependencies' do
-    case node[:platform]
-    when 'debian','ubuntu'
+    case node[:platform_family]
+    when 'debian'
       package('libapache2-mod-python').must_be_installed
-    when 'centos','redhat','fedora','amazon'
+    when 'rhel'
       package('mod_python').must_be_installed
     end
   end

@@ -4,12 +4,20 @@ describe_recipe 'apache2::default' do
   include MiniTest::Chef::Resources
   include MiniTest::Chef::Assertions
 
+  def apache_config_filename(config_basename)
+    if node[:platform] == 'ubuntu' && node[:platform_version] == '14.04'
+      "#{node[:apache][:conf_available_dir]}/#{config_basename}.conf"
+    else
+      "#{node[:apache][:dir]}/conf.d/#{config_basename}"
+    end
+  end
+
   describe 'packages' do
     it 'installs the apache2 package' do
-      case node[:platform]
-      when 'debian','ubuntu'
+      case node[:platform_family]
+      when 'debian'
         package('apache2').must_be_installed
-      when 'centos','redhat','fedora','amazon'
+      when 'rhel'
         package('httpd').must_be_installed
       else
         fail_test "Your OS (#{node[:platform]}) is not supported."
@@ -42,11 +50,11 @@ describe_recipe 'apache2::default' do
 
   describe 'services' do
     it 'starts and enables the apache2 service' do
-      case node[:platform]
-      when 'debian','ubuntu'
+      case node[:platform_family]
+      when 'debian'
         service('apache2').must_be_enabled
         service('apache2').must_be_running
-      when 'centos','redhat','fedora','amazon'
+      when 'rhel'
         service('httpd').must_be_enabled
         service('httpd').must_be_running
       else
@@ -57,7 +65,7 @@ describe_recipe 'apache2::default' do
 
   describe 'files' do
     it 'creates the apache2_module_conf_generate.pl script' do
-      skip unless ['centos', 'redhat', 'fedora', 'amazon'].include?(node[:platform])
+      skip unless node[:platform_family] == 'rhel'
       file('/usr/local/bin/apache2_module_conf_generate.pl').must_exist
     end
 
@@ -69,11 +77,11 @@ describe_recipe 'apache2::default' do
     end
 
     it 'creates apache2 configuration file with the right permissions' do
-      case node[:platform]
-      when 'centos','redhat','fedora','amazon'
+      case node[:platform_family]
+      when 'rhel'
         file("#{node[:apache][:dir]}/conf/httpd.conf").must_exist.with(
              :mode, '644').and(:owner, 'root').and(:group, 'root')
-      when 'debian','ubuntu'
+      when 'debian'
         file("#{node[:apache][:dir]}/apache2.conf").must_exist.with(
              :mode, '644').and(:owner, 'root').and(:group, 'root')
       else
@@ -84,10 +92,11 @@ describe_recipe 'apache2::default' do
     end
 
     it 'writes the apache2 configuration file with the correct pid file location' do
-      case node[:platform]
-      when 'centos','redhat','fedora','amazon'
+      skip if node[:platform] == 'ubuntu' && node[:platform_version] == '14.04'
+      case node[:platform_family]
+      when 'rhel'
         file("#{node[:apache][:dir]}/conf/httpd.conf").must_include "PidFile #{node[:apache][:pid_file]}"
-      when 'debian','ubuntu'
+      when 'debian'
         file("#{node[:apache][:dir]}/apache2.conf").must_include "PidFile #{node[:apache][:pid_file]}"
       else
         fail_test "Your OS (#{node[:platform]}) is not supported."
@@ -95,13 +104,11 @@ describe_recipe 'apache2::default' do
     end
 
     it 'creates the apache2 security file with the correct permissions' do
-      file("#{node[:apache][:dir]}/conf.d/security").must_exist.with(:mode, '644').and(
-           :owner, 'root').and(:group, 'root')
+      file(apache_config_filename('security')).must_exist.with(:mode, '644').and(:owner, 'root').and(:group, 'root')
     end
 
     it 'creates the apache2 charset file with the correct permissions' do
-      file("#{node[:apache][:dir]}/conf.d/charset").must_exist.with(:mode, '644').and(
-           :owner, 'root').and(:group, 'root')
+      file(apache_config_filename('charset')).must_exist.with(:mode, '644').and(:owner, 'root').and(:group, 'root')
     end
 
     it 'creates the apache2 ports.conf file with the correct permissions' do
@@ -110,7 +117,12 @@ describe_recipe 'apache2::default' do
     end
 
     it 'creates the default apache2 site file' do
-      file("#{node[:apache][:dir]}/sites-available/default").must_exist.with(:mode, '644').and(
+      if node[:platform] == 'ubuntu' && node[:platform_version] == '14.04'
+          default_site_config = "#{node[:apache][:dir]}/sites-available/000-default.conf"
+      else
+          default_site_config = "#{node[:apache][:dir]}/sites-available/default"
+      end
+      file(default_site_config).must_exist.with(:mode, '644').and(
            :owner, 'root').and(:group, 'root')
     end
 

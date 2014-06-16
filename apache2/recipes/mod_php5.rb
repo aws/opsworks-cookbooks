@@ -17,12 +17,12 @@
 # limitations under the License.
 #
 
-case node[:platform]
-when 'debian', 'ubuntu'
+case node[:platform_family]
+when 'debian'
   package 'libapache2-mod-php5' do
     action :install
-  end  
-when 'centos', 'redhat', 'fedora', 'amazon'
+  end
+when 'rhel'
   package 'php' do
     action :install
     notifies :run, "execute[generate-module-list]", :immediately
@@ -42,8 +42,7 @@ when 'centos', 'redhat', 'fedora', 'amazon'
 end
 
 apache_module 'php5' do
-  case node['platform']
-  when 'redhat', 'centos', 'fedora', 'amazon'
+  if platform_family?('rhel')
     filename 'libphp5.so'
   end
 end

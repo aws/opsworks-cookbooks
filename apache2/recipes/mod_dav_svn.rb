@@ -17,10 +17,10 @@
 # limitations under the License.
 #
 
-case node[:platform]
-when 'centos', 'redhat', 'fedora', 'amazon'
+case node[:platform_family]
+when 'rhel'
   package 'mod_dav_svn'
-when 'debian', 'ubuntu'
+when 'debian'
   package 'libapache2-svn'
 end
 
