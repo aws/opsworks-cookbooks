@@ -32,6 +32,7 @@ describe_recipe 'mod_php5_apache2::php' do
     node[:deploy].each do |application, deploy|
       if deploy[:application_type] == 'php'
         file("#{node[:apache][:dir]}/sites-enabled/000-default").wont_exist
+        file("#{node[:apache][:dir]}/sites-enabled/000-default.conf").wont_exist
       end
     end
   end
