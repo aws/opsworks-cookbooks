@@ -30,15 +30,23 @@
   FileETag none
 
   RewriteEngine On
+  <% if node[:apache][:version] == '2.2' -%>
   Include <%= @params[:rewrite_config] %>*
   RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
   RewriteLogLevel 0
+  <% else -%>
+  IncludeOptional <%= @params[:rewrite_config] %>*
+  <% end -%>
 
   <% if @params[:mounted_at] -%>
   AliasMatch ^<%= @params[:mounted_at] %>/(.*)$ <%= @params[:docroot] %>$1
   <% end -%>
 
+  <% if node[:apache][:version] == '2.2' -%>
   Include <%= @params[:local_config] %>*
+  <% else -%>
+  IncludeOptional <%= @params[:local_config] %>*
+  <% end -%>
 
 <% if @params[:server_aliases] && !@params[:server_aliases].empty? -%>
   <% if node['opsworks_java']['tomcat']['apache_tomcat_bind_mod'] == 'proxy_ajp' -%>
@@ -101,15 +109,23 @@
   FileETag none
 
   RewriteEngine On
+  <% if node[:apache][:version] == '2.2' -%>
   Include <%= @params[:rewrite_config] %>-ssl*
   RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
   RewriteLogLevel 0
+  <% else -%>
+  IncludeOptional <%= @params[:rewrite_config] %>-ssl*
+  <% end -%>
 
   <% if @params[:mounted_at] -%>
   AliasMatch ^<%= @params[:mounted_at] %>/(.*)$ <%= @params[:docroot] %>$1
   <% end -%>
 
+  <% if node[:apache][:version] == '2.2' -%>
   Include <%= @params[:local_config] %>-ssl*
+  <% else -%>
+  IncludeOptional <%= @params[:local_config] %>-ssl*
+  <% end -%>
 
 <% if @params[:server_aliases] && !@params[:server_aliases].empty? -%>
   <% if node['opsworks_java']['tomcat']['apache_tomcat_bind_mod'] == 'proxy_ajp' -%>
