@@ -1,20 +1,16 @@
 service 'apache2' do
-  service_name value_for_platform(
-    ['centos','redhat','fedora','amazon'] => {'default' => 'httpd'},
-    ['debian','ubuntu'] => {'default' => 'apache2'}
+  service_name value_for_platform_family(
+    'rhel' => 'httpd',
+    'debian' => 'apache2'
   )
 
   # If restarted/reloaded too quickly httpd has a habit of failing.
   # This may happen with multiple recipes notifying apache to restart - like
   # during the initial bootstrap.
   ['restart','reload'].each do |srv_cmd|
-    send("#{srv_cmd}_command", value_for_platform(
-        ['centos','redhat','fedora','amazon'] => {
-          'default' => "sleep 1 && /sbin/service httpd #{srv_cmd} && sleep 1"
-        },
-        ['debian','ubuntu'] => {
-          'default' => "sleep 1 && /etc/init.d/apache2 #{srv_cmd} && sleep 1"
-        }
+    send("#{srv_cmd}_command", value_for_platform_family(
+        'rhel' => "sleep 1 && /sbin/service httpd #{srv_cmd} && sleep 1",
+        'debian' => "sleep 1 && /etc/init.d/apache2 #{srv_cmd} && sleep 1"
       )
     )
   end

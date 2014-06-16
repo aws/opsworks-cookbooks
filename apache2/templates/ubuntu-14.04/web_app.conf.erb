@@ -33,10 +33,6 @@
   FileETag none
 
   RewriteEngine On
-  <% if node[:apache][:version].nil? || node[:apache][:version] == '2.2' -%>
-  RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
-  RewriteLogLevel 0
-  <% end -%>
 
   # Canonical host, <%= @params[:server_name] %>
   RewriteCond %{HTTP_HOST}   !^<%= @params[:server_name] %> [NC]

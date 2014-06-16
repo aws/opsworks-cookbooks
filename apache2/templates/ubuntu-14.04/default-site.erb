@@ -1,0 +1,45 @@
+<VirtualHost *:80>
+  ServerName 127.0.0.1
+  ServerAdmin <%= node[:apache][:contact] %>
+
+  DocumentRoot /var/www/
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+
+  <Directory /var/www/>
+    Options -Indexes +FollowSymLinks +MultiViews
+    AllowOverride None
+    Order allow,deny
+    allow from all
+    # This directive allows us to have apache2's default start page
+    # in /apache2-default/, but still have / go to the right place
+    #RedirectMatch ^/$ /apache2-default/
+  </Directory>
+
+  ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+  <Directory "/usr/lib/cgi-bin">
+    AllowOverride None
+    Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  <Location /server-status>
+    SetHandler server-status
+    Order Deny,Allow
+    Deny from all
+    Allow from 127.0.0.0/255.0.0.0 ::1/128
+  </Location>
+
+  ErrorLog <%= node[:apache][:log_dir] %>/error.log
+
+  # Possible values include: debug, info, notice, warn, error, crit,
+  # alert, emerg.
+  LogLevel <%= node[:apache][:log_level] %>
+
+  CustomLog <%= node[:apache][:log_dir] %>/access.log combined
+
+</VirtualHost>

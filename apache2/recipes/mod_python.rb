@@ -17,9 +17,9 @@
 # limitations under the License.
 #
 
-if platform?('debian','ubuntu')
+if platform_family?('debian')
   package 'libapache2-mod-python'
-elsif platform?('centos','redhat', 'fedora','amazon')
+elsif platform_family?('rhel')
   package 'mod_python'
 end
 
