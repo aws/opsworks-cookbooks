@@ -41,11 +41,17 @@
   FileETag none
 
   RewriteEngine On
-  <% if @params[:rewrite_config] && @params[:rewrite_config] != '' %>
+  <% if node[:apache][:version] == '2.2' -%>
+    <% if @params[:rewrite_config] && @params[:rewrite_config] != '' -%>
   Include <%= @params[:rewrite_config] %>*
-  <% end %>
+    <% end -%>
   RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
   RewriteLogLevel 0
+  <% else -%>
+    <% if @params[:rewrite_config] && @params[:rewrite_config] != '' -%>
+  IncludeOptional <%= @params[:rewrite_config] %>*
+    <% end -%>
+  <% end -%>
 
   # Canonical host
   #RewriteCond %{HTTP_HOST}   !^<%= @params[:server_name] %> [NC]
@@ -57,9 +63,13 @@
   RewriteCond %{SCRIPT_FILENAME} !maintenance.html
   RewriteRule ^.*$ /system/maintenance.html [L]
 
-  <% if @params[:local_config] && @params[:local_config] != '' %>
+  <% if @params[:local_config] && @params[:local_config] != '' -%>
+    <% if node[:apache][:version] == '2.2' -%>
   Include <%= @params[:local_config] %>*
-  <% end %>
+    <% else -%>
+  IncludeOptional <%= @params[:local_config] %>*
+    <% end -%>
+  <% end -%>
 </VirtualHost>
 
 <% if node[:deploy][@application_name][:ssl_support] -%>
@@ -112,11 +122,17 @@
   FileETag none
 
   RewriteEngine On
-  <% if @params[:rewrite_config] && @params[:rewrite_config] != '' %>
+  <% if node[:apache][:version] == '2.2' -%>
+    <% if @params[:rewrite_config] && @params[:rewrite_config] != '' -%>
   Include <%= @params[:rewrite_config] %>-ssl*
-  <% end %>
+    <% end -%>
   RewriteLog <%= node[:apache][:log_dir] %>/<%= @application_name %>-ssl-rewrite.log
   RewriteLogLevel 0
+  <% else -%>
+    <% if @params[:rewrite_config] && @params[:rewrite_config] != '' -%>
+  IncludeOptional <%= @params[:rewrite_config] %>-ssl*
+    <% end -%>
+  <% end -%>
 
   # Canonical host
   #RewriteCond %{HTTP_HOST}   !^<%= @params[:server_name] %> [NC]
@@ -128,8 +144,12 @@
   RewriteCond %{SCRIPT_FILENAME} !maintenance.html
   RewriteRule ^.*$ /system/maintenance.html [L]
 
-  <% if @params[:local_config] && @params[:local_config] != '' %>
+  <% if @params[:local_config] && @params[:local_config] != '' -%>
+    <% if node[:apache][:version] == '2.2' -%>
   Include <%= @params[:local_config] %>-ssl*
-  <% end %>
+    <% else -%>
+  IncludeOptional <%= @params[:local_config] %>-ssl*
+    <% end -%>
+  <% end -%>
 </VirtualHost>
 <% end -%>
