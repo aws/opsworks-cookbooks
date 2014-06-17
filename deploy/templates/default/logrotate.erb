@@ -11,4 +11,7 @@
         notifempty
         copytruncate
         sharedscripts
+        <% if node[:platform] == 'ubuntu' && node[:platform_version] == '14.04' -%>
+        su root root
+        <% end -%>
 }
