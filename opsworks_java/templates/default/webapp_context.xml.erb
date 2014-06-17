@@ -2,7 +2,7 @@
   <Resource name="<%= @resource_name %>" auth="Container" type="javax.sql.DataSource"
             maxActive="20" maxIdle="5" maxWait="10000"
             username="<%= node['deploy'][@application]['database']['username'] %>" password="<%= node['deploy'][@application]['database']['password'] %>"
-            driverClassName="com.mysql.jdbc.Driver"
-            url="jdbc:mysql://<%= node['deploy'][@application]['database']['host'] %>:3306/<%= node['deploy'][@application]['database']['database'] %>"
+            driverClassName="<%= @driver_class %>"
+            url="jdbc:<%= node['deploy'][@application]['database']['type'] %>://<%= node['deploy'][@application]['database']['host'] %>:<%= node['deploy'][@application]['database']['port'] %>/<%= node['deploy'][@application]['database']['database'] %>"
             factory="org.apache.commons.dbcp.BasicDataSourceFactory" />
 </Context>

@@ -13,6 +13,15 @@ node[:deploy].each do |application, deploy|
     webapp_name = application
   end
 
+  driver_class = case deploy[:database][:type]
+  when "mysql"
+    'com.mysql.jdbc.Driver'
+  when "postgresql"
+    'org.postgresql.Driver'
+  else
+    ''
+  end
+
   template "context file for #{webapp_name}" do
     path ::File.join(node['opsworks_java'][node['opsworks_java']['java_app_server']]['context_dir'], "#{webapp_name}.xml")
     source 'webapp_context.xml.erb'
@@ -21,7 +30,7 @@ node[:deploy].each do |application, deploy|
     mode 0640
     backup false
     only_if { node['opsworks_java']['datasources'][application] }
-    variables(:resource_name => node['opsworks_java']['datasources'][application], :application => application)
+    variables(:resource_name => node['opsworks_java']['datasources'][application], :application => application, :driver_class => driver_class)
     notifies :restart, "service[#{node['opsworks_java']['java_app_server']}]"
   end
 end
