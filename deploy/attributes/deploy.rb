@@ -110,9 +110,9 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:nodejs][:stop_command] = "monit stop node_web_app_#{application}"
   default[:deploy][application][:nodejs][:port] = 80
 
-  # awsrubyflow
-  default[:deploy][application][:awsflowruby][:restart_command] = "monit restart aws_flow_ruby_#{application}"
-  default[:deploy][application][:awsflowruby][:stop_command] = "monit stop aws_flow_ruby_#{application}"
+  # aws-ruby-flow
+  default[:deploy][application][:aws_flow_ruby][:restart_command] = "monit restart aws_flow_ruby_#{application}"
+  default[:deploy][application][:aws_flow_ruby][:stop_command] = "monit stop aws_flow_ruby_#{application}"
 end
 
 default[:opsworks][:skip_uninstall_of_other_rails_stack] = false

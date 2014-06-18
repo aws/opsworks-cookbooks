@@ -1,9 +1,6 @@
-define :opsworks_awsflowruby do
+define :opsworks_aws_flow_ruby do
   deploy = params[:deploy_data]
   application = params[:app]
-
-  # FIXME: is it correct to call/use all these opsworks definitions from here?
-
 
   opsworks_deploy_dir do
     user deploy[:user]
@@ -26,12 +23,12 @@ define :opsworks_awsflowruby do
 
 
   # snapshot the config for the runner
-  Chef::Log.info("The runner config is #{deploy[:runner_config]}")
+  Chef::Log.info("The runner config is #{deploy[:aws_flow_ruby_settings]}")
 
   file "#{deploy[:deploy_to]}/current/runner_config.json" do
     user deploy[:user]
     group deploy[:group] 
-    content "#{deploy[:runner_config].to_json}"
+    content "#{deploy[:aws_flow_ruby_settings].to_json}"
   end
 
 
@@ -42,7 +39,7 @@ define :opsworks_awsflowruby do
   # create the init script that controls the runner
   template "#{deploy[:deploy_to]}/current/runner-#{application}.initrc" do
     source 'aws_flow_ruby_app.initrc.erb'
-    cookbook 'opsworks_awsflowruby'
+    cookbook 'opsworks_aws_flow_ruby'
     owner 'root'
     group 'root'
     mode '0655'
@@ -55,7 +52,7 @@ define :opsworks_awsflowruby do
   # create the monit script that will use the init script
   template "#{node.default[:monit][:conf_dir]}/aws_flow_ruby-#{application}.monitrc" do
     source 'aws_flow_ruby_app.monitrc.erb'
-    cookbook 'opsworks_awsflowruby'
+    cookbook 'opsworks_aws_flow_ruby'
     owner 'root'
     group 'root'
     mode '0644'
