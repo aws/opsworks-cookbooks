@@ -47,6 +47,8 @@ default[:haproxy][:maxcon_factor_php_app] = 10
 default[:haproxy][:maxcon_factor_php_app_ssl] = 10
 default[:haproxy][:maxcon_factor_nodejs_app] = 10
 default[:haproxy][:maxcon_factor_nodejs_app_ssl] = 10
+default[:haproxy][:maxcon_factor_java_app] = 10
+default[:haproxy][:maxcon_factor_java_app_ssl] = 10
 default[:haproxy][:maxcon_factor_static] = 15
 default[:haproxy][:maxcon_factor_static_ssl] = 15
 
