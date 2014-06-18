@@ -18,7 +18,7 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin
 export PATH
 
 name=<%= @application_name %>
-program=/usr/local/bin/aws-flow-ruby
+program=/usr/local/bin/aws_flow_runner
 args='-f <%= @deploy[:deploy_to] %>/current/runner_config.json'
 pidfile="/var/run/$name.pid"
 
