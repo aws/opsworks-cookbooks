@@ -32,25 +32,17 @@ default[:ganglia][:rrds_user] = 'nobody'
 
 case node[:platform_family]
 when "debian"
-  default[:ganglia][:gmetad_package_name] = "gmetad"
-  default[:ganglia][:web_frontend_package_name] = "ganglia-webfrontend"
+  default[:ganglia][:custom_package_version] = '3.3.8'
+
   default[:ganglia][:libganglia_package_name] = "libganglia1"
   default[:ganglia][:monitor_package_name] = "ganglia-monitor"
   default[:ganglia][:monitor_plugins_package_name] = "ganglia-monitor-python"
 
-  default[:ganglia][:custom_package_version] = '3.3.8-1'
-  default[:ganglia][:package_arch] = RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'
-  default[:ganglia][:package_base_url] = "#{node[:opsworks_commons][:assets_url]}/packages/#{node[:platform]}/#{node[:platform_version]}"
-
-  default[:ganglia][:gmetad_package] = "#{node[:ganglia][:gmetad_package_name]}_#{node[:ganglia][:custom_package_version]}_#{node[:ganglia][:package_arch]}.deb"
-  default[:ganglia][:web_frontend_package] = "#{node[:ganglia][:web_frontend_package_name]}_#{node[:ganglia][:custom_package_version]}_all.deb"
-  default[:ganglia][:monitor_plugins_package] = "#{node[:ganglia][:monitor_plugins_package_name]}_#{node[:ganglia][:custom_package_version]}_all.deb"
-
-  default[:ganglia][:gmetad_package_url] = "#{node[:ganglia][:package_base_url]}/#{node[:ganglia][:gmetad_package]}"
-  default[:ganglia][:web_frontend_package_url] = "#{node[:ganglia][:package_base_url]}/#{node[:ganglia][:web_frontend_package]}"
-  default[:ganglia][:monitor_plugins_package_url] = "#{node[:ganglia][:package_base_url]}/#{node[:ganglia][:monitor_plugins_package]}"
+  default[:ganglia][:gmetad_package_name] = "gmetad"
+  default[:ganglia][:web_frontend_package_name] = "ganglia-webfrontend"
 
   default[:ganglia][:web_frontend_dependencies] = ["apache2","libapache2-mod-php5","rrdtool","libgd2-noxpm","libgd2-xpm","php5-gd"]
+
 when "rhel"
   default[:ganglia][:gmetad_package_name] = "ganglia-gmetad"
   default[:ganglia][:monitor_package_name] = "ganglia-gmond"
