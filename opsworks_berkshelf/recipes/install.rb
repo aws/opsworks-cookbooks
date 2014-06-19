@@ -1,5 +1,5 @@
 def up_to_date?
-  OpsWorks::Bershelf.berkshelf_installed? && node['opsworks_berkshelf']['version'] == OpsWorks::Bershelf.current_version
+  OpsWorks::Berkshelf.berkshelf_installed? && node['opsworks_berkshelf']['version'] == OpsWorks::Berkshelf.current_version
 end
 
 unless up_to_date?
@@ -35,14 +35,15 @@ unless up_to_date?
 
   gem_package 'berkshelf' do
     gem_binary Opsworks::InstanceAgent::Environment.gem_binary
-    options("--bindir #{Opsworks::InstanceAgent::Environment.embedded_bin_path} --no-document --version '= #{node['opsworks_berkshelf']['version']}' #{node['opsworks_berkshelf']['rubygems_options']}")
+    version node['opsworks_berkshelf']['version']
+    options("--bindir #{Opsworks::InstanceAgent::Environment.embedded_bin_path} --no-document #{node['opsworks_berkshelf']['rubygems_options']}")
     ignore_failure false
 
     notifies :write, "log[installing gem]", :immediately
 
     action :install
     not_if do
-      OpsWorks::Bershelf.berkshelf_installed?
+      OpsWorks::Berkshelf.berkshelf_installed?
     end
   end
 end

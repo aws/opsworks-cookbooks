@@ -48,7 +48,17 @@ def asset_name
 end
 
 def asset_url
-  @asset_url ||= URI.parse("#{node[:opsworks_commons][:assets_url]}/packages/#{node[:platform]}/#{node[:platform_version]}/#{asset_name}")
+  _platform = node[:platform]
+  _platform_version = node[:platform_version]
+  # Hack to get RedHat 6 to online state until we have proper userspace
+  # Ruby packages or removed Ruby dependency from custom layer.
+  if ["redhat", "centos"].include?(_platform)
+    _platform = "amazon"
+    #ToDo: this should be a global attribute in the commons cookbook
+    _platform_version = "2013.09"
+  end
+
+  @asset_url ||= URI.parse("#{node[:opsworks_commons][:assets_url]}/packages/#{_platform}/#{_platform_version}/#{asset_name}")
 end
 
 # download assets using the downloader.sh
@@ -68,7 +78,7 @@ def local_asset
     yield(local_asset_path)
 
     # remove all downloaded file for this asset, also failed attemps.
-    ::FileUtils.rm_rf("#{asset_basedir}.*", :verbose => true) rescue Chef::Log.error "Couldn't cleanup downloaded assets for #{@new_resource.name}."
+    ::FileUtils.rm_rf(Dir["#{asset_basedir}.*"], :verbose => true) rescue Chef::Log.error "Couldn't cleanup downloaded assets for #{@new_resource.name}."
   elsif @new_resource.ignore_failure
     Chef::Log.error "Failed to download asset #{asset_name} for #{@new_resource.name}."
   elsif !@new_resource.ignore_failure
