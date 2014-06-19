@@ -1,69 +1,40 @@
-local_nodejs_up_to_date = ::File.exists?("/usr/local/bin/node") &&
-                          system("/usr/local/bin/node -v | grep '#{node[:opsworks_nodejs][:version]}' > /dev/null 2>&1") &&
-                          if ['debian','ubuntu'].include?(node[:platform])
-                            system("dpkg --get-selections | grep -v deinstall | grep 'opsworks-nodejs' > /dev/null 2>&1")
-                          else
-                            system("rpm -qa | grep 'opsworks-nodejs' > /dev/null 2>&1")
-                          end
+# Remove installed version, if it's not the one that should be installed.
+# We only support one user space nodejs installation
 
-case node[:platform]
-when 'debian', 'ubuntu'
-  remote_file "/tmp/#{node[:opsworks_nodejs][:deb]}" do
-    source node[:opsworks_nodejs][:deb_url]
-    action :create_if_missing
-    not_if do
-      local_nodejs_up_to_date
-    end
+PACKAGE_BASENAME = "opsworks-nodejs"
+LECAGY_PACKAGES = []
+
+pm_helper = OpsWorks::PackageManagerHelper.new(node)
+current_package_info = pm_helper.summary(PACKAGE_BASENAME)
+
+if current_package_info.version && current_package_info.version =~ /^#{node[:opsworks_nodejs][:version]}.#{node[:opsworks_nodejs][:pkgrelease]}/
+  Chef::Log.info("Userspace NodeJS version is up-to-date (#{node[:opsworks_nodejs][:version]} release #{node[:opsworks_nodejs][:pkgrelease]})")
+else
+
+  packages_to_remove = pm_helper.installed_packages.select do |pkg, version|
+    pkg.include?(PACKAGE_BASENAME) || LECAGY_PACKAGES.include?(pkg)
   end
 
-  ['opsworks-nodejs','nodejs'].each do |pkg|
-    execute "Remove old node.js versions due to update" do
-      command "dpkg --purge #{pkg}"
-      only_if do
-        ::File.exists?("/tmp/#{node[:opsworks_nodejs][:deb]}")
-      end
-    end
-  end
-
-  execute "Install node.js #{node[:opsworks_nodejs][:version]}" do
-    cwd "/tmp"
-    command "dpkg -i /tmp/#{node[:opsworks_nodejs][:deb]}"
-    only_if do
-      ::File.exists?("/tmp/#{node[:opsworks_nodejs][:deb]}")
-    end
-  end
-
-when 'centos','redhat','fedora','amazon'
-  remote_file "/tmp/#{node[:opsworks_nodejs][:rpm]}" do
-    source node[:opsworks_nodejs][:rpm_url]
-    action :create_if_missing
-    not_if do
-      local_nodejs_up_to_date
-    end
-  end
-
-  ['opsworks-nodejs','nodejs'].each do |pkg|
-    package pkg do
+  packages_to_remove.each do |pkg, version|
+    package "Remove outdated package #{pkg}" do
+      package_name pkg
       action :remove
-      ignore_failure true
-      only_if do
-        ::File.exists?("/tmp/#{node[:opsworks_nodejs][:rpm]}")
-      end
     end
   end
 
-  rpm_package "Install node.js #{node[:opsworks_nodejs][:version]}" do
-    source "/tmp/#{node[:opsworks_nodejs][:rpm]}"
+  log "downloading" do
+    message "Download and install NodeJS version #{node[:opsworks_nodejs][:full_version]} patch #{node[:opsworks_nodejs][:patch]} release #{node[:opsworks_nodejs][:pkgrelease]}"
+    level :info
+
+    action :nothing
+  end
+
+  opsworks_commons_assets_installer "Install user space OpsWorks NodeJS package" do
+    asset PACKAGE_BASENAME
+    version node[:opsworks_nodejs][:version]
+    release node[:opsworks_nodejs][:pkgrelease]
+
+    notifies :write, "log[downloading]", :immediately
     action :install
-    options "--verbose --oldpackage"
-    only_if do
-     ::File.exists?("/tmp/#{node[:opsworks_nodejs][:rpm]}")
-    end
   end
-
-end
-
-execute "Clean up nodejs files" do
-  cwd "/tmp"
-  command "rm -f #{node[:opsworks_nodejs][:rpm]} #{node[:opsworks_nodejs][:deb]}"
 end
