@@ -6,6 +6,7 @@ describe_recipe 'deploy::mysql' do
 
   it 'creates a database for the application' do
     node[:deploy].each do |application, deploy|
+      next if deploy[:database].blank? || deploy[:database][:database].blank?
       assert system("#{mysql_command(deploy)} -e 'SHOW DATABASES' | \
                     egrep -e '^#{deploy[:database][:database]}$'")
     end
