@@ -34,7 +34,7 @@ else
   default[:passenger][:gems_path] = '/'
 end
 
-default[:passenger][:version] = '4.0.41'
+default[:passenger][:version] = '4.0.42'
 default[:passenger][:root_path] = "#{node[:passenger][:gems_path]}/passenger-#{passenger[:version]}"
 
 if platform?('centos','redhat','fedora','amazon') and node[:packages][:dist_only]
@@ -63,5 +63,6 @@ default[:passenger][:max_requests] = 0
 default[:passenger][:high_performance_mode] = 'off'
 default[:passenger][:rails_spawn_method] = 'smart-lv2'
 default[:passenger][:max_pool_size] = 8 # usually will be set by OpsWorks directy. Override if you need a custom size
+default[:passenger][:friendly_error_pages] = 'off'
 
 include_attribute "passenger_apache2::customize"

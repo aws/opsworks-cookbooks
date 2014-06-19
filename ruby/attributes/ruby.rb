@@ -34,7 +34,7 @@ case node["opsworks"]["ruby_version"]
 when "2.1"
   default[:ruby][:major_version] = '2'
   default[:ruby][:minor_version] = '1'
-  default[:ruby][:patch_version] = '1'
+  default[:ruby][:patch_version] = '2'
   default[:ruby][:pkgrelease]    = '1'
 
   i = node[:ruby]
@@ -49,7 +49,7 @@ when "2.0.0"
 when "1.9.3"
   default[:ruby][:major_version] = '1.9'
   default[:ruby][:full_version] = '1.9.3'
-  default[:ruby][:patch] = 'p545'
+  default[:ruby][:patch] = 'p547'
   default[:ruby][:pkgrelease] = '1'
 else
   default[:ruby][:major_version] = ''
