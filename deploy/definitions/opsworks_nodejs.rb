@@ -34,4 +34,31 @@ define :opsworks_nodejs do
     )
     notifies :restart, "service[monit]", :immediately
   end
+
+  file "#{deploy[:deploy_to]}/shared/config/ssl.crt" do
+    owner deploy[:user]
+    mode 0600
+    content deploy[:ssl_certificate]
+    only_if do
+      deploy[:ssl_support]
+    end
+  end
+
+  file "#{deploy[:deploy_to]}/shared/config/ssl.key" do
+    owner deploy[:user]
+    mode 0600
+    content deploy[:ssl_certificate_key]
+    only_if do
+      deploy[:ssl_support]
+    end
+  end
+
+  file "#{deploy[:deploy_to]}/shared/config/ssl.ca" do
+    owner deploy[:user]
+    mode 0600
+    content deploy[:ssl_certificate_ca]
+    only_if do
+      deploy[:ssl_support] && deploy[:ssl_certificate_ca].present?
+    end
+  end
 end
