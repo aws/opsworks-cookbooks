@@ -52,7 +52,7 @@ node[:deploy].each do |application, deploy|
 
     execute 'stop unicorn and restart nginx' do
       command "sleep #{deploy[:sleep_before_restart]} && \
-               /srv/www/#{application}/shared/scripts/unicorn stop"
+               #{deploy[:deploy_to]}/shared/scripts/unicorn stop"
       notifies :restart, "service[nginx]"
       action :run
     end
