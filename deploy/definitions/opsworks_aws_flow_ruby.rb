@@ -19,8 +19,8 @@ define :opsworks_aws_flow_ruby do
 
   # make sure the app is properly installed by running "bundle install"
   # on the Gemfile if there is one
-  # TODO: FIXME
-
+  # TODO: this utility should be refactored out of the rails recipes
+  OpsWorks::RailsConfiguration.bundle( deploy[:application], deploy, deploy[:deploy_to]) 
 
   # snapshot the config for the runner
   Chef::Log.info("The runner config is #{deploy[:aws_flow_ruby_settings]}")

@@ -18,7 +18,7 @@ depends "php"
 depends "mysql"
 depends "opsworks_aws_flow_ruby"
 
-recipe "deploy::aws-flow-ruby", "Deploy a AWS Flor Ruby application"
+recipe "deploy::aws-flow-ruby", "Deploy an AWS Flow Ruby application"
 recipe "deploy::rails", "Deploy a Rails application"
 recipe "deploy::php", "Deploy a PHP application"
 recipe "deploy::rails-undeploy", "Remove a Rails application"
