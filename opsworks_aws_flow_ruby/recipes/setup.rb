@@ -9,5 +9,5 @@ end
 
 
 execute "Install unreleased aws-flow gem" do
-  command "gem install /tmp/aws-flow-1.3.0.gem"
+  command "/usr/local/bin/gem install /tmp/aws-flow-1.3.0.gem"
 end
