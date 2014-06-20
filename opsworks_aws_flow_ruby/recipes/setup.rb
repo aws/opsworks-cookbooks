@@ -3,11 +3,11 @@
 #  version node['opsworks_aws_flow_ruby']['version']
 #end
 
-cookbook_file "aws-flow-1.0.10.gem" do
-  path "/tmp/aws-flow-1.0.10.gem"
+cookbook_file "aws-flow-1.3.0.gem" do
+  path "/tmp/aws-flow-1.3.0.gem"
 end
 
 
 execute "Install unreleased aws-flow gem" do
-  command "gem install /tmp/aws-flow-1.0.10.gem"
+  command "gem install /tmp/aws-flow-1.3.0.gem"
 end
