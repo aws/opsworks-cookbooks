@@ -98,7 +98,7 @@ define :opsworks_deploy do
       before_migrate do
         link_tempfiles_to_current_release
 
-        if deploy[:application_type] == 'rails'
+        if ['rails', 'aws-ruby-flow'].include?(deploy[:application_type])
           if deploy[:auto_bundle_on_deploy]
             OpsWorks::RailsConfiguration.bundle(application, node[:deploy][application], release_path)
           end
