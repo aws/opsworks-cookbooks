@@ -3,14 +3,9 @@ package "opsworks-berkshelf" do
   ignore_failure true
 end
 
-ruby_block "Uninstall other versions of berkshelf" do
-  block do
-    uninstall_other_gem_versions('berkshelf', node['opsworks_berkshelf']['version'])
-  end
-end
-
 gem_package "berkshelf" do
   gem_binary Opsworks::InstanceAgent::Environment.gem_binary
+  options "--all --executables --force"
 
   action :purge
   only_if do
