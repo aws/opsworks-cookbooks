@@ -14,11 +14,11 @@ node[:deploy].each do |application, deploy|
 
   case node[:deploy][application][:database][:adapter]
   when /mysql/
-    include_recipe "mysql::client_install"
+    #include_recipe "mysql::client"
   when "postgresql"
     include_recipe "opsworks_postgresql::client_install"
   end
-  
+
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
     source "database.yml.erb"
     cookbook 'rails'
