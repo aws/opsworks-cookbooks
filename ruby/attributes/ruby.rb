@@ -30,7 +30,7 @@ when "2.1"
 when "2.0.0"
   default[:ruby][:major_version] = '2'
   default[:ruby][:minor_version] = '0'
-  default[:ruby][:patch] = platform?('ubuntu') && node[:platform_version] == '14.04' ? 'p481' : 'p451' # this attribute will disapier in favor of the sematic versioning schema
+  default[:ruby][:patch] = 'p481' # this attribute will disappear in favor of the sematic versioning schema
   default[:ruby][:patch_version] = node[:ruby][:patch]
   default[:ruby][:pkgrelease] = '1'
 
@@ -51,7 +51,7 @@ else
   default[:ruby][:major_version] = ''
   default[:ruby][:full_version] = ''
   default[:ruby][:patch_version] = ''
-  default[:ruby][:patch] = ''  # this attribute will disapier in favor of the sematic versioning schema
+  default[:ruby][:patch] = ''  # this attribute will disappear in favor of the sematic versioning schema
   default[:ruby][:pkgrelease] = ''
   default[:ruby][:version] = ''
 end

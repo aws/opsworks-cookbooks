@@ -8,27 +8,41 @@ if node[:opsworks][:layers].has_key?('monitoring-master')
       package 'libapr1'
       package 'libconfuse0'
 
-      ['libganglia1','ganglia-monitor'].each do |package_name|
-        remote_file "/tmp/#{package_name}.deb" do
-          source "#{node[:ganglia][:package_base_url]}/#{package_name}_#{node[:ganglia][:custom_package_version]}_#{node[:ganglia][:package_arch]}.deb"
-          not_if do
-            `dpkg-query --show #{package_name} | cut -f 2`.chomp.eql?(node[:ganglia][:custom_package_version])
+      pm_helper = OpsWorks::PackageManagerHelper.new(node)
+
+      [node[:ganglia][:libganglia_package_name], node[:ganglia][:monitor_package_name], node[:ganglia][:monitor_plugins_package_name]].each do |package|
+        current_package_info = pm_helper.summary(package)
+
+        if current_package_info.version && current_package_info.version =~ /^#{node[:ganglia][:custom_package_version]}/
+          Chef::Log.info("#{package} version is up-to-date (#{node[:ganglia][:custom_package_version]})")
+        else
+
+          packages_to_remove = pm_helper.installed_packages.select do |pkg, version|
+            pkg.include?(package)
+          end
+
+          packages_to_remove.each do |pkg, version|
+            package "Remove outdated package #{pkg}" do
+              package_name pkg
+              action :remove
+            end
+          end
+
+          log "downloading" do
+            message "Download and install #{package} version #{node[:ganglia][:custom_package_version]}"
+            level :info
+
+            action :nothing
+          end
+
+          opsworks_commons_assets_installer "Install ganglia component: #{package}" do
+            asset package
+            version node[:ganglia][:custom_package_version]
+
+            notifies :write, "log[downloading]", :immediately
+            action :install
           end
         end
-
-        execute "install #{package_name}" do
-          command "dpkg -i /tmp/#{package_name}.deb && rm /tmp/#{package_name}.deb"
-          only_if { ::File.exists?("/tmp/#{package_name}.deb") }
-        end
-      end
-
-      remote_file '/tmp/ganglia-monitor-python.deb' do
-        source node[:ganglia][:monitor_plugins_package_url]
-        not_if { ::File.exists?('/tmp/ganglia-monitor-python.deb') }
-      end
-      execute 'install ganglia-monitor-python' do
-        command 'dpkg -i /tmp/ganglia-monitor-python.deb && rm /tmp/ganglia-monitor-python.deb'
-        only_if { ::File.exists?('/tmp/ganglia-monitor-python.deb') }
       end
     end
 

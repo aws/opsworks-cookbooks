@@ -1,15 +1,5 @@
 include_recipe 'opsworks_ganglia::client'
 
-def install_and_delete_local_deb_package(deb_file)
-  dpkg_package deb_file do
-    source deb_file
-    only_if { ::File.exists?(deb_file) }
-  end
-  execute "delete temporary file" do
-    command "rm -f #{deb_file}"
-  end
-end
-
 case node[:platform_family]
 when "rhel"
   package node[:ganglia][:gmetad_package_name]
@@ -23,28 +13,48 @@ when "debian"
   else
     package 'librrd4'
 
-    deb_file = "/tmp/#{node[:ganglia][:gmetad_package_name]}.deb"
-    remote_file deb_file do
-      source node[:ganglia][:gmetad_package_url]
-      not_if do
-        `dpkg-query --show gmetad | cut -f 2`.chomp.eql?(node[:ganglia][:custom_package_version])
-      end
-    end
-    install_and_delete_local_deb_package deb_file
-
     node[:ganglia][:web_frontend_dependencies].each do |web_frontend_dependency|
       package web_frontend_dependency
     end
 
-    deb_file = "/tmp/#{node[:ganglia][:web_frontend_package]}.deb"
-    remote_file deb_file do
-      source node[:ganglia][:web_frontend_package_url]
-      not_if do
-        `dpkg-query --show  ganglia-webfrontend | cut -f 2`.chomp.eql?(node[:ganglia][:custom_package_version])
+    pm_helper = OpsWorks::PackageManagerHelper.new(node)
+
+    [node[:ganglia][:gmetad_package_name], node[:ganglia][:web_frontend_package_name]].each do |package|
+      current_package_info = pm_helper.summary(package)
+
+      if current_package_info.version && current_package_info.version =~ /^#{node[:ganglia][:custom_package_version]}/
+        Chef::Log.info("#{package} version is up-to-date (#{node[:ganglia][:custom_package_version]})")
+      else
+
+        packages_to_remove = pm_helper.installed_packages.select do |pkg, version|
+          pkg.include?(package)
+        end
+
+        packages_to_remove.each do |pkg, version|
+          package "Remove outdated package #{pkg}" do
+            package_name pkg
+            action :remove
+          end
+        end
+
+        log "downloading" do
+          message "Download and install #{package} version #{node[:ganglia][:custom_package_version]}"
+          level :info
+
+          action :nothing
+        end
+
+        opsworks_commons_assets_installer "Install ganglia component: #{package}" do
+          asset package
+          version node[:ganglia][:custom_package_version]
+
+          notifies :write, "log[downloading]", :immediately
+          action :install
+        end
       end
     end
-    install_and_delete_local_deb_package deb_file
   end
+
 end
 
 execute "Ensure permission and ownership of web frontend" do

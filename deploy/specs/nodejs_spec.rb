@@ -14,4 +14,41 @@ describe_recipe 'deploy::nodejs' do
       end
     end
   end
+
+  it 'writes SSL certificate files to disk' do
+    node[:deploy].each do |app, deploy|
+      if deploy[:application_type] == 'nodejs' && deploy[:ssl_support]
+        ssl_certificate = file("#{deploy[:deploy_to]}/shared/config/ssl.crt")
+        ssl_certificate.must_exist.with(:owner, deploy[:user]).and(:mode, 0600)
+        ssl_certificate.must_include deploy[:ssl_certificate]
+      end
+
+      if deploy[:application_type] == 'nodejs' && deploy[:ssl_support]
+        ssl_certificate_key = file("#{deploy[:deploy_to]}/shared/config/ssl.key")
+        ssl_certificate_key.must_exist.with(:owner, deploy[:user]).and(:mode, 0600)
+        ssl_certificate_key.must_include deploy[:ssl_certificate_key]
+      end
+
+      if deploy[:application_type] == 'nodejs' && deploy[:ssl_support] && deploy[:ssl_certificate_ca].present?
+        ssl_certificate_ca = file("#{deploy[:deploy_to]}/shared/config/ssl.ca")
+        ssl_certificate_ca.must_exist.with(:owner, deploy[:user]).and(:mode, 0600)
+        ssl_certificate_ca.must_include deploy[:ssl_certificate_ca]
+      end
+    end
+  end
+
+  it 'uses the default ports for http and https' do
+    node[:deploy].each do |app, deploy|
+      port = deploy[:ssl_support] ? 443 : 80
+      monit_config = file(::File.join(node[:monit][:conf_dir], "node_web_app-#{app}.monitrc"))
+
+      monit_config.must_include "PORT=#{port}"
+
+      if deploy[:ssl_support]
+        monit_config.must_include "if failed port #{port} type TCPSSL protocol HTTP"
+      else
+        monit_config.must_include "if failed port #{port} protocol HTTP"
+      end
+    end
+  end
 end
