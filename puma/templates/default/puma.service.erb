@@ -3,9 +3,9 @@
 require 'etc'
 require 'digest/md5'
 
-ROOT_PATH=<%= @deploy[:deploy_to].inspect %>
-APP_NAME=<%= @application.inspect %>
-PID_PATH=<%= #{@deploy[:deploy_to]/shared/pids/puma.pid}.inspect %>
+ROOT_PATH="<%= @deploy[:deploy_to] %>"
+APP_NAME="<%= @application %>"
+PID_PATH="<%= @deploy[:deploy_to] %>/shared/pids/puma.pid"
 
 def run_and_print_command(command)
   puts command
