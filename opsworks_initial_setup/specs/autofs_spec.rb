@@ -14,6 +14,10 @@ describe_recipe 'opsworks_initial_setup::autofs' do
     ).must_exist.with(:owner, 'root').and(:group, 'root').and(:mode, '444')
   end
 
+  it "enables autofs verbose mode" do
+    file(AutoFs.config(node)).must_include "LOGGING=verbose"
+  end
+
   it "ensures the opsworks autofs map file is referenced in /etc/auto.master" do
     file('/etc/auto.master').must_include "/- #{node[:opsworks_initial_setup][:autofs_map_file]}"
   end
