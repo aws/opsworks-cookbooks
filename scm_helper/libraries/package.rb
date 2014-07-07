@@ -1,13 +1,13 @@
 module OpsWorks
   module SCM
     module Package
-      
+
       def ensure_scm_package_installed(scm_type)
         if scm_type == "git"
           case node[:platform]
           when "debian", "ubuntu"
             package "git-core"
-          else 
+          else
             package "git"
           end
         elsif scm_type == "svn"
@@ -28,7 +28,7 @@ module OpsWorks
           raise "unsupported SCM type #{scm_type}"
         end
       end
-      
+
     end
   end
 end
