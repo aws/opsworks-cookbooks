@@ -24,6 +24,7 @@ when "debian"
     not_if do
       `dpkg-query --show gmetad | cut -f 2`.chomp.eql?(node[:ganglia][:custom_package_version])
     end
+    retries 2
   end
   install_and_delete_local_deb_package deb_file
 
@@ -37,6 +38,7 @@ when "debian"
     not_if do
       `dpkg-query --show  ganglia-webfrontend | cut -f 2`.chomp.eql?(node[:ganglia][:custom_package_version])
     end
+    retries 2
   end
   install_and_delete_local_deb_package deb_file
 end
