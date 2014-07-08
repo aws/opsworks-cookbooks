@@ -12,6 +12,7 @@ depends "ssh_users"
 depends "opsworks_agent_monit"
 depends "passenger_apache2"
 depends "unicorn"
+depends "puma"
 depends "opsworks_java"
 
 recipe "deploy::scm", "Install and setup the source code management system"

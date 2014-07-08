@@ -75,7 +75,7 @@ def clean_restart
   end
 end
 
-def status_unicorn
+def status_puma
 	if pid = puma_running?
 		puts "Puma <%= @application %> running with PID #{pid}"
 		return true

@@ -8,7 +8,7 @@ server {
   access_log <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>.access.log;
   root <%= @application[:absolute_document_root] %>;
 
-  keepalive_timeout 5
+  keepalive_timeout 5;
 
   location /nginx_status {
     stub_status on;
