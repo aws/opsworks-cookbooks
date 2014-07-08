@@ -27,8 +27,6 @@ package 'apache2' do
   action :install
 end
 
-include_recipe 'apache2::service'
-
 service 'apache2' do
   service_name value_for_platform(
     ['centos','redhat','fedora','amazon'] => {'default' => 'httpd'},
@@ -207,3 +205,5 @@ file "#{node[:apache][:document_root]}/index.html" do
     File.exists?("#{node[:apache][:document_root]}/index.html")
   end
 end
+
+include_recipe 'apache2::service'
