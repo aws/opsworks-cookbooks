@@ -23,7 +23,7 @@ define :opsworks_aws_flow_ruby do
   file "#{deploy[:deploy_to]}/current/runner_config.json" do
     user deploy[:user]
     group deploy[:group] 
-    content "#{(deploy[:aws_flow_ruby_settings] || {}).update('user_agent_prefix' => node['opsworks_aws_flow_ruby']['user_agent_prefix']).to_json}"
+    content "#{(deploy[:aws_flow_ruby_settings] || {}).dup.update('user_agent_prefix' => node.default['opsworks_aws_flow_ruby']['user_agent_prefix']).to_json}"
   end
 
   service 'monit' do
