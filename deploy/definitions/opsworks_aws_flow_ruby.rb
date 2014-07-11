@@ -44,7 +44,6 @@ define :opsworks_aws_flow_ruby do
   end
 
   # the monit part, which will supervise the init script that controls the runner
-  # TODO: finish
   template "#{node.default[:monit][:conf_dir]}/aws_flow_ruby-#{application}.monitrc" do
     source 'aws_flow_ruby_app.monitrc.erb'
     cookbook 'opsworks_aws_flow_ruby'
@@ -53,8 +52,7 @@ define :opsworks_aws_flow_ruby do
     mode '0644'
     variables(
       :deploy => deploy,
-      :application_name => application,
-      :monitored_script => "#{deploy[:deploy_to]}/current/server.js"
+      :application_name => application
     )
     notifies :restart, "service[monit]", :immediately
   end
