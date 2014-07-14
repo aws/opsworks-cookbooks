@@ -4,5 +4,5 @@ bash 'set lock timeout in Chef\'s yum-dump.py' do
   code <<-EOC
     sed -i '/^lock_timeout/I s/=\s.*$/= #{node[:opsworks_initial_setup][:yum_dump_lock_timeout]}/' #{node[:opsworks_initial_setup][:yum_dump_file]}
   EOC
-  only_if { node[:platform] == 'amazon' }
+  only_if { node.platform_family?("rhel") }
 end
