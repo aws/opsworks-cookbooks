@@ -9,6 +9,7 @@ when "debian"
       not_if do
         `dpkg-query --show #{package_name} | cut -f 2`.chomp.eql?(node[:ganglia][:custom_package_version])
       end
+      retries 2
     end
 
     execute "install #{package_name}" do
@@ -20,6 +21,7 @@ when "debian"
   remote_file '/tmp/ganglia-monitor-python.deb' do
     source node[:ganglia][:monitor_plugins_package_url]
     not_if { ::File.exists?('/tmp/ganglia-monitor-python.deb') }
+    retries 2
   end
   execute 'install ganglia-monitor-python' do
     command 'dpkg -i /tmp/ganglia-monitor-python.deb && rm /tmp/ganglia-monitor-python.deb'

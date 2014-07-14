@@ -40,7 +40,7 @@ defaults
   <% end -%>
         
 # Set up application listeners here.
-<% if node[:haproxy][:rails_backends].blank? && node[:haproxy][:php_backends].blank? && node[:haproxy][:nodejs_backends].blank? && node[:haproxy][:static_backends].blank? -%>
+<% if node[:haproxy][:rails_backends].blank? && node[:haproxy][:php_backends].blank? && node[:haproxy][:nodejs_backends].blank? && node[:haproxy][:static_backends].blank? && node[:haproxy][:java_backends].blank? -%>
 listen application 0.0.0.0:80
   # configure a fake backend as long as there are no real ones
   # this way HAProxy will not fail on a config check
@@ -136,6 +136,28 @@ backend static_servers_ssl
   <% end -%>
 <% end -%>
   
+<% if !node[:haproxy][:java_backends].empty? -%>
+backend java_servers
+  balance <%= node[:haproxy][:balance] %>
+  option redispatch
+  option forwardfor
+  option httpchk <%= node[:haproxy][:health_check_method] %> <%= node[:haproxy][:health_check_url] %>
+  <% node[:haproxy][:java_backends].each do |backend| -%>
+  server <%= backend['name'] %> <%= backend['ip'] %>:80 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] * node[:haproxy][:maxcon_factor_java_app] %> check inter <%= node[:haproxy][:check_interval] %>
+  <% end -%>
+<% end -%>
+
+<% if !node[:haproxy][:java_backends].empty? -%>
+backend java_servers_ssl
+  mode tcp
+  balance <%= node[:haproxy][:balance] %>
+  option redispatch
+  option ssl-hello-chk
+  <% node[:haproxy][:java_backends].each do |backend| -%>
+  server <%= backend['name'] %> <%= backend['ip'] %>:443 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] * node[:haproxy][:maxcon_factor_java_app_ssl] %> check inter <%= node[:haproxy][:check_interval] %>
+  <% end -%>
+<% end -%>
+
 frontend http-in
   bind :80
   
@@ -236,6 +258,8 @@ frontend http-in
   default_backend nodejs_app_servers
   <% elsif !node[:haproxy][:static_backends].empty? -%>
   default_backend static_servers
+  <% elsif !node[:haproxy][:java_backends].empty? -%>
+  default_backend java_servers
   <% end -%>
   
 frontend https-in
@@ -291,6 +315,8 @@ frontend https-in
   default_backend nodejs_app_servers_ssl
   <% elsif !node[:haproxy][:static_backends].empty? -%>
   default_backend static_servers_ssl
+  <% elsif !node[:haproxy][:java_backends].empty? -%>
+  default_backend java_servers_ssl
   <% end -%>
 
 <% end -%>  

@@ -27,6 +27,7 @@ when 'debian','ubuntu'
     not_if do
       local_ruby_up_to_date
     end
+    retries 2
   end
 
   ['opsworks-ruby1.9','opsworks-ruby2.0','opsworks-ruby2.1','ruby-enterprise','ruby1.9','ruby2.0'].each do |pkg|
@@ -48,6 +49,7 @@ when 'centos','redhat','fedora','amazon'
     not_if do
       local_ruby_up_to_date
     end
+    retries 2
   end
 
   ['opsworks-ruby19','opsworks-ruby20','opsworks-ruby21','ruby-enterprise','ruby19','ruby20'].each do |pkg|
