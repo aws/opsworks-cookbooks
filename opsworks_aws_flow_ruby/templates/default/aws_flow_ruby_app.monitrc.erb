@@ -1,4 +1,4 @@
-check process ruby_flow_runner-<%= @application_name %> with pidfile "/var/run/<%= @application_name %>.pid"
+check process ruby_flow_ruby_<%= @application_name %> with pidfile "/var/run/<%= @application_name %>.pid"
   start program = "<%= @deploy[:deploy_to] %>/current/runner.initrc start"
   stop program  = "<%= @deploy[:deploy_to] %>/current/runner.initrc stop"
   if 5 restarts within 5 cycles then timeout
