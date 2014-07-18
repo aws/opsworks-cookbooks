@@ -43,6 +43,12 @@ define :opsworks_aws_flow_ruby do
     )    
   end
 
+  ruby_block "restart AWS Flow Ruby application #{application}" do
+    block do
+      Chef::Log.info OpsWorks::ShellOut.shellout(node[:deploy][application][:aws_flow_ruby][:restart_command])
+    end
+  end
+
   # the monit part, which will supervise the init script that controls the runner
   template "#{node.default[:monit][:conf_dir]}/aws_flow_ruby-#{application}.monitrc" do
     source 'aws_flow_ruby_app.monitrc.erb'
@@ -55,12 +61,6 @@ define :opsworks_aws_flow_ruby do
       :application_name => application
     )
     notifies :restart, "service[monit]", :immediately
-  end
-
-  ruby_block "restart AWS Flow Ruby application #{application}" do
-    block do
-      Chef::Log.info OpsWorks::ShellOut.shellout(node[:deploy][application][:aws_flow_ruby][:restart_command])
-    end
   end
 
 end
