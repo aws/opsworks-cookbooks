@@ -40,8 +40,16 @@ start() {
   # and a process possibly asking for status.
   echo $! > $pidfile
 
-  echo "$name started."
-  return 0
+  # Check that the process is still running after 5 seconds
+  sleep 5
+  if status ; then
+    echo "$name started."
+    return 0
+  else
+    echo "$name failed to start"
+    cat /var/log/$name.{log,err}
+    return 1
+  fi
 }
 
 stop() {
