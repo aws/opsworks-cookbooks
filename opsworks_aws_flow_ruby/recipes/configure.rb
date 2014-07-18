@@ -14,9 +14,7 @@ node[:deploy].each do |application, deploy|
   ruby_block "restart AWS Flow Ruby application #{application}" do
     action :nothing
     block do
-      Chef::Log.info("restart AWS Flow Ruby via: #{node[:deploy][application][:aws_flow_ruby][:restart_command]}")
-      Chef::Log.info(`#{node[:deploy][application][:aws_flow_ruby][:restart_command]}`)
-      $? == 0
+      Chef::Log.info OpsWorks::ShellOut.shellout("#{deploy[:deploy_to]}/current/runner.initrc restart")
     end
   end
 

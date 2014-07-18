@@ -111,8 +111,7 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:nodejs][:port] = deploy[:ssl_support] ? 443 : 80
 
   # aws-ruby-flow
-  default[:deploy][application][:aws_flow_ruby][:restart_command] = "monit restart aws_flow_ruby_#{application}"
-  default[:deploy][application][:aws_flow_ruby][:stop_command] = "monit stop aws_flow_ruby_#{application}"
+  default[:deploy][application][:aws_flow_ruby][:restart_command] = "#{deploy[:deploy_to]}/current/runner.initrc restart"
 end
 
 default[:opsworks][:skip_uninstall_of_other_rails_stack] = false

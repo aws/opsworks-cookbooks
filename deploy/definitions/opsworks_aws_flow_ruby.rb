@@ -59,9 +59,7 @@ define :opsworks_aws_flow_ruby do
 
   ruby_block "restart AWS Flow Ruby application #{application}" do
     block do
-      Chef::Log.info("restart AWS Flow Ruby via: #{node[:deploy][application][:aws_flow_ruby][:restart_command]}")
-      Chef::Log.info(`#{node[:deploy][application][:aws_flow_ruby][:restart_command]}`)
-      $? == 0
+      Chef::Log.info OpsWorks::ShellOut.shellout(node[:deploy][application][:aws_flow_ruby][:restart_command])
     end
   end
 
