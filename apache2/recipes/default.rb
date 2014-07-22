@@ -220,24 +220,11 @@ template default_site_config do
   notifies :run, resources(:bash => 'logdir_existence_and_restart_apache2')
 end
 
-include_recipe 'apache2::mod_status'
-include_recipe 'apache2::mod_headers'
-include_recipe 'apache2::mod_alias'
-include_recipe 'apache2::mod_auth_basic'
-include_recipe 'apache2::mod_authn_file'
-include_recipe 'apache2::mod_authz_default' if node[:apache][:version] == '2.2'
-include_recipe 'apache2::mod_authz_groupfile'
-include_recipe 'apache2::mod_authz_host'
-include_recipe 'apache2::mod_authz_user'
-include_recipe 'apache2::mod_autoindex'
-include_recipe 'apache2::mod_dir'
-include_recipe 'apache2::mod_env'
-include_recipe 'apache2::mod_mime'
-include_recipe 'apache2::mod_negotiation'
-include_recipe 'apache2::mod_setenvif'
-include_recipe 'apache2::mod_log_config' if platform_family?('rhel')
-include_recipe 'apache2::mod_ssl'
-include_recipe 'apache2::mod_expires'
+node['apache']['default_modules'].each do |mod|
+  module_recipe_name = mod =~ /^mod_/ ? mod : "mod_#{mod}"
+  include_recipe "apache2::#{module_recipe_name}"
+end
+
 include_recipe 'apache2::logrotate'
 
 bash 'logdir_existence_and_restart_apache2' do

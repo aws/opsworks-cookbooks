@@ -130,4 +130,13 @@ default[:apache][:logrotate][:mode] = '640'
 default[:apache][:logrotate][:owner] = 'root'
 default[:apache][:logrotate][:group] = 'adm'
 
+# modules
+default['apache']['default_modules'] = %w[
+  status headers alias auth_basic authn_file authz_groupfile authz_host authz_user autoindex
+  dir env mime negotiation setenvif ssl expires
+]
+
+default['apache']['default_modules'] << 'authz_default' if node[:apache][:version] == '2.2'
+default['apache']['default_modules'] << 'log_config' if platform_family?('rhel')
+
 include_attribute 'apache2::customize'
