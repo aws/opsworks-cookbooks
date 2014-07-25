@@ -2,6 +2,10 @@ define :opsworks_aws_flow_ruby do
   deploy = params[:deploy_data]
   application = params[:app]
 
+  opsworks_deploy_user do
+    deploy_data deploy
+  end
+
   opsworks_deploy_dir do
     user deploy[:user]
     group deploy[:group]
@@ -13,17 +17,13 @@ define :opsworks_aws_flow_ruby do
     app application
   end
 
-  opsworks_deploy_user do
-    deploy_data deploy
-  end
-
   # snapshot the config for the runner
   Chef::Log.info("The runner config is #{deploy[:aws_flow_ruby_settings]}")
 
   file "#{deploy[:deploy_to]}/current/runner_config.json" do
     user deploy[:user]
     group deploy[:group]
-    content JSON.pretty_generate((deploy[:aws_flow_ruby_settings] || {}).dup.update('user_agent_prefix' => node.default['opsworks_aws_flow_ruby']['user_agent_prefix']))
+    content JSON.pretty_generate((deploy[:aws_flow_ruby_settings] || {}).dup.update('user_agent_prefix' => node['opsworks']['aws_flow_ruby']['user_agent_prefix']))
   end
 
   service 'monit' do
@@ -40,7 +40,7 @@ define :opsworks_aws_flow_ruby do
     variables(
       :deploy => deploy,
       :application_name => application
-    )    
+    )
   end
 
   ruby_block "restart AWS Flow Ruby application #{application}" do

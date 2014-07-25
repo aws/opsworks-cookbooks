@@ -7,7 +7,7 @@ node[:deploy].each do |application, deploy|
   file "#{deploy[:deploy_to]}/current/runner_config.json" do
     user deploy[:user]
     group deploy[:group]
-    content JSON.pretty_generate((deploy[:aws_flow_ruby_settings] || {}).dup.update('user_agent_prefix' => node.default['opsworks_aws_flow_ruby']['user_agent_prefix']))
+    content JSON.pretty_generate((deploy[:aws_flow_ruby_settings] || {}).dup.update('user_agent_prefix' => node['opsworks']['aws_flow_ruby']['user_agent_prefix']))
     notifies :run, "ruby_block[restart AWS Flow Ruby application #{application}]"
   end
 
