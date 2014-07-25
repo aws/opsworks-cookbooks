@@ -21,3 +21,5 @@ default['opsworks_berkshelf']['pkg_release'] = '1'
 
 default['opsworks_berkshelf']['rubygems_options'] = ''
 default['opsworks_berkshelf']['debug'] = false
+
+default['opsworks_berkshelf']['ignore_groups'] = ['test', 'development']

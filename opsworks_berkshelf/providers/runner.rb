@@ -32,6 +32,7 @@ def berks_install_command
     "install --path #{Opsworks::InstanceAgent::Environment.berkshelf_cookbooks_path}"
   end
 
+  options += " --except=#{node['opsworks_berkshelf']['ignore_groups'].join(' ')}"
   options += ' --debug' if node['opsworks_berkshelf']['debug']
 
   "#{OpsWorks::Berkshelf.berkshelf_binary} #{options}"
