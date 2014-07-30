@@ -28,6 +28,10 @@ describe_recipe 'nginx::default' do
     file(File.join(node[:nginx][:dir], 'nginx.conf')).must_exist.with(:owner, 'root').and(:group, 'root').and(:mode, '644')
   end
 
+  it "creates a non-empty pid file" do
+    file(node[:nginx][:pid_file]).must_match(/^\d+$/)
+  end
+
   it 'creates default site' do
     file(File.join(node[:nginx][:dir], 'sites-available', 'default')).must_exist.with(:mode, '644').and(:owner, 'root').and(:group, 'root')
   end
@@ -38,5 +42,9 @@ describe_recipe 'nginx::default' do
 
   it 'starts nginx service' do
     service('nginx').must_be_running
+  end
+
+  it "reports nginx to be running" do
+    OpsWorks::ShellOut.shellout("/etc/init.d/nginx status").must_match(/nginx.*\s+is\s+running/)
   end
 end
