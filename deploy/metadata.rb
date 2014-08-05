@@ -16,6 +16,7 @@ depends "unicorn"
 depends "opsworks_java"
 depends "php"
 depends "mysql"
+depends "opsworks_nodejs"
 
 recipe "deploy::rails", "Deploy a Rails application"
 recipe "deploy::php", "Deploy a PHP application"
