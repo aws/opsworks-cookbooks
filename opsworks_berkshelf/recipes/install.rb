@@ -12,6 +12,9 @@ unless up_to_date?
     action :nothing
   end
 
+  Chef::Log.info "Install berkself dependency: git"
+  ensure_scm_package_installed("git")
+
   opsworks_commons_assets_installer "Try to install berkshelf prebuilt package" do
     asset "opsworks-berkshelf"
     version node['opsworks_berkshelf']['version']
