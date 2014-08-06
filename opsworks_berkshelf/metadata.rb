@@ -8,3 +8,4 @@ recipe "opsworks_berkshelf::install", "Install berkshelf and managed cookbooks o
 recipe "opsworks_berkshelf::purge", "Remove berkshelf and managed cookbooks from system."
 
 depends "opsworks_commons"
+depends "scm_helper"

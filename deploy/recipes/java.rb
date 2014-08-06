@@ -6,6 +6,26 @@ node[:deploy].each do |application, deploy|
     next
   end
 
+  case deploy[:database][:type]
+  when "mysql"
+    connector_jar = node['opsworks_java']['tomcat']['mysql_connector_jar']
+    connector_jar_path = ::File.join(node['opsworks_java']['tomcat']['java_shared_lib_dir'], connector_jar)
+    include_recipe "opsworks_java::mysql_connector"
+  when "postgresql"
+    connector_jar = node[:platform].eql?('ubuntu') ? 'postgresql-jdbc4.jar' : 'postgresql-jdbc.jar'
+    connector_jar_path = ::File.join(node['opsworks_java']['tomcat']['java_shared_lib_dir'], connector_jar)
+    include_recipe "opsworks_java::postgresql_connector"
+  else
+    connector_jar = ""
+    connector_jar_path = ""
+  end
+
+  link ::File.join(node['opsworks_java']['tomcat']['lib_dir'], connector_jar) do
+    to connector_jar_path
+    action :create
+    only_if { ::File.file?(connector_jar_path) }
+  end
+
   # ROOT has a special meaning and has to be capitalized
   if application == 'root'
     webapp_name = 'ROOT'

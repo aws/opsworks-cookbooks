@@ -13,6 +13,10 @@ pid "<%= @deploy[:deploy_to]%>/shared/pids/unicorn.pid"
 stderr_path "<%= @deploy[:deploy_to]%>/shared/log/unicorn.stderr.log"
 stdout_path "<%= @deploy[:deploy_to]%>/shared/log/unicorn.stdout.log"
 
+<% @deploy[:environment].each do |key, value| %>
+ENV['<%= key %>'] = "<%= value.gsub("\"","\\\"") unless value.nil? %>"
+<% end %>
+
 preload_app <%= node[:unicorn][:preload_app] %>
 GC.copy_on_write_friendly = true if GC.respond_to?(:copy_on_write_friendly=)
 
