@@ -129,24 +129,6 @@ describe_recipe 'apache2::default' do
     it 'removes the default index.html file in the docroot' do
       file("#{node[:apache][:document_root]}/index.html").wont_exist
     end
-
-    it 'creates apache .conf files for applications' do
-      node[:deploy].each do |application, deploy|
-        file("#{node[:apache][:dir]}/sites-available/#{application}.conf").must_exist if node[:opsworks][:instance][:layers].include?("#{deploy[:application_type]}-app")
-      end
-    end
-
-    it 'contains correctly escaped environment variables in apache .conf files' do
-      node[:deploy].each do |application, deploy|
-        deploy[:environment].each do |key, value|
-          if node[:opsworks][:instance][:layers].include?("#{deploy[:application_type]}-app") && deploy[:application_type] != "java"
-            file("#{node[:apache][:dir]}/sites-available/#{application}.conf").must_include(key)
-            file("#{node[:apache][:dir]}/sites-available/#{application}.conf").must_include(value.gsub("\"","\\\"")) unless value.blank?
-          end
-        end
-      end
-    end
-
   end
 
   describe 'networking' do

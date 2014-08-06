@@ -30,4 +30,3 @@ node[:deploy].each do |application, deploy|
     end
   end
 end
-include_recipe 'opsworks_nodejs::create_env_file'
