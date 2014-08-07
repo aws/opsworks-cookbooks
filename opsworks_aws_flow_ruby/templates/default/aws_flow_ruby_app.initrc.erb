@@ -30,7 +30,7 @@ start() {
 
   # Run the program!
   chroot --userspec <%= @deploy[:user] %>:<%= @deploy[:group] %> / sh -c "
-    cd /
+    cd <%= @deploy[:deploy_to] %>/current
 
     exec \"$program\" $args
   " > /var/log/$name.log 2> /var/log/$name.err &
