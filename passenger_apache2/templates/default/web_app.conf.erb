@@ -125,6 +125,10 @@
 
   FileETag none
 
+  <% node[:deploy][@application_name][:environment].each do |key, value| %>
+  SetEnv "<%= key %>" "<%= value.gsub("\"","\\\"") unless value.nil? %>"
+  <% end %>
+
   RewriteEngine On
   <% if node[:apache][:version] == '2.2' -%>
     <% if @params[:rewrite_config] && @params[:rewrite_config] != '' -%>
