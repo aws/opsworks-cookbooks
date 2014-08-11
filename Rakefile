@@ -97,7 +97,7 @@ task :validate_best_practises do
     warn "Foodcritic requires Ruby 1.9+. You run 1.8. Skipping..."
   else
     puts "Check Cookbooks with Foodcritic"
-    system "foodcritic ."
+    system "foodcritic -t correctness -f correctness ."
     exit 1 unless $?.success?
   end
 end
