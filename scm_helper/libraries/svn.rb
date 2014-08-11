@@ -1,17 +1,17 @@
 module OpsWorks
   module SCM
     module SVN
-      
+
       def prepare_svn_checkouts(options = {})
         raise ArgumentError, "need :user, :group, and :home" unless options.has_key?(:user) && options.has_key?(:group) && options.has_key?(:home)
-        
+
         deploy = options[:deploy]
         directory "#{options[:home]}/.subversion" do
           owner options[:user]
           group options[:group]
           mode "0700"
           action :create
-          recursive true  
+          recursive true
         end
 
         template "#{options[:home]}/.subversion/servers" do
