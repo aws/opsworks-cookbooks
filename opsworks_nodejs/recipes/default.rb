@@ -14,6 +14,7 @@ when 'debian', 'ubuntu'
     not_if do
       local_nodejs_up_to_date
     end
+    retries 2
   end
 
   ['opsworks-nodejs','nodejs'].each do |pkg|
@@ -40,6 +41,7 @@ when 'centos','redhat','fedora','amazon'
     not_if do
       local_nodejs_up_to_date
     end
+    retries 2
   end
 
   ['opsworks-nodejs','nodejs'].each do |pkg|

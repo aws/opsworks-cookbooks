@@ -3,6 +3,7 @@ rubygems_download = remote_file "/tmp/rubygems-#{node[:opsworks_rubygems][:versi
   not_if do
     ::File.exists?('/usr/local/bin/gem') && `/usr/local/bin/gem -v`.strip == node[:opsworks_rubygems][:version]
   end
+  retries 2
 end
 
 fallback "rubygems download fallback" do

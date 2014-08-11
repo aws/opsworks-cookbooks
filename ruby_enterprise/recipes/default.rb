@@ -5,6 +5,7 @@ when "debian","ubuntu"
   remote_file File.join('/tmp', File.basename(node[:ruby_enterprise][:url][arch])) do
     source node[:ruby_enterprise][:url][arch]
     not_if { ::File.exists?(File.join('/tmp', File.basename(node[:ruby_enterprise][:url][arch]))) }
+    retries 2
   end
 
   package "ruby1.9" do
@@ -30,6 +31,7 @@ when 'centos','redhat','fedora','amazon'
   remote_file File.join('/tmp', File.basename(node[:ruby_enterprise][:url][arch])) do
     source node[:ruby_enterprise][:url][arch]
     not_if { ::File.exists?(File.join('/tmp', File.basename(node[:ruby_enterprise][:url][arch]))) }
+    retries 2
   end
 
   package "ruby19" do
