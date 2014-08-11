@@ -103,6 +103,10 @@
   IncludeOptional <%= @params[:rewrite_config] %>-ssl*
   <% end -%>
 
+  <% node[:deploy][@application_name][:environment].each do |key, value| %>
+  SetEnv "<%= key %>" "<%= value.gsub("\"","\\\"") unless value.nil? %>"
+  <% end %>
+
   <% if @params[:mounted_at] -%>
   AliasMatch ^<%= @params[:mounted_at] %>/(.*)$ <%= @params[:docroot] %>$1
   <% end -%>

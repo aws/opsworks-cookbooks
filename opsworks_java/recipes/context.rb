@@ -29,6 +29,7 @@ node[:deploy].each do |application, deploy|
     group node['opsworks_java'][node['opsworks_java']['java_app_server']]['group']
     mode 0640
     backup false
+    only_if { node['opsworks_java']['datasources'][application] }
     variables(:resource_name => node['opsworks_java']['datasources'][application], :application => application, :driver_class => driver_class)
     notifies :restart, "service[#{node['opsworks_java']['java_app_server']}]"
   end
