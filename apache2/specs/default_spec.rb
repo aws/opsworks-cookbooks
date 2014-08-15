@@ -138,7 +138,7 @@ describe_recipe 'apache2::default' do
 
     it 'contains correctly escaped environment variables in apache .conf files' do
       node[:deploy].each do |application, deploy|
-        deploy[:environment].each do |key, value|
+        deploy[:environment_variables].each do |key, value|
           if node[:opsworks][:instance][:layers].include?("#{deploy[:application_type]}-app") && deploy[:application_type] != "java"
             file("#{node[:apache][:dir]}/sites-available/#{application}.conf").must_include(key)
             file("#{node[:apache][:dir]}/sites-available/#{application}.conf").must_include(value.gsub("\"","\\\"")) unless value.blank?

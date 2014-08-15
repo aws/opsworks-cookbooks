@@ -15,7 +15,7 @@ describe_recipe 'unicorn::default' do
 
   it 'contains correctly escaped environment variables in unicorn.conf files' do
     node[:deploy].each do |application, deploy|
-      deploy[:environment].each do |key, value|
+      deploy[:environment_variables].each do |key, value|
         if node[:opsworks][:instance][:layers].include?("#{deploy[:application_type]}-app")
           file("#{deploy[:deploy_to]}/shared/config/unicorn.conf").must_include(key)
           file("#{deploy[:deploy_to]}/shared/config/unicorn.conf").must_include(value.gsub("\"","\\\"")) unless value.blank?
