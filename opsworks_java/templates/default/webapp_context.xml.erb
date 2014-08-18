@@ -1,6 +1,6 @@
 <Context>
-  <% node['deploy'][@application]['environment_variables'].each do |key, value|%>
-  <Environment name="<%= key %>" value="<%= value.gsub(/[&"'<>]/, {"&" => "&amp;", "\"" => "&quot;", "'" => "&apos;", "<" => "&lt;", ">" => "&gt;"}) unless value.nil? %>" type="java.lang.String" />
+  <% @environment.each do |key, value| %>
+  <Environment name="<%= key %>" value="<%= value %>" type="java.lang.String" />
   <% end %>
   <% if node['opsworks_java']['datasources'][@application] %>
   <Resource name="<%= @resource_name %>" auth="Container" type="javax.sql.DataSource"

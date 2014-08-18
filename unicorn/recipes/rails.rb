@@ -43,6 +43,10 @@ node[:deploy].each do |application, deploy|
     owner deploy[:user]
     group deploy[:group]
     source "unicorn.conf.erb"
-    variables(:deploy => deploy, :application => application)
+    variables(
+      :deploy => deploy,
+      :application => application,
+      :environment => OpsWorks::Escape.escape_double_quotes(deploy[:environment_variables])
+    )
   end
 end

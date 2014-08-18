@@ -4,7 +4,9 @@ node[:deploy].each do |application, deploy|
     mode 0770
     owner deploy[:user]
     group deploy[:group]
-    variables({:app => application})
+    variables(
+      :environment => OpsWorks::Escape.escape_double_quotes(deploy[:environment_variables])
+    )
     only_if {File.exists?("#{deploy[:deploy_to]}/shared")}
   end
 end

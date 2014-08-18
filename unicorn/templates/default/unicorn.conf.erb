@@ -13,8 +13,8 @@ pid "<%= @deploy[:deploy_to]%>/shared/pids/unicorn.pid"
 stderr_path "<%= @deploy[:deploy_to]%>/shared/log/unicorn.stderr.log"
 stdout_path "<%= @deploy[:deploy_to]%>/shared/log/unicorn.stdout.log"
 
-<% @deploy[:environment_variables].each do |key, value| %>
-ENV['<%= key %>'] = "<%= value.gsub("\"","\\\"") unless value.nil? %>"
+<% @environment.each do |key, value| %>
+ENV['<%= key %>'] = "<%= value %>"
 <% end %>
 
 preload_app <%= node[:unicorn][:preload_app] %>
