@@ -102,6 +102,7 @@ node[:deploy].each do |application, deploy|
                                                  "RUBYOPT" => "",
                                                  "RACK_ENV" => deploy[:rails_env],
                                                  "HOME" => node[:deploy][application][:home]}
+  default[:deploy][application][:environment_variables] = {}
   default[:deploy][application][:ssl_support] = false
   default[:deploy][application][:auto_npm_install_on_deploy] = true
 
