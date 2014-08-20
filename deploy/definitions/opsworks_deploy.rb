@@ -76,7 +76,7 @@ define :opsworks_deploy do
       symlink_before_migrate( deploy[:symlink_before_migrate] )
       action deploy[:action]
 
-      if deploy[:application_type] == 'rails'
+      if deploy[:application_type] == 'rails' && node[:opsworks][:instance][:layers].include?('rails-app')
         restart_command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:rails_stack][:restart_command]}"
       end
 
