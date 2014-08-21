@@ -39,6 +39,7 @@ describe_recipe 'deploy::nodejs' do
 
   it 'uses the default ports for http and https' do
     node[:deploy].each do |app, deploy|
+      next unless deploy[:application_type] == "nodejs"
       port = deploy[:ssl_support] ? 443 : 80
       monit_config = file(::File.join(node[:monit][:conf_dir], "node_web_app-#{app}.monitrc"))
 
