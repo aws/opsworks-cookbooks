@@ -34,10 +34,10 @@ server {
   access_log  <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>-ssl.access.log;
   
   ssl on;
-  ssl_certificate /etc/nginx/ssl/<%= @application[:domains].first %>.crt;
-  ssl_certificate_key /etc/nginx/ssl/<%= @application[:domains].first %>.key;
+  ssl_certificate <%= node[:nginx][:dir] %>/ssl/<%= @application[:domains].first %>.crt;
+  ssl_certificate_key <%= node[:nginx][:dir] %>/ssl/<%= @application[:domains].first %>.key;
   <% if @application[:ssl_certificate_ca] -%>
-  ssl_client_certificate /etc/nginx/ssl/<%= @application[:domains].first %>.ca;
+  ssl_client_certificate <%= node[:nginx][:dir] %>/ssl/<%= @application[:domains].first %>.ca;
   <% end -%>
 
   location / {
