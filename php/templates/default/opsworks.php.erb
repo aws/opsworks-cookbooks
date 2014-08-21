@@ -25,8 +25,7 @@ class OpsWorksMemcached {
 }
 
 class OpsWorks {
-  public $db;
-  public $memcached;
+  public $db, $memcached, $stack_name;
   private $stack_map;
 
   public function __construct() {
@@ -44,4 +43,3 @@ class OpsWorks {
     return $this->stack_map[$layer];
   }
 }
-?>
