@@ -39,8 +39,9 @@ module OpsWorks
         Chef::Log.info("Gemfile detected. Running bundle install.")
         path = "#{app_config[:home]}/.bundler/#{app_name}"
         cmd = "cd #{app_root_path} && /usr/local/bin/bundle install --path '#{path}' --without=#{app_config[:ignore_bundler_groups].join(" ")}"
-        Chef::Log.info("sudo su deploy -c '#{cmd}'")
-        Chef::Log.info(`sudo su deploy -c '#{cmd} 2>&1'`)
+        user = app_config[:user]
+        Chef::Log.info("sudo su #{user} -c '#{cmd}'")
+        Chef::Log.info(`sudo su #{user} -c '#{cmd} 2>&1'`)
       end
     end
   end
