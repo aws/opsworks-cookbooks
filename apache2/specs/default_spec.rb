@@ -12,6 +12,10 @@ describe_recipe 'apache2::default' do
     end
   end
 
+  def apache_pid
+    @apache_pid ||= ::File.read node[:apache][:pid_file]
+  end
+
   describe 'packages' do
     it 'installs the apache2 package' do
       case node[:platform_family]
@@ -60,6 +64,14 @@ describe_recipe 'apache2::default' do
       else
         fail_test "Your OS (#{node[:platform]}) is not supported."
       end
+    end
+
+    it "runs as the expected user" do
+      OpsWorks::ShellOut.shellout("ps -e -o ppid,user | grep #{apache_pid} | uniq").must_match(/#{node[:apache][:user]}/)
+    end
+
+    it "runs under the expected group id" do
+     OpsWorks::ShellOut.shellout("ps -e -o ppid,group | grep #{apache_pid} | uniq").must_match(/#{node[:apache][:group]}/)
     end
   end
 
