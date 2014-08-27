@@ -98,7 +98,7 @@ define :opsworks_deploy do
       before_migrate do
         link_tempfiles_to_current_release
 
-        if ['rails', 'aws-flow-ruby'].include?(deploy[:application_type])
+        if deploy[:application_type] == 'rails'
           if deploy[:auto_bundle_on_deploy]
             OpsWorks::RailsConfiguration.bundle(application, node[:deploy][application], release_path)
           end
@@ -125,6 +125,8 @@ define :opsworks_deploy do
               deploy[:database][:host].present?
             end
           end.run_action(:create)
+        elsif deploy[:application_type] == 'aws-flow-ruby'
+          OpsWorks::RailsConfiguration.bundle(application, node[:deploy][application], release_path)
         elsif deploy[:application_type] == 'php'
           template "#{node[:deploy][application][:deploy_to]}/shared/config/opsworks.php" do
             cookbook 'php'
