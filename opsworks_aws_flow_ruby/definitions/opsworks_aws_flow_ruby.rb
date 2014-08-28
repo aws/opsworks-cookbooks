@@ -18,6 +18,8 @@ define :opsworks_aws_flow_ruby do
       :application_name => application,
       :environment => OpsWorks::Escape.escape_double_quotes(deploy[:environment_variables])
     )
+    # Notify a restart in case only the env vars changed here
+    notifies :run, "ruby_block[restart AWS Flow Ruby application #{application}]"
   end
 
   file "#{deploy_dir}/runner_config.json" do
