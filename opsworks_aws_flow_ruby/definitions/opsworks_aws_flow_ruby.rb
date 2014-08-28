@@ -45,7 +45,11 @@ define :opsworks_aws_flow_ruby do
   end
 
   # If we make it here, trigger restart
-  Chef::Log.info OpsWorks::ShellOut.shellout("#{deploy_dir}/runner.initrc restart")
+  ruby_block "Restart AWS Flow App #{application}" do
+    block do
+      Chef::Log.info OpsWorks::ShellOut.shellout("#{deploy_dir}/runner.initrc restart")
+    end
+  end
 
   service 'monit' do
     action :nothing
