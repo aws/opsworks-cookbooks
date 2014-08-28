@@ -17,6 +17,10 @@
 PATH=/usr/local/bin:/sbin:/usr/sbin:/bin:/usr/bin
 export PATH
 
+<% @environment.each do |key, value| %>
+export "<%= key %>"="<%= value %>"
+<% end %>
+
 name=<%= @application_name %>
 pidfile="/var/run/$name.pid"
 

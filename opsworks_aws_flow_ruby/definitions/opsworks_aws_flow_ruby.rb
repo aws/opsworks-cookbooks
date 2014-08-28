@@ -15,7 +15,8 @@ define :opsworks_aws_flow_ruby do
     mode '0755'
     variables(
       :deploy => deploy,
-      :application_name => application
+      :application_name => application,
+      :environment => OpsWorks::Escape.escape_double_quotes(deploy[:environment_variables])
     )
   end
 
