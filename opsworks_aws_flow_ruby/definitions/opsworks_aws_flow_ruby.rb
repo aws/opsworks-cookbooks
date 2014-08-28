@@ -27,7 +27,7 @@ define :opsworks_aws_flow_ruby do
   end
 
   minimum_version = node['opsworks_aws_flow_ruby']['minimum_flow_gem_version']
-  if Gem::Version.new(version_match[1]) < Gem::Version.new(minimum_flow_gem_version)
+  if Gem::Version.new(version_match[1]) < Gem::Version.new(minimum_version)
     raise "Gem 'aws-flow' needs to be version #{minimum_version} or higher."
   end
 
