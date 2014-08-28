@@ -7,6 +7,7 @@ node[:deploy].each do |application, deploy|
   opsworks_aws_flow_ruby do
     deploy_data deploy
     app application
+    action :configure
   end
 
 end
