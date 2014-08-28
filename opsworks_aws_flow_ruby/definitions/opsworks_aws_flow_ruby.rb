@@ -34,6 +34,7 @@ define :opsworks_aws_flow_ruby do
   # the init script that controls the runner
   template "#{deploy_dir}/runner.initrc" do
     source 'aws_flow_ruby_app.initrc.erb'
+    cookbook 'opsworks_aws_flow_ruby'
     owner 'root'
     group 'root'
     mode '0755'
@@ -53,6 +54,7 @@ define :opsworks_aws_flow_ruby do
   # the monit part, which will supervise the init script that controls the runner
   template "#{node.default[:monit][:conf_dir]}/aws_flow_ruby-#{application}.monitrc" do
     source 'aws_flow_ruby_app.monitrc.erb'
+    cookbook 'opsworks_aws_flow_ruby'
     owner 'root'
     group 'root'
     mode '0644'
