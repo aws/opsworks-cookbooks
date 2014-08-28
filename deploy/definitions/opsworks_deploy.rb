@@ -100,34 +100,33 @@ define :opsworks_deploy do
       before_migrate do
         link_tempfiles_to_current_release
 
-        if deploy[:application_type] == 'rails'
+        case deploy[:application_type]
+        when 'rails'
           if deploy[:auto_bundle_on_deploy]
             OpsWorks::RailsConfiguration.bundle(application, node[:deploy][application], release_path)
           end
 
           node.default[:deploy][application][:database][:adapter] = OpsWorks::RailsConfiguration.determine_database_adapter(
             application,
-            node[:deploy][application],
+            deploy,
             release_path,
             :force => node[:force_database_adapter_detection],
-            :consult_gemfile => node[:deploy][application][:auto_bundle_on_deploy]
+            :consult_gemfile => deploy[:auto_bundle_on_deploy]
           )
-          template "#{node[:deploy][application][:deploy_to]}/shared/config/database.yml" do
-            cookbook "rails"
-            source "database.yml.erb"
-            mode "0660"
-            owner node[:deploy][application][:user]
-            group node[:deploy][application][:group]
-            variables(
-              :database => node[:deploy][application][:database],
-              :environment => node[:deploy][application][:rails_env]
-            )
 
-            only_if do
-              deploy[:database][:host].present?
-            end
+          deploy = node[:deploy][application]
+
+          rails_configuration "Generate opsworks configration for app #{application.inspect}" do
+            application application
+            deploy_to deploy[:deploy_to]
+            rails_env deploy[:rails_env]
+            user deploy[:user]
+            group deploy[:group]
+            database_data deploy[:database]
+            memcached_data deploy[:memcached] || {}
           end.run_action(:create)
-        elsif deploy[:application_type] == 'php'
+
+        when 'php'
           template "#{node[:deploy][application][:deploy_to]}/shared/config/opsworks.php" do
             cookbook 'php'
             source 'opsworks.php.erb'
@@ -144,7 +143,8 @@ define :opsworks_deploy do
               File.exists?("#{node[:deploy][application][:deploy_to]}/shared/config")
             end
           end
-        elsif deploy[:application_type] == 'nodejs'
+
+        when 'nodejs'
           if deploy[:auto_npm_install_on_deploy]
             OpsWorks::NodejsConfiguration.npm_install(application, node[:deploy][application], release_path)
           end
