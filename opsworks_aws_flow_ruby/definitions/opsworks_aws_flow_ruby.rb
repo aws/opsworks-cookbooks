@@ -79,7 +79,7 @@ define :opsworks_aws_flow_ruby do
       :deploy => deploy,
       :application_name => application
     )
-    notifies :restart, "service[monit]", :immediately
+    notifies :restart, "service[monit]"
   end
 
 end
