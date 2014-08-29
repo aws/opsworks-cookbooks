@@ -61,7 +61,7 @@ when 'debian','ubuntu'
   default[:apache][:pid_file]    = '/var/run/apache2.pid'
   default[:apache][:lib_dir]     = '/usr/lib/apache2'
   default[:apache][:libexecdir]  = "#{node[:apache][:lib_dir]}/modules"
-  default[:apache][:document_root] = '/var/www'
+  default[:apache][:document_root] = '/srv/www'
 else
   raise 'Bailing out, unknown platform.'
 end
