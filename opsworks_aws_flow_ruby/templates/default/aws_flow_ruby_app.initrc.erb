@@ -14,12 +14,14 @@
 # Description:       no description given
 ### END INIT INFO
 
-PATH=/sbin:/usr/sbin:/bin:/usr/bin
+PATH=/usr/local/bin:/sbin:/usr/sbin:/bin:/usr/bin
 export PATH
 
+<% @environment.each do |key, value| %>
+export "<%= key %>"="<%= value %>"
+<% end %>
+
 name=<%= @application_name %>
-program=/usr/local/bin/aws-flow-ruby
-args='-f <%= @deploy[:deploy_to] %>/current/runner_config.json'
 pidfile="/var/run/$name.pid"
 
 [ -r /etc/default/$name ] && . /etc/default/$name
@@ -27,12 +29,10 @@ pidfile="/var/run/$name.pid"
 
 start() {
 
-
   # Run the program!
   chroot --userspec <%= @deploy[:user] %>:<%= @deploy[:group] %> / sh -c "
     cd <%= @deploy[:deploy_to] %>/current
-
-    exec \"$program\" $args
+    exec /usr/local/bin/bundle exec aws-flow-ruby -f runner_config.json
   " > /var/log/$name.log 2> /var/log/$name.err &
 
   # Generate the pidfile from here. If we instead made the forked process

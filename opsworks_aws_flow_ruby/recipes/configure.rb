@@ -1,21 +1,18 @@
 node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'aws-flow-ruby'
-    Chef::Log.info("Skipping deploy::aws-flow-ruby application #{application} as it is not an AWS Flow Ruby app")
+    Chef::Log.info("Skipping configuration of aws-flow-ruby application #{application} as it is not an AWS Flow Ruby app")
     next
   end
 
-  file "#{deploy[:deploy_to]}/current/runner_config.json" do
-    user deploy[:user]
-    group deploy[:group]
-    content JSON.pretty_generate((deploy[:aws_flow_ruby_settings] || {}).dup.update('user_agent_prefix' => node['opsworks_aws_flow_ruby']['user_agent_prefix']))
-    notifies :run, "ruby_block[restart AWS Flow Ruby application #{application}]"
+  unless File.exists?("#{deploy[:deploy_to]}/current")
+    Chef::Log.info("Skipping configuration of aws-flow-ruby application #{application} as it has not yet been deployed")
+    next
   end
 
-  ruby_block "restart AWS Flow Ruby application #{application}" do
-    action :nothing
-    block do
-      Chef::Log.info OpsWorks::ShellOut.shellout("#{deploy[:deploy_to]}/current/runner.initrc restart")
-    end
+  opsworks_aws_flow_ruby do
+    deploy_data deploy
+    app application
+    action :configure
   end
 
 end
