@@ -2,6 +2,11 @@ include_recipe "deploy"
 
 node[:deploy].each do |application, deploy|
 
+  if deploy[:application_type] != 'rails'
+    Chef::Log.debug("Skipping rails::configure application #{application} as it is not an Rails app")
+    next
+  end
+
   node.default[:deploy][application][:database][:adapter] = OpsWorks::RailsConfiguration.determine_database_adapter(
     application,
     deploy,
