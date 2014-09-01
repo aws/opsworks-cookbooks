@@ -38,8 +38,8 @@
   IncludeOptional <%= @params[:rewrite_config] %>*
   <% end -%>
 
-  <% node[:deploy][@application_name][:environment_variables].each do |key, value| %>
-  SetEnv "<%= key %>" "<%= value.gsub("\"","\\\"") unless value.nil? %>"
+  <% @environment.each do |key, value| %>
+  SetEnv "<%= key %>" "<%= value %>"
   <% end %>
 
   <% if @params[:mounted_at] -%>
@@ -103,8 +103,8 @@
   IncludeOptional <%= @params[:rewrite_config] %>-ssl*
   <% end -%>
 
-  <% node[:deploy][@application_name][:environment_variables].each do |key, value| %>
-  SetEnv "<%= key %>" "<%= value.gsub("\"","\\\"") unless value.nil? %>"
+  <% @environment.each do |key, value| %>
+  SetEnv "<%= key %>" "<%= value %>"
   <% end %>
 
   <% if @params[:mounted_at] -%>

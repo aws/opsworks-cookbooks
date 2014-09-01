@@ -1,0 +1,5 @@
+check process aws_flow_ruby_<%= @application_name %> with pidfile "/var/run/<%= @application_name %>.pid"
+  every 2 cycles
+  start program = "<%= @deploy[:deploy_to] %>/current/runner.initrc start"
+  stop program  = "<%= @deploy[:deploy_to] %>/current/runner.initrc stop"
+  if 3 restarts within 6 cycles then timeout

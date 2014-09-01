@@ -40,8 +40,8 @@
 
   FileETag none
 
-  <% node[:deploy][@application_name][:environment_variables].each do |key, value| %>
-  SetEnv "<%= key %>" "<%= value.gsub("\"","\\\"") unless value.nil? %>"
+  <% @environment.each do |key, value| %>
+  SetEnv "<%= key %>" "<%= value %>"
   <% end %>
 
   RewriteEngine On
@@ -125,8 +125,8 @@
 
   FileETag none
 
-  <% node[:deploy][@application_name][:environment_variables].each do |key, value| %>
-  SetEnv "<%= key %>" "<%= value.gsub("\"","\\\"") unless value.nil? %>"
+  <% @environment.each do |key, value| %>
+  SetEnv "<%= key %>" "<%= value %>"
   <% end %>
 
   RewriteEngine On

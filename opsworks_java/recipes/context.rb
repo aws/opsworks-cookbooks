@@ -29,7 +29,12 @@ node[:deploy].each do |application, deploy|
     group node['opsworks_java'][node['opsworks_java']['java_app_server']]['group']
     mode 0640
     backup false
-    variables(:resource_name => node['opsworks_java']['datasources'][application], :application => application, :driver_class => driver_class)
+    variables(
+      :resource_name => node['opsworks_java']['datasources'][application],
+      :application => application,
+      :driver_class => driver_class,
+      :environment => OpsWorks::Escape.escape_xml(deploy[:environment_variables])
+    )
     notifies :restart, "service[#{node['opsworks_java']['java_app_server']}]"
   end
 end
