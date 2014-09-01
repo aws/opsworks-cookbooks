@@ -1,7 +1,11 @@
 include_recipe "deploy"
 
 node[:deploy].each do |application, deploy|
-  deploy = node[:deploy][application]
+
+  if deploy[:application_type] != 'rails'
+    Chef::Log.debug("Skipping rails::configure application #{application} as it is not an Rails app")
+    next
+  end
 
   execute "restart Rails app #{application}" do
     cwd deploy[:current_path]
