@@ -72,6 +72,7 @@ define :opsworks_deploy do
       migrate deploy[:migrate]
       migration_command deploy[:migrate_command]
       environment deploy[:environment].to_hash
+      purge_before_symlink( deploy[:purge_before_symlink] )
       create_dirs_before_symlink( deploy[:create_dirs_before_symlink] )
       symlink_before_migrate( deploy[:symlink_before_migrate] )
       symlinks( deploy[:symlinks] )
