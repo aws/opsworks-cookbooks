@@ -14,7 +14,7 @@ fi
 # settings are defined via environment variables and then used in apache2ctl,
 # /etc/init.d/apache2, /etc/logrotate.d/apache2, etc.
 export APACHE_RUN_USER=<%= node[:apache][:user] %>
-export APACHE_RUN_GROUP=<%= node[:apache][:user] %>
+export APACHE_RUN_GROUP=<%= node[:apache][:group] %>
 # temporary state file location. This might be changed to /run in Wheezy+1
 export APACHE_PID_FILE=/var/run/apache2/apache2$SUFFIX.pid
 export APACHE_RUN_DIR=/var/run/apache2$SUFFIX
