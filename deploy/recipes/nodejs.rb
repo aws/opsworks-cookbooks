@@ -22,6 +22,13 @@ node[:deploy].each do |application, deploy|
     app application
   end
 
+  application_environment_file do
+    user deploy[:user]
+    group deploy[:group]
+    path ::File.join(deploy[:deploy_to], "shared")
+    environment_variables deploy[:environment_variables]
+  end
+
   ruby_block "restart node.js application #{application}" do
     block do
       Chef::Log.info("restart node.js via: #{node[:deploy][application][:nodejs][:restart_command]}")
@@ -30,4 +37,3 @@ node[:deploy].each do |application, deploy|
     end
   end
 end
-include_recipe 'opsworks_nodejs::create_env_file'
