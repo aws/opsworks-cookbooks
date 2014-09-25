@@ -93,7 +93,7 @@ define :opsworks_deploy do
       before_migrate do
         link_tempfiles_to_current_release
 
-        if deploy[:application_type] == 'rails'
+        if deploy[:application_type] == "rails"
           if deploy[:auto_bundle_on_deploy]
             OpsWorks::RailsConfiguration.bundle(application, node[:deploy][application], release_path)
           end
@@ -117,11 +117,11 @@ define :opsworks_deploy do
               :environment => node[:deploy][application][:rails_env]
             )
           end.run_action(:create)
-        elsif deploy[:application_type] == 'php'
+        elsif deploy[:application_type] == "php"
           template "#{node[:deploy][application][:deploy_to]}/shared/config/opsworks.php" do
-            cookbook 'php'
-            source 'opsworks.php.erb'
-            mode '0660'
+            cookbook "php"
+            source "opsworks.php.erb"
+            mode "0660"
             owner node[:deploy][application][:user]
             group node[:deploy][application][:group]
             variables(
@@ -131,10 +131,10 @@ define :opsworks_deploy do
               :stack_name => node[:opsworks][:stack][:name]
             )
             only_if do
-              File.exists?("#{node[:deploy][application][:deploy_to]}/shared/config")
+              File.exist?("#{node[:deploy][application][:deploy_to]}/shared/config")
             end
           end
-        elsif deploy[:application_type] == 'nodejs'
+        elsif deploy[:application_type] == "nodejs"
           if deploy[:auto_npm_install_on_deploy]
             OpsWorks::NodejsConfiguration.npm_install(application, node[:deploy][application], release_path)
           end

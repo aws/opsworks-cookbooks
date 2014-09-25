@@ -2,6 +2,8 @@ require 'resolv'
 include_recipe 'deploy'
 
 node[:deploy].each do |application, deploy|
+  next if deploy[:database].nil? || deploy[:database].empty?
+
   mysql_command = "/usr/bin/mysql -u #{deploy[:database][:username]} #{node[:mysql][:server_root_password].blank? ? '' : "-p#{node[:mysql][:server_root_password]}"}"
 
   execute "create mysql database" do

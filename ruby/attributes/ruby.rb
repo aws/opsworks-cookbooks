@@ -6,7 +6,11 @@ case node["opsworks"]["ruby_version"]
 when "2.0.0"
   default[:ruby][:major_version] = '2.0'
   default[:ruby][:full_version] = '2.0.0'
-  default[:ruby][:patch] = 'p451'
+  if platform?("amazon") && node[:platform_version] >= "2014.09"
+    default[:ruby][:patch] = 'p481'
+  else
+    default[:ruby][:patch] = 'p451'
+  end
   default[:ruby][:pkgrelease] = '1'
 when "1.9.3"
   default[:ruby][:major_version] = '1.9'
