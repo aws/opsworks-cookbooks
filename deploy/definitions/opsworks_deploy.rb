@@ -72,8 +72,10 @@ define :opsworks_deploy do
       migrate deploy[:migrate]
       migration_command deploy[:migrate_command]
       environment deploy[:environment].to_hash
-      create_dirs_before_symlink( deploy[:create_dirs_before_symlink] )
-      symlink_before_migrate( deploy[:symlink_before_migrate] )
+      purge_before_symlink(deploy[:purge_before_symlink]) unless deploy[:purge_before_symlink].nil?
+      create_dirs_before_symlink(deploy[:create_dirs_before_symlink])
+      symlink_before_migrate(deploy[:symlink_before_migrate])
+      symlinks(deploy[:symlinks]) unless deploy[:symlinks].nil?
       action deploy[:action]
 
       if deploy[:application_type] == 'rails' && node[:opsworks][:instance][:layers].include?('rails-app')

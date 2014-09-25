@@ -13,7 +13,7 @@ describe_recipe 'apache2::default' do
   end
 
   def apache_pid
-    @apache_pid ||= ::File.read node[:apache][:pid_file]
+    @apache_pid ||= ::File.read(node[:apache][:pid_file]).strip
   end
 
   describe 'packages' do

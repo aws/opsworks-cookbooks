@@ -107,7 +107,7 @@ module BlockDevice
         md_device = line.split.first if plain_disks.any?{|disk| line.include?(disk)}
         if md_device
           begin
-            physical_volume_info = OpsWorks::ShellOut.shellout("pvdisplay -c /dev/#{md_device}").lines.first
+            physical_volume_info = OpsWorks::ShellOut.shellout("pvdisplay -c /dev/#{md_device}").lines.grep(%r{/dev/#{md_device}}).first
             if physical_volume_info
               volume_group = physical_volume_info.split(':')[1] rescue nil
               if volume_group

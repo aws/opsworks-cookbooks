@@ -3,27 +3,18 @@ module Opsworks
     module Environment
       require 'yaml'
 
-      CHEF_CONFIG_PATH = '/var/lib/aws/opsworks'
+      CHEF_CONFIG_YAML = '/var/lib/aws/opsworks/client.yml'
       INSTANCE_AGENT_CONFIG = '/etc/aws/opsworks/instance-agent.yml'
       INSTANCE_AGENT_EMBEDDED_BIN_PATH = "/opt/aws/opsworks/local/bin"
 
       class Config
         class << self
           def opsworks_chef_config
-            @opsworks_chef_config ||= YAML.load_file(chef_config_file)
+            @opsworks_chef_config ||= YAML.load_file(Opsworks::InstanceAgent::Environment::CHEF_CONFIG_YAML)
           end
 
           def opsworks_instance_agent_config
             @opsworks_instance_agent_config ||= YAML.load_file(Opsworks::InstanceAgent::Environment::INSTANCE_AGENT_CONFIG)
-          end
-
-          private
-
-          def chef_config_file
-            %w(client.stage2.yml client.stage1.yml client.yml).each do |config_file|
-              chef_config_yaml = File.join(Opsworks::InstanceAgent::Environment::CHEF_CONFIG_PATH, config_file)
-              return chef_config_yaml if File.file?(chef_config_yaml)
-            end
           end
         end
       end
