@@ -44,7 +44,11 @@ when "2.1"
 when "2.0.0"
   default[:ruby][:major_version] = '2.0'
   default[:ruby][:full_version] = '2.0.0'
-  default[:ruby][:patch] = 'p451'
+  if _platform == "amazon" && _platform_version >= "2014.09"
+    default[:ruby][:patch] = 'p481'
+  else
+    default[:ruby][:patch] = 'p451'
+  end
   default[:ruby][:pkgrelease] = '1'
 when "1.9.3"
   default[:ruby][:major_version] = '1.9'
