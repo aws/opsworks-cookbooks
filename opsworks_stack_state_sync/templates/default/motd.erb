@@ -6,12 +6,14 @@
    OpsWorks Instance ID: <%= @instance[:id] %>
    OpsWorks Layers: <%= @instance[:layers].map{|id| @layers[id][:name] }.join(', ') %>
    OpsWorks Stack: <%= @stack[:name] %>
+<% if @instance[:region] && @instance[:availability_zone] && @instance[:aws_instance_id] -%>
    EC2 Region: <%= @instance[:region] %>
    EC2 Availability Zone: <%= @instance[:availability_zone] %>
    EC2 Instance ID: <%= @instance[:aws_instance_id] %>
+<% end -%>
    Public IP: <%= @instance[:ip] %>
    Private IP: <%= @instance[:private_ip] %>
-<% if @stack[:vpc_id] -%>
+<% if @stack[:vpc_id] && @instance[:subnet_id] -%>
    VPC ID: <%= @stack[:vpc_id] %>
    Subnet ID: <%= @instance[:subnet_id] %>
 <% end -%>
