@@ -61,7 +61,7 @@ server {
 
 <% if @application[:ssl_support] %>
 server {
-  listen   443;
+  listen   443 ssl <%= "spdy" if node[:nginx][:enable_spdy] %>;
   server_name <%= @application[:domains].join(" ") %> <%= node[:hostname] %>;
   access_log <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>-ssl.access.log;
   
