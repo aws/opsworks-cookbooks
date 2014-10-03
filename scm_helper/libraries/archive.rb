@@ -1,4 +1,5 @@
 require 'tmpdir'
+require 'fileutils'
 
 module OpsWorks
   module SCM
@@ -22,9 +23,7 @@ module OpsWorks
           source archive_url
         end
 
-        execute 'extract files' do
-          command "#{node[:opsworks_agent][:current_dir]}/bin/extract #{tmpdir}/archive"
-        end
+        extract_archive("#{tmpdir}/archive")
 
         execute 'create git repository' do
           cwd "#{tmpdir}/archive.d"
