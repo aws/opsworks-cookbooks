@@ -47,7 +47,8 @@ start() {
     return 0
   else
     echo "$name failed to start"
-    cat /var/log/$name.{log,err}
+    cat /var/log/$name.log
+    cat /var/log/$name.err
     return 1
   fi
 }
