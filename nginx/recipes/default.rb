@@ -30,6 +30,7 @@ directory node[:nginx][:log_dir] do
   mode 0755
   owner node[:nginx][:user]
   action :create
+  recursive true
 end
 
 %w{sites-available sites-enabled conf.d}.each do |dir|
