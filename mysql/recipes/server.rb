@@ -34,7 +34,7 @@ service 'mysql' do
   action :stop
 end
 
-include_recipe 'mysql::ebs'
+include_recipe 'mysql::ebs' if infrastructure_class?('ec2')
 include_recipe 'mysql::config'
 
 service 'mysql' do
