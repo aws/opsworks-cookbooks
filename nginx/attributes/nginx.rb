@@ -47,13 +47,23 @@ default[:nginx][:gzip_disable] = "MSIE [1-6].(?!.*SV1)"
 default[:nginx][:gzip_http_version] = "1.0"
 default[:nginx][:gzip_comp_level] = "2"
 default[:nginx][:gzip_proxied] = "any"
-default[:nginx][:gzip_types] = ["application/x-javascript",
+default[:nginx][:gzip_types] = ["application/atom+xml",
+                                "application/javascript",
+                                "application/json",
+                                "application/rss+xml",
+                                "application/x-font-ttf",
+                                "application/x-javascript",
+                                "application/x-web-app-manifest+json",
                                 "application/xhtml+xml",
                                 "application/xml",
                                 "application/xml+rss",
+                                "font/opentype",
+                                "image/svg+xml",
+                                "image/x-icon",
                                 "text/css",
                                 "text/javascript",
                                 "text/plain",
+                                "text/x-component",
                                 "text/xml"]
 # NGinx will compress "text/html" by default
 
