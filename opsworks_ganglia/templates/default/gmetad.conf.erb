@@ -46,4 +46,4 @@ gridname "AWS OpsWorks"
 
 # Where gmetad stores its round-robin databases
 # default: "/var/lib/ganglia/rrds"
-rrd_rootdir "<%= node[:ganglia][:datadir] %>/rrds"
+rrd_rootdir "<%= node[:ganglia][:original_datadir] %>/rrds"

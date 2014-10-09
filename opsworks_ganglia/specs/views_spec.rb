@@ -21,14 +21,14 @@ describe_recipe 'opsworks_ganglia::views' do
 
     instances.keys.each do |instance_name|
       file(
-        ::File.join(node[:ganglia][:datadir], 'conf', "host_#{instance_name}.json")
+        ::File.join(node[:ganglia][:original_datadir], 'conf', "host_#{instance_name}.json")
       ).must_exist.with(:mode, '644').and(:owner, node[:apache][:user]).and(:group, node[:apache][:group])
     end
   end
 
   it 'creates view_overview json' do
     file(
-      ::File.join(node[:ganglia][:datadir], 'conf', 'view_overview.json')
+      ::File.join(node[:ganglia][:original_datadir], 'conf', 'view_overview.json')
     ).must_exist.with(:mode, '644').and(:owner, node[:apache][:user]).and(:group, node[:apache][:group])
   end
 end
