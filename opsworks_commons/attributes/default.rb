@@ -14,7 +14,7 @@
 # See also: http://docs.aws.amazon.com/opsworks/latest/userguide/customizing.html
 ###
 
-default[:opsworks_commons][:assets_url] = 'https://opsworks-instance-assets.s3.amazonaws.com'
+default[:opsworks_commons][:assets_url] = 'https://opsworks-instance-assets-us-east-1.s3.amazonaws.com'
 
 default[:ruby][:executable] = '/usr/local/bin/ruby'
 
