@@ -67,4 +67,7 @@ default[:nginx][:server_names_hash_bucket_size] = 64
 default[:nginx][:proxy_read_timeout] = 60
 default[:nginx][:proxy_send_timeout] = 60
 
+# SSL
+default[:nginx][:ssl_protocols] = nil # rely on default provided by nginx
+
 include_attribute "nginx::customize"

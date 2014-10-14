@@ -10,3 +10,8 @@
 #
 #normal[:nginx][:gzip] = 'off'
 #normal[:nginx][:gzip_static] = 'off'
+
+# The following allows specification of the ssl_protocols
+# The default ssl_protocols will be used if not set.
+# See: http://nginx.org/en/docs/http/configuring_https_servers.html
+#normal[:nginx][:ssl_protocols] = 'TLSv1 TLSv1.1 TLSv1.2'
