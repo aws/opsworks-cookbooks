@@ -17,17 +17,10 @@ node[:ebs][:devices].each do |device, options|
   end
 
   mount options[:mount_point] do
+    action [:mount, :enable]
     fstype options[:fstype]
     device device
-    options "noatime"
-    pass 0
-  end
-
-  mount options[:mount_point] do
-    action :enable
-    fstype options[:fstype]
-    device device
-    options "noatime"
+    options "noatime,nobootwait"
     pass 0
   end
 
