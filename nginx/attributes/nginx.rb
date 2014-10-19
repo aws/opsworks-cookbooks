@@ -69,5 +69,6 @@ default[:nginx][:proxy_send_timeout] = 60
 
 # SSL
 default[:nginx][:ssl_protocols] = nil # rely on default provided by nginx
+default[:nginx][:force_ssl] = false # Force HTTP to redirect to HTTPS
 
 include_attribute "nginx::customize"
