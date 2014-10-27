@@ -52,7 +52,7 @@ describe_recipe 'opsworks_ganglia::configure-server' do
     when "debian"
      service('apache2').must_be_running
     when "rhel"
-      service('httpd').must_be_running
+      service('httpd24').must_be_running
     end
   end
 

@@ -22,7 +22,7 @@ describe_recipe 'apache2::default' do
       when 'debian'
         package('apache2').must_be_installed
       when 'rhel'
-        package('httpd').must_be_installed
+        package('httpd24').must_be_installed
       else
         fail_test "Your OS (#{node[:platform]}) is not supported."
       end
@@ -59,8 +59,8 @@ describe_recipe 'apache2::default' do
         service('apache2').must_be_enabled
         service('apache2').must_be_running
       when 'rhel'
-        service('httpd').must_be_enabled
-        service('httpd').must_be_running
+        service('httpd24').must_be_enabled
+        service('httpd24').must_be_running
       else
         fail_test "Your OS (#{node[:platform]}) is not supported."
       end

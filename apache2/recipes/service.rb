@@ -1,6 +1,6 @@
 service 'apache2' do
   service_name value_for_platform_family(
-    'rhel' => 'httpd',
+    'rhel' => 'httpd24',
     'debian' => 'apache2'
   )
 
@@ -9,7 +9,7 @@ service 'apache2' do
   # during the initial bootstrap.
   ['restart','reload'].each do |srv_cmd|
     send("#{srv_cmd}_command", value_for_platform_family(
-        'rhel' => "sleep 1 && /sbin/service httpd #{srv_cmd} && sleep 1",
+        'rhel' => "sleep 1 && /sbin/service httpd24 #{srv_cmd} && sleep 1",
         'debian' => "sleep 1 && /etc/init.d/apache2 #{srv_cmd} && sleep 1"
       )
     )

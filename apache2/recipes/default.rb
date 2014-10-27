@@ -20,7 +20,7 @@
 package 'apache2' do
   case node[:platform_family]
   when 'rhel'
-    package_name 'httpd'
+    package_name 'httpd24'
   when 'debian'
     package_name 'apache2'
   end
@@ -31,7 +31,7 @@ include_recipe 'apache2::service'
 
 service 'apache2' do
   service_name value_for_platform_family(
-    'rhel' => 'httpd',
+    'rhel' => 'httpd24',
     'debian' => 'apache2'
   )
   action :enable
