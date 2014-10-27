@@ -27,15 +27,15 @@ describe_recipe "mod_php5_apache2::default" do
                 ]
               when "rhel"
                 [
-                  "php-xml",
-                  "php-common",
-                  "php-xmlrpc",
-                  "php-devel",
-                  "php-gd",
-                  "php-cli",
+                  "php54-xml",
+                  "php54-common",
+                  "php54-xmlrpc",
+                  "php54-devel",
+                  "php54-gd",
+                  "php54-cli",
                   "php-pear-Auth-SASL",
-                  "php-mcrypt",
-                  "php-pecl-memcache",
+                  "php54-mcrypt",
+                  "php54-pecl-memcache",
                   "php-pear",
                   "php-pear-XML-Parser",
                   "php-pear-Mail-Mime",
@@ -52,14 +52,14 @@ describe_recipe "mod_php5_apache2::default" do
         when "debian"
           packages << "php5-mysql"
         when "rhel"
-          packages << "php-mysql"
+          packages << "php54-mysql"
         end
       when "postgresql"
         case node[:platform_family]
         when "debian"
           packages << "php5-pgsql"
         when "rhel"
-          packages << "php-pgsql"
+          packages << "php54-pgsql"
         end
       end
     end

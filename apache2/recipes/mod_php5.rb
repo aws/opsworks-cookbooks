@@ -23,7 +23,7 @@ when 'debian'
     action :install
   end
 when 'rhel'
-  package 'php' do
+  package 'php54' do
     action :install
     notifies :run, "execute[generate-module-list]", :immediately
     not_if 'which php'
