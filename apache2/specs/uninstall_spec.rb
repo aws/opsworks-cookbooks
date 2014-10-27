@@ -9,7 +9,7 @@ describe_recipe 'apache2::uninstall' do
     when 'debian'
       service('apache2').wont_be_running
     when 'rhel'
-      service('httpd').wont_be_running
+      service('httpd24').wont_be_running
     else
       # Fail test if we don't have a supported OS.
       assert_equal(3, nil)
@@ -21,7 +21,7 @@ describe_recipe 'apache2::uninstall' do
     when 'debian'
       package('apache2').wont_be_installed
     when 'rhel'
-      package('httpd').wont_be_installed
+      package('httpd24').wont_be_installed
     else
       # Fail test if we don't have a supported OS.
       assert_equal(3, nil)

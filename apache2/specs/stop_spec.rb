@@ -7,7 +7,7 @@ describe_recipe 'apache2::stop' do
   it 'stops apache2' do
     case node[:platform_family]
     when 'rhel'
-      service('httpd').wont_be_running
+      service('httpd24').wont_be_running
     when 'debian'
       service('apache2').wont_be_running
     end
