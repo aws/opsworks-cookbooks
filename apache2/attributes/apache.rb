@@ -33,8 +33,11 @@
 # See also: http://docs.aws.amazon.com/opsworks/latest/userguide/customizing.html
 ###
 
+default[:apache][:devel_package] = 'httpd-devel'
+
 case node[:platform_family]
 when 'rhel'
+  default[:apache][:package]       = 'httpd'
   default[:apache][:dir]           = '/etc/httpd'
   default[:apache][:log_dir]       = '/var/log/httpd'
   default[:apache][:user]          = 'apache'
@@ -51,6 +54,7 @@ when 'rhel'
   default[:apache][:libexecdir]    = "#{node[:apache][:lib_dir]}/modules"
   default[:apache][:document_root] = '/var/www/html'
 when 'debian'
+  default[:apache][:package]       = 'apache2'
   default[:apache][:dir]           = '/etc/apache2'
   default[:apache][:log_dir]       = '/var/log/apache2'
   default[:apache][:user]          = 'www-data'

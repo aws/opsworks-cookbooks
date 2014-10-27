@@ -18,14 +18,7 @@ describe_recipe 'apache2::default' do
 
   describe 'packages' do
     it 'installs the apache2 package' do
-      case node[:platform_family]
-      when 'debian'
-        package('apache2').must_be_installed
-      when 'rhel'
-        package('httpd').must_be_installed
-      else
-        fail_test "Your OS (#{node[:platform]}) is not supported."
-      end
+      package(node[:apache][:package]).must_be_installed
     end
   end
 

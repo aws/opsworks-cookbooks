@@ -18,12 +18,7 @@
 #
 
 package 'apache2' do
-  case node[:platform_family]
-  when 'rhel'
-    package_name 'httpd'
-  when 'debian'
-    package_name 'apache2'
-  end
+  package_name node[:apache][:package]
   action :install
 end
 

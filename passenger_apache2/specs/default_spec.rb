@@ -16,7 +16,7 @@ describe_recipe 'passenger_apache2::default' do
       skip unless node[:packages][:dist_only]
       case node[:platform]
       when 'centos','redhat','amazon'
-        package('httpd-devel').must_be_installed
+        package(node[:apache][:devel_package]).must_be_installed
         if node['platform_version'].to_f < 6.0
           package('curl-devel').must_be_installed
         else
