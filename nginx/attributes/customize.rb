@@ -15,6 +15,8 @@
 # The default ssl_protocols will be used if not set.
 # See: http://nginx.org/en/docs/http/configuring_https_servers.html
 #normal[:nginx][:ssl_protocols] = 'TLSv1 TLSv1.1 TLSv1.2'
+# arrays are also supported
+#normal[:nginx][:ssl_protocols] = ['TLSv1', 'TLSv1.1', 'TLSv1.2']
 
 # The following allows ssl to be enforced by all connections by
 # redirecting all trafic coming to port 80 to port 443

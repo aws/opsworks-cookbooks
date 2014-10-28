@@ -45,7 +45,11 @@ server {
   <% end -%>
 
   <% unless node[:nginx][:ssl_protocols].nil? -%>
-  ssl_protocols <%= node[:nginx][:ssl_protocols] %>
+    <% if node[:nginx][:ssl_protocols].respond_to?(:join) -%>
+      ssl_protocols <%= node[:nginx][:ssl_protocols].join(' ') %>
+    <% elsif -%>
+      ssl_protocols <%= node[:nginx][:ssl_protocols] %>
+    <% end -%>
   <% end -%>
 
   location / {
