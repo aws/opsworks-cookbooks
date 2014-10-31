@@ -14,7 +14,7 @@
 # See also: http://docs.aws.amazon.com/opsworks/latest/userguide/customizing.html
 ###
 include_attribute 'opsworks_commons::default'
-default['opsworks_berkshelf']['prebuilt_versions'] = ['2.0.14', '2.0.18', '3.0.1', '3.1.1', '3.1.3']
+default['opsworks_berkshelf']['prebuilt_versions'] = ['2.0.14', '2.0.18', '3.0.1', '3.1.1', '3.1.3', '3.1.5', '3.2.0']
 
 default['opsworks_berkshelf']['version'] = node['opsworks_custom_cookbooks']['berkshelf_version'] || node['opsworks_berkshelf']['prebuilt_versions'].last
 default['opsworks_berkshelf']['pkg_release'] = '1'
