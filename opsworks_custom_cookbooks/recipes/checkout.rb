@@ -45,6 +45,7 @@ when 'svn'
   subversion "Download Custom Cookbooks" do
     svn_username node[:opsworks_custom_cookbooks][:scm][:user]
     svn_password node[:opsworks_custom_cookbooks][:scm][:password]
+    svn_arguments node[:opsworks_custom_cookbooks][:scm][:arguments]
 
     user node[:opsworks_custom_cookbooks][:user]
     group node[:opsworks_custom_cookbooks][:group]
