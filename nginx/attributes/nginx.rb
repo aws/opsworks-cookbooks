@@ -35,6 +35,7 @@ else
   Chef::Log.error "Cannot configure nginx, platform unknown"
 end
 
+default[:nginx][:server_tokens] = 'off'
 default[:nginx][:log_format] = {}
 
 # increase if you accept large uploads
