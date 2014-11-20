@@ -20,7 +20,10 @@ node[:ebs][:devices].each do |device, options|
     action [:mount, :enable]
     fstype options[:fstype]
     device device
-    options "noatime,nobootwait"
+    options value_for_platform_family(
+      'rhel' => "noatime",
+      'debian' => "noatime,nobootwait"
+    )
     pass 0
   end
 
