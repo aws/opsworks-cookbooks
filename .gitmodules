@@ -1,0 +1,3 @@
+[submodule "scout"]
+	path = scout
+	url = git@github.com:scoutapp/scout_cookbooks.git
