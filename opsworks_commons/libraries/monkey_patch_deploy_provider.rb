@@ -37,7 +37,7 @@ class Chef
           end.join(" ")
 
           converge_by("execute migration command #{@new_resource.migration_command}") do
-            if environment.has_key?("SHOW_ENVIRONMENT_VARIABLES")
+            if environment && environment.key?("SHOW_ENVIRONMENT_VARIABLES")
               Chef::Log.info "#{@new_resource} migrating #{@new_resource.user} with environment #{env_info}"
             else
               Chef::Log.info "#{@new_resource} migrating #{@new_resource.user}"
