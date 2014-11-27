@@ -40,6 +40,9 @@ default[:nginx][:log_format] = {}
 # increase if you accept large uploads
 default[:nginx][:client_max_body_size] = "4m"
 
+# turn "off" if you don't want to show the version number (a security best practice)
+default[:nginx][:server_tokens] = "on"
+
 default[:nginx][:gzip] = "on"
 default[:nginx][:gzip_static] = "on"
 default[:nginx][:gzip_vary] = "on"
