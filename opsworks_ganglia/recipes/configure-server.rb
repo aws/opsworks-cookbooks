@@ -13,7 +13,7 @@ directory '/etc/ganglia-webfrontend' do
 end
 
 ["dwoo/compiled","dwoo/cache"].each do |dir|
-  directory "#{node[:ganglia][:datadir]}/#{dir}" do
+  directory "#{node[:ganglia][:original_datadir]}/#{dir}" do
     owner node[:apache][:user]
     group node[:apache][:group]
     mode '0755'

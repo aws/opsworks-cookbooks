@@ -35,4 +35,15 @@ template '/etc/sudoers' do
   group 'root'
   mode 0440
   variables :sudoers => node[:sudoers], :system_sudoer => system_sudoer
+  only_if { infrastructure_class? 'ec2' }
+end
+
+template '/etc/sudoers.d/opsworks' do
+  backup false
+  source 'sudoers.d.erb'
+  owner 'root'
+  group 'root'
+  mode 0440
+  variables :sudoers => node[:sudoers], :system_sudoer => system_sudoer
+  not_if { infrastructure_class? 'ec2' }
 end

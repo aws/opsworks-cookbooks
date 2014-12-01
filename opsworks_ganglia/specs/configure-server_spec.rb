@@ -57,6 +57,6 @@ describe_recipe 'opsworks_ganglia::configure-server' do
   end
 
   it 'displays "Ganglia Monitoring" on the website' do
-    assert system("curl http://localhost | grep 'Ganglia Monitoring'")
+    assert system("curl -s http://localhost | grep 'Ganglia Monitoring'")
   end
 end

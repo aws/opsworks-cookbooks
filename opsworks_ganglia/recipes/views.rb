@@ -17,7 +17,7 @@ end
 
 # generate individual server view json
 instances.keys.each do |instance_name|
-  template "#{node[:ganglia][:datadir]}/conf/host_#{instance_name}.json" do
+  template "#{node[:ganglia][:original_datadir]}/conf/host_#{instance_name}.json" do
     source 'host_view_json.erb'
     mode "0644"
     owner node[:apache][:user]
@@ -27,7 +27,7 @@ instances.keys.each do |instance_name|
 end
 
 # generate opsworks view json for autorotation
-template "#{node[:ganglia][:datadir]}/conf/view_overview.json" do
+template "#{node[:ganglia][:original_datadir]}/conf/view_overview.json" do
   source 'view_overview.json.erb'
   mode "0644"
   owner node[:apache][:user]
