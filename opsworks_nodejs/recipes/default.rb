@@ -37,4 +37,17 @@ else
     notifies :write, "log[downloading]", :immediately
     action :install
   end
+
+  if node[:opsworks_npm][:version]
+    log "downloading" do
+      message "Update npm"
+      level :info
+
+      action :nothing
+    end
+
+    execute "npm update" do
+        command "npm install -g npm@v#{node[:opsworks_npm][:version]}"
+    end
+  end
 end
