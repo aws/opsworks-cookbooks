@@ -39,12 +39,14 @@ define :web_app, :template => 'web_app.conf.erb' do
     if params[:cookbook]
       cookbook params[:cookbook]
     end
+    
+    deploy = node[:deploy][application_name]
+    environment_variables = {}    
 
-    environment_variables = if node[:deploy][application_name].nil?
-                              {}
-                            else
-                              node[:deploy][application_name][:environment_variables]
-                            end
+    if !deploy.nil? && !deploy[:environment_variables].nil?       
+      environment_variables = deploy[:environment_variables] if !deploy[:environment_variables].empty?
+    end
+
     variables(
       :application_name => application_name,
       :params => params,
