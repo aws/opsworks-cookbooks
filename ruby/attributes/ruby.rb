@@ -31,6 +31,16 @@ end
 
 # ruby_version 1.8.7 is handled by 'ruby-enterprise'
 case node["opsworks"]["ruby_version"]
+when "2.2"
+  default[:ruby][:major_version] = '2'
+  default[:ruby][:minor_version] = '2'
+  default[:ruby][:patch_version] = '0'
+  default[:ruby][:pkgrelease]    = '1'
+
+  i = node[:ruby]
+  default[:ruby][:version] = "#{i[:major_version]}.#{i[:minor_version]}.#{i[:patch_version]}"
+  default[:ruby][:deb] = "opsworks-ruby#{i[:major_version]}.#{i[:minor_version]}_#{i[:major_version]}.#{i[:minor_version]}.#{i[:patch_version]}.#{i[:pkgrelease]}_#{arch}.deb"
+  default[:ruby][:rpm] = "opsworks-ruby#{i[:major_version]}#{i[:minor_version]}-#{i[:major_version]}.#{i[:minor_version]}.#{i[:patch_version]}-#{i[:pkgrelease]}.#{rhel_arch}.rpm"
 when "2.1"
   default[:ruby][:major_version] = '2'
   default[:ruby][:minor_version] = '1'

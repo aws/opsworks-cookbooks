@@ -30,7 +30,7 @@ when 'debian','ubuntu'
     retries 2
   end
 
-  ['opsworks-ruby1.9','opsworks-ruby2.0','opsworks-ruby2.1','ruby-enterprise','ruby1.9','ruby2.0'].each do |pkg|
+  ['opsworks-ruby1.9','opsworks-ruby2.0','opsworks-ruby2.1','opsworks-ruby2.2','ruby-enterprise','ruby1.9','ruby2.0'].each do |pkg|
     package pkg do
       action :remove
       ignore_failure true
@@ -52,7 +52,7 @@ when 'centos','redhat','fedora','amazon'
     retries 2
   end
 
-  ['opsworks-ruby19','opsworks-ruby20','opsworks-ruby21','ruby-enterprise','ruby19','ruby20'].each do |pkg|
+  ['opsworks-ruby19','opsworks-ruby20','opsworks-ruby21','opsworks-ruby22','ruby-enterprise','ruby19','ruby20'].each do |pkg|
     package pkg do
       action :remove
       ignore_failure true
