@@ -70,7 +70,7 @@ def clean_restart
     stop_unicorn if unicorn_running?
     start_unicorn
   else
-    puts "No previous version with a different Gemfile found. Assuming a quick restart without re-loading gems is save"
+    puts "No previous version with a different Gemfile found. Assuming a quick restart without re-loading gems is safe"
     restart_unicorn
   end
 end
