@@ -1,6 +1,11 @@
 #!upstart
 description "Resque workers"
 
+<% @deploy[:environment].each do |k,v| %>
+env <%= k %>=<%= v %>
+export <%= k %>
+<% end %>
+
 pre-start script
 
 bash << "EOF"

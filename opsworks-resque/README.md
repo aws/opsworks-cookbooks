@@ -6,35 +6,71 @@ This is a very simple cookbook to deploy a pool of resque workers directly in Am
 
 # Usage
 
-In your custom layer, you must add this recipes to each stage
+## Rails App Server layer type
+
+If you're using a _Rails App Server_ layer type you'll need to add the following custom recipes to your layer:
+
+**Setup**
+
+opsworks-resque::setup
+
+**Deploy**
+
+opsworks-resque::restart
+
+**Undeploy**
+
+opsworks-resque::stop
+
+## Other layer types
+
+If you're using another layer type you'll need to configure some Rails recipes too:
+
+**Setup**
+
+opsworks-resque::setup
 
 **Configure**
 
 rails::configure
-opsworks-resque::configure
 
 **Deploy**
 
-deploy::rails
-opsworks-resque::restart
+deploy::rails opsworks-resque::restart
 
-**Shutdown**
+**Undeploy**
 
-opsworks-resque::stop
+opsworks-resque::stop deploy::rails-undeploy
 
 # Attributes
 
 It expects an array with the queues of workers to run, for example
-```ruby
-default['resque']['path'] = "/srv/www/mailee_staging/current"
-default['resque']['workers'] = {"*" => 2, "images" => 1} # 2 workers for queue * and 1 worker for queue images
-default['resque']['rails_env'] = "production"
+```json
+"resque": {
+  "app-name": {
+    "workers": {
+      "*": 1
+    }
+  }
+}
+```
 
+if you're not using the _Rails App Server_ layer type you'll also need to specify a `rails_env` like so:
+
+```json
+"resque": {
+  "app-name": {
+    "rails_env": "development",
+    "workers": {
+      "*": 1
+    }
+  }
+}
 ```
 
 # Recipes
 
-**opsworks-resque::configure** - initial setup
+**opsworks-resque::setup** - initial setup
 **opsworks-resque::restart** - restart the workers (after deploy)
 **opsworks-resque::stop** - stop the workers (shutdown)
 

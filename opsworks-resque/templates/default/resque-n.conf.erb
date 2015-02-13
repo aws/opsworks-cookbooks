@@ -1,8 +1,13 @@
 #!upstart
 description "Resque worker <%= @instance %> <%= @queue %>"
 respawn
+start on starting resque-<%= @application %>
+stop on stopping resque-<%= @application %>
 
-start on starting resque
-stop on stopping resque
+env QUEUE=<%= @queue %>
+env RACK_ENV=<%= @rack_env %>
+env TERM_CHILD=1
 
-exec su - deploy -c 'cd <%= node['resque']['path'] %>; QUEUE=<%= @queue %> VERBOSE=1 RAILS_ENV=<%= node['resque']['rails_env'] %> bundle exec rake resque:work >> /var/log/resque/<%= @instance %>.log 2>&1'
+chdir <%= @deploy[:deploy_to] %>/current
+
+exec sudo -u deploy -E -- bundle exec rake resque:work >> /var/log/resque/<%= @application %>-<%= @instance %>.log 2>&1
