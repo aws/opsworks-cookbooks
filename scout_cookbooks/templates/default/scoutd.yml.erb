@@ -1,0 +1,5 @@
+<% @options.each do |key, val| %>
+<% if !val.nil? and val != "" %>
+<%= key %>: <%= val %>
+<% end %>
+<% end %>

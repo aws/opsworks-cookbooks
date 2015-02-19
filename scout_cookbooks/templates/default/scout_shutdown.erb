@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'scout_api'
+scout = Scout::Account.new('<%= node[:scout][:account_name] %>', '<%= node[:scout][:account_email] %>', '<%= node[:scout][:account_password] %>')
+server = Scout::Server.first(:host => Socket.gethostname)
+Scout::Server.delete(server.id)
