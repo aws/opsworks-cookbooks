@@ -1,0 +1,12 @@
+package.CharlieCookbooks = {
+    interfaces = (11.10.x);
+    deploy = {
+        generic = true;
+    };
+    build-system = no-op;
+    build-tools = {
+        11.10.x = {
+            NoOpBuild = 1.0;
+        };
+    };
+};
