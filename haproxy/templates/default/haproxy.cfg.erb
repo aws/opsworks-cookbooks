@@ -265,7 +265,12 @@ frontend http-in
 frontend https-in
   mode tcp
   bind :443
-  
+
+  # Block SSLv3 requests to mitigate POODLE attacks
+  tcp-request inspect-delay 2s
+  acl is_sslv3 req_ssl_ver 3
+  tcp-request content reject if is_sslv3
+
   # all domains of Rails applications
   <% node[:haproxy][:rails_applications].each do |app_name, app_config| -%>
     <% app_config['domains'].each do |domain| -%>
