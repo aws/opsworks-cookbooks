@@ -18,6 +18,8 @@ action :berks_install do
           "LC_ALL" => "en_US.UTF-8"
         }
       )
+
+      ::FileUtils.rm_rf Opsworks::InstanceAgent::Environment.berkshelf_cache_path
     end
 
     only_if do
