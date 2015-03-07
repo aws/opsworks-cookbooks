@@ -11,7 +11,7 @@ class OpsWorksDb {
     $this->host = '<%= @database[:host] %>';
     $this->username = '<%= @database[:username] %>';
     $this->password = '<%= @database[:password] %>';
-    $this->reconnect = '<%= @database[:reconnect] ? 'true' : 'false' %>';
+    $this->reconnect = <%= @database[:reconnect] ? 'true' : 'false' %>;
   }
 }
 
