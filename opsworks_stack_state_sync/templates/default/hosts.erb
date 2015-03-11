@@ -10,8 +10,7 @@ ff02::2 ip6-allrouters
 ff02::3 ip6-allhosts
 
 # OpsWorks Layer State
-127.0.0.1 localhost.localdomain localhost
-127.0.1.1 <%= @localhost_name %>.localdomain <%= @localhost_name %>
+127.0.0.1 <%= @localhost_name %>.localdomain <%= @localhost_name %>
 
 <% @nodes.each do |node| -%>
 <% if node.attributes.attribute?(:private_ip) && node.attributes.private_ip && Resolv.getaddress(node.attributes.private_ip) -%>
