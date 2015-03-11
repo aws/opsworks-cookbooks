@@ -13,12 +13,12 @@ describe_recipe 'deploy::java' do
 
     connector_jar = node['opsworks_java']['tomcat']['mysql_connector_jar']
     file(::File.join(node['opsworks_java']['tomcat']['java_shared_lib_dir'], connector_jar)).must_exist
-    package(
-      value_for_platform_family(
-        'rhel' => 'mysql-connector-java',
-        'debian' => 'libmysql-java'
-      )
-    ).must_be_installed
+    case node[:platform_family]
+    when "rhel"
+      package("mysql-connector-java").must_be_installed
+    when "debian"
+      package("libmysql-java").must_be_installed
+    end
   end
 
   it "installs and symlinks the postgresql driver" do
@@ -30,11 +30,11 @@ describe_recipe 'deploy::java' do
 
     connector_jar = node[:platform].eql?('ubuntu') ? 'postgresql-jdbc4.jar' : 'postgresql-jdbc.jar'
     file(::File.join(node['opsworks_java']['tomcat']['java_shared_lib_dir'], connector_jar)).must_exist
-    package(
-      value_for_platform_family(
-        'rhel' => 'postgresql-jdbc',
-        'debian' => 'libpostgresql-jdbc-java'
-      )
-    ).must_be_installed
+    case node[:platform_family]
+    when "rhel"
+      package("postgresql-jdbc").must_be_installed
+    when "debian"
+      package("libpostgresql-jdbc-java").must_be_installed
+    end
   end
 end
