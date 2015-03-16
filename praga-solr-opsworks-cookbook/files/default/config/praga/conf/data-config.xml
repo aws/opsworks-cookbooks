@@ -1,8 +1,10 @@
 <dataConfig>
   <dataSource type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://praga-staging.c6orwgo57rj2.us-east-1.rds.amazonaws.com/praga_staging" user="praga" password="pr4g4001" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
   <document>
-    <entity name="book" query="select id, isbn, title, author, publisher, formatted_author, category, edition, year, pages, language from legacy.publications"></entity>
+    <!-- quanto maior o valor no campo 'priority' melhor eh a posicao do registro -->
+    <entity name="reference_book" query="select 10 as priority, concat('reference:', id) as id, isbn, title, author, publisher, formatted_author, category, edition, year, pages from reference.publications"></entity>
 
+    <entity name="legacy_book" query="select 2 as priority, concat('legacy:', id) as id, isbn, title, author, publisher, formatted_author, category, edition, year, pages from legacy.publications"></entity>
 
   </document>
 </dataConfig>

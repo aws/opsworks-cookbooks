@@ -141,6 +141,7 @@
    <field name="category" type="string" indexed="true" stored="true"/>
    <field name="edition" type="string" indexed="true" stored="true"/>
    <field name="pages" type="int" indexed="true" stored="true"/>
+   <field name="priority" type="int" indexed="true" stored="true"/>
 
 
 
