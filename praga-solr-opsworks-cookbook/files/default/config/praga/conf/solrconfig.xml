@@ -905,11 +905,11 @@
        <str name="wt">json</str>
        <str name="indent">true</str>
        <str name="df">text</str>
+       <str name="bf">priority</str>
 
        <str name="defType">edismax</str>
        <str name="qf">
-          text^0.5 features^1.0 name^1.2 sku^1.5 id^10.0 manu^1.1 cat^1.4
-          title^10.0 description^5.0 keywords^5.0 author^2.0 resourcename^1.0
+          text^0.5 title^10.0 description^2.0 author^3.0 
        </str>
        
      </lst>
