@@ -121,7 +121,7 @@
      installations. See the <uniqueKey> declaration below where <uniqueKey> is set to "id".
    -->   
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
-   <field name="external_id" type="string" indexed="false" stored="false" required="false" multiValued="false" /> 
+   <field name="external_id" type="string" indexed="false" stored="true" required="false" multiValued="false" /> 
         
    <!-- Common metadata fields, named specifically to match up with
      SolrCell metadata when parsing rich documents such as Word, PDF.
