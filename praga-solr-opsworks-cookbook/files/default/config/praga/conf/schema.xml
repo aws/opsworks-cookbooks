@@ -121,6 +121,7 @@
      installations. See the <uniqueKey> declaration below where <uniqueKey> is set to "id".
    -->   
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
+   <field name="external_id" type="string" indexed="false" stored="false" required="true" multiValued="false" /> 
         
    <!-- Common metadata fields, named specifically to match up with
      SolrCell metadata when parsing rich documents such as Word, PDF.
@@ -261,8 +262,11 @@
    <copyField source="title" dest="text"/>
    <copyField source="author" dest="text"/>
 
-   <!-- Create a string version of author for faceting -->
+   <copyField source="id" dest="external_id"/>
+
+   <!-- Create a string version of author and title for faceting -->
    <copyField source="author" dest="author_s"/>
+   <copyField source="title" dest="title_s"/>
 	
    <!-- Above, multiple source fields are copied to the [text] field. 
 	  Another way to map multiple source fields to the same 
