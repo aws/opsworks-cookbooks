@@ -10,11 +10,11 @@ node[:deploy].each do |app_name, deploy|
   remote_directory "/opt/solr/server/solr" do
     files_mode '0640'
     mode '0770'
-    owner 'solr'
+    owner 'deploy'
     source "config"
   end
 
   execute '/opt/solr/bin/solr restart' do
-    user "solr"
+    user "deploy"
   end
 end
