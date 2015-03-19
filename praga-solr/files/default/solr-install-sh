@@ -12,3 +12,5 @@ if [ ! -h /opt/solr ]; then
 fi
 
 mv /opt/solr/server/solr  /opt/solr/server/solr-default
+
+chown -R deploy. /opt/solr-5.0.0 
