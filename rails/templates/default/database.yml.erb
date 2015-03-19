@@ -13,5 +13,11 @@
 <% if @database[:port] -%>
   port: <%= @database[:port].to_i.inspect %>
 <% end -%>
+<% if @database[:sslmode] -%>
+  sslmode: <%= @database[:sslmode].to_s.inspect %>
+<% end -%>
+<% if @database[:sslrootcert] -%>
+  sslrootcert: <%= @database[:sslrootcert].to_s.inspect %>
+<% end -%>
 
 <% end %>
