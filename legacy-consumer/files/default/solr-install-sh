@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ ! -h /opt/solr-5.0.0 ]; then
+  rm -rf /opt/solr-5.0.0
+fi
+
+cd /tmp && curl -O 'http://mirror.nbtelecom.com.br/apache/lucene/solr/5.0.0/solr-5.0.0.tgz'
+
+tar zxvf /tmp/solr-5.0.0.tgz -C /opt/
+if [ ! -h /opt/solr ]; then
+  ln -s  /opt/solr-5.0.0 /opt/solr
+fi
+
+mv /opt/solr/server/solr  /opt/solr/server/solr-default
+
+chown -R deploy. /opt/solr-5.0.0 
