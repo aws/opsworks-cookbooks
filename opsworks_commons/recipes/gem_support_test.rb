@@ -4,6 +4,7 @@ if node[:opsworks][:run_cookbook_tests]
     Chef::Log.info "[TEST] Installing rubygem awesome_print to test chef_gem resource"
     version '~> 1.0.0'
     action :install
+    retries 3
   end
 
   if require "awesome_print"
