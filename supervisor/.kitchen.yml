@@ -1,0 +1,21 @@
+driver:
+  name: vagrant
+  require_chef_omnibus: true
+
+chef_versions:
+- 11
+- 12
+
+platforms:
+- name: ubuntu-12.04
+  run_list:
+  - recipe[apt]
+- name: ubuntu-10.04
+  run_list:
+    - recipe[apt]
+- name: centos-6.4
+
+suites:
+- name: default
+  run_list:
+  - recipe[supervisor]

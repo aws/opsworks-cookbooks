@@ -1,2 +1,2 @@
 #!/bin/bash
-ssh -i<%= @ssh_key_path %><%- if @sloppy -%> -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no<%- end -%> $1 $2
+ssh -i<%= @ssh_key_path %> -o StrictHostKeyChecking=no $1 $2
