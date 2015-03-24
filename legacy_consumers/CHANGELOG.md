@@ -1,13 +1,20 @@
-praga-solr-opsworks-cookbook CHANGELOG
-======================================
+## v0.2.0:
 
-This file is used to list changes made in each version of the praga-solr-opsworks-cookbook cookbook.
+* Complete rewrite from definiton to LWRP, courtesy Guilhem Lettron
 
-0.1.0
------
-- [your_name] - Initial release of praga-solr-opsworks-cookbook
+## v0.1.0:
 
-- - -
-Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.
+* Version bump with no code changes to address bad upload of previous version. Please do not use 0.0.3 from the community site.
 
-The [Github Flavored Markdown page](http://github.github.com/github-flavored-markdown/) describes the differences between markdown on github and standard markdown.
+## v0.0.3:
+
+* set cookbook name in metadata (thanks mikedillion)
+* set ensure execute bit is set on ssh_key_dir (thanks alexgorbatchev)
+
+## v0.0.2:
+
+* create ssh_key_dir directory recursively
+
+## v0.0.1:
+
+* initial release
