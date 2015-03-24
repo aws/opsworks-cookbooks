@@ -29,6 +29,15 @@ node[:deploy].each do |app_name, deploy|
     recursive true
   end
 
+  template "/etc/profile.d/legacy_consumers.sh" do
+    source "env_vars_legacy_consumers.erb"
+    owner deploy[:user]
+    group 'www-data'
+    mode 0755
+    variables({ :data => deploy[:environment_variables] })
+  end
+
+
   template "#{deploy[:home]}/.ssh/myapp_deploy_key" do
     source "ssh_deploy_key.erb"
     owner deploy[:user]
