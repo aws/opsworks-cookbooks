@@ -1,9 +1,7 @@
-include_recipe 'supervisor'
+package 'supervisor' do
+  action :install
+end
 
-supervisor_service "legacy_consumers" do
-    command "cd /opt/legacy_consumers/current&& bundle rake"
-    autostart true
-    autorestart true
-    numprocs 1
-    process_name "legacy_consumers-%(process_num)s"
+template "/etc/supervisor/conf.d/" do
+  source "supervisor.rb"
 end
