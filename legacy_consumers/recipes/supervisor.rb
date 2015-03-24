@@ -2,6 +2,6 @@ package 'supervisor' do
   action :install
 end
 
-template "/etc/supervisor/conf.d/" do
-  source "supervisor.rb"
+template "/etc/supervisor/conf.d/legacy_consumers.conf" do
+  source "legacy_consumers.rb"
 end
