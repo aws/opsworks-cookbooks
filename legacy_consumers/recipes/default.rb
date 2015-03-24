@@ -1,41 +1,39 @@
-include_recipe "deploy"
-#include_recipe "deploy_wrapper"
 
 node[:deploy].each do |app_name, deploy|
-  Chef::Log.info deploy
 
-#  directory "#{deploy[:home]}/.ssh" do
-#    mode 0750
-#    owner deploy[:user]
-#  end
-
-#  f = File.new("#{deploy[:home]}/.ssh/id_deploy", File::CREAT|File::TRUNC|File::RDWR, 0600)
-#  f.write deploy[:scm][:ssh_key]
-#  f.close
-#  `chown deploy. "#{deploy[:home]}/.ssh/id_deploy"`
-
-#  template "#{deploy[:home]}/chef_ssh_deploy_wrapper.sh" do
-#    source "chef_ssh_deploy_wrapper.sh.erb"
-#    owner deploy[:user]
-#    mode 0755
-#  end
-
-  deploy_wrapper "legacy_consumers" do
+  directory "#{deploy[:home]}/.ssh" do
     owner deploy[:user]
-    ssh_wrapper_dir "#{deploy[:home]}"
-    ssh_key_dir "#{deploy[:home]}/.ssh"
-    ssh_key_data deploy[:scm][:ssh_key]
-    sloppy true
+    mode 0755
   end
 
-#  timestamp = Time.now.strftime '%Y%m%d%H%M%S'
-  deploy "legacy_consumers" do
-    action :deploy
+  directory "#{deploy[:deploy_to]}/shared" do
+    owner deploy[:user]
+    group "root"
+    mode 0755
+    recursive true
+  end
+
+  template "#{deploy[:home]}/.ssh/myapp_deploy_key" do
+    source "ssh_deploy_key.erb"
+    owner deploy[:user]
+    group 'www-data'
+    mode 0400
+    variables({ :ssh_key_data => deploy[:scm][:ssh_key] })
+  end
+
+  template "/tmp/myapp_deploy_wrapper.sh" do
+    source "ssh_wrapper.sh.erb"
+    owner deploy[:user]
+    group "www-data"
+    mode 0755
+    variables({
+      :ssh_key_path => "#{deploy[:home]}/.ssh/myapp_deploy_key"
+    })
+  end
+
+  deploy_revision "#{deploy[:deploy_to]}" do
     repository deploy[:scm][:repository]
-    branch  deploy[:scm][:revision]
-    user deploy[:user]
-    ssh_wrapper "#{deploy[:home]}/legacy_consumers_deploy_wrapper.sh"
-    #ssh_wrapper "#{deploy[:home]}/chef_ssh_deploy_wrapper.sh"
-    environment "RAILS_ENV" => 'staging'
+    revision deploy[:scm][:revision]
+    ssh_wrapper "/tmp/myapp_deploy_wrapper.sh"
   end
 end
