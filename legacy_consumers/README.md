@@ -1,68 +1,67 @@
-praga-solr-opsworks-cookbook Cookbook
-=====================================
-TODO: Enter the cookbook description here.
+Description
+===========
 
-e.g.
-This cookbook makes your favorite breakfast sandwich.
-
-Requirements
-------------
-TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
-
-e.g.
-#### packages
-- `toaster` - praga-solr-opsworks-cookbook needs toaster to brown your bagel.
+The `deploy_wrapper` cookbook provides a lightweight resource provider which sets up an ssh key and ssh wrapper script for
+use with `deploy` or `deploy_revision` resources.
 
 Attributes
-----------
-TODO: List you cookbook attributes here.
+==========
 
-e.g.
-#### praga-solr-opsworks-cookbook::default
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['praga-solr-opsworks-cookbook']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-</table>
+* `ssh_wrapper_path` - final path for your ssh wrapper script.
+* `ssh_wrapper_dir` - the ssh wrapper script will be written to this directory.
+* `ssh_key_file` - key file to use.
+* `ssh_key_dir` - the ssh key file will be written to this directory.
+* `ssh_key_data` - the private key data to write into the ssh key file, this override `ssh_key_file`.
+* `owner` - the owner for ssh wrapper and key files, defaults to 'root'
+* `group` - the group ownership for ssh wrapper and key files, defaults to 'root'
+* `sloppy` - a boolean which toggles whether or not the ssh wrapper script will attempt to validate the repo's ssh key. This parameter defaults to `false`, but the default setting will probably cause problems when executing deploy resources if `~/.ssh/known_hosts` has not been pre-populated manually or via another cookbook.
 
-Usage
------
-#### praga-solr-opsworks-cookbook::default
-TODO: Write usage instructions for each cookbook.
+Platform
+========
 
-e.g.
-Just include `praga-solr-opsworks-cookbook` in your node's `run_list`:
+Should work on any platform where Chef runs. Tested on Ubuntu.
 
-```json
-{
-  "name":"my_node",
-  "run_list": [
-    "recipe[praga-solr-opsworks-cookbook]"
-  ]
-}
-```
+Requirements
+============
 
-Contributing
-------------
-TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
+N/A
 
-e.g.
-1. Fork the repository on Github
-2. Create a named feature branch (like `add_component_x`)
-3. Write your change
-4. Write tests for your change (if applicable)
-5. Run the tests, ensuring they all pass
-6. Submit a Pull Request using Github
+Usage example
+=============
 
-License and Authors
--------------------
-Authors: TODO: List authors
+    include_recipe 'deploy_wrapper'
+
+    deploy_wrapper 'myapp' do
+        owner 'root'
+        group 'root'
+        ssh_wrapper_dir '/opt/example/shared'
+        ssh_key_dir '/root/.ssh'
+        ssh_key_data secrets['deploy_keys']['myapp']
+        sloppy true
+    end
+
+    deploy_revision '/opt/example/myapp' do
+        revision 'master'
+        repo 'https://github.com/example/myapp'
+        ssh_wrapper '/opt/example/shared/myapp_deploy_wrapper.sh'
+    end
+
+License and Author
+==================
+
+Author:: Cameron Johnston <cameron@rootdown.net>
+Author:: Guilhem Lettron <guilhem@lettron.fr>
+
+Copyright:: 2012, Cameron Johnston
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.

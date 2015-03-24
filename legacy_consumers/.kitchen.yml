@@ -1,0 +1,37 @@
+---
+driver_plugin: vagrant
+driver_config:
+  require_chef_omnibus: true
+
+platforms:
+<% %w(11.8.0 10.28.0).each do |chef_version| %>
+- name: ubuntu-12.04-<%= chef_version %>
+  driver_config:
+    box: opscode-ubuntu-12.04
+    require_chef_omnibus: <%= chef_version %>
+  run_list:
+    - recipe[apt]
+- name: ubuntu-10.04-<%= chef_version %>
+  driver_config:
+    box: opscode-ubuntu-10.04
+    require_chef_omnibus: <%= chef_version %>
+  run_list:
+    - recipe[apt]
+- name: centos-6.4-<%= chef_version %>
+  driver_config:
+    box: opscode-centos-6.4
+    require_chef_omnibus: <%= chef_version %>
+  run_list:
+    - recipe[yum::epel]
+- name: centos-5.9-<%= chef_version %>
+  driver_config:
+    box: opscode-centos-5.9
+    require_chef_omnibus: <%= chef_version %>
+  run_list:
+    - recipe[yum::epel]
+<% end %>
+
+suites:
+- name: default
+  run_list: ["recipe[deploy_wrapper_test]"]
+  attributes: {}
