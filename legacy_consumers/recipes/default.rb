@@ -36,4 +36,7 @@ node[:deploy].each do |app_name, deploy|
     revision deploy[:scm][:revision]
     ssh_wrapper "/tmp/myapp_deploy_wrapper.sh"
   end
+ 
+  execute "gem install bundler && cd #{deploy[:deploy_to]}/current && bundle install"
+  
 end
