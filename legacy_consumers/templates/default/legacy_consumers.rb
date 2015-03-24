@@ -1,2 +1,2 @@
 [program:legacy_consumers]
-command="cd /srv/www/legacy_consumers/current && bundle exec rake"
+command="bash /srv/www/legacy_consumers/current/bin/run.sh"
