@@ -1,5 +1,6 @@
 
 node[:deploy].each do |app_name, deploy|
+  Chef::Log.info deploy
 
   directory "#{deploy[:home]}/.ssh" do
     owner deploy[:user]
@@ -7,6 +8,21 @@ node[:deploy].each do |app_name, deploy|
   end
 
   directory "#{deploy[:deploy_to]}/shared" do
+    owner deploy[:user]
+    group "root"
+    mode 0755
+    recursive true
+  end
+
+  directory "#{deploy[:deploy_to]}/shared/log" do
+    owner deploy[:user]
+    group "root"
+    mode 0755
+    recursive true
+  end
+
+
+  directory "#{deploy[:deploy_to]}/shared/config" do
     owner deploy[:user]
     group "root"
     mode 0755
@@ -36,7 +52,8 @@ node[:deploy].each do |app_name, deploy|
     revision deploy[:scm][:revision]
     ssh_wrapper "/tmp/myapp_deploy_wrapper.sh"
   end
- 
+  execute "cp  #{deploy[:deploy_to]}/shared/cached-copy/config/database.yml #{deploy[:deploy_to]}/shared/config/"
   execute "gem install bundler && cd #{deploy[:deploy_to]}/current && bundle install"
-  
+
 end
+
