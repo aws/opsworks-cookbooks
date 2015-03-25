@@ -137,6 +137,7 @@
    <field name="weight" type="float" indexed="true" stored="true"/>
    <field name="height"  type="float" indexed="true" stored="true"/>
    <field name="isbn" type="string" indexed="true" stored="true"/>
+   <field name="barcode" type="string" indexed="true" stored="true"/>
    <field name="publisher" type="string" indexed="true" stored="true"/>
    <field name="year" type="string" indexed="true" stored="true"/>
    <field name="category" type="string" indexed="true" stored="true"/>
