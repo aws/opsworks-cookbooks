@@ -1080,11 +1080,11 @@
          updateRequestProcessorChains that can be used by name
          on each Update Request
       -->
-    <!--
-       <lst name="defaults">
-         <str name="update.chain">dedupe</str>
-       </lst>
-       -->
+    
+     <lst name="defaults">
+       <str name="update.chain">dedupe</str>
+     </lst>
+     
   </requestHandler>
 
   <!-- The following are implicitly added
@@ -1757,19 +1757,19 @@
        uniqueness based on that anyway.  
        
     -->
-  <!--
+  
      <updateRequestProcessorChain name="dedupe">
        <processor class="solr.processor.SignatureUpdateProcessorFactory">
          <bool name="enabled">true</bool>
-         <str name="signatureField">id</str>
+         <str name="signatureField">signature</str>
          <bool name="overwriteDupes">false</bool>
-         <str name="fields">name,features,cat</str>
+         <str name="fields">isbn,author,title</str>
          <str name="signatureClass">solr.processor.Lookup3Signature</str>
        </processor>
        <processor class="solr.LogUpdateProcessorFactory" />
        <processor class="solr.RunUpdateProcessorFactory" />
      </updateRequestProcessorChain>
-    -->
+    
   
   <!-- Language identification
 
