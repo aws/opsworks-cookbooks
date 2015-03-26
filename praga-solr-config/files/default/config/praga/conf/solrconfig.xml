@@ -1270,7 +1270,8 @@
 
   <requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler"> 
         <lst name="defaults"> 
-              <str name="config">./data-config.xml</str> 
+            <str name="config">./data-config.xml</str> 
+            <str name="update.chain">dedupe</str>
         </lst> 
   </requestHandler>  
 
@@ -1762,7 +1763,7 @@
        <processor class="solr.processor.SignatureUpdateProcessorFactory">
          <bool name="enabled">true</bool>
          <str name="signatureField">signature</str>
-         <bool name="overwriteDupes">false</bool>
+         <bool name="overwriteDupes">true</bool>
          <str name="fields">isbn,author,title</str>
          <str name="signatureClass">solr.processor.Lookup3Signature</str>
        </processor>
