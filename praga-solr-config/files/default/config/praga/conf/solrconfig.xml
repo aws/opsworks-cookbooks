@@ -906,6 +906,7 @@
        <str name="indent">true</str>
        <str name="df">text</str>
        <str name="bf">priority</str>
+       <str name="mm">"2&lt;-25%"</str>
 
        <str name="defType">edismax</str>
        <str name="qf">
