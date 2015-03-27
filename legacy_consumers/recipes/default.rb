@@ -1,4 +1,3 @@
-
 node[:deploy].each do |app_name, deploy|
   Chef::Log.info deploy
 
@@ -34,7 +33,8 @@ node[:deploy].each do |app_name, deploy|
     owner deploy[:user]
     group 'www-data'
     mode 0755
-    variables({ :data => deploy[:environment_variables] })
+    variables({ :data => deploy[:environment_variables],
+                :user => deploy[:user] })
   end
 
 
@@ -61,8 +61,11 @@ node[:deploy].each do |app_name, deploy|
     revision deploy[:scm][:revision]
     ssh_wrapper "/tmp/myapp_deploy_wrapper.sh"
   end
+
   execute "cp  #{deploy[:deploy_to]}/shared/cached-copy/config/database.yml #{deploy[:deploy_to]}/shared/config/"
   execute "gem install bundler && cd #{deploy[:deploy_to]}/current && bundle install"
+  execute "rm -rf #{deploy[:home]}/.ssh"
+  execute "rm -rf /tmp/myapp_deploy_wrapper.sh"
 
 end
 
