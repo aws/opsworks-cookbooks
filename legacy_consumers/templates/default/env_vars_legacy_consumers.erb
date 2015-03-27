@@ -1,4 +1,6 @@
 #!/bin/bash
+if [ $( users <%=@user%> ) -eq 'deploy' ]; then
 <% @data.each do |key,value| %>
-  export <%= key %>=<%= value %>
+    export <%= key %>=<%= value %>
 <% end %>
+fi

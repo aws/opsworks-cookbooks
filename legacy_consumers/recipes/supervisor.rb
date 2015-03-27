@@ -1,9 +1,13 @@
-package 'supervisor' do
-  action :install
-end
+node[:deploy].each do |app_name, deploy|
 
-template "/etc/supervisor/conf.d/legacy_consumers.conf" do
-  source "legacy_consumers.rb"
-end
+  package 'supervisor' do
+    action :install
+  end
 
-execute '/etc/init.d/supervisor restart'
+  template "/etc/supervisor/conf.d/legacy_consumers.conf" do
+    source "legacy_consumers.rb"
+    variables({ :user => deploy[:user] })
+  end
+
+  execute '/etc/init.d/supervisor restart'
+end
