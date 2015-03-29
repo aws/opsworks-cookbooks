@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ $( users <%=@user%> ) -eq 'deploy' ]; then
+if [ "$( id -nu )" == 'deploy' ]; then
 <% @data.each do |key,value| %>
     export <%= key %>=<%= value %>
 <% end %>
