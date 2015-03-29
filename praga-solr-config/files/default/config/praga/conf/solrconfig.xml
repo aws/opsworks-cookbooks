@@ -1450,7 +1450,7 @@
       <str name="name">mySuggester</str>
       <str name="lookupImpl">FuzzyLookupFactory</str>
       <str name="dictionaryImpl">DocumentDictionaryFactory</str>
-      <str name="field">textSuggest</str>
+      <str name="field">suggestion</str>
       <str name="weightField">price</str>
       <str name="suggestAnalyzerFieldType">textSuggest</str>
     </lst>
@@ -1460,6 +1460,7 @@
     <lst name="defaults">
       <str name="suggest">true</str>
       <str name="suggest.count">10</str>
+      <str name="suggest.dictionary">mySuggester</str>
     </lst>
     <arr name="components">
       <str>suggest</str>
