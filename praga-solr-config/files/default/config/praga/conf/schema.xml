@@ -263,7 +263,7 @@
 
    <!-- Text fields from SolrCell to search by default in our catch-all field -->
    <copyField source="title" dest="text"/>
-   <copyField source="title" dest="textSuggest"/>
+   <copyField source="title" dest="suggestion"/>
    <copyField source="author" dest="text"/>
    <copyField source="barcode" dest="text"/>
    <copyField source="isbn" dest="text"/>
