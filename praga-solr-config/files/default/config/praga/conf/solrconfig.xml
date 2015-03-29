@@ -1444,15 +1444,15 @@
     </arr>
   </requestHandler>
 
-  <!-- This causes long startup times on big indexes, even when never used.  See SOLR-6679
+  <!-- This causes long startup times on big indexes, even when never used.  See SOLR-6679 -->
   <searchComponent name="suggest" class="solr.SuggestComponent">
     <lst name="suggester">
       <str name="name">mySuggester</str>
       <str name="lookupImpl">FuzzyLookupFactory</str>
       <str name="dictionaryImpl">DocumentDictionaryFactory</str>
-      <str name="field">cat</str>
+      <str name="field">textSuggest</str>
       <str name="weightField">price</str>
-      <str name="suggestAnalyzerFieldType">string</str>
+      <str name="suggestAnalyzerFieldType">textSuggest</str>
     </lst>
   </searchComponent>
 
