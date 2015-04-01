@@ -28,13 +28,13 @@ node[:deploy].each do |app_name, deploy|
     recursive true
   end
 
-  template "/etc/profile.d/legacy_consumers.sh" do
-    source "env_vars_legacy_consumers.erb"
+  template "#{deploy[:deploy_to]}/current/bin/run.sh" do
+    source "run.sh.erb"
     owner deploy[:user]
     group 'www-data'
-    mode 0755
+    mode 0750
     variables({ :data => deploy[:environment_variables],
-                :user => deploy[:user] })
+                :target => "#{deploy[:deploy_to]}/current" })
   end
 
 
