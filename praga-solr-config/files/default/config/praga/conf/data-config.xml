@@ -2,11 +2,11 @@
   <dataSource type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://praga-stg.c6orwgo57rj2.us-east-1.rds.amazonaws.com/praga_staging" user="praga" password="pr4g4001" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
   <document>
     <!-- quanto maior o valor no campo 'priority' melhor eh a posicao do registro -->
-    <entity name="reference_book" query="select 10 as priority, codebar, concat('reference_', id) as id, isbn, title, author, publisher, formatted_author, category, edition, year, pages from reference.publications">
+    <entity name="reference_book" query="select 10 as priority, codebar, concat('reference_', id) as id, isbn, title, author, publisher, formatted_author, category, edition, year, pages from reference.publications where active=true">
       <field name="barcode" column="codebar"/>
     </entity>
 
-    <entity name="legacy_book" query="select 2 as priority, concat('legacy_', id) as id, isbn, title, author, publisher, formatted_author, category, edition, year, pages from legacy.publications"></entity>
+    <entity name="legacy_book" query="select 2 as priority, concat('legacy_', id) as id, isbn, title, author, publisher, formatted_author, category, edition, year, pages from legacy.publications where active=true"></entity>
 
   </document>
 </dataConfig>
