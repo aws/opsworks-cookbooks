@@ -28,16 +28,6 @@ node[:deploy].each do |app_name, deploy|
     recursive true
   end
 
-  template "#{deploy[:deploy_to]}/current/bin/run.sh" do
-    source "run.sh.erb"
-    owner deploy[:user]
-    group 'www-data'
-    mode 0750
-    variables({ :data => deploy[:environment_variables],
-                :target => "#{deploy[:deploy_to]}/current" })
-  end
-
-
   template "#{deploy[:home]}/.ssh/myapp_deploy_key" do
     source "ssh_deploy_key.erb"
     owner deploy[:user]
@@ -60,6 +50,15 @@ node[:deploy].each do |app_name, deploy|
     repository deploy[:scm][:repository]
     revision deploy[:scm][:revision]
     ssh_wrapper "/tmp/myapp_deploy_wrapper.sh"
+  end
+
+  template "#{deploy[:deploy_to]}/current/bin/run.sh" do
+    source "run.sh.erb"
+    owner deploy[:user]
+    group 'www-data'
+    mode 0750
+    variables({ :data => deploy[:environment_variables],
+                :target => "#{deploy[:deploy_to]}/current" })
   end
 
   execute "cp  #{deploy[:deploy_to]}/shared/cached-copy/config/database.yml #{deploy[:deploy_to]}/shared/config/"
