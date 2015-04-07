@@ -1,5 +1,5 @@
 upstream unicorn_<%= @application[:domains].first %> {
- server unix:/tmp/unicorn.<%= @application %>.sock fail_timeout=0;
+ server unix:/tmp/unicorn.sock fail_timeout=0;
 }
 
 server {
