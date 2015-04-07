@@ -1,0 +1,8 @@
+require 'rubygems'
+require 'geminabox'
+
+Geminabox.build_legacy = <%= @geminabox_build_legacy %>
+Geminabox.data = "<%= @geminabox_data_directory %>"
+Geminabox.rubygems_proxy = <%= @geminabox_rubygems_proxy %>
+
+run Geminabox
