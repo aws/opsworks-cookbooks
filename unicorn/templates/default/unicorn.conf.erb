@@ -4,7 +4,7 @@ user "<%= @deploy[:user]%>"
 
 working_directory "<%= @deploy[:deploy_to]%>/current"
 
-listen "<%= @deploy[:deploy_to]%>/current/tmp/unicorn.sock", :backlog => <%= node[:unicorn][:backlog] %>, :tcp_nodelay => <%= node[:unicorn][:tcp_nodelay] %>, :tcp_nopush => <%= node[:unicorn][:tcp_nopush] %>, :tries => <%= node[:unicorn][:tries] %>, :delay => <%= node[:unicorn][:delay] %>, :accept_filter => <%= node[:unicorn][:accept_filter].inspect %>
+listen "<%= @deploy[:deploy_to]%>/current/tmp/unicorn.<%= @application %>.sock", :backlog => <%= node[:unicorn][:backlog] %>, :tcp_nodelay => <%= node[:unicorn][:tcp_nodelay] %>, :tcp_nopush => <%= node[:unicorn][:tcp_nopush] %>, :tries => <%= node[:unicorn][:tries] %>, :delay => <%= node[:unicorn][:delay] %>, :accept_filter => <%= node[:unicorn][:accept_filter].inspect %>
 
 timeout <%= node[:unicorn][:timeout] %>
 
