@@ -1,0 +1,17 @@
+description "Geminabox monitoring process"
+
+start on runlevel [2345]
+stop on runlevel [!2345]
+
+expect daemon
+respawn
+respawn limit 5 30
+
+env PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/chef/embedded/bin
+
+pre-start script
+  mkdir -p <%= @base_directory %>
+  chown <%= @www_user %>:<%= @www_user %> <%= @base_directory %>
+end script
+
+exec bluepill load /etc/bluepill/geminabox.pill

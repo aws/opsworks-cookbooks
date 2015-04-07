@@ -1,0 +1,45 @@
+upstream unicorn {
+  server unix:<%= @socket %> fail_timeout=0;
+}
+server {
+  listen <%= [node[:geminabox][:nginx][:bind], node[:geminabox][:nginx][:port]].compact.join(':') %>;
+  <% if @ssl %>
+  location / {
+    rewrite ^/(.*)$ https://$host/$1 redirect;
+  }
+  <% else %>
+  proxy_set_header Host $http_host;
+  location / {
+    proxy_pass http://unicorn;
+  }
+  <% end %>
+  root <%= @root %>;
+  <% if @auth_file %>
+  auth_basic "Restricted Access";
+  auth_basic_user_file <%= @auth_file %>;
+  <% end %>
+  client_max_body_size <%= node[:geminabox][:nginx][:client_max_body_size] %>;
+}
+
+<% if @ssl %>
+server {
+  listen <%= [node[:geminabox][:nginx][:bind], node[:geminabox][:nginx][:ssl_port]].compact.join(':') %>;
+  root <%= @root %>;
+  ssl on;
+  ssl_certificate <%= @ssl_cert %>;
+  ssl_certificate_key <%= @ssl_key %>;
+  ssl_ciphers HIGH;
+  ssl_protocols SSLv3 TLSv1;
+  ssl_prefer_server_ciphers on;
+  <% if @auth_file %>
+  auth_basic "Restricted Access";
+  auth_basic_user_file <%= @auth_file %>;
+  <% end %>
+  client_max_body_size <%= node[:geminabox][:nginx][:client_max_body_size] %>;
+  location / {
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Forwarded-Proto https;
+    proxy_pass http://unicorn;
+  }
+}
+<% end %>
