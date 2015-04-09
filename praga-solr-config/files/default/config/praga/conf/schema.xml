@@ -160,6 +160,7 @@
    <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->
    <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
+   <field name="barcode_isbn" type="text_general" indexed="true" stored="false" multiValued="true"/>
 
    <!-- catchall text field that indexes tokens both normally and in reverse for efficient
         leading wildcard queries. -->
@@ -268,6 +269,8 @@
    <copyField source="barcode" dest="text"/>
    <copyField source="isbn" dest="text"/>
 
+   <copyField source="barcode" dest="barcode_isbn"/>
+   <copyField source="isbn" dest="barcode_isbn"/>
    <copyField source="id" dest="external_id"/>
 
    <!-- Create a string version of author and title for faceting -->
