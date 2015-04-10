@@ -1,0 +1,68 @@
+server {
+  listen   <%= node.elasticsearch[:nginx][:port] %>;
+  server_name  <%= node.elasticsearch[:nginx][:server_name] %>;
+  client_max_body_size <%= node.elasticsearch[:nginx][:client_max_body_size] %>;
+
+  error_log   <%= node.elasticsearch[:nginx][:log_dir] %>/elasticsearch-errors.log;
+  access_log  <%= node.elasticsearch[:nginx][:log_dir] %>/elasticsearch.log;
+
+  location <%= node.elasticsearch[:nginx][:location] %> {
+
+    # Deny Nodes Shutdown API
+    if ($request_filename ~ "_shutdown") {
+      return 403;
+      break;
+    }
+
+<% unless node.elasticsearch[:nginx][:allow_cluster_api] %>
+    # Deny access to Cluster API
+    if ($request_filename ~ "_cluster") {
+      return 403;
+      break;
+    }
+<% end %>
+
+    # Pass requests to ElasticSearch
+    proxy_pass http://<%= node.elasticsearch.network.host rescue 'localhost' %>:<%= node.elasticsearch.http.port rescue '9200' %>/;
+    proxy_redirect off;
+
+    proxy_set_header  X-Real-IP  $remote_addr;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header  Host $http_host;
+
+    # For CORS Ajax
+    proxy_pass_header Access-Control-Allow-Origin;
+    proxy_pass_header Access-Control-Allow-Methods;
+    proxy_hide_header Access-Control-Allow-Headers;
+    add_header Access-Control-Allow-Headers 'X-Requested-With, Content-Type';
+    add_header Access-Control-Allow-Credentials true;
+
+<% unless node.elasticsearch[:nginx][:users].empty? %>
+    # Authorize access
+    auth_basic           "ElasticSearch";
+    auth_basic_user_file <%= node.elasticsearch[:nginx][:passwords_file] %>;
+<% end %>
+
+  }
+
+<% if node.elasticsearch[:nginx][:allow_status] %>
+  location /status {
+    proxy_method HEAD;
+    proxy_intercept_errors on;
+    proxy_pass http://localhost:<%= node.elasticsearch[:http][:port] %>/;
+  }
+<% end %>
+
+<% if node.elasticsearch[:nginx][:ssl][:cert_file] && node.elasticsearch[:nginx][:ssl][:key_file] %>
+  ssl on;
+  ssl_certificate <%= node.elasticsearch[:nginx][:ssl][:cert_file] %>;
+  ssl_certificate_key <%= node.elasticsearch[:nginx][:ssl][:key_file] %>;
+  
+  server_tokens off;
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+  ssl_prefer_server_ciphers on;
+  ssl_session_timeout 10m;
+  ssl_ciphers TLS_ECDHE_RSA_WITH_RC4_128_SHA:TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA:TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA:TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA:TLS_DHE_RSA_WITH_AES_128_CBC_SHA:HIGH:!aNULL:!MD5;
+  ssl_session_cache shared:SSL:10m;
+<% end %>
+}

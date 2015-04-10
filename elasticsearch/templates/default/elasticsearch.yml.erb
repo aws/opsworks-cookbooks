@@ -1,0 +1,163 @@
+######################### ElasticSearch Configuration  ########################
+
+# This file is managed by Chef, do not edit manually, your changes *will* be overwritten!
+#
+# Please see the source file for context and more information:
+#
+# https://github.com/elasticsearch/elasticsearch/blob/master/config/elasticsearch.yml
+#
+# To set configurations not exposed by this template, set the
+# `node.elasticsearch[:custom_config]` attribute in your node configuration,
+# `elasticsearch/settings` data bag, role/environment definition, etc:
+#
+#     // ...
+#     'threadpool.index.type' => 'fixed',
+#     'threadpool.index.size' => '2'
+#     // ...
+
+################################### Cluster ###################################
+
+<%= print_value 'cluster.name' -%>
+
+#################################### Node #####################################
+
+<%= print_value 'node.name' -%>
+<%= print_value 'node.master' -%>
+<%= print_value 'node.data' -%>
+<%= print_value 'node.max_local_storage_nodes' -%>
+
+#################################### Index ####################################
+
+<%= print_value 'index.number_of_shards' -%>
+<%= print_value 'index.number_of_replicas' -%>
+<%= print_value 'index.auto_expand_replicas' -%>
+<%= print_value 'index.mapper.dynamic' -%>
+<%= print_value 'action.auto_create_index' -%>
+<%= print_value 'action.disable_delete_all_indices' -%>
+
+#################################### Paths ####################################
+
+<%= print_value 'path.conf' -%>
+<%= print_value 'path.data', (node.elasticsearch.path.data.is_a?(Array) ? node.elasticsearch.path.data.join(",") : node.elasticsearch.path.data) -%>
+<%= print_value 'path.work' -%>
+<%= print_value 'path.logs' -%>
+<%= print_value 'path.plugins' -%>
+
+#################################### Plugin ###################################
+
+<%= print_value 'plugin.mandatory', node[:elasticsearch][:plugin][:mandatory].join(',') \
+    unless node[:elasticsearch][:plugin][:mandatory].empty? -%>
+
+################################### Memory ####################################
+
+<%= print_value 'bootstrap.mlockall' -%>
+
+############################## Network And HTTP ###############################
+
+<%= print_value 'network.bind_host' -%>
+<%= print_value 'network.publish_host' -%>
+<%= print_value 'network.host' -%>
+<%= print_value 'transport.tcp.port' -%>
+<%= print_value 'transport.tcp.compress' -%>
+<%= print_value 'http.host' -%>
+<%= print_value 'http.port' -%>
+<%= print_value 'http.bind_port' -%>
+<%= print_value 'http.publish_port' -%>
+<%= print_value 'http.max_content_length' -%>
+<%= print_value 'http.max_initial_line_length' -%>
+<%= print_value 'http.compression' -%>
+<%= print_value 'http.compression_level' -%>
+<%= print_value 'http.cors.enabled' -%>
+<%= print_value 'http.cors.allow-origin' -%>
+<%= print_value 'http.cors.max-age' -%>
+<%= print_value 'http.cors.allow-methods' -%>
+<%= print_value 'http.cors.allow-headers' -%>
+<%= print_value 'http.cors.allow-credentials' -%>
+<%= print_value 'http.pipelining' -%>
+<%= print_value 'http.pipelining.max_events' -%>
+<%= print_value 'http.enabled' -%>
+
+################################### Gateway ###################################
+
+<%= print_value 'gateway.type', node.elasticsearch[:gateway][:type] -%>
+<%= print_value 'gateway.recover_after_nodes' -%>
+<%= print_value 'gateway.recover_after_time' -%>
+<%= print_value 'gateway.expected_nodes' -%>
+
+############################# Recovery Throttling #############################
+
+<%= print_value 'cluster.routing.allocation.node_initial_primaries_recoveries' -%>
+<%= print_value 'cluster.routing.allocation.node_concurrent_recoveries' -%>
+<%= print_value 'indices.recovery.max_bytes_per_sec' -%>
+<%= print_value 'indices.recovery.concurrent_streams' -%>
+
+################################## Discovery ##################################
+
+<%= print_value 'discovery.type', node.elasticsearch[:discovery][:type] -%>
+
+<%= print_value 'discovery.zen.minimum_master_nodes' -%>
+<%= print_value 'discovery.zen.ping.timeout' -%>
+<%= print_value 'discovery.zen.ping.multicast.enabled' -%>
+<%= print_value 'discovery.zen.ping.unicast.hosts' -%>
+
+<%- if node.elasticsearch[:cloud] -%>
+<%= print_value 'cloud.node.auto_attributes' -%>
+<%= print_value 'cloud.aws.access_key' -%>
+<%= print_value 'cloud.aws.secret_key' -%>
+<%= print_value 'cloud.aws.region' -%>
+<%= print_value 'cloud.aws.ec2.endpoint' -%>
+<%= print_value 'discovery.ec2.groups' -%>
+<%= print_value 'discovery.ec2.host_type' -%>
+<%= print_value 'discovery.ec2.availability_zones' -%>
+<%= print_value 'discovery.ec2.any_group' -%>
+<%= print_value 'discovery.ec2.ping_timeout' -%>
+<%- node.elasticsearch[:discovery][:ec2][:tag].sort.each do |key, value| -%>
+discovery.ec2.tag.<%= key %>: <%= value %>
+<%- end unless node.elasticsearch[:discovery][:ec2][:tag].keys.empty? rescue false -%>
+
+<%= print_value 'cloud.gce.project_id' -%>
+<%= print_value 'cloud.gce.zone' -%>
+<%= print_value 'cloud.gce.tags' -%>
+<%= print_value 'discovery.gce.tags' -%>
+<%- end -%>
+
+################################## Slow Log ###################################
+
+<%= print_value 'index.search.slowlog.threshold.query.warn' -%>
+<%= print_value 'index.search.slowlog.threshold.query.info' -%>
+<%= print_value 'index.search.slowlog.threshold.query.debug' -%>
+<%= print_value 'index.search.slowlog.threshold.query.trace' -%>
+<%=                                                          -%>
+<%= print_value 'index.search.slowlog.threshold.fetch.warn' -%>
+<%= print_value 'index.search.slowlog.threshold.fetch.info' -%>
+<%= print_value 'index.search.slowlog.threshold.fetch.debug' -%>
+<%= print_value 'index.search.slowlog.threshold.fetch.trace' -%>
+<%=                                                          -%>
+<%= print_value 'index.indexing.slowlog.threshold.index.warn' -%>
+<%= print_value 'index.indexing.slowlog.threshold.index.info' -%>
+<%= print_value 'index.indexing.slowlog.threshold.index.debug' -%>
+<%= print_value 'index.indexing.slowlog.threshold.index.trace' -%>
+
+################################## GC Logging #################################
+
+<%= print_value 'monitor.jvm.gc.ParNew.warn' -%>
+<%= print_value 'monitor.jvm.gc.ParNew.info' -%>
+<%= print_value 'monitor.jvm.gc.ParNew.debug' -%>
+<%=                                           -%>
+<%= print_value 'monitor.jvm.gc.ConcurrentMarkSweep.warn' -%>
+<%= print_value 'monitor.jvm.gc.ConcurrentMarkSweep.info' -%>
+<%= print_value 'monitor.jvm.gc.ConcurrentMarkSweep.debug' -%>
+
+################################## JMX ########################################
+
+<%- if node.elasticsearch[:jmx] -%>
+jmx.create_connector: true
+jmx.port: 9400-9500
+jmx.domain: elasticsearch
+<%- end -%>
+
+################################## Custom #####################################
+
+<% node.elasticsearch[:custom_config].sort.each do |key, value| %>
+<%= key %>: <%= value %>
+<% end %>

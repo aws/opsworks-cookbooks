@@ -1,0 +1,32 @@
+# ------------------------------------------
+# Monit configuration file for ElasticSearch
+# ------------------------------------------
+
+check process elasticsearch with pidfile <%= node.elasticsearch[:pid_file] %>
+  start program = "/etc/init.d/elasticsearch start" with timeout 60 seconds
+  stop program  = "/etc/init.d/elasticsearch stop"
+  if cpu > 90% for 15 cycles then alert
+  if totalmem > 90% for 15 cycles then alert
+  if loadavg(15min) greater than 10 for 50 cycles then alert
+  group elasticsearch
+
+<% if node.monit[:notify_email] %>
+check host elasticsearch_connection with address 0.0.0.0
+  if failed url http://0.0.0.0:<%= node.elasticsearch[:http][:port] %>/ with timeout 15 seconds then alert
+  group elasticsearch
+
+check host elasticsearch_cluster_health with address 0.0.0.0
+  if failed url http://0.0.0.0:<%= node.elasticsearch[:http][:port] %>/_cluster/health
+     and content == 'green'
+     with timeout 60 seconds
+     then alert
+     alert <%= node.monit[:notify_email] %> with mail-format {
+       subject:  [monit] elasticsearch: CLUSTER HEALTH PROBLEM at <%= node.hostname %>
+       message:  [<%= node.hostname %>] $SERVICE $ACTION
+                 <% if node.monit[:http_auth] && node.cloud %>
+                 --
+                 http://<%= node.monit[:http_auth]['username'] %>:<%= node.monit[:http_auth]['password_encoded'] %>@<%= node.cloud.public_hostname %>:2812/elasticsearch_cluster_health
+                 <% end %>
+     }
+  group elasticsearch
+<% end %>

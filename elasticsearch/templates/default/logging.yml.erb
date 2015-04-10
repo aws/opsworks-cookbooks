@@ -1,0 +1,70 @@
+# This file is managed by Chef, do not edit manually, your changes *will* be overwritten!
+#
+# Please see the source file for context and more information:
+#
+# https://github.com/elasticsearch/elasticsearch/blob/master/config/logging.yml
+#
+# Any settings configured under the `node.elasticsearch.logging`
+# node attribute will be automatically used.
+#
+# So, for example when you set these attributes in your node configuration,
+# `elasticsearch/settings` data bag, role/environment definition, etc:
+#
+#     // ...
+#     :logging => {
+#          :discovery => 'TRACE',
+#          'index.indexing.slowlog' => 'INFO, index_indexing_slow_log_file'
+#        }
+#    // ...
+#
+# the relevant configuration will be printed into the `logging.yml` file:
+#
+#     // ...
+#     logger.discovery: TRACE
+#     logger.index.indexing.slowlog: INFO, index_indexing_slow_log_file
+#     // ...
+#
+
+es.logger.level: INFO
+rootLogger: INFO, console, file
+
+# ----- Configuration set by Chef ---------------------------------------------
+<% node.elasticsearch[:logging].sort.each do |key, value| %>
+logger.<%= key %>: <%= value %>
+<% end %>
+# -----------------------------------------------------------------------------
+
+additivity:
+  index.search.slowlog: false
+  index.indexing.slowlog: false
+
+appender:
+  console:
+    type: console
+    layout:
+      type: consolePattern
+      conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
+
+  file:
+    type: dailyRollingFile
+    file: ${path.logs}/${cluster.name}.log
+    datePattern: "'.'yyyy-MM-dd"
+    layout:
+      type: pattern
+      conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
+
+  index_search_slow_log_file:
+    type: dailyRollingFile
+    file: ${path.logs}/${cluster.name}_index_search_slowlog.log
+    datePattern: "'.'yyyy-MM-dd"
+    layout:
+      type: pattern
+      conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
+
+  index_indexing_slow_log_file:
+    type: dailyRollingFile
+    file: ${path.logs}/${cluster.name}_index_indexing_slowlog.log
+    datePattern: "'.'yyyy-MM-dd"
+    layout:
+      type: pattern
+      conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"

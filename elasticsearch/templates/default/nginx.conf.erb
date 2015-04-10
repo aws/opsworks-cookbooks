@@ -1,0 +1,23 @@
+user <%= node[:nginx][:user] %>;
+worker_processes  <%= node[:nginx][:worker_processes] %>;
+
+error_log  <%= node[:nginx][:log_dir] %>/error.log;
+pid        /var/run/nginx.pid;
+
+events {
+  worker_connections  <%= node[:nginx][:worker_connections] %>;
+}
+
+http {
+  access_log	<%= node[:nginx][:log_dir] %>/access.log;
+
+  sendfile on;
+  tcp_nopush on;
+  tcp_nodelay on;
+
+  gzip  on;
+  gzip_types application/javascript application/x-javascript text/css text/xml application/xml;
+
+  include <%= node[:nginx][:dir] %>/conf.d/*.conf;
+  include <%= node[:nginx][:dir] %>/sites-enabled/*;
+}
