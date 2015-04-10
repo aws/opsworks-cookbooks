@@ -1,16 +1,17 @@
 # See <http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/_linux.html>
 
-filename = node.elasticsearch[:deb_url].split('/').last
-
-remote_file "#{Chef::Config[:file_cache_path]}/#{filename}" do
-  source   node.elasticsearch[:deb_url]
-  checksum node.elasticsearch[:deb_sha]
-  mode 00644
+apt_repository 'elasticsearch' do
+  uri "http://packages.elasticsearch.org/elasticsearch/#{node['elasticsearch']['major_version']}/debian"
+  distribution 'stable'
+  components ['main']
+  key 'http://packages.elasticsearch.org/GPG-KEY-elasticsearch'
+  only_if { node['platform'] == 'debian' || node['platform'] == 'ubuntu' }
 end
 
-dpkg_package "#{Chef::Config[:file_cache_path]}/#{filename}" do
+package 'elasticsearch' do
   action :install
 end
+
 
 ruby_block "Set heap size in /etc/default/elasticsearch" do
   block do
