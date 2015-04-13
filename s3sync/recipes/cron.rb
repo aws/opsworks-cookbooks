@@ -1,5 +1,5 @@
 cron "s3sync" do
-  action node.tags.include?('s3sync') ? :create : :delete
+  action :create
   minute '*/05'
   hour '*'
   weekday '*'
