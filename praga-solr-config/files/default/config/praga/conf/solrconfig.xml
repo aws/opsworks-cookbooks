@@ -919,6 +919,7 @@
   <requestHandler name="/barcode_or_isbn" class="solr.SearchHandler">
      <lst name="defaults">
        <str name="echoParams">explicit</str>
+       <int name="rows">1</int>
        <str name="wt">json</str>
        <str name="indent">true</str>
        <str name="df">barcode_isbn</str>
