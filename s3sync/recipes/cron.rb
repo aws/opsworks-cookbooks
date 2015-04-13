@@ -6,5 +6,5 @@ cron "s3sync" do
   user "deploy"
   mailto "asilva@estantevirtual.com.br"
   home "/home/deploy"
-  command "s3cmd -c /etc/s3sync/s3cfg --no-delete-removed sync #{node[:s3sync][:ftp_path]} #{node[:s3sync][:bucket]}"
+  command "s3cmd -p -c /etc/s3sync/s3cfg --no-delete-removed sync #{node[:s3sync][:ftp_path]} s3://#{node[:s3sync][:bucket]}"
 end
