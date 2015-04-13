@@ -11,7 +11,7 @@ node[:deploy].each do |app_name, deploy|
   
   cookbook_file "s3cfg" do
     path "/etc/s3sync/s3cfg"
-    owner 'roor'
+    owner 'root'
   end
 
 
