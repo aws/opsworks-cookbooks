@@ -7,6 +7,8 @@ node[:deploy].each do |application, deploy|
     action :nothing
   end
 
+  execute "if [ ! -f /srv/www/monaco/current/config/cas.yml ]; then ln -s /srv/www/monaco/shared/config/cas.yml /srv/www/monaco/current/config/cas.yml; fi"
+
   template "#{deploy[:deploy_to]}/shared/config/cas.yml" do
     source "cas.yml.erb"
     cookbook 'rails'
@@ -16,4 +18,15 @@ node[:deploy].each do |application, deploy|
     variables(:database => deploy[:database])
     notifies :run, "execute[restart Rails app #{application}]"
   end
+
+  cron "casino_cleanup" do
+    action :create
+    minute '*/05'
+    hour '*'
+    weekday '*'
+    user "deploy"
+    home "/home/deploy"
+    command "cd #{deploy[:deploy_to]}/current && RAILS_ENV=#{deploy[:rails_env]} bundle exec rake casino:cleanup:all > /dev/null"
+  end
+
 end
