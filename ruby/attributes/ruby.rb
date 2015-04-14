@@ -34,7 +34,7 @@ case node["opsworks"]["ruby_version"]
 when "2.2"
   default[:ruby][:major_version] = '2'
   default[:ruby][:minor_version] = '2'
-  default[:ruby][:patch_version] = '0'
+  default[:ruby][:patch_version] = '2'
   default[:ruby][:pkgrelease]    = '1'
 
   i = node[:ruby]
@@ -44,7 +44,7 @@ when "2.2"
 when "2.1"
   default[:ruby][:major_version] = '2'
   default[:ruby][:minor_version] = '1'
-  default[:ruby][:patch_version] = '5'
+  default[:ruby][:patch_version] = '6'
   default[:ruby][:pkgrelease]    = '1'
 
   i = node[:ruby]
@@ -55,7 +55,7 @@ when "2.0.0"
   default[:ruby][:major_version] = '2.0'
   default[:ruby][:full_version] = '2.0.0'
   if _platform == "amazon" && _platform_version >= "2014.03"
-    default[:ruby][:patch] = 'p598'
+    default[:ruby][:patch] = 'p645'
   else
     default[:ruby][:patch] = 'p451'
   end
