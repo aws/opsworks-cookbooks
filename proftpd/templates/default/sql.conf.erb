@@ -1,0 +1,26 @@
+# This is the default configuration file.
+# If you want modify this, edit the file and save it as MODULENAME.conf.local
+
+<IfModule mod_sql.c>
+#<% if @node[:proftpd][:modules].include?('sql_mysql') %>
+#  SQLBackend            mysql
+#<% elsif @node[:proftpd][:modules].include?('sql_postgres') %>
+#  SQLBackend            postgres
+#<% end %>
+#
+#  SQLEngine             on
+#  SQLAuthenticate       users
+#  SQLAuthTypes          Backend
+#
+#  SQLConnectInfo        USER@SERVER DB PASSWORD
+#  SQLUserInfo           users userid passwd uid gid homedir "NULL"
+#
+#  #SQLNegativeCache      on
+#
+#  SQLDefaultUID         33 # www-data
+#  SQLDefaultGID         33 # www-data
+#
+#  SQLDefaultHomedir     /srv/www/
+#
+#  #SQLLogFile            /var/log/proftpd/sql.log
+</IfModule>
