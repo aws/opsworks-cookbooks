@@ -9,7 +9,7 @@ package_name = case node[:platform_family]
                  PACKAGE_BASENAME + [node[:ruby][:major_version], node[:ruby][:minor_version]].join('.')
                end
 
-LECAGY_PACKAGES = ["ruby-enterprise"]
+LEGACY_PACKAGES = ["ruby-enterprise"]
 
 pm_helper = OpsWorks::PackageManagerHelper.new(node)
 current_package_info = pm_helper.summary(package_name)
@@ -19,7 +19,7 @@ if current_package_info.version && current_package_info.version =~ /#{node[:ruby
 else
 
   packages_to_remove = pm_helper.installed_packages.select do |pkg, version|
-    pkg.include?(PACKAGE_BASENAME) || LECAGY_PACKAGES.include?(pkg)
+    pkg.include?(PACKAGE_BASENAME) || LEGACY_PACKAGES.include?(pkg)
   end
 
   packages_to_remove.each do |pkg, version|

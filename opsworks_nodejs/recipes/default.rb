@@ -2,7 +2,7 @@
 # We only support one user space nodejs installation
 
 PACKAGE_BASENAME = "opsworks-nodejs"
-LECAGY_PACKAGES = []
+LEGACY_PACKAGES = []
 
 pm_helper = OpsWorks::PackageManagerHelper.new(node)
 current_package_info = pm_helper.summary(PACKAGE_BASENAME)
@@ -12,7 +12,7 @@ if current_package_info.version && current_package_info.version =~ /^#{node[:ops
 else
 
   packages_to_remove = pm_helper.installed_packages.select do |pkg, version|
-    pkg.include?(PACKAGE_BASENAME) || LECAGY_PACKAGES.include?(pkg)
+    pkg.include?(PACKAGE_BASENAME) || LEGACY_PACKAGES.include?(pkg)
   end
 
   packages_to_remove.each do |pkg, version|
