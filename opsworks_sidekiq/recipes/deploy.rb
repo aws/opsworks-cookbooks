@@ -3,7 +3,7 @@ node[:deploy].each do |application, deploy|
     sidekiq_config = deploy['sidekiq']
     release_path = ::File.join(deploy[:deploy_to], 'current')
     start_command = sidekiq_config['start_command'] || "bundle exec sidekiq -e production -C config/sidekiq.yml -r ./config/boot.rb 2>&1 >> log/sidekiq.log"
-    env = deploy['environment_variables'] || {}
+    env = OpsWorks::Escape.escape_double_quotes(deploy[:environment_variables]) || {}
 
     template "setup sidekiq.conf" do
       path "/etc/init/sidekiq-#{application}.conf"
