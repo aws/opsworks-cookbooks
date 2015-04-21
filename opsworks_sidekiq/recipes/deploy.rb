@@ -17,7 +17,7 @@ node[:deploy].each do |application, deploy|
         group: deploy[:group],
         release_path: release_path,
         start_command: start_command,
-        env: env,
+        environment: env,
       })
     end
 
