@@ -1,0 +1,57 @@
+---
+driver_plugin: vagrant
+driver_config:
+  require_chef_omnibus: true
+
+platforms:
+  - name: ubuntu-12.04
+    run_list:
+      - recipe[apt]
+    attributes:
+      newrelic:
+        php_agent:
+          web_server:
+            service_name: apache2
+          php_config: '/etc/php5/conf.d/newrelic.ini'
+
+  - name: ubuntu-14.04
+    run_list:
+      - recipe[apt]
+    attributes:
+      newrelic:
+        php5enmode: = true
+        php_agent:
+          web_server:
+            service_name: apache2
+          php_config: '/etc/php5/mods-available/newrelic.ini'
+
+  - name: centos-6.6
+    attributes:
+      newrelic:
+        php_agent:
+          web_server:
+            service_name: httpd
+          php_config: '/etc/php.d/newrelic.ini'
+
+suites:
+  - name: default
+    run_list:
+      - recipe[newrelic::default]
+    attributes:
+      newrelic:
+        license: '0000ffff0000ffff0000ffff0000ffff0000ffff'
+        server_monitor_agent:
+          service_notify_action: nothing
+          service_actions:
+            - nothing
+  - name: php-agent
+    run_list:
+      - "recipe[newrelic_lwrp_test::agent_php]"
+    attributes:
+      newrelic:
+        license: '0000ffff0000ffff0000ffff0000ffff0000ffff'
+  - name: server-monitor
+    run_list: "recipe[newrelic_lwrp_test::server_monitor]"
+    attributes:
+      newrelic:
+        license: '0000ffff0000ffff0000ffff0000ffff0000ffff'
