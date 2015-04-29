@@ -6,3 +6,5 @@ user 'catalogoeditorial' do
   shell '/bin/false'
   password '$1$IbK0KxRL$pnXrASwzWwPRvyNdEpWmm1'
 end
+
+execute 'usermod -g users deploy'
