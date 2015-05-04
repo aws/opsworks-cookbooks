@@ -10,3 +10,13 @@
 #
 #normal[:nginx][:gzip] = 'off'
 #normal[:nginx][:gzip_static] = 'off'
+
+normal[:nginx][:gzip_types] = ["application/x-javascript",
+                                "application/xhtml+xml",
+                                "application/xml",
+                                "application/xml+rss",
+                                "application/json",
+                                "text/css",
+                                "text/javascript",
+                                "text/plain",
+                                "text/xml"]
