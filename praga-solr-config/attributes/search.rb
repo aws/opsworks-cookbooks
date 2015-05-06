@@ -1,0 +1,8 @@
+default[:search]["staging"][:core_name] = "search"
+default[:search]["staging"][:deltaImportQuery] = "sql"
+default[:search]["staging"][:deltaQuery] = "sql"
+default[:search]["staging"][:url] = "sql"
+default[:search]["staging"][:user] = "sql"
+default[:search]["staging"][:query] = "sql"
+default[:search]["staging"][:password] = "123mudar"
+default[:search]["staging"][:drive] = "3306"
