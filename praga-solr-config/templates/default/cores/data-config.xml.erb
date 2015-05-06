@@ -1,12 +1,12 @@
 <dataConfig>
-  <dataSource type="JdbcDataSource" driver="{%= driver %}" 
-    url="{%= url %}" 
-    password="{%= password %}"
-    user="{% user %}"/>
+  <dataSource type="JdbcDataSource" driver="<%= @driver %>" 
+    url="<%= @url %>" 
+    password="<%= @password %>"
+    user="<% @user %>"/>
   <document>
-    <entity name="ticket" query="{%= query %}"
-      deltaImportQuery="{%= deltaImportQuery %}"
-      deltaQuery="{%= deltaQuery %}">	
+    <entity name="search" query="<%= @query %>"
+      deltaImportQuery="<%= @deltaImportQuery %>"
+      deltaQuery="<%= @deltaQuery %>">	
     </entity>
   </document>
 </dataConfig>

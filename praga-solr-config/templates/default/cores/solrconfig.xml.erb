@@ -832,7 +832,7 @@
   <!-- Data Import Handler -->
   <requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
     <lst name="defaults">
-      <str name="config">/opt/solr/{%= name %}/conf/data-config.xml</str>
+      <str name="config">/opt/solr/server/solr/<%= @name %>/conf/data-config.xml</str>
     </lst>
   </requestHandler>
 
