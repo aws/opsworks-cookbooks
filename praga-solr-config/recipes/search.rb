@@ -1,40 +1,45 @@
 node[:deploy].each do |app_name, deploy|
+
+  Chef::Log.info(deploy)
+
+  env = deploy[:rails_env]
   
-  remote_directory "/opt/solr/server/solr/#{node[:search]["staging"][:core_name]}" do
+  Chef::Log.info(env)
+  remote_directory "/opt/solr/server/solr/#{node[:search][env][:core_name]}" do
     files_mode '0640'
     mode '0770'
     owner 'deploy'
-    source "cores/#{node[:search]["staging"][:core_name]}"
+    source "cores/#{node[:search][env][:core_name]}"
   end
 
-  template "/opt/solr/server/solr/#{node[:search]["staging"][:core_name]}/conf/data-config.xml" do
+  template "/opt/solr/server/solr/#{node[:search][env][:core_name]}/conf/data-config.xml" do
     source "cores/data-config.xml.erb"
     owner deploy[:user]
     group 'www-data'
     mode 0440
-    variables({ :driver => node[:search]["staging"][:drive],
-                :url => node[:search]["staging"][:url],
-                :password => node[:search]["staging"][:password],
-                :user => node[:search]["staging"][:user],
-                :query => node[:search]["staging"][:query],
-                :deltaImportQuery => node[:search]["staging"][:deltaImportQuery],
-                :deltaQuery => node[:search]["staging"][:deltaQuery]})
+    variables({ :driver => node[:search][env][:drive],
+                :url => node[:search][env][:url],
+                :password => node[:search][env][:password],
+                :user => node[:search][env][:user],
+                :query => node[:search][env][:query],
+                :deltaImportQuery => node[:search][env][:deltaImportQuery],
+                :deltaQuery => node[:search][env][:deltaQuery]})
   end
 
-  template "/opt/solr/server/solr/#{node[:search]["staging"][:core_name]}/conf/solrconfig.xml" do
+  template "/opt/solr/server/solr/#{node[:search][env][:core_name]}/conf/solrconfig.xml" do
     source "cores/solrconfig.xml.erb"
     owner deploy[:user]
     group 'www-data'
     mode 0440
-    variables({ :name => node[:search]["staging"][:core_name]})
+    variables({ :name => node[:search][env][:core_name]})
   end
 
-  template "/opt/solr/server/solr/#{node[:search]["staging"][:core_name]}/core.properties" do
+  template "/opt/solr/server/solr/#{node[:search][env][:core_name]}/core.properties" do
     source "cores/core.properties.erb"
     owner deploy[:user]
     group 'www-data'
     mode 0440
-    variables({ :name => node[:search]["staging"][:core_name]})
+    variables({ :name => node[:search][env][:core_name]})
   end
 
   execute '/opt/solr/bin/solr restart' do

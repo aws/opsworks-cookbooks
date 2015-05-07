@@ -87,7 +87,7 @@
   <!-- data import handler -->
   <lib dir="../../dist/" regex="solr-dataimporthandler-.*\.jar" />
   <lib dir="../../lib/" regex="mysql-connector-java-.*\.jar" />
-  
+  <lib dir="${solr.install.dir:../}/conf/lib/" regex=".*\.jar" />
   <!-- an exact 'path' can be used instead of a 'dir' to specify a 
        specific jar file.  This will cause a serious error to be logged 
        if it can't be loaded.
@@ -832,7 +832,7 @@
   <!-- Data Import Handler -->
   <requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
     <lst name="defaults">
-      <str name="config">/opt/bitnami/apache-solr/solr/nca/conf/data-config.xml</str>
+      <str name="config">./data-config.xml</str>
     </lst>
   </requestHandler>
 
