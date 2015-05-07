@@ -2,7 +2,7 @@
   <dataSource type="JdbcDataSource" driver="<%= @driver %>" 
     url="<%= @url %>" 
     password="<%= @password %>"
-    user="<% @user %>"/>
+    user="<%= @user %>"/>
   <document>
     <entity name="search" query="<%= @query %>"
       deltaImportQuery="<%= @deltaImportQuery %>"
