@@ -9,6 +9,7 @@ node[:deploy].each do |app_name, deploy|
     files_mode '0640'
     mode '0770'
     owner 'deploy'
+    recursive true
     source "cores/#{node[:search][env][:core_name]}"
   end
 
