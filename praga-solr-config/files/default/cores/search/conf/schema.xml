@@ -2,10 +2,30 @@
 <schema name="example" version="1.5">
    <field name="_version_" type="long" indexed="true" stored="true"/>
    <field name="_root_" type="string" indexed="true" stored="false"/>
+
    <field name="rec_id" type="int" indexed="true" stored="true" required="true" multiValued="false" /> 
    <field name="titulo" type="text_general" indexed="true" stored="true"/>
    <field name="autor" type="text_general" indexed="true" stored="true"/>
-   <field name="content" type="text_general" indexed="false" stored="true" multiValued="true"/>
+   <field name="desc" type="text_general" indexed="false" stored="true" multiValued="true"/>
+   <field name="user_id" type="int" indexed="true" stored="true" required="true" multiValued="false" />
+   <field name="editora" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="ano" type="string" indexed="true" stored="true"/>
+   <field name="data_reg" type="string" indexed="true" stored="true"/>
+   <field name="preco" type="tfloat" indexed="true" stored="true"/>
+   <field name="estante" type="string" indexed="true" stored="true"/>
+   <field name="capa" type="string" indexed="true" stored="true"/>
+   <field name="tipo" type="string" indexed="true" stored="true"/>
+   <field name="estado_livro" type="string" indexed="true" stored="true"/>
+   <field name="peso" type="string" indexed="true" stored="true"/>
+   <field name="peso_est" type="string" indexed="true" stored="true"/>
+   <field name="nomeabrev" type="string" indexed="true" stored="true"/>
+   <field name="username" type="string" indexed="true" stored="true"/>
+   <field name="usuario_ativo" type="string" indexed="true" stored="true"/>
+   <field name="titulo_idioma" type="string" indexed="true" stored="true"/>
+   <field name="dna_nvends_ativos" type="int" indexed="true" stored="true"/>
+
+
+
    <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
    <field name="text_rev" type="text_general_rev" indexed="true" stored="false" multiValued="true"/>
    <field name="manu_exact" type="string" indexed="true" stored="false"/>

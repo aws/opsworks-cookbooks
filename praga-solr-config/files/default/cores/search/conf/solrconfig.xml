@@ -35,7 +35,8 @@
        that you fully re-index after changing this setting as it can
        affect both how text is indexed and queried.
   -->
-  <luceneMatchVersion>4.10.3</luceneMatchVersion>
+  <!--<luceneMatchVersion>4.10.0</luceneMatchVersion>-->
+  <luceneMatchVersion>5.0.0</luceneMatchVersion>
 
   <!-- <lib/> directives can be used to instruct Solr to load any Jars
        identified and use them to resolve any "plugins" specified in
@@ -72,23 +73,22 @@
        The examples below can be used to load some solr-contribs along 
        with their external dependencies.
     -->
-  <lib dir="${solr.install.dir:../../..}/contrib/extraction/lib" regex=".*\.jar" />
-  <lib dir="${solr.install.dir:../../..}/dist/" regex="solr-cell-\d.*\.jar" />
+  <lib dir="../../contrib/extraction/lib" regex=".*\.jar" />
+  <lib dir="../../dist/" regex="solr-cell-\d.*\.jar" />
 
-  <lib dir="${solr.install.dir:../../..}/contrib/clustering/lib/" regex=".*\.jar" />
-  <lib dir="${solr.install.dir:../../..}/dist/" regex="solr-clustering-\d.*\.jar" />
+  <lib dir="../../contrib/clustering/lib/" regex=".*\.jar" />
+  <lib dir="../../dist/" regex="solr-clustering-\d.*\.jar" />
 
-  <lib dir="${solr.install.dir:../../..}/contrib/langid/lib/" regex=".*\.jar" />
-  <lib dir="${solr.install.dir:../../..}/dist/" regex="solr-langid-\d.*\.jar" />
+  <lib dir="../../contrib/langid/lib/" regex=".*\.jar" />
+  <lib dir="../../dist/" regex="solr-langid-\d.*\.jar" />
 
-  <lib dir="${solr.install.dir:../../..}/contrib/velocity/lib" regex=".*\.jar" />
-  <lib dir="${solr.install.dir:../../..}/dist/" regex="solr-velocity-\d.*\.jar" />
+  <lib dir="../../contrib/velocity/lib" regex=".*\.jar" />
+  <lib dir="../../dist/" regex="solr-velocity-\d.*\.jar" />
+
+  <!-- data import handler -->
+  <lib dir="../../dist/" regex="solr-dataimporthandler-.*\.jar" />
+  <lib dir="../../lib/" regex="mysql-connector-java-.*\.jar" />
   
-  <lib dir="${solr.install.dir:../../..}/lib/" regex=".*\.jar" />
-  <lib dir="${solr.install.dir:../}/conf/lib/" regex=".*\.jar" />
-
-  
-
   <!-- an exact 'path' can be used instead of a 'dir' to specify a 
        specific jar file.  This will cause a serious error to be logged 
        if it can't be loaded.
@@ -829,6 +829,15 @@
        not be initialized until the first request that uses it.
 
     -->
+
+  <!-- Data Import Handler -->
+  <requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
+    <lst name="defaults">
+      <str name="config">/opt/solr/server/solr/search/conf/data-config.xml</str>
+    </lst>
+  </requestHandler>
+
+
   <!-- SearchHandler
 
        http://wiki.apache.org/solr/SearchHandler
@@ -908,16 +917,9 @@
        <str name="wt">json</str>
        <str name="indent">true</str>
        <str name="df">text</str>
-       <str name="bf">priority</str>
-       <str name="mm">2&lt;-25%</str>
-
-       <str name="defType">edismax</str>
-       <str name="qf">
-           titulo^10.0 author^4.0 
-       </str>
-       
      </lst>
   </requestHandler>
+
 
   <!-- realtime get handler, guaranteed to return the latest stored fields of
        any document, without the need to commit or open a new searcher.  The
@@ -1001,10 +1003,9 @@
        <!-- Faceting defaults -->
        <str name="facet">on</str>
        <str name="facet.missing">true</str>
-       <str name="facet.field">cat</str>
-       <str name="facet.field">manu_exact</str>
-       <str name="facet.field">content_type</str>
-       <str name="facet.field">author_s</str>
+       <str name="facet.field">city</str>
+       <str name="facet.field">seller</str>
+       <str name="facet.field">shelf</str>
        <str name="facet.query">ipod</str>
        <str name="facet.query">GB</str>
        <str name="facet.mincount">1</str>
@@ -1083,11 +1084,11 @@
          updateRequestProcessorChains that can be used by name
          on each Update Request
       -->
-    
-     <lst name="defaults">
-       <str name="update.chain">dedupe</str>
-     </lst>
-     
+    <!--
+       <lst name="defaults">
+         <str name="update.chain">dedupe</str>
+       </lst>
+       -->
   </requestHandler>
 
   <!-- The following are implicitly added
@@ -1271,13 +1272,6 @@
     -->
   </requestHandler>
 
-  <requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler"> 
-        <lst name="defaults"> 
-            <str name="config">./data-config.xml</str> 
-            <str name="update.chain">dedupe</str>
-        </lst> 
-  </requestHandler>  
-
   <!-- Search Components
 
        Search components are registered to SolrCore and used by 
@@ -1446,15 +1440,15 @@
     </arr>
   </requestHandler>
 
-  <!-- This causes long startup times on big indexes, even when never used.  See SOLR-6679 -->
   <searchComponent name="suggest" class="solr.SuggestComponent">
-    <lst name="suggester">
+  	<lst name="suggester">
       <str name="name">mySuggester</str>
-      <str name="lookupImpl">FuzzyLookupFactory</str>
-      <str name="dictionaryImpl">DocumentDictionaryFactory</str>
-      <str name="field">suggestion</str>
-      <str name="weightField">price</str>
-      <str name="suggestAnalyzerFieldType">textSuggest</str>
+      <str name="lookupImpl">FuzzyLookupFactory</str>      <!-- org.apache.solr.spelling.suggest.fst -->
+      <str name="dictionaryImpl">DocumentDictionaryFactory</str>     <!-- org.apache.solr.spelling.suggest.HighFrequencyDictionaryFactory --> 
+      <str name="field">title</str>
+      <str name="field">author</str>
+      <str name="weightField">amount</str>
+      <str name="suggestAnalyzerFieldType">text_general</str>
     </lst>
   </searchComponent>
 
@@ -1468,9 +1462,45 @@
       <str>suggest</str>
     </arr>
   </requestHandler>
-  -->
+  
 
-  <!-- Term Vector Component
+<!-- request handler to return typeahead suggestions -->
+<requestHandler name="/ac" class="solr.SearchHandler">
+  <lst name="defaults">
+    <str name="echoParams">explicit</str>
+    <str name="defType">edismax</str>
+    <str name="rows">10</str>
+    <str name="fl">text_ngram,author,title,score</str>
+    <str name="qf">title_suggest^30 title_suggest_ngram^50.0 author_suggest^15 author_suggest_ngram^25.0</str>
+    <!--str name="group">true</str>
+    <str name="group.field">universe_s</str>
+    <str name="group.field">collection_s</str>
+    <str name="group.field">title</str-->
+    <str name="sort">score desc,title_sort asc</str>
+    <!--str name="group.sort">score desc</str-->
+    <str name="df">text_ngram</str>
+  </lst>
+</requestHandler>
+
+<requestHandler name="/author" class="solr.SearchHandler">
+  <lst name="defaults">
+    <str name="echoParams">explicit</str>
+    <str name="defType">edismax</str>
+    <str name="rows">10</str>
+    <str name="fl">author,score</str>
+    <str name="qf">author_suggest^70 author_suggest_ngram^30.0 author_suggest_edge^40.0</str>
+    <str name="group">true</str>
+    <str name="group.field">author_s</str>
+    <!--str name="group.field">collection_s</str>
+    <str name="group.field">title</str-->
+    <str name="sort">score desc,author_s asc</str>
+    <!--str name="group.sort">score desc</str-->
+    <str name="df">author_ngram</str>
+  </lst>
+</requestHandler>
+
+
+   <!-- Term Vector Component
 
        http://wiki.apache.org/solr/TermVectorComponent
     -->
@@ -1762,19 +1792,19 @@
        uniqueness based on that anyway.  
        
     -->
-  
+  <!--
      <updateRequestProcessorChain name="dedupe">
        <processor class="solr.processor.SignatureUpdateProcessorFactory">
          <bool name="enabled">true</bool>
-         <str name="signatureField">signature</str>
-         <bool name="overwriteDupes">true</bool>
-         <str name="fields">isbn,author,title</str>
+         <str name="signatureField">id</str>
+         <bool name="overwriteDupes">false</bool>
+         <str name="fields">name,features,cat</str>
          <str name="signatureClass">solr.processor.Lookup3Signature</str>
        </processor>
        <processor class="solr.LogUpdateProcessorFactory" />
        <processor class="solr.RunUpdateProcessorFactory" />
      </updateRequestProcessorChain>
-    
+    -->
   
   <!-- Language identification
 
