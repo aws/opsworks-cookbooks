@@ -30,13 +30,13 @@ node[:deploy].each do |app_name, deploy|
   #  variables({ :name => node[:search][env][:core_name]})
   #end
 
-  #template "/opt/solr/server/solr/#{node[:search][env][:core_name]}/core.properties" do
-  #  source "cores/core.properties.erb"
-  #  owner deploy[:user]
-  #  group 'www-data'
-  #  mode 0440
-  #  variables({ :name => node[:search][env][:core_name]})
-  #end
+  template "/opt/solr/server/solr/#{node[:search][env][:core_name]}/core.properties" do
+    source "cores/core.properties.erb"
+    owner deploy[:user]
+    group 'www-data'
+    mode 0440
+    variables({ :name => node[:search][env][:core_name]})
+  end
 
   execute '/opt/solr/bin/solr restart' do
     user "deploy"
