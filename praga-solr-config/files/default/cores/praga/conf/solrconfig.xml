@@ -934,6 +934,24 @@
      </lst>
   </requestHandler>
 
+  <requestHandler name="/soundslike" class="solr.SearchHandler">
+     <lst name="defaults">
+       <str name="echoParams">explicit</str>
+       <int name="rows">1</int>
+       <str name="wt">json</str>
+       <str name="indent">true</str>
+       <str name="df">author_title</str>
+       <str name="bf">priority</str>
+       <str name="mm">2&lt;-25%</str>
+       <str name="defType">edismax</str>
+       <str name="qf">
+           authorˆ20.0 titleˆ15.0
+       </str>
+       <str name="fl">*,score</str>
+     </lst>
+  </requestHandler>
+
+
 
   <!-- realtime get handler, guaranteed to return the latest stored fields of
        any document, without the need to commit or open a new searcher.  The
