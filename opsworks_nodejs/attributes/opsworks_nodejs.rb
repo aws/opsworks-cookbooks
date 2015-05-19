@@ -16,7 +16,7 @@
 
 include_attribute 'deploy'
 
-default[:opsworks_nodejs][:version] = '0.10.33'
+default[:opsworks_nodejs][:version] = '0.10.38'
 default[:opsworks_nodejs][:pkgrelease] = '1'
 default[:opsworks_nodejs][:npm_install_options] = 'install --production'
 

@@ -13,6 +13,7 @@ action :install do
         provider Chef::Provider::Package::Dpkg
       elsif platform_family?("rhel")
         provider Chef::Provider::Package::Yum
+        options "--disablerepo=*"
       end
 
       # to run during chef compile phase and thus keep the execution
