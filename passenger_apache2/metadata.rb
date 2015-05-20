@@ -5,7 +5,7 @@ maintainer       "AWS OpsWorks"
 license          "Apache 2.0"
 version          "1.0.0"
 
-%w{ packages gem_support apache2 nginx unicorn rails opsworks_initial_setup }.each do |cb|
+%w{ packages gem_support apache2 nginx unicorn puma rails opsworks_initial_setup }.each do |cb|
   depends cb
 end
 

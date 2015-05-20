@@ -111,6 +111,8 @@ if node[:opsworks][:layers].has_key?('monitoring-master')
         include_recipe 'opsworks_ganglia::monitor-apache'
       when 'nginx_unicorn'
         include_recipe 'opsworks_ganglia::monitor-nginx'
+      when 'nginx_puma'
+        include_recipe 'opsworks_ganglia::monitor-nginx'
       end
 
     end
