@@ -53,7 +53,7 @@ def asset_url
   _platform_version = node[:platform_version]
   # Hack to get RedHat 6 to online state until we have proper userspace
   # Ruby packages or removed Ruby dependency from custom layer.
-  if ["redhat", "centos"].include?(_platform)
+  if ["redhat", "centos"].include?(_platform) && _platform_version.start_with?("6.")
     _platform = "amazon"
     #ToDo: this should be a global attribute in the commons cookbook
     _platform_version = "2013.09"
