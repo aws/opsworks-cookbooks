@@ -4,6 +4,7 @@
 
 <table>
   ## For each field
+  #$doc.isEmpty()
   #foreach( $fieldName in $doc.fieldNames )
     ## For each value
     #foreach( $value in $doc.getFieldValues($fieldName) )
@@ -11,7 +12,7 @@
         ## Field Name
         <th align="right" valign="top">
           #if( $foreach.count == 1 )
-            $fieldName:
+            $fieldName: 
           #end
         </th>
         ## Field Value(s)

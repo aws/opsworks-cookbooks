@@ -9,10 +9,10 @@
 ## * mimeExtensionsMap, AKA extMap
 
 ## Title
-#if($doc.getFieldValue('title'))
-  #set($title = $esc.html($doc.getFirstValue('title')))
+#if($doc.getFieldValue('titulo'))
+  #set($title = $esc.html($doc.getFirstValue('titulo')))
 #else
-  #set($title = "["+$doc.getFieldValue('id')+"]")
+  #set($title = "["+$doc.getFieldValue('rec_id')+"]")
 #end
 
 ## URL
@@ -48,7 +48,6 @@
 ## #if(!$supportedMimeTypes.contains($filetype))
 ##   #set($filetype = "file")
 ## #end
-
 ## Row 1: Icon and Title and mlt link
 <div class="result-title">
   ## Icon
@@ -71,7 +70,7 @@
 
 ## Row 2?: ID / URL
 <div>
-  Id: #field('id')
+  Id: #field('rec_id')
 </div>
 
 ## Resource Name
@@ -87,17 +86,17 @@
 </div>
 
 ## Author
-#if($doc.getFieldValue('author'))
+#if($doc.getFieldValue('autor'))
   <div>
-    Author: #field('author')
+    Author: #field('autor')
   </div>
 #end
 
 ## Last_Modified Date
-#if($doc.getFieldValue('last_modified'))
+#if($doc.getFieldValue('data_reg'))
   <div>
     last-modified:
-    #field('last_modified')
+    #field('data_reg')
   </div>
 #end
 
@@ -129,17 +128,17 @@
             <span class="field-name">
               Title:
             </span>
-            $mltHit.getFieldValue('title')
+            $mltHit.getFieldValue('titulo')
           </div>
           <div>
             <span class="field-name">
               Author:
             </span>
-            $mltHit.getFieldValue('author')
+            $mltHit.getFieldValue('autor')
             <span class="field-name">
               Description:
             </span>
-            $mltHit.getFieldValue('description')
+            $mltHit.getFieldValue('editora')
           </div>
         </li>
       #end    ## end for each mltHit in $mlt

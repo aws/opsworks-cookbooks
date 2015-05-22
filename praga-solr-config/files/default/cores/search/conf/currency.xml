@@ -21,7 +21,9 @@
 <currencyConfig version="1.0">
   <rates>
     <!-- Updated from http://www.exchangerate.com/ at 2011-09-27 -->
-    <rate from="USD" to="ARS" rate="4.333871" comment="ARGENTINA Peso" />
+    <rate from="BRL" to="BRL" rate="1" comment="BRAZIL Real" />
+    <rate from="BRL" to="USD" rate="3.1" comment="BRAZIL Real" />
+    <!--<rate from="USD" to="ARS" rate="4.333871" comment="ARGENTINA Peso" />
     <rate from="USD" to="AUD" rate="1.025768" comment="AUSTRALIA Dollar" />
     <rate from="USD" to="EUR" rate="0.743676" comment="European Euro" />
     <rate from="USD" to="BRL" rate="1.881093" comment="BRAZIL Real" />
@@ -57,7 +59,7 @@
     <rate from="USD" to="THB" rate="30.89487" comment="THAILAND Baht" />
     <rate from="USD" to="AED" rate="3.672955" comment="U.A.E. Dirham" />
     <rate from="USD" to="UAH" rate="7.988582" comment="UKRAINE Hryvnia" />
-    <rate from="USD" to="GBP" rate="0.647910" comment="UNITED KINGDOM Pound" />
+    <rate from="USD" to="GBP" rate="0.647910" comment="UNITED KINGDOM Pound" />-->
     
     <!-- Cross-rates for some common currencies -->
     <rate from="EUR" to="GBP" rate="0.869914" />  

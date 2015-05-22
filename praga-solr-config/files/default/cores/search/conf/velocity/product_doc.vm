@@ -3,13 +3,13 @@
  *  assumed to have a field called "name"
  *#
 
-<div class="result-title"><b>#field('name')</b><span class="mlt">   #if($params.getBool('mlt', false) == false)<a href="#lensNoQ&q=id:$docId&mlt=true">More Like This</a>#end</span></div>
+<div class="result-title"><b>#field('titulo')</b><span class="mlt">   #if($params.getBool('mlt', false) == false)<a href="#lensNoQ&q=id:$docId&mlt=true">More Like This</a>#end</span></div>
 ##do we have a physical store for this product
 #set($store = $doc.getFieldValue('store'))
 #if($store)<div class="map"><img src="http://maps.google.com/maps/api/staticmap?&zoom=12&size=150x80&maptype=roadmap&markers=$doc.getFieldValue('store')&sensor=false" /><div><small><a target="_map" href="http://maps.google.com/?q=$store&amp;source=embed">Larger Map</a></small></div></div>#end
 <div>Id: #field('id')</div>
-<div>Price: #field('price_c')</div>
-<div>Features: #field('features')</div>
+<div>Price: #field('preco')</div>
+<div>Features: #field('titulo')</div>
 <div>In Stock: #field('inStock')</div>
 <div class="mlt">
   #set($mlt = $mltResults.get($docId))
@@ -19,8 +19,8 @@
   <ul>
     #foreach($mltHit in $mlt)
       #set($mltId = $mltHit.getFieldValue('id'))
-      <li><div><a href="#url_for_home?q=id:$mltId">$mltId</a></div><div><span class="field-name">Name:</span> $mltHit.getFieldValue('name')</div>
-        <div><span class="field-name">Price:</span> $!number.currency($mltHit.getFieldValue('price')) <span class="field-name">In Stock:</span> $mltHit.getFieldValue('inStock')</div>
+      <li><div><a href="#url_for_home?q=id:$mltId">$mltId</a></div><div><span class="field-name">Name:</span> $mltHit.getFieldValue('titulo')</div>
+        <div><span class="field-name">Price:</span> $!number.currency($mltHit.getFieldValue('preco')) <span class="field-name">In Stock:</span> $mltHit.getFieldValue('inStock')</div>
 
       </li>
     #end

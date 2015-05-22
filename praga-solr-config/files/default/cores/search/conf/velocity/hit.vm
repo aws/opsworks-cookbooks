@@ -9,7 +9,7 @@
 <div class="result-document">
 
   ## Has a "name" field ?
-  #if($doc.getFieldValue('name'))
+  #if($doc.getFieldValue('titulo'))
     #parse("product_doc.vm")
 
   ## Has a "compName_s" field ?
