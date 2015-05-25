@@ -102,6 +102,7 @@
   </requestHandler>
   <requestHandler name="/select" class="solr.SearchHandler">
     <lst name="defaults">
+      <str name="wt">json</str>
       <str name="echoParams">explicit</str>
       <int name="rows">10</int>
       <str name="df">text</str>
