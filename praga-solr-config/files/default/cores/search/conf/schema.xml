@@ -3,13 +3,13 @@
    <field name="_version_" type="long" indexed="true" stored="true"/>
    <field name="_root_" type="string" indexed="true" stored="false"/>
 
-   <field name="rec_id" type="long" indexed="true" stored="true" required="true" multiValued="false" /> 
+   <field name="rec_id" type="long" indexed="true" stored="true" required="true"/> 
    <field name="titulo" type="string" indexed="true" stored="true"/>
-   <field name="autor" type="string" indexed="true" stored="true"/>
-   <field name="desc" type="text_general" indexed="false" stored="true" multiValued="true"/>
-   <field name="user_id" type="int" indexed="true" stored="true" required="true" multiValued="false" />
-   <field name="editora" type="string" indexed="true" stored="true" multiValued="false"/>
-   <field name="cidade" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="autor" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="desc" type="text_general" indexed="false" stored="true"/>
+   <field name="user_id" type="int" indexed="true" stored="true" required="true"/>
+   <field name="editora" type="string" indexed="true" stored="true"/>
+   <field name="cidade" type="string" indexed="true" stored="true"/>
    <field name="ano" type="string" indexed="true" stored="true"/>
    <field name="data_reg" type="date" indexed="true" stored="true"/>
    <field name="preco" type="currency" indexed="true" stored="true"/>

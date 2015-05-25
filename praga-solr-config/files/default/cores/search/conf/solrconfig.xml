@@ -101,23 +101,49 @@
     </lst>
   </requestHandler>
   <requestHandler name="/select" class="solr.SearchHandler">
-     <lst name="defaults">
-       <str name="echoParams">explicit</str>
-       <int name="rows">10</int>
-       <str name="df">text</str>
-     </lst>
-    </requestHandler>
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <int name="rows">10</int>
+      <str name="df">text</str>
+      <str name="facet">true</str>
+      <str name="facet.field">ano</str>
+      <str name="facet.field">autor</str>
+      <str name="facet.field">cidade</str>
+      <str name="facet.field">vendedor</str>
+      <str name="facet.field">editora</str>
+      <str name="facet.query">preco:[0 TO 9.99]</str>
+      <str name="facet.query">preco:[10 TO 19.99]</str>
+      <str name="facet.query">preco:[20 TO 29.99]</str>
+      <str name="facet.query">preco:[30 TO 39.99]</str>
+      <str name="facet.query">preco:[40 TO *]</str>
+      <str name="facet.mincount">1</str>
+
+
+    </lst>
+  </requestHandler>
 
   <!-- A request handler that returns indented JSON by default -->
   <requestHandler name="/query" class="solr.SearchHandler">
-     <lst name="defaults">
-       <str name="echoParams">explicit</str>
-       <str name="wt">json</str>
-       <str name="indent">true</str>
-       <str name="df">text</str>
-       <str name="group">true</str>
-       <str name="group.field">dna_crc</str>
-     </lst>
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="wt">json</str>
+      <str name="indent">true</str>
+      <str name="df">text</str>
+      <str name="group">true</str>
+      <str name="group.field">dna_crc</str>
+      <str name="facet">true</str>
+      <str name="facet.field">ano</str>
+      <str name="facet.field">autor</str>
+      <str name="facet.field">cidade</str>
+      <str name="facet.field">vendedor</str>
+      <str name="facet.field">editora</str>
+      <str name="facet.query">preco:[0 TO 9.99]</str>
+      <str name="facet.query">preco:[10 TO 19.99]</str>
+      <str name="facet.query">preco:[20 TO 29.99]</str>
+      <str name="facet.query">preco:[30 TO 39.99]</str>
+      <str name="facet.query">preco:[40 TO *]</str>
+      <str name="facet.mincount">1</str>
+    </lst>
   </requestHandler>
 
   <requestHandler name="/get" class="solr.RealTimeGetHandler">
