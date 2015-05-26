@@ -81,8 +81,8 @@ def local_asset
     # remove all downloaded file for this asset, also failed attemps.
     ::FileUtils.rm_rf(Dir["#{asset_basedir}.*"], :verbose => true) rescue Chef::Log.error "Couldn't cleanup downloaded assets for #{@new_resource.name}."
   elsif @new_resource.ignore_failure
-    Chef::Log.error "Failed to download asset #{asset_name} for #{@new_resource.name}."
+    Chef::Log.error "Failed to download asset #{asset_name} for #{@new_resource.name} with url #{asset_url}."
   elsif !@new_resource.ignore_failure
-    raise Chef::Exceptions::ResourceNotFound, "Failed to download asset #{@new_resource.asset} for #{@new_resource.name}."
+    raise Chef::Exceptions::ResourceNotFound, "Failed to download asset #{@new_resource.asset} for #{@new_resource.name} with url #{asset_url}."
   end
 end
