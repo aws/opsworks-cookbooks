@@ -76,14 +76,14 @@ ServerRoot "<%= node[:apache][:dir] %>"
 #
 # The accept serialization lock file MUST BE STORED ON A LOCAL DISK.
 #
-Mutex file:${APACHE_LOCK_DIR} default
+Mutex file:<%= node[:apache][:lock_dir] %> default
 
 #
 # PidFile: The file in which the server should record its process
 # identification number when it starts.
 # This needs to be set in /etc/apache2/envvars
 #
-PidFile ${APACHE_PID_FILE}
+PidFile <%= node[:apache][:pid_file] %>
 
 #
 # Timeout: The number of seconds before receives and sends time out.
@@ -145,8 +145,8 @@ KeepAliveTimeout <%= node[:apache][:keepalivetimeout] %>
 </IfModule>
 
 # These need to be set in /etc/apache2/envvars
-User ${APACHE_RUN_USER}
-Group ${APACHE_RUN_GROUP}
+User <%= node[:apache][:user] %>
+Group <%= node[:apache][:group] %>
 
 #
 # DefaultType is the default MIME type the server will use for a document
@@ -177,7 +177,7 @@ HostnameLookups Off
 # logged here.  If you *do* define an error logfile for a <VirtualHost>
 # container, that host's errors will be logged there and not here.
 #
-ErrorLog ${APACHE_LOG_DIR}/error.log
+ErrorLog <%= node[:apache][:log_dir] %>/error.log
 
 #
 # LogLevel: Control the severity of messages logged to the error_log.

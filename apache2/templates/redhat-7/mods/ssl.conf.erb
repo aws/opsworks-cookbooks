@@ -39,8 +39,8 @@
 	#   Configure the SSL Session Cache: First the mechanism 
 	#   to use and second the expiring timeout (in seconds).
 	#   (The mechanism dbm has known memory leaks and should not be used).
-	#SSLSessionCache		 dbm:${APACHE_RUN_DIR}/ssl_scache
-	SSLSessionCache		shmcb:${APACHE_RUN_DIR}/ssl_scache(512000)
+	#SSLSessionCache		 dbm:/var/run/apache2/ssl_scache
+	SSLSessionCache		shmcb:/var/run/apache2/ssl_scache(512000)
 	SSLSessionCacheTimeout  300
 
 	#   Semaphore:
@@ -48,7 +48,7 @@
 	#   SSL engine uses internally for inter-process synchronization. 
 	#   (Disabled by default, the global Mutex directive consolidates by default
 	#   this)
-	#Mutex file:${APACHE_LOCK_DIR}/ssl_mutex ssl-cache
+	#Mutex file:<%= node[:apache][:lock_dir] %>/ssl_mutex ssl-cache
 
 
 	#   SSL Cipher Suite:
