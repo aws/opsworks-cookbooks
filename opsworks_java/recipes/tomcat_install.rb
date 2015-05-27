@@ -1,7 +1,12 @@
-tomcat_pkgs = value_for_platform_family(
-  'debian' => ["tomcat#{node['opsworks_java']['tomcat']['base_version']}", 'libtcnative-1'],
-  'rhel' => ["tomcat#{node['opsworks_java']['tomcat']['base_version']}", 'tomcat-native']
-)
+tomcat_pkgs = case node["platform_family"]
+              when "debian" then ["tomcat#{node["opsworks_java"]["tomcat"]["base_version"]}", "libtcnative-1"]
+              when "rhel" then
+                if Chef::VersionConstraint.new("~> 7.0").include?(node["platform_version"])
+                  ["tomcat", "tomcat-native"]
+                else
+                  ["tomcat#{node["opsworks_java"]["tomcat"]["base_version"]}", "tomcat-native"]
+                end
+              end
 
 tomcat_pkgs.each do |pkg|
   package pkg do
