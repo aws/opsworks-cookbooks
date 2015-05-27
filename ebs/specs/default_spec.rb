@@ -12,7 +12,7 @@ describe_recipe 'ebs::default' do
         package('xfsdump').must_be_installed
         package('xfslibs-dev').must_be_installed
       when 'rhel'
-        package('xfsprogs-devel').must_be_installed
+        package("xfsprogs-devel").must_be_installed if node[:platform] == "amazon"
       end
     end
   end

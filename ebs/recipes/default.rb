@@ -8,7 +8,11 @@ when 'amazon','fedora'
   package 'xfsprogs'
   package 'xfsprogs-devel'
 when 'redhat','centos'
-  # RedHat 6 does not provide xfsprogs
+  if Chef::VersionConstraint.new("~> 7.0").include?(node["platform_version"])
+    package "xfsprogs"
+  else
+    # RedHat 6 does not provide xfsprogs
+  end
 end
 
 # VirtIO device name mapping
