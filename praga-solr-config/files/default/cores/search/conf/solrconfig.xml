@@ -108,7 +108,7 @@
       <str name="df">text</str>
       <str name="facet">true</str>
       <str name="facet.field">ano</str>
-      <str name="facet.field">autor</str>
+      <str name="facet.field">autor_facet</str>
       <str name="facet.field">cidade</str>
       <str name="facet.field">vendedor</str>
       <str name="facet.field">editora</str>
