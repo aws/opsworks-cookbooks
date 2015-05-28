@@ -3,7 +3,7 @@ node[:deploy].each do |app_name, deploy|
   Chef::Log.info(deploy)
 
   env = deploy[:rails_env]
-  
+
   Chef::Log.info(env)
   remote_directory "/opt/solr/server/solr/#{node[:search][env][:core_name]}" do
     files_mode '0640'
@@ -27,14 +27,6 @@ node[:deploy].each do |app_name, deploy|
                 :deltaQuery => node[:search][env][:deltaQuery]})
   end
 
-  template "/opt/solr/server/solr/#{node[:search][env][:core_name]}/conf/solrconfig.xml" do
-    source "cores/solrconfig.xml.erb"
-    owner deploy[:user]
-    group 'www-data'
-    mode 0440
-    variables({ :name => node[:search][env][:core_name]})
-  end
-
   template "/opt/solr/server/solr/#{node[:search][env][:core_name]}/core.properties" do
     source "cores/core.properties.erb"
     owner deploy[:user]
@@ -48,4 +40,3 @@ node[:deploy].each do |app_name, deploy|
   end
 
 end
-
