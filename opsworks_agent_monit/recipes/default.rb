@@ -8,12 +8,23 @@ directory node[:monit][:conf_dir] do
 end
 
 include_recipe "opsworks_agent_monit::service"
+include_recipe "opsworks_agent_monit::reload_systemd"
 
 if platform?('debian','ubuntu')
   template "/etc/default/monit" do
     source "monit.erb"
     mode 0644
   end
+end
+
+# if Monit is running under systemd modify its systemd
+# configuration so that when stopped, systemd does not
+# send the kill signal to all processes in the service's
+# control group 
+template "/lib/systemd/system/monit.service" do
+  source "monit.service.erb"
+  only_if {File.exists?('/lib/systemd/system/monit.service')}
+  notifies :run, 'execute[systemctl-daemon-reload]', :immediately
 end
 
 service 'monit' do
