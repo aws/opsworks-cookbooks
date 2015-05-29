@@ -1,0 +1,53 @@
+defaults: &defaults
+  login_ticket:
+    lifetime: 600
+  ticket_granting_ticket:
+    lifetime: 86400
+    lifetime_long_term: 864000
+  service_ticket:
+    lifetime_unconsumed: 300
+    lifetime_consumed: 86400
+  proxy_ticket:
+    lifetime_unconsumed: 300
+    lifetime_consumed: 86400
+  frontend:
+    sso_name: "Monaco"
+    footer_text: "Estante Virtual - Single Sign On - Server"
+
+staging:
+  <<: *defaults
+  authenticators:
+    ev_user_database:
+      authenticator: "ActiveRecord"
+      options:
+        connection:
+          adapter: "postgresql"
+          host: <%= @database[:host].to_s.inspect %>
+          username: <%= @database[:username].to_s.inspect %>
+          password: <%= @database[:password].to_s.inspect %>
+          database: <%= @database[:database].to_s.inspect %>
+        table: "users"
+        username_column: "username"
+        password_column: "password_digest"
+        extra_attributes:
+          id: "external_user_id"
+          name: "name"
+
+production:
+  <<: *defaults
+  authenticators:
+    ev_user_database:
+      authenticator: "ActiveRecord"
+      options:
+        connection:
+          adapter: "postgresql"
+          host: <%= @database[:host].to_s.inspect %>
+          username: <%= @database[:username].to_s.inspect %>
+          password: <%= @database[:password].to_s.inspect %>
+          database: <%= @database[:database].to_s.inspect %>
+        table: "users"
+        username_column: "username"
+        password_column: "password_digest"
+        extra_attributes:
+          id: "external_user_id"
+          name: "name"

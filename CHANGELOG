@@ -1,0 +1,3 @@
+# v340 2015-05-05
+- Reverts a breaking commit that resulted in an invalid deploy destination
+directory. https://github.com/aws/opsworks-cookbooks/issues/301

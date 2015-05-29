@@ -1,0 +1,3 @@
+<% @environment.each do |key, value| %>
+ENV['<%= key %>'] = "<%= value %>"
+<% end %>

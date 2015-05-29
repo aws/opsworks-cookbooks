@@ -1,0 +1,30 @@
+<dataConfig>
+	<dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver" 
+		url="jdbc:mysql://ev-core.c6orwgo57rj2.us-east-1.rds.amazonaws.com/nca" 
+		password="3st4nt3Vtl"
+		user="ev_admin"/>
+
+	<document>
+		<!--entity name="ticket" query="select t.id, t.created_at, seller_email, order_number, sender_email, answered, u.email from tickets t left join messages ta on t.id = ta.ticket_id left join users u on ta.user_id = u.id" -->
+ 
+
+		<entity name="ticket" query="select t.id, t.created_at as ticket_created_at, ta.created_at as answer_created_at, seller_email, order_number, sender_email, answered, u.email, c.name category, sc.name subcategory from tickets t left join messages ta on t.id = ta.ticket_id left join users u on ta.user_id = u.id join categories c on c.id = t.category_id join subcategories sc on sc.id = t.subcategory_id"
+		deltaImportQuery="select t.id, t.created_at as ticket_created_at, ta.created_at as answer_created_at, seller_email, order_number, sender_email, answered, u.email, c.name category, sc.name subcategory from tickets t left join messages ta on t.id = ta.ticket_id left join users u on ta.user_id = u.id  join categories c on c.id = t.category_id join subcategories sc on sc.id = t.subcategory_id where t.id='${dih.delta.id}'"
+                deltaQuery="select distinct t.id from tickets t left join messages ta on t.id = ta.ticket_id where t.updated_at > '${dih.last_index_time}' or ta.updated_at > '${dih.last_index_time}'">	
+
+		<field column="seller_email" name="email_vendedor"/>
+		<field column="order_number" name="pedido"/>
+        	<field column="sender_email" name="email_solicitante"/>
+        	<field column="answered" name="respondida"/>
+		<field column="email" name="respondida_por"/>
+		<field column="subcategory" name="subcategoria"/>
+		<field column="category" name="categoria"/>
+
+
+
+		<field column="ticket_created_at" name="event_timestamp"/>
+		<field column="answer_created_at" name="answer_timestamp"/>
+
+		</entity>
+	</document>
+</dataConfig>

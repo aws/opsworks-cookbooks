@@ -1,0 +1,18 @@
+default[:nca][:staging][:core_name] = "nca"
+default[:nca][:staging][:deltaImportQuery] = "select t.id, t.created_at as ticket_created_at, ta.created_at as answer_created_at, seller_email, order_number, sender_email, answered, u.email, c.name category, sc.name subcategory from tickets t left join messages ta on t.id = ta.ticket_id left join users u on ta.user_id = u.id  join categories c on c.id = t.category_id join subcategories sc on sc.id = t.subcategory_id where t.id='${dih.delta.id}'"
+default[:nca][:staging][:deltaQuery] = "select distinct t.id from tickets t left join messages ta on t.id = ta.ticket_id where t.updated_at > '${dih.last_index_time}' or ta.updated_at > '${dih.last_index_time}'"
+default[:nca][:staging][:url] = "jdbc:mysql://ev-core.c6orwgo57rj2.us-east-1.rds.amazonaws.com/nca"
+default[:nca][:staging][:user] = "ev_admin"
+default[:nca][:staging][:query] = "select t.id, t.created_at as ticket_created_at, ta.created_at as answer_created_at, seller_email, order_number, sender_email, answered, u.email, c.name category, sc.name subcategory from tickets t left join messages ta on t.id = ta.ticket_id left join users u on ta.user_id = u.id join categories c on c.id = t.category_id join subcategories sc on sc.id = t.subcategory_id"
+default[:nca][:staging][:password] = "3st4nt3Vtl"
+default[:nca][:staging][:drive] = "com.mysql.jdbc.Driver"
+
+default[:nca][:production][:core_name] = "nca"
+default[:nca][:production][:deltaImportQuery] = "select t.id, t.created_at as ticket_created_at, ta.created_at as answer_created_at, seller_email, order_number, sender_email, answered, u.email, c.name category, sc.name subcategory from tickets t left join messages ta on t.id = ta.ticket_id left join users u on ta.user_id = u.id  join categories c on c.id = t.category_id join subcategories sc on sc.id = t.subcategory_id where t.id='${dih.delta.id}'"
+default[:nca][:production][:deltaQuery] = "select distinct t.id from tickets t left join messages ta on t.id = ta.ticket_id where t.updated_at > '${dih.last_index_time}' or ta.updated_at > '${dih.last_index_time}'"
+default[:nca][:production][:url] = "jdbc:mysql://ev-core.c6orwgo57rj2.us-east-1.rds.amazonaws.com/nca"
+default[:nca][:production][:user] = "ev_admin"
+default[:nca][:production][:query] = "select t.id, t.created_at as ticket_created_at, ta.created_at as answer_created_at, seller_email, order_number, sender_email, answered, u.email, c.name category, sc.name subcategory from tickets t left join messages ta on t.id = ta.ticket_id left join users u on ta.user_id = u.id join categories c on c.id = t.category_id join subcategories sc on sc.id = t.subcategory_id"
+default[:nca][:production][:password] = "3st4nt3Vtl"
+default[:nca][:production][:drive] = "com.mysql.jdbc.Driver"
+
