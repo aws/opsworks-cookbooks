@@ -19,6 +19,8 @@ node[:deploy].each do |application, deploy|
     db_template = deploy[:environment_variables][:DATABASE_YML_TEMPLATE]
   end
 
+  db_vars = Hash.new
+
   if !deploy[:environment_variables][:DEFAULT_DATABASE_HOST].blank?
     db_vars[:host] = !deploy[:environment_variables][:DEFAULT_DATABASE_HOST].blank? ? deploy[:environment_variables][:DEFAULT_DATABASE_HOST] : deploy[:database][:host]
     db_vars[:username] = !deploy[:environment_variables][:DEFAULT_DATABASE_USERNAME].blank? ? deploy[:environment_variables][:DEFAULT_DATABASE_USERNAME] : deploy[:database][:username]
