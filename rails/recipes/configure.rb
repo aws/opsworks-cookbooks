@@ -19,10 +19,10 @@ node[:deploy].each do |application, deploy|
     db_template = deploy[:environment_variables][:DATABASE_YML_TEMPLATE]
   end
 
-  if deploy[:environment_variables][:DEFAULT_DATABASE_HOST]
-    db_vars[:host] = deploy[:environment_variables][:DEFAULT_DATABASE_HOST] ? deploy[:environment_variables][:DEFAULT_DATABASE_HOST] : deploy[:database][:host]
-    db_vars[:username] = deploy[:environment_variables][:DEFAULT_DATABASE_USERNAME] ? deploy[:environment_variables][:DEFAULT_DATABASE_USERNAME] : deploy[:database][:username]
-    db_vars[:password] = deploy[:environment_variables][:DEFAULT_DATABASE_PASSWORD] ? deploy[:environment_variables][:DEFAULT_DATABASE_PASSWORD] : deploy[:database][:password]
+  if !deploy[:environment_variables][:DEFAULT_DATABASE_HOST].blank?
+    db_vars[:host] = !deploy[:environment_variables][:DEFAULT_DATABASE_HOST].blank? ? deploy[:environment_variables][:DEFAULT_DATABASE_HOST] : deploy[:database][:host]
+    db_vars[:username] = !deploy[:environment_variables][:DEFAULT_DATABASE_USERNAME].blank? ? deploy[:environment_variables][:DEFAULT_DATABASE_USERNAME] : deploy[:database][:username]
+    db_vars[:password] = !deploy[:environment_variables][:DEFAULT_DATABASE_PASSWORD].blank? ? deploy[:environment_variables][:DEFAULT_DATABASE_PASSWORD] : deploy[:database][:password]
   else
     db_vars = deploy[:database]
   end
