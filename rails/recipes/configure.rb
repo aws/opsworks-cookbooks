@@ -15,8 +15,8 @@ node[:deploy].each do |application, deploy|
   #Setting default database template
   db_template = "database.yml.erb"
 
-  if !application[:environment_variables][:DATABASE_YML_TEMPLATE].blank?
-    db_template = application[:environment_variables][:DATABASE_YML_TEMPLATE]
+  if !deploy[:environment_variables][:DATABASE_YML_TEMPLATE].blank?
+    db_template = deploy[:environment_variables][:DATABASE_YML_TEMPLATE]
   end
 
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
@@ -25,7 +25,7 @@ node[:deploy].each do |application, deploy|
     mode "0660"
     group deploy[:group]
     owner deploy[:user]
-    variables(:database => deploy[:database], :environment => deploy[:rails_env], :envs => application[:environment_variables])
+    variables(:database => deploy[:database], :environment => deploy[:rails_env], :envs => deploy[:environment_variables])
 
     notifies :run, "execute[restart Rails app #{application}]"
 
