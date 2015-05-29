@@ -5,7 +5,7 @@ node[:deploy].each do |app_name, deploy|
   env = deploy[:rails_env]
 
   Chef::Log.info(env)
-  remote_directory "/var/www/solr/server/solr/#{node[:search][env][:core_name]}" do
+  remote_directory "/opt/solr/server/solr/#{node[:search][env][:core_name]}" do
     files_mode '0640'
     mode '0770'
     owner 'deploy'
@@ -13,7 +13,7 @@ node[:deploy].each do |app_name, deploy|
     source "cores/#{node[:search][env][:core_name]}"
   end
 
-  template "/var/www/solr/server/solr/#{node[:search][env][:core_name]}/conf/data-config.xml" do
+  template "/opt/solr/server/solr/#{node[:search][env][:core_name]}/conf/data-config.xml" do
     source "cores/data-config.xml.erb"
     owner deploy[:user]
     group 'www-data'
@@ -27,7 +27,7 @@ node[:deploy].each do |app_name, deploy|
                 :deltaQuery => node[:search][env][:deltaQuery]})
   end
 
-  template "/var/www/solr/server/solr/#{node[:search][env][:core_name]}/core.properties" do
+  template "/opt/solr/server/solr/#{node[:search][env][:core_name]}/core.properties" do
     source "cores/core.properties.erb"
     owner deploy[:user]
     group 'www-data'
@@ -35,7 +35,7 @@ node[:deploy].each do |app_name, deploy|
     variables({ :name => node[:search][env][:core_name]})
   end
 
-  execute '/var/www/solr/bin/solr restart' do
+  execute '/opt/solr/bin/solr restart' do
     user "deploy"
   end
 
