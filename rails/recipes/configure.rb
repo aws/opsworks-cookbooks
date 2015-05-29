@@ -23,8 +23,10 @@ node[:deploy].each do |application, deploy|
 
   if !deploy[:environment_variables][:DEFAULT_DATABASE_HOST].blank?
     db_vars[:host] = !deploy[:environment_variables][:DEFAULT_DATABASE_HOST].blank? ? deploy[:environment_variables][:DEFAULT_DATABASE_HOST] : deploy[:database][:host]
-    db_vars[:username] = !deploy[:environment_variables][:DEFAULT_DATABASE_USERNAME].blank? ? deploy[:environment_variables][:DEFAULT_DATABASE_USERNAME] : deploy[:database][:username]
+    db_vars[:username] = !deploy[:environment_variables][:DEFAULT_DATABASE_USERNAME].blank? ? depsloy[:environment_variables][:DEFAULT_DATABASE_USERNAME] : deploy[:database][:username]
     db_vars[:password] = !deploy[:environment_variables][:DEFAULT_DATABASE_PASSWORD].blank? ? deploy[:environment_variables][:DEFAULT_DATABASE_PASSWORD] : deploy[:database][:password]
+    db_vars[:adapter] = !deploy[:environment_variables][:DEFAULT_DATABASE_ADAPTER].blank? ? deploy[:environment_variables][:DEFAULT_DATABASE_ADAPTER] : deploy[:database][:adapter]
+    db_vars[:database] = !deploy[:environment_variables][:DEFAULT_DATABASE_NAME].blank? ? deploy[:environment_variables][:DEFAULT_DATABASE_NAME] : deploy[:database][:database]
   else
     db_vars = deploy[:database]
   end
