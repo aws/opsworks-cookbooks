@@ -15,22 +15,30 @@ node[:deploy].each do |application, deploy|
   #Setting default database template
   db_template = "database.yml.erb"
 
-  if !deploy[:environment_variables][:DATABASE_YML_TEMPLATE].blank?
+  if deploy[:environment_variables][:DATABASE_YML_TEMPLATE].blank?
     db_template = deploy[:environment_variables][:DATABASE_YML_TEMPLATE]
   end
 
+  if deploy[:environment_variables][:DEFAULT_DATABASE_HOST]
+    db_vars[:host] = deploy[:environment_variables][:DEFAULT_DATABASE_HOST] ? deploy[:environment_variables][:DEFAULT_DATABASE_HOST] : deploy[:database][:host]
+    db_vars[:username] = deploy[:environment_variables][:DEFAULT_DATABASE_USERNAME] ? deploy[:environment_variables][:DEFAULT_DATABASE_USERNAME] : deploy[:database][:username]
+    db_vars[:password] = deploy[:environment_variables][:DEFAULT_DATABASE_PASSWORD] ? deploy[:environment_variables][:DEFAULT_DATABASE_PASSWORD] : deploy[:database][:password]
+  else
+    db_vars = deploy[:database]
+  end
+
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
-    source db_template
+    source db_template.to_s.inspect
     cookbook 'rails'
     mode "0660"
     group deploy[:group]
     owner deploy[:user]
-    variables(:database => deploy[:database], :environment => deploy[:rails_env], :envs => deploy[:environment_variables])
+    variables(:database => db_vars], :environment => deploy[:rails_env], :envs => deploy[:environment_variables])
 
     notifies :run, "execute[restart Rails app #{application}]"
 
     only_if do
-      deploy[:database][:host].present? && File.directory?("#{deploy[:deploy_to]}/shared/config/")
+      File.directory?("#{deploy[:deploy_to]}/shared/config/")
     end
   end
 
