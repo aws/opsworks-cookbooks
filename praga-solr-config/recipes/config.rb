@@ -8,14 +8,14 @@
 #
 node[:deploy].each do |app_name, deploy|
 
-  remote_directory "/opt/solr/server/solr" do
+  remote_directory "/var/www/solr/server/solr" do
     files_mode '0640'
     mode '0770'
     owner 'deploy'
     source "config"
   end
 
-  execute '/opt/solr/bin/solr restart' do
+  execute '/var/www/solr/bin/solr restart' do
     user "deploy"
   end
 end
