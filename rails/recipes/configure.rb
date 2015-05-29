@@ -12,13 +12,20 @@ node[:deploy].each do |application, deploy|
   node.default[:deploy][application][:database][:adapter] = OpsWorks::RailsConfiguration.determine_database_adapter(application, node[:deploy][application], "#{node[:deploy][application][:deploy_to]}/current", :force => node[:force_database_adapter_detection])
   deploy = node[:deploy][application]
 
+  #Setting default database template
+  db_template = "database.yml.erb"
+
+  if application[:environment_variables][:DATABASE_YML_TEMPLATE].present?
+    db_template = application[:environment_variables][:DATABASE_YML_TEMPLATE]
+  end
+
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
-    source "database.yml.erb"
+    source db_template
     cookbook 'rails'
     mode "0660"
     group deploy[:group]
     owner deploy[:user]
-    variables(:database => deploy[:database], :environment => deploy[:rails_env])
+    variables(:database => deploy[:database], :environment => deploy[:rails_env], :envs => application[:environment_variables])
 
     notifies :run, "execute[restart Rails app #{application}]"
 
