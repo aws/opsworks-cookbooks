@@ -15,7 +15,7 @@ node[:deploy].each do |application, deploy|
   #Setting default database template
   db_template = "database.yml.erb"
 
-  if application[:environment_variables][:DATABASE_YML_TEMPLATE].present?
+  if !application[:environment_variables][:DATABASE_YML_TEMPLATE].blank?
     db_template = application[:environment_variables][:DATABASE_YML_TEMPLATE]
   end
 
