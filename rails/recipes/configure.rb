@@ -28,7 +28,7 @@ node[:deploy].each do |application, deploy|
   end
 
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
-    source db_template.to_s.inspect
+    source db_template
     cookbook 'rails'
     mode "0660"
     group deploy[:group]
