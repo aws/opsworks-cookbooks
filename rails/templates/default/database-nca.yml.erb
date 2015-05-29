@@ -1,27 +1,26 @@
 <% ([@environment]).uniq.each do |env| -%>
 <%= env %>:
-  adapter: <%= @envs['DEFAULT_DATABASE_ADAPTER'].to_s.inspect %>
-  database: <%= @envs['DEFAULT_DATABASE_NAME'].to_s.inspect %>
-  encoding: <%= (@envs['DEFAULT_DATABASE_ENCODING'] || 'utf8').to_s.inspect %>
-  host: <%= (@envs['DEFAULT_DATABASE_HOST'] || 'localhost').to_s.inspect %>
-  username: <%= @envs['DEFAULT_DATABASE_USERNAME'].to_s.inspect %>
-  password: <%= @envs['DEFAULT_DATABASE_PASSWORD'].to_s.inspect %>
-  reconnect: <%= @envs['DEFAULT_DATABASE_RECONNECT'] ? 'true' : 'false' %>
-<% if @envs['DEFAULT_DATABASE_POOL'] -%>
-  pool: <%= @envs['DEFAULT_DATABASE_POOL'].to_i.inspect %>
+  adapter: <%= @database[:adapter].to_s.inspect %>
+  database: <%= @database[:database].to_s.inspect %>
+  encoding: <%= (@database[:encoding] || 'utf8').to_s.inspect %>
+  host: <%= (@database[:host] || 'localhost').to_s.inspect %>
+  username: <%= @database[:username].to_s.inspect %>
+  password: <%= @database[:password].to_s.inspect %>
+  reconnect: <%= @database[:reconnect] ? 'true' : 'false' %>
+<% if @database[:pool] -%>
+  pool: <%= @database[:pool].to_i.inspect %>
 <% end -%>
-<% if @envs['DEFAULT_DATABASE_PORT'] -%>
-  port: <%= @envs['DEFAULT_DATABASE_PORT'].to_i.inspect %>
+<% if @database[:port] -%>
+  port: <%= @database[:port].to_i.inspect %>
 <% end -%>
 
 evmain_<%= env %>:
   adapter: <%= @envs['EV_MAIN_DATABASE_ADAPTER'].to_s.inspect %>
-  database: <%= @envs['EV_MAIN_DATABASE_NAME'].to_s.inspect %>
   encoding: <%= (@envs['EV_MAIN_DATABASE_ENCODING'] || 'utf8').to_s.inspect %>
   host: <%= @envs['EV_MAIN_DATABASE_HOST'] %>
   database: <%=  @envs['EV_MAIN_DATABASE_NAME'] %>
-  username: <%= @envs['EV_MAIN_DATABASE_USERNAME'] %>
-  password: <%= @envs['EV_MAIN_DATABASE_PASSWORD'] %>
+  username: <%= @envs['EV_MAIN_DATABASE_USERNAME'].to_s.inspect %>
+  password: <%= @envs['EV_MAIN_DATABASE_PASSWORD'].to_s.inspect %>
   reconnect: <%= @envs['EV_MAIN_DATABASE_RECONNECT'] ? 'true' : 'false' %>
 <% if @envs['EV_MAIN_DATABASE_PORT'] -%>
   port: <%= @envs['EV_MAIN_DATABASE_PORT'].to_i.inspect %>
