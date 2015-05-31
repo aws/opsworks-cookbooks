@@ -18,7 +18,7 @@ describe_recipe 'apache2::mod_php5' do
     when 'debian'
       package('libapache2-mod-php5').must_be_installed
     when 'rhel'
-      package('php').must_be_installed
+      package('php54').must_be_installed
     end
   end
 
