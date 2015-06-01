@@ -16,15 +16,15 @@
   <lib dir="../../lib/dist/" regex="solr-dataimporthandler-.*\.jar" />
   <lib dir="../../lib/" regex=".*\.jar" />
   <dataDir>${solr.data.dir:}</dataDir>
-  <directoryFactory name="DirectoryFactory" 
+  <directoryFactory name="DirectoryFactory"
                     class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}">
-    
-         
+
+
     <str name="solr.hdfs.home">${solr.hdfs.home:}</str>
     <str name="solr.hdfs.confdir">${solr.hdfs.confdir:}</str>
     <str name="solr.hdfs.blockcache.enabled">${solr.hdfs.blockcache.enabled:true}</str>
     <str name="solr.hdfs.blockcache.global">${solr.hdfs.blockcache.global:true}</str>
-  </directoryFactory> 
+  </directoryFactory>
   <codecFactory class="solr.SchemaCodecFactory"/>
   <schemaFactory class="ClassicIndexSchemaFactory"/>
   <indexConfig>
@@ -37,12 +37,12 @@
     <updateLog>
       <str name="dir">${solr.ulog.dir:}</str>
     </updateLog>
-     <autoCommit> 
-       <maxTime>${solr.autoCommit.maxTime:15000}</maxTime> 
-       <openSearcher>false</openSearcher> 
+     <autoCommit>
+       <maxTime>${solr.autoCommit.maxTime:15000}</maxTime>
+       <openSearcher>false</openSearcher>
      </autoCommit>
-     <autoSoftCommit> 
-       <maxTime>${solr.autoSoftCommit.maxTime:-1}</maxTime> 
+     <autoSoftCommit>
+       <maxTime>${solr.autoSoftCommit.maxTime:-1}</maxTime>
      </autoSoftCommit>
 
   </updateHandler>
@@ -60,7 +60,7 @@
                    size="512"
                    initialSize="512"
                    autowarmCount="0"/>
-    
+
     <cache name="perSegFilter"
       class="solr.search.LRUCache"
       size="10"
@@ -88,7 +88,7 @@
   </query>
 
   <requestDispatcher handleSelect="false" >
-    <requestParsers enableRemoteStreaming="true" 
+    <requestParsers enableRemoteStreaming="true"
                     multipartUploadLimitInKB="2048000"
                     formdataUploadLimitInKB="2048"
                     addHttpRequestToContext="false"/>
@@ -108,7 +108,7 @@
       <str name="df">text</str>
       <str name="facet">true</str>
       <str name="facet.field">ano</str>
-      <str name="facet.field">autor</str>
+      <str name="facet.field">autor_facet</str>
       <str name="facet.field">cidade</str>
       <str name="facet.field">vendedor</str>
       <str name="facet.field">editora</str>
@@ -136,11 +136,11 @@
         autor^30.0 titulo^12.0 desc^1.0
       </str>
       <str name="hl">on</str>
-      <str name="hl.fl">titulo autor</str>  
+      <str name="hl.fl">titulo autor</str>
       <str name="hl.preserveMulti">true</str>
       <str name="hl.encoder">html</str>
       <str name="hl.simple.pre">&lt;b&gt;</str>
-      <str name="hl.simple.post">&lt;/b&gt;</str>  
+      <str name="hl.simple.post">&lt;/b&gt;</str>
       <str name="mm">2&lt;-25%</str>
 
       <str name="group">true</str>
@@ -157,6 +157,7 @@
       <str name="facet.query">preco:[30 TO 39.99]</str>
       <str name="facet.query">preco:[40 TO *]</str>
       <str name="facet.mincount">1</str>
+      <str name="group.ngroups">true</str>
     </lst>
   </requestHandler>
 
@@ -240,14 +241,14 @@
 
        <!-- Spell checking defaults
        <str name="spellcheck">on</str>
-       <str name="spellcheck.extendedResults">false</str>       
+       <str name="spellcheck.extendedResults">false</str>
        <str name="spellcheck.count">5</str>
        <str name="spellcheck.alternativeTermCount">2</str>
-       <str name="spellcheck.maxResultsForSuggest">5</str>       
+       <str name="spellcheck.maxResultsForSuggest">5</str>
        <str name="spellcheck.collate">true</str>
-       <str name="spellcheck.collateExtendedResults">true</str>  
+       <str name="spellcheck.collateExtendedResults">true</str>
        <str name="spellcheck.maxCollationTries">5</str>
-       <str name="spellcheck.maxCollations">3</str>-->  
+       <str name="spellcheck.maxCollations">3</str>-->
      </lst>
 
      <!-- append spellchecking to our list of components
@@ -258,7 +259,7 @@
 
   <requestHandler name="/update" class="solr.UpdateRequestHandler">
   </requestHandler>
-  <requestHandler name="/update/extract" 
+  <requestHandler name="/update/extract"
                   startup="lazy"
                   class="solr.extraction.ExtractingRequestHandler" >
     <lst name="defaults">
@@ -272,16 +273,16 @@
     </lst>
   </requestHandler>
 
-  <requestHandler name="/analysis/field" 
+  <requestHandler name="/analysis/field"
                   startup="lazy"
                   class="solr.FieldAnalysisRequestHandler" />
 
 
-  <requestHandler name="/analysis/document" 
-                  class="solr.DocumentAnalysisRequestHandler" 
+  <requestHandler name="/analysis/document"
+                  class="solr.DocumentAnalysisRequestHandler"
                   startup="lazy" />
-  
-  <requestHandler name="/admin/" 
+
+  <requestHandler name="/admin/"
                   class="solr.admin.AdminHandlers" />
 
   <!-- ping/healthcheck -->
@@ -297,11 +298,11 @@
   <!-- Echo the request contents back to the client -->
   <requestHandler name="/debug/dump" class="solr.DumpRequestHandler" >
     <lst name="defaults">
-     <str name="echoParams">explicit</str> 
+     <str name="echoParams">explicit</str>
      <str name="echoHandler">true</str>
     </lst>
   </requestHandler>
-  <requestHandler name="/replication" class="solr.ReplicationHandler" > 
+  <requestHandler name="/replication" class="solr.ReplicationHandler" >
   </requestHandler>
   <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
 
@@ -318,10 +319,10 @@
       <int name="minQueryLength">4</int>
       <float name="maxQueryFrequency">0.01</float>
     </lst>
-    
+
     <lst name="spellchecker">
       <str name="name">wordbreak</str>
-      <str name="classname">solr.WordBreakSolrSpellChecker</str>      
+      <str name="classname">solr.WordBreakSolrSpellChecker</str>
       <str name="field">name</str>
       <str name="combineWords">true</str>
       <str name="breakWords">true</str>
@@ -334,14 +335,14 @@
       <str name="spellcheck.dictionary">default</str>
       <str name="spellcheck.dictionary">wordbreak</str>
       <str name="spellcheck">on</str>
-      <str name="spellcheck.extendedResults">true</str>       
+      <str name="spellcheck.extendedResults">true</str>
       <str name="spellcheck.count">10</str>
       <str name="spellcheck.alternativeTermCount">5</str>
-      <str name="spellcheck.maxResultsForSuggest">5</str>       
+      <str name="spellcheck.maxResultsForSuggest">5</str>
       <str name="spellcheck.collate">true</str>
-      <str name="spellcheck.collateExtendedResults">true</str>  
+      <str name="spellcheck.collateExtendedResults">true</str>
       <str name="spellcheck.maxCollationTries">10</str>
-      <str name="spellcheck.maxCollations">5</str>         
+      <str name="spellcheck.maxCollations">5</str>
     </lst>
     <arr name="last-components">
       <str>spellcheck</str>
@@ -352,7 +353,7 @@
   	<lst name="suggester">
       <str name="name">mySuggester</str>
       <str name="lookupImpl">FuzzyLookupFactory</str>      <!-- org.apache.solr.spelling.suggest.fst -->
-      <str name="dictionaryImpl">DocumentDictionaryFactory</str>     <!-- org.apache.solr.spelling.suggest.HighFrequencyDictionaryFactory --> 
+      <str name="dictionaryImpl">DocumentDictionaryFactory</str>     <!-- org.apache.solr.spelling.suggest.HighFrequencyDictionaryFactory -->
       <str name="field">title</str>
       <str name="field">author</str>
       <str name="weightField">amount</str>
@@ -370,7 +371,7 @@
       <str>suggest</str>
     </arr>
   </requestHandler>
-  
+
 
 <!-- request handler to return typeahead suggestions -->
 <requestHandler name="/ac" class="solr.SearchHandler">
@@ -471,7 +472,7 @@
       <str>clustering</str>
     </arr>
   </requestHandler>
-  
+
   <!-- Terms Component
 
        http://wiki.apache.org/solr/TermsComponent
@@ -486,7 +487,7 @@
      <lst name="defaults">
       <bool name="terms">true</bool>
       <bool name="distrib">false</bool>
-    </lst>     
+    </lst>
     <arr name="components">
       <str>terms</str>
     </arr>
@@ -511,7 +512,7 @@
 
   <searchComponent class="solr.HighlightComponent" name="highlight">
     <highlighting>
-      <fragmenter name="gap" 
+      <fragmenter name="gap"
                   default="true"
                   class="solr.highlight.GapFragmenter">
         <lst name="defaults">
@@ -519,7 +520,7 @@
         </lst>
       </fragmenter>
 
-      <fragmenter name="regex" 
+      <fragmenter name="regex"
                   class="solr.highlight.RegexFragmenter">
         <lst name="defaults">
           <!-- slightly smaller fragsizes work better because of slop -->
@@ -532,7 +533,7 @@
       </fragmenter>
 
       <!-- Configure the standard formatter -->
-      <formatter name="html" 
+      <formatter name="html"
                  default="true"
                  class="solr.highlight.HtmlFormatter">
         <lst name="defaults">
@@ -542,27 +543,27 @@
       </formatter>
 
       <!-- Configure the standard encoder -->
-      <encoder name="html" 
+      <encoder name="html"
                class="solr.highlight.HtmlEncoder" />
 
       <!-- Configure the standard fragListBuilder -->
-      <fragListBuilder name="simple" 
+      <fragListBuilder name="simple"
                        class="solr.highlight.SimpleFragListBuilder"/>
-      
+
       <!-- Configure the single fragListBuilder -->
-      <fragListBuilder name="single" 
+      <fragListBuilder name="single"
                        class="solr.highlight.SingleFragListBuilder"/>
-      
+
       <!-- Configure the weighted fragListBuilder -->
-      <fragListBuilder name="weighted" 
+      <fragListBuilder name="weighted"
                        default="true"
                        class="solr.highlight.WeightedFragListBuilder"/>
-      
+
       <!-- default tag FragmentsBuilder -->
-      <fragmentsBuilder name="default" 
+      <fragmentsBuilder name="default"
                         default="true"
                         class="solr.highlight.ScoreOrderFragmentsBuilder">
-        <!-- 
+        <!--
         <lst name="defaults">
           <str name="hl.multiValuedSeparatorChar">/</str>
         </lst>
@@ -570,7 +571,7 @@
       </fragmentsBuilder>
 
       <!-- multi-colored tag FragmentsBuilder -->
-      <fragmentsBuilder name="colored" 
+      <fragmentsBuilder name="colored"
                         class="solr.highlight.ScoreOrderFragmentsBuilder">
         <lst name="defaults">
           <str name="hl.tag.pre"><![CDATA[
@@ -582,8 +583,8 @@
           <str name="hl.tag.post"><![CDATA[</b>]]></str>
         </lst>
       </fragmentsBuilder>
-      
-      <boundaryScanner name="default" 
+
+      <boundaryScanner name="default"
                        default="true"
                        class="solr.highlight.SimpleBoundaryScanner">
         <lst name="defaults">
@@ -591,8 +592,8 @@
           <str name="hl.bs.chars">.,!? &#9;&#10;&#13;</str>
         </lst>
       </boundaryScanner>
-      
-      <boundaryScanner name="breakIterator" 
+
+      <boundaryScanner name="breakIterator"
                        class="solr.highlight.BreakIteratorBoundaryScanner">
         <lst name="defaults">
           <!-- type should be one of CHARACTER, WORD(default), LINE and SENTENCE -->
