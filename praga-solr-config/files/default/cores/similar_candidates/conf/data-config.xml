@@ -1,0 +1,21 @@
+<dataConfig>
+  <dataSource type="JdbcDataSource"
+              driver="org.postgresql.Driver"
+              url="jdbc:postgresql://localhost/reference_development"
+              user="praga"
+              readOnly="true"
+              autoCommit="true"
+              transactionIsolation="TRANSACTION_READ_COMMITTED"
+              holdability="CLOSE_CURSORS_AT_COMMIT"/>
+  <document>
+    <!-- quanto maior o valor no campo 'priority' melhor eh a posicao do registro -->
+    <entity name="reference_book"
+            query="select 10 as priority, codebar, concat('reference_', id) as id, isbn, concat(formatted_author, ' ', title) as lookup_key, title, author, publisher, formatted_author, category, edition, year, pages from reference.publications">
+    </entity>
+
+    <entity name="legacy_book"
+            query="select 2 as priority, concat('legacy_', id) as id, isbn, concat(formatted_author, ' ', title) as lookup_key, title, author, publisher, formatted_author, category, edition, year, pages from legacy.publications">
+    </entity>
+  </document>
+
+</dataConfig>
