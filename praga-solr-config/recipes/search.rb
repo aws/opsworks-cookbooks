@@ -8,6 +8,7 @@ node[:deploy].each do |app_name, deploy|
   remote_directory "/mnt/var/solr/#{node[:search][env][:core_name]}" do
   # /opt/solr/server/solr/#{node[:search][env][:core_name]}" do
     files_mode '0640'
+    files_owner 'deploy'
     mode '0770'
     owner 'deploy'
     recursive true
