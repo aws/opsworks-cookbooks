@@ -79,7 +79,7 @@
    <!-- Campos que serão configurados na busca -->
    <copyField source="titulo" dest="text"/>
    <copyField source="autor" dest="text"/>
-   <copyField source="desc" dest="text"/>
+   <copyField source="descr" dest="text"/>
 
    <!-- Facets -->
    <copyField source="titulo" dest="titulo_facet"/>
