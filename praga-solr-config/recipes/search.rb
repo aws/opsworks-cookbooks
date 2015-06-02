@@ -39,7 +39,7 @@ node[:deploy].each do |app_name, deploy|
     variables({ :name => node[:search][env][:core_name]})
   end
 
-  execute "ln -s /mnt/var/solr/#{node[:search][env][:core_name]} /opt/solr/server/solr/#{node[:search][env][:core_name]}"
+  execute "if [ ! -s /opt/solr/server/solr/search ]; then ln -s /mnt/var/solr/#{node[:search][env][:core_name]} /opt/solr/server/solr/#{node[:search][env][:core_name]}; fi"
 
   execute '/opt/solr/bin/solr restart' do
     user "deploy"
