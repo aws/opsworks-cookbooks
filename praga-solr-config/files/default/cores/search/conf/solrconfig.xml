@@ -133,9 +133,9 @@
 
       <str name="defType">edismax</str>
       <str name="qf">
-        autor^30.0 titulo^12.0 desc^1.0
+        titulo_facet^100.0 autor_facet^40.0 titulo_tokenized^60.0 autor_tokenized^15.0 titulo^1.0 autor^0.7 desc^0.3
       </str>
-      <str name="hl">on</str>
+      <str name="hl">off</str>
       <str name="hl.fl">titulo autor</str>
       <str name="hl.preserveMulti">true</str>
       <str name="hl.encoder">html</str>
@@ -147,7 +147,7 @@
       <str name="group.field">dna_crc</str>
       <str name="facet">true</str>
       <str name="facet.field">ano</str>
-      <str name="facet.field">autor</str>
+      <str name="facet.field">autor_facet</str>
       <str name="facet.field">cidade</str>
       <str name="facet.field">vendedor</str>
       <str name="facet.field">editora</str>
