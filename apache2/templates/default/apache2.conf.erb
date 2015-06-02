@@ -44,6 +44,10 @@ MaxKeepAliveRequests <%= node[:apache][:keepaliverequests] %>
 #
 KeepAliveTimeout <%= node[:apache][:keepalivetimeout] %>
 
+# Include module configuration:
+Include <%= node[:apache][:dir] %>/mods-enabled/*.load
+Include <%= node[:apache][:dir] %>/mods-enabled/*.conf
+
 ##
 ## Server-Pool Size Regulation (MPM specific)
 ## 
@@ -135,10 +139,6 @@ ErrorLog <%= node[:apache][:log_dir] %>/error.log
 # alert, emerg.
 #
 LogLevel <%= node[:apache][:log_level] %>
-
-# Include module configuration:
-Include <%= node[:apache][:dir] %>/mods-enabled/*.load
-Include <%= node[:apache][:dir] %>/mods-enabled/*.conf
 
 # Include ports listing
 Include <%= node[:apache][:dir] %>/ports.conf
