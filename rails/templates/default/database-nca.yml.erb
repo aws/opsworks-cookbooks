@@ -14,4 +14,18 @@
   port: <%= @database[:port].to_i.inspect %>
 <% end -%>
 
+evmain_<%= env %>:
+  adapter: <%= @envs['EV_MAIN_DATABASE_ADAPTER'].to_s.inspect %>
+  encoding: <%= (@envs['EV_MAIN_DATABASE_ENCODING'] || 'utf8').to_s.inspect %>
+  host: <%= @envs['EV_MAIN_DATABASE_HOST'].to_s.inspect %>
+  database: <%=  @envs['EV_MAIN_DATABASE_NAME'].to_s.inspect %>
+  username: <%= @envs['EV_MAIN_DATABASE_USERNAME'].to_s.inspect %>
+  password: <%= @envs['EV_MAIN_DATABASE_PASSWORD'].to_s.inspect %>
+  reconnect: <%= @envs['EV_MAIN_DATABASE_RECONNECT'] ? 'true' : 'false' %>
+<% if @envs['EV_MAIN_DATABASE_PORT'] -%>
+  port: <%= @envs['EV_MAIN_DATABASE_PORT'].to_i.inspect %>
+<% end -%>
+
 <% end %>
+
+

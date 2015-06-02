@@ -26,5 +26,5 @@ Television, Televisions, TV, TVs
 
 # Synonym mappings can be used for spelling correction too
 pixima => pixma
-
+50 => cinquenta
 harry,herri,herry,hary

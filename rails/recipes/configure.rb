@@ -12,18 +12,37 @@ node[:deploy].each do |application, deploy|
   node.default[:deploy][application][:database][:adapter] = OpsWorks::RailsConfiguration.determine_database_adapter(application, node[:deploy][application], "#{node[:deploy][application][:deploy_to]}/current", :force => node[:force_database_adapter_detection])
   deploy = node[:deploy][application]
 
+  #Setting default database template
+  db_template = "database.yml.erb"
+
+  if !deploy[:environment_variables][:DATABASE_YML_TEMPLATE].blank?
+    db_template = deploy[:environment_variables][:DATABASE_YML_TEMPLATE]
+  end
+
+  db_vars = Hash.new
+
+  if !deploy[:environment_variables][:DEFAULT_DATABASE_HOST].blank?
+    db_vars[:host] = !deploy[:environment_variables][:DEFAULT_DATABASE_HOST].blank? ? deploy[:environment_variables][:DEFAULT_DATABASE_HOST] : deploy[:database][:host]
+    db_vars[:username] = !deploy[:environment_variables][:DEFAULT_DATABASE_USERNAME].blank? ? deploy[:environment_variables][:DEFAULT_DATABASE_USERNAME] : deploy[:database][:username]
+    db_vars[:password] = !deploy[:environment_variables][:DEFAULT_DATABASE_PASSWORD].blank? ? deploy[:environment_variables][:DEFAULT_DATABASE_PASSWORD] : deploy[:database][:password]
+    db_vars[:adapter] = !deploy[:environment_variables][:DEFAULT_DATABASE_ADAPTER].blank? ? deploy[:environment_variables][:DEFAULT_DATABASE_ADAPTER] : deploy[:database][:adapter]
+    db_vars[:database] = !deploy[:environment_variables][:DEFAULT_DATABASE_NAME].blank? ? deploy[:environment_variables][:DEFAULT_DATABASE_NAME] : deploy[:database][:database]
+  else
+    db_vars = deploy[:database]
+  end
+
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
-    source "database.yml.erb"
+    source db_template
     cookbook 'rails'
     mode "0660"
     group deploy[:group]
     owner deploy[:user]
-    variables(:database => deploy[:database], :environment => deploy[:rails_env])
+    variables(:database => db_vars, :environment => deploy[:rails_env], :envs => deploy[:environment_variables])
 
     notifies :run, "execute[restart Rails app #{application}]"
 
     only_if do
-      deploy[:database][:host].present? && File.directory?("#{deploy[:deploy_to]}/shared/config/")
+      File.directory?("#{deploy[:deploy_to]}/shared/config/")
     end
   end
 

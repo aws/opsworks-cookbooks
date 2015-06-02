@@ -7,6 +7,9 @@
    <field name="titulo" type="text_general" indexed="true" stored="true"/>
    <field name="autor" type="text_general" indexed="true" stored="true"/>
 
+   <field name="titulo_tokenized" type="textExact" indexed="true" stored="true"/>
+   <field name="autor_tokenized" type="textExact" indexed="true" stored="true"/>
+ 
    <!-- Campos utilizados para a criacao de facets -->
    <field name="titulo_facet" type="string" indexed="true" stored="true"/>
    <field name="autor_facet" type="string" indexed="true" stored="true"/>
@@ -16,7 +19,7 @@
    <field name="estante" type="string" indexed="true" stored="true"/>
 
 
-   <field name="desc" type="text_general" indexed="false" stored="true"/>
+   <field name="descr" type="text_general" indexed="false" stored="true"/>
    <field name="user_id" type="int" indexed="true" stored="true" required="true"/>
    <field name="data_reg" type="date" indexed="true" stored="true"/>
    <field name="preco" type="currency" indexed="true" stored="true"/>
@@ -103,6 +106,14 @@
         <filter class="solr.LowerCaseFilterFactory"/>
       </analyzer>
    </fieldType>
+   <fieldType class="solr.TextField" name="textExact" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.StandardFilterFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+   </fieldType>
+
 
     <fieldType name="text_ws" class="solr.TextField" positionIncrementGap="100">
       <analyzer>
@@ -127,6 +138,7 @@
       <analyzer type="query">
         <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.EdgeNGramFilterFactory" minGramSize="2" maxGramSize="15" />
         <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
         <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
         <filter class="solr.LowerCaseFilterFactory"/>
