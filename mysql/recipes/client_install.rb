@@ -1,15 +1,16 @@
-package 'mysql-devel' do
-  package_name value_for_platform(
-    ['centos','redhat','fedora','amazon'] => {'default' => 'mysql-devel'},
-    'ubuntu' => {'default' => 'libmysqlclient-dev'}
-  )
-  action :install
+# for backwards compatiblity default provider to mysql
+default[:mysql][:provider] = "mysql" unless default[:mysql].key?(:provider)
+
+case node[:platform]
+when "redhat", "centos", "fedora", "amazon"
+  package "#{node[:mysql][:provider]}-devel"
+else "ubuntu"
+  package "libmysqlclient-dev"
 end
 
-package 'mysql-client' do
-  package_name value_for_platform(
-    ['centos','redhat','fedora','amazon'] => {'default' => 'mysql'},
-    'default' => 'mysql-client'
-  )
-  action :install
+case node[:platform]
+when "redhat", "centos", "fedora", "amazon"
+  package node[:mysql][:provider]
+else "ubuntu"
+  package "mysql-client"
 end

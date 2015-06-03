@@ -23,6 +23,13 @@ end
 
 default[:mysql][:server_root_password] = root_pw
 
+if platform?("redhat") && Chef::VersionConstraint.new("~> 7.0").include?(node["platform_version"])
+  default[:mysql][:provider] = 'mariadb'
+else
+  default[:mysql][:provider] = 'mysql'
+end
+
+
 debian_pw = String.new
 while debian_pw.length < 20
   debian_pw << OpenSSL::Random.random_bytes(1).gsub(/\W/, '')
@@ -37,7 +44,7 @@ default[:mysql][:port]                 = 3306
 case node[:platform]
 when 'centos','redhat','fedora','amazon'
   default[:mysql][:datadir]              = '/var/lib/mysql'
-  default[:mysql][:logdir]               = '/var/log/mysql'
+  default[:mysql][:logdir]               = "/var/log/#{node[:mysql][:provider]}"
   default[:mysql][:basedir]              = '/usr'
   default[:mysql][:user]                 = 'mysql'
   default[:mysql][:group]                = 'mysql'
@@ -48,7 +55,11 @@ when 'centos','redhat','fedora','amazon'
   set[:mysql][:conf_dir]                 = '/etc'
   set[:mysql][:confd_dir]                = '/etc/mysql/conf.d'
   set[:mysql][:socket]                   = '/var/lib/mysql/mysql.sock'
-  set[:mysql][:pid_file]                 = '/var/run/mysqld/mysqld.pid'
+  if node[:mysql][:provider] == "mariadb"
+    set[:mysql][:pid_file]                 = "/var/run/mariadb/mysqld.pid"
+  else
+    set[:mysql][:pid_file]                 = "/var/run/mysqld/mysqld.pid"
+  end
   set[:mysql][:grants_path]              = '/etc/mysql_grants.sql'
 when 'debian','ubuntu'
   default[:mysql][:datadir]              = '/var/lib/mysql'

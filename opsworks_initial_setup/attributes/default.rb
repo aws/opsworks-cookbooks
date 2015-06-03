@@ -71,11 +71,18 @@ when 'debian','ubuntu'
   default[:opsworks_initial_setup][:ephemeral_mount_point] = "/mnt"
 end
 
+if platform?("redhat") && Chef::VersionConstraint.new("~> 7.0").include?(node["platform_version"])
+  default[:opsworks_initial_setup][:mysql]     = 'mariadb'
+else
+  default[:opsworks_initial_setup][:mysql]     = 'mysql'
+end
+
 default[:opsworks_initial_setup][:bind_mounts][:mounts] = {
-  '/var/log/mysql' => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/log/mysql",
+  "/var/log/#{node[:opsworks_initial_setup][:mysql]}" => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/log/#{node[:opsworks_initial_setup][:mysql]}",
   '/srv/www' => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/srv/www",
   '/var/www' => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/www",
 }
+
 case node[:platform]
 when 'redhat','centos','fedora','amazon'
   default[:opsworks_initial_setup][:bind_mounts][:mounts]['/var/log/httpd'] = "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/log/apache2"

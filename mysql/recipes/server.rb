@@ -3,7 +3,10 @@ require 'resolv'
 include_recipe 'mysql::client'
 include_recipe 'mysql::prepare'
 
-package 'mysql-server'
+# for backwards compatiblity default provider to mysql
+default[:mysql][:provider] = "mysql" unless default[:mysql].key?(:provider)
+
+package "#{node[:mysql][:provider]}-server"
 
 if platform?('ubuntu') && node[:platform_version].to_f < 10.04
   remote_file '/tmp/mysql_init.patch' do
@@ -26,11 +29,11 @@ end
 
 include_recipe 'mysql::service'
 
-service 'mysql' do
+service node[:mysql][:provider] do
   action :enable
 end
 
-service 'mysql' do
+service node[:mysql][:provider] do
   action :stop
 end
 
