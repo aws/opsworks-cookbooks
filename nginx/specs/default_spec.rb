@@ -43,8 +43,4 @@ describe_recipe 'nginx::default' do
   it 'starts nginx service' do
     service('nginx').must_be_running
   end
-
-  it "reports nginx to be running" do
-    OpsWorks::ShellOut.shellout("/etc/init.d/nginx status").must_match(/nginx.*\s+is\s+running/)
-  end
 end
