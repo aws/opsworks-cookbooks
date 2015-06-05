@@ -1,10 +1,10 @@
 # for backwards compatiblity default provider to mysql
-default[:mysql][:provider] = "mysql" unless default[:mysql].key?(:provider)
+db_provider = node[:mysql][:provider] || "mysql"
 
 service "mysql" do
   case node[:platform]
   when "redhat", "centos", "fedora", "amazon"
-    if node[:mysql][:provider] == "mariadb"
+    if db_provider  == "mariadb"
       service_name "mariadb"
     else
       service_name "mysqld"
