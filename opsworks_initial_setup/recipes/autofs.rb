@@ -32,7 +32,7 @@ ruby_block "Update autofs configuration" do
     handle_to_master = Chef::Util::FileEdit.new("/etc/auto.master")
     handle_to_master.insert_line_if_no_match(
       node[:opsworks_initial_setup][:autofs_map_file],
-      "/- #{node[:opsworks_initial_setup][:autofs_map_file]} -t 3600"
+      "/- #{node[:opsworks_initial_setup][:autofs_map_file]} -t 3600 -n 1"
     )
     handle_to_master.write_file
   end
