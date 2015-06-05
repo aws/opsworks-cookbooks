@@ -41,7 +41,6 @@ when 'rhel'
     'php-xml',
     'php-common',
     'php-xmlrpc',
-    'php-devel',
     'php-gd',
     'php-cli',
     'php-pear-Auth-SASL',
@@ -49,10 +48,18 @@ when 'rhel'
     'php-pecl-memcache',
     'php-pear',
     'php-pear-XML-Parser',
-    'php-pear-Mail-Mime',
     'php-pear-DB',
     'php-pear-HTML-Common'
   ]
+
+  if platform?("redhat") && Chef::VersionConstraint.new("~> 7.0").include?(node["platform_version"])
+    packages.push("php")
+  else
+    # php-devel, php-pear-Mail-Mime is not available on rhel 7
+    packages.push("php-devel", "php-pear-Mail-Mime")
+  end
+
+
 end
 
 default[:mod_php5_apache2][:packages] = packages
