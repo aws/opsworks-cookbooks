@@ -50,7 +50,7 @@ when 'rhel'
   default[:apache][:conf_available_dir]  = "#{node[:apache][:dir]}/conf.d"
   default[:apache][:conf_enabled_dir]    = "#{node[:apache][:dir]}/conf.d"
   default[:apache][:pid_file]      = '/var/run/httpd/httpd.pid'
-  default[:apache][:lock_dir]      = 'log'
+  default[:apache][:lock_dir]      = '/var/run/httpd'
   default[:apache][:lib_dir]       = node[:kernel][:machine] =~ /^i[36']86$/ ? '/usr/lib/httpd' : '/usr/lib64/httpd'
   default[:apache][:libexecdir]    = "#{node[:apache][:lib_dir]}/modules"
   default[:apache][:document_root] = '/var/www/html'
