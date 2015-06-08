@@ -16,7 +16,11 @@ node[:deploy].each do |application, deploy|
 
   deploy[:environment_variables].each do |k, v|
     if k.match(/^db_/)
-      db_vars[k[3, k.length]] = v
+      va = v.split(',')
+      va.each do |x|
+        xa = x.split(':')
+        db_vars[k[3, k.length]][xa[0]] = xa[1]
+      end
     end
   end
 
