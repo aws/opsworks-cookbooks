@@ -71,14 +71,8 @@ when 'debian','ubuntu'
   default[:opsworks_initial_setup][:ephemeral_mount_point] = "/mnt"
 end
 
-if platform?("redhat") && Chef::VersionConstraint.new("~> 7.0").include?(node["platform_version"])
-  default[:opsworks_initial_setup][:mysql]     = 'mariadb'
-else
-  default[:opsworks_initial_setup][:mysql]     = 'mysql'
-end
-
 default[:opsworks_initial_setup][:bind_mounts][:mounts] = {
-  "/var/log/#{node[:opsworks_initial_setup][:mysql]}" => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/log/#{node[:opsworks_initial_setup][:mysql]}",
+  "/var/log/mysql" => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/log/mysql",
   '/srv/www' => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/srv/www",
   '/var/www' => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/www",
 }

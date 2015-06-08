@@ -18,36 +18,24 @@ describe_recipe 'mysql::server' do
   end
 
   it "starts the mysql service" do
-    db_provider = node[:mysql][:provider] || "mysql"
+    mysql_name = node[:mysql][:name] || "mysql"
     case node[:platform]
-    when "debian","ubuntu"
+    when "redhat", "centos", "fedora", "amazon"
+      service("#{mysql_name}d").must_be_running
+    else
       service("mysql").must_be_running
-    when "centos","redhat","fedora","amazon"
-      if db_provider == "mysql"
-        service("mysqld").must_be_running
-      elsif db_provider == "mariadb"
-        service("mariadb").must_be_running
-      else
-        fail "Invalid provider for mysql"
-      end
     end
   end
 
   it 'enables the mysql service' do
-    db_provider = node[:mysql][:provider] || "mysql"
+    mysql_name = node[:mysql][:name] || "mysql"
     case node[:platform]
     when 'debian','ubuntu'
       #service('mysql').must_be_enabled
       # ugly but works, as opposite to the above one
       file('/etc/init/mysql.conf').must_match /^start on/
     when 'centos','redhat','fedora','amazon'
-      if db_provider == "mysql"
-        service("mysqld").must_be_enabled
-      elsif db_provider == "mariadb"
-        service("mariadb").must_be_enabled
-      else
-        fail "Invalid provider for mysql"
-      end
+      service("#{mysql_name}d").must_be_enabled
     end
   end
 end

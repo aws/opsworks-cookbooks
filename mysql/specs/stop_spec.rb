@@ -6,18 +6,12 @@ describe_recipe 'mysql::stop' do
 
 
   it 'should stop the mysql service' do
-    db_provider = node[:mysql][:provider] || "mysql"
+    mysql_name = node[:mysql][:name] || "mysql"
     case node[:platform]
-    when 'debian','ubuntu'
-      service('mysql').wont_be_running
-    when 'centos','redhat','fedora','amazon'
-      if db_provider == "mysql"
-        service("mysqld").wont_be_running
-      elsif db_provider == "mariadb"
-        service("mariadb").wont_be_running
-      else
-        fail "Invalid provider for mysql"
-      end
+    when "redhat", "centos", "fedora", "amazon"
+      service("#{mysql_name}d").must_be_running
+    else
+      service("mysql").must_be_running
     end
   end
 end

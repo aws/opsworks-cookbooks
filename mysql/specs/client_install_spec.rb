@@ -6,12 +6,12 @@ describe_recipe 'mysql::client' do
 
 
   it 'installs packages for client' do
-    db_provider = node[:mysql][:provider] || "mysql"
+    mysql_name = node[:mysql][:name] || "mysql"
     if node[:opsworks][:layers].has_key?('db-master')
       case node[:platform]
       when 'centos','redhat','fedora','amazon'
-        package("#{db_provider}-devel").must_be_installed
-        package(db_provider).must_be_installed
+        package("#{mysql_name}-devel").must_be_installed
+        package(mysql_name).must_be_installed
       when 'debian','ubuntu'
         package('libmysqlclient-dev').must_be_installed
         package('mysql-client').must_be_installed
