@@ -16,9 +16,16 @@ describe_recipe 'mysql::config' do
   end
 
   it 'should still have mysql running after my.cnf installation' do
+    db_provider = node[:mysql][:provider] || "mysql"
     case node[:platform]
     when 'centos','redhat','fedora','amazon'
-      service('mysqld').must_be_running
+      if db_provider == "mysql"
+        service("mysqld").must_be_running
+      elsif db_provider == "mariadb"
+        service("mariadb").must_be_running
+      else
+        fail "Invalid provider for mysql"
+      end
     when 'ubuntu','debian'
       service('mysql').must_be_running
     end
