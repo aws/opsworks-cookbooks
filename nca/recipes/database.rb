@@ -15,10 +15,8 @@ node[:deploy].each do |application, deploy|
   db_vars = Hash.new
 
   deploy[:environment_variables].each do |k, v|
-    if k.is_a? String
-      if k.match(/^db_/)
-        db_vars[k[3, k.length]] = v
-      end
+    if k.match(/^db_/)
+      db_vars[k[3, k.length]] = v
     end
   end
 
