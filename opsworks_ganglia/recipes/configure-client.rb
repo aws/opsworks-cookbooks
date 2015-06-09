@@ -5,26 +5,10 @@ if node[:opsworks][:layers].has_key?('monitoring-master')
     names['private_ip']
   }.first rescue nil
 
-  service 'gmond' do
-    case node[:platform_family]
-    when 'debian'
-      if monitoring_master.nil?
-        start_command 'echo "No action"'
-      else
-        start_command '/etc/init.d/ganglia-monitor start'
-      end
-      stop_command '/etc/init.d/ganglia-monitor stop'
-    when 'rhel'
-      if monitoring_master.nil?
-        start_command 'echo "No action"'
-      else
-        start_command '/etc/init.d/gmond start'
-      end
-      stop_command '/etc/init.d/gmond stop'
-    end
-
-    supports :status => false, :restart => false
+  service "gmond" do
+    service_name value_for_platform_family("rhel" => "gmond", "debian" => "ganglia-monitor")
     action :nothing
+    not_if { monitoring_master.nil? }
   end
 
   template '/etc/ganglia/gmond.conf' do
@@ -40,14 +24,9 @@ if node[:opsworks][:layers].has_key?('monitoring-master')
     end
   end
 
-  execute 'Stop gmond if there is no monitoring master' do
-    command 'pkill gmond'
-    only_if { monitoring_master.nil? && system('pgrep gmond') }
-  end
-
-  service 'gmond' do
-    action :start
-    not_if { monitoring_master.nil? }
+  service "start/stop gmond depending if monitoring_master available" do
+    service_name value_for_platform_family("rhel" => "gmond", "debian" => "ganglia-monitor")
+    action(monitoring_master.nil? ? :stop : :start)
   end
 
   if node[:opsworks][:instance][:layers].any?{ |layer|

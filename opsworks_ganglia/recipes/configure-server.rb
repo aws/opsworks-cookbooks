@@ -49,6 +49,17 @@ when "rhel"
   template "#{node['apache']['dir']}/conf.d/opsworks-ganglia.conf" do
     source "web_app.conf.erb"
   end
+
+  bash "Enable selinux http_port_t target for ganglia port" do
+    context = "http_port_t"
+    port = 8652
+    user "root"
+    code <<-EOH
+      semanage port --add --type #{context} --proto tcp #{port}
+    EOH
+    not_if { OpsWorks::ShellOut.shellout("/usr/sbin/semanage port -l") =~ /#{context}\s+tcp\s+#{port}/ }
+    only_if { platform_family?("rhel") && ::File.exist?("/usr/sbin/getenforce") && OpsWorks::ShellOut.shellout("/usr/sbin/getenforce").strip == "Enforcing" }
+  end
 end
 
 directory "#{node[:apache][:document_root]}" do
@@ -68,7 +79,7 @@ end
 include_recipe 'opsworks_ganglia::views'
 
 execute 'Restart gmetad if not running' do # can happen if ganglia layer is shared?
-  command '(sleep 60 && /etc/init.d/gmetad restart) &'
+  command '(sleep 60 && service gmetad restart) &'
   not_if 'pgrep gmetad'
 end
 
