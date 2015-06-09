@@ -25,13 +25,15 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  puts(db_vars)
+
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
     source "database.yml.erb"
     cookbook 'rails'
     mode "0660"
     group deploy[:group]
     owner deploy[:user]
-    variables(:database => deploy[:database], :environment => deploy[:rails_env], :dbs => @db_vars)
+    variables(:database => deploy[:database], :environment => deploy[:rails_env], :dbs => db_vars)
 
     notifies :run, "execute[restart Rails app #{application}]"
 
