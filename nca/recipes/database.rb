@@ -31,12 +31,12 @@ node[:deploy].each do |application, deploy|
     mode "0660"
     group deploy[:group]
     owner deploy[:user]
-    variables(:database => deploy[:database], :environment => deploy[:rails_env], :dbs => db_vars)
+    variables(:database => deploy[:database], :environment => deploy[:rails_env], :dbs => @db_vars)
 
     notifies :run, "execute[restart Rails app #{application}]"
 
     only_if do
-      File.directory?("#{deploy[:deploy_to]}/shared/config/")
+      ( deploy[:database][:host].present? || db_vars.length >= 1 ) && File.directory?("#{deploy[:deploy_to]}/shared/config/")
     end
   end
 
