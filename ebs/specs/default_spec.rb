@@ -12,7 +12,7 @@ describe_recipe 'ebs::default' do
         package('xfsdump').must_be_installed
         package('xfslibs-dev').must_be_installed
       when 'rhel'
-        package("xfsprogs-devel").must_be_installed if node[:platform] == "amazon"
+        package("xfsprogs-devel").must_be_installed unless Chef::VersionConstraint.new("~> 6.0").include?(node["platform_version"])
       end
     end
   end
