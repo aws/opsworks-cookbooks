@@ -25,8 +25,10 @@ default[:mysql][:server_root_password] = root_pw
 
 if platform?("redhat") && Chef::VersionConstraint.new("~> 7.0").include?(node["platform_version"])
   default[:mysql][:name] = "mysql55-mysql"
+  default[:mysql][:bin_dir] = "/opt/rh/mysql55/root/usr/bin"
 else
   default[:mysql][:name] = "mysql"
+  default[:mysql][:bin_dir] = "/usr/bin"
 end
 
 
@@ -49,8 +51,8 @@ when 'centos','redhat','fedora','amazon'
   default[:mysql][:user]                 = 'mysql'
   default[:mysql][:group]                = 'mysql'
   default[:mysql][:root_group]           = 'root'
-  default[:mysql][:mysqladmin_bin]       = '/usr/bin/mysqladmin'
-  default[:mysql][:mysql_bin]            = '/usr/bin/mysql'
+  default[:mysql][:mysqladmin_bin]       = "#{node[:mysql][:bin_dir]}/mysqladmin"
+  default[:mysql][:mysql_bin]            = "#{node[:mysql][:bin_dir]}/mysql"
 
   set[:mysql][:conf_dir]                 = '/etc'
   set[:mysql][:confd_dir]                = '/etc/mysql/conf.d'
@@ -64,8 +66,8 @@ when 'debian','ubuntu'
   default[:mysql][:user]                 = 'mysql'
   default[:mysql][:group]                = 'mysql'
   default[:mysql][:root_group]           = 'root'
-  default[:mysql][:mysqladmin_bin]       = '/usr/bin/mysqladmin'
-  default[:mysql][:mysql_bin]            = '/usr/bin/mysql'
+  default[:mysql][:mysqladmin_bin]       = "#{node[:mysql][:bin_dir]}/mysqladmin"
+  default[:mysql][:mysql_bin]            = "#{node[:mysql][:bin_dir]}/mysql"
 
   set[:mysql][:conf_dir]                 = '/etc/mysql'
   set[:mysql][:confd_dir]                = '/etc/mysql/conf.d'
