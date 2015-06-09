@@ -17,6 +17,7 @@ node[:deploy].each do |application, deploy|
   deploy[:environment_variables].each do |k, v|
     if k.match(/^db_/)
       va = v.split(',')
+      db_vars[k[3, k.length]] = Hash.new
       va.each do |x|
         xa = x.split(':')
         db_vars[k[3, k.length]][xa[0]] = xa[1]
