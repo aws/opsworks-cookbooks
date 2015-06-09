@@ -10,7 +10,7 @@ execute 'enable module for apache-tomcat binding' do
   not_if {::File.symlink?(::File.join(node['apache']['dir'], 'mods-enabled', "#{node['opsworks_java']['tomcat']['apache_tomcat_bind_mod']}.load"))}
 end
 
-bash "Enable selinux http_log target for apache log files" do
+bash "Enable selinux http_port_t target for tomcat port" do
   context = "http_port_t"
   user "root"
   code <<-EOH
