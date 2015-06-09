@@ -1,6 +1,4 @@
 #!/usr/bin/env ruby
-# This file is deprecated and replaced by the corresponding template.
-# This file is left because of backwards compatibility.
 
 class Array; def sum; inject( nil ) { |sum,x| sum ? sum+x : x }; end; end
 class Array; def mean; sum / size; end; end
@@ -98,7 +96,7 @@ class HAProxyStatsParser
   end
   
   def report
-    previous_result = HAProxyStatsParser.new("/tmp/haproxy.sock", "/tmp/haproxy-stats").process(load_previous_raw_data)
+    previous_result = HAProxyStatsParser.new("<% node[:haproxy][:stats_socket_path] %>", "/tmp/haproxy-stats").process(load_previous_raw_data)
     
     data.each do |backend, stats|
       bytes_in = stats[:bytes_in] - (previous_result[backend][:bytes_in].to_i rescue 0)
@@ -130,4 +128,4 @@ class HAProxyStatsParser
   
 end
 
-HAProxyStatsParser.new("/tmp/haproxy.sock", "/tmp/haproxy-stats").run
+HAProxyStatsParser.new("<%= node[:haproxy][:stats_socket_path] %>", "/tmp/haproxy-stats").run
