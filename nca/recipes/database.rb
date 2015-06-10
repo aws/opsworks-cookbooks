@@ -28,7 +28,7 @@ node[:deploy].each do |application, deploy|
   puts(db_vars)
 
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
-    source "database.yml.erb"
+    source "database-nca.yml.erb"
     cookbook 'rails'
     mode "0660"
     group deploy[:group]
