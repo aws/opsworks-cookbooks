@@ -18,6 +18,8 @@ module OpsWorks
 
         execute "Download application from S3: #{scm_options[:repository]}" do
           command "#{node[:opsworks_agent][:current_dir]}/bin/s3curl.pl --id opsworks -- -o #{tmpdir}/archive #{scm_options[:repository]}"
+          retries 2
+          retry_delay 10
         end
 
         execute 'extract files' do
