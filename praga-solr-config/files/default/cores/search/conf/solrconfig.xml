@@ -135,13 +135,8 @@
       <str name="qf">
         titulo_facet^100.0 autor_facet^40.0 titulo_tokenized^60.0 autor_tokenized^15.0 titulo^1.0 autor^0.7 desc^0.3
       </str>
-      <str name="hl">off</str>
-      <str name="hl.fl">titulo autor</str>
-      <str name="hl.preserveMulti">true</str>
-      <str name="hl.encoder">html</str>
-      <str name="hl.simple.pre">&lt;b&gt;</str>
-      <str name="hl.simple.post">&lt;/b&gt;</str>
       <str name="mm">2&lt;-25%</str>
+      <str name="bf">dna_nvends_ativos</str>
 
       <str name="group">true</str>
       <str name="group.field">dna_crc</str>
@@ -151,11 +146,18 @@
       <str name="facet.field">cidade</str>
       <str name="facet.field">vendedor</str>
       <str name="facet.field">editora</str>
+      <str name="facet.field">estante</str>
       <str name="facet.query">preco:[0 TO 9.99]</str>
       <str name="facet.query">preco:[10 TO 19.99]</str>
       <str name="facet.query">preco:[20 TO 29.99]</str>
       <str name="facet.query">preco:[30 TO 39.99]</str>
       <str name="facet.query">preco:[40 TO *]</str>
+      
+      <str name="stats">true</str>
+      <str name="stats.field">{!tag=t1}preco_f</str>
+      <str name="facet.pivot">{!stats=t1}dna_crc</str>
+
+
       <str name="facet.mincount">1</str>
       <str name="group.ngroups">true</str>
     </lst>

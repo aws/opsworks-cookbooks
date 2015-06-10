@@ -23,6 +23,7 @@
    <field name="user_id" type="int" indexed="true" stored="true" required="true"/>
    <field name="data_reg" type="date" indexed="true" stored="true"/>
    <field name="preco" type="currency" indexed="true" stored="true"/>
+   <field name="preco_f" type="float" indexed="true" stored="true"/>
    <field name="capa" type="string" indexed="true" stored="true"/>
    <field name="tipo" type="string" indexed="true" stored="true"/>
    <field name="estado_livro" type="string" indexed="true" stored="true"/>
@@ -84,6 +85,7 @@
    <!-- Facets -->
    <copyField source="titulo" dest="titulo_facet"/>
    <copyField source="autor" dest="autor_facet"/>
+   <copyField source="preco" dest="preco_f"/>
 
    <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
    <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
@@ -131,14 +133,14 @@
     <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
         <tokenizer class="solr.StandardTokenizerFactory"/>
-        <filter class="solr.EdgeNGramFilterFactory" minGramSize="2" maxGramSize="15" />
+        <!-- filter class="solr.EdgeNGramFilterFactory" minGramSize="2" maxGramSize="15" / -->
         <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
         <filter class="solr.LowerCaseFilterFactory"/>
       </analyzer>
       <analyzer type="query">
         <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
-        <filter class="solr.EdgeNGramFilterFactory" minGramSize="2" maxGramSize="15" />
+        <!-- filter class="solr.EdgeNGramFilterFactory" minGramSize="2" maxGramSize="15"/ -->
         <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
         <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
         <filter class="solr.LowerCaseFilterFactory"/>
