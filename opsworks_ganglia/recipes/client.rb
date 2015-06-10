@@ -54,6 +54,7 @@ if node[:opsworks][:layers].has_key?('monitoring-master')
   service "gmond" do
     service_name value_for_platform_family("rhel" => "gmond", "debian" => "ganglia-monitor")
     action :stop
+    init_command "/usr/sbin/service ganglia-monitor" if platform?("ubuntu") && node[:platform_version] == "14.04"
   end
 
   # old broken installations have this empty directory

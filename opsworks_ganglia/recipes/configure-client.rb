@@ -8,6 +8,7 @@ if node[:opsworks][:layers].has_key?('monitoring-master')
   service "gmond" do
     service_name value_for_platform_family("rhel" => "gmond", "debian" => "ganglia-monitor")
     action :nothing
+    init_command "/usr/sbin/service ganglia-monitor" if platform?("ubuntu") && node[:platform_version] == "14.04"
     not_if { monitoring_master.nil? }
   end
 
@@ -27,6 +28,7 @@ if node[:opsworks][:layers].has_key?('monitoring-master')
   service "start/stop gmond depending if monitoring_master available" do
     service_name value_for_platform_family("rhel" => "gmond", "debian" => "ganglia-monitor")
     action(monitoring_master.nil? ? :stop : :start)
+    init_command "/usr/sbin/service ganglia-monitor" if platform?("ubuntu") && node[:platform_version] == "14.04"
   end
 
   if node[:opsworks][:instance][:layers].any?{ |layer|
