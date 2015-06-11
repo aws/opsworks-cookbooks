@@ -11,7 +11,8 @@
         notifempty
         copytruncate
         sharedscripts
-        <% if node[:platform] == 'ubuntu' && node[:platform_version] == '14.04' -%>
+        <% if (node[:platform] == 'ubuntu' && node[:platform_version] == '14.04') ||
+              (node[:platform] == 'redhat' && Chef::VersionConstraint.new("~> 7.0").include?(node["platform_version"])) -%>
         su root root
         <% end -%>
 }
