@@ -41,7 +41,7 @@ when 'rhel'
   default[:apache][:group]         = 'apache'
   default[:apache][:binary]        = '/usr/sbin/httpd'
   default[:apache][:icondir]       = '/var/www/icons/'
-  default[:apache][:init_script]   = '/etc/init.d/httpd'
+  default[:apache][:init_script]   = "service httpd"
   if platform?("redhat") && Chef::VersionConstraint.new("~> 7.0").include?(node["platform_version"])
     default[:apache][:version]       = "2.4"
   else
