@@ -4,6 +4,10 @@
      Documentation at /docs/config/server.html
  -->
 <Server port="<%= node['opsworks_java']['tomcat']['shutdown_port'] %>" shutdown="SHUTDOWN">
+
+<% if node['opsworks_java']['tomcat']['base_version'].to_i > 7 -%>
+  <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
+<% end -%>
 <% if node['opsworks_java']['tomcat']['base_version'].to_i > 6 -%>
   <!-- Security listener. Documentation at /docs/config/listeners.html
   <Listener className="org.apache.catalina.security.SecurityListener" />
@@ -11,8 +15,10 @@
 <% end -%>
   <!--APR library loader. Documentation at /docs/apr.html -->
   <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
+<% if node['opsworks_java']['tomcat']['base_version'].to_i < 8 -%>
   <!--Initialize Jasper prior to webapps are loaded. Documentation at /docs/jasper-howto.html -->
   <Listener className="org.apache.catalina.core.JasperListener" />
+<% end -%>
   <!-- Prevent memory leaks due to use of particular java/javax APIs-->
   <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
 <% if node['opsworks_java']['tomcat']['base_version'].to_i < 7 -%>
