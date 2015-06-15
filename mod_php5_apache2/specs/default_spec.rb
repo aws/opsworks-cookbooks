@@ -5,7 +5,7 @@ describe_recipe "mod_php5_apache2::default" do
   include MiniTest::Chef::Assertions
 
   it "installs a pile of php packages" do
-    packages = node[:mod_php5_apache2][:packages]
+    packages = node[:mod_php5_apache2][:packages].dup
 
     node[:deploy].each do |application, deploy|
       next unless deploy[:application_type] == "php"
