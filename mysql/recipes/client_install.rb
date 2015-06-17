@@ -3,8 +3,15 @@ mysql_name = node[:mysql][:name] || "mysql"
 
 case node[:platform]
 when "redhat", "centos", "fedora", "amazon"
-  package "#{mysql_name}-devel"
-else "ubuntu"
+  if Chef::VersionConstraint.new("~> 7.0").include?(node["platform_version"])
+    # mysql55-mysql-devel package for Red Hat Enterprise Linux 7 is installed at /opt
+    # compiling for example mysql gem will fail because it looks up wrong paths.
+    # mariadb-devel is binary compatible and at correct location.
+    package "mariadb-devel"
+  else
+    package "#{mysql_name}-devel"
+  end
+else # "ubuntu"
   package "libmysqlclient-dev"
 end
 
