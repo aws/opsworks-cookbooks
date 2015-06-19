@@ -36,8 +36,6 @@
    <field name="dna_nvends_ativos" type="int" indexed="true" stored="true"/>
    <field name="dna_crc" type="long" indexed="true" stored="true"/>
 
-
-
    <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
    <field name="text_rev" type="text_general_rev" indexed="true" stored="false" multiValued="true"/>
    <field name="manu_exact" type="string" indexed="true" stored="false"/>
