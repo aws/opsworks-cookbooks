@@ -57,6 +57,8 @@ def asset_url
     _platform = "amazon"
     #ToDo: this should be a global attribute in the commons cookbook
     _platform_version = "2013.09"
+  elsif %w(redhat centos).include?(_platform) && Chef::VersionConstraint.new("~> 7.0").include?(node["platform_version"])
+    _platform_version = "7"
   end
 
   @asset_url ||= URI.parse("#{node[:opsworks_commons][:assets_url]}/packages/#{_platform}/#{_platform_version}/#{asset_name}")
