@@ -33,7 +33,7 @@ node[:deploy].each do |application, deploy|
     mode "0660"
     group deploy[:group]
     owner deploy[:user]
-    variables(:database => deploy[:database], :environment => deploy[:rails_env], :dbs => db_vars)
+    variables(:database => deploy[:database], :environment => deploy[:rails_env], :dbs => db_vars, :folder => deploy[:deploy_to])
 
     notifies :run, "execute[restart Rails app #{application}]"
 
