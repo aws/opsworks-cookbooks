@@ -30,6 +30,6 @@
     port: <%= v["port"].to_i.inspect %>
   <% end -%>
   <% if v["sslca"] -%>
-    sslca: '<%= @folder %>/current/config/ca/<%= k %>.pem'
+  sslca: '<%= @folder %>/current/config/ca/<%= k %>.pem'
   <% end %>
 <% end -%>
