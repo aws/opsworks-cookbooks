@@ -9,9 +9,9 @@ describe_recipe 'mysql::stop' do
     mysql_name = node[:mysql][:name] || "mysql"
     case node[:platform]
     when "redhat", "centos", "fedora", "amazon"
-      service("#{mysql_name}d").must_be_running
+      service("#{mysql_name}d").wont_be_running
     else
-      service("mysql").must_be_running
+      service("mysql").wont_be_running
     end
   end
 end
