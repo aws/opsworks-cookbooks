@@ -1,3 +1,4 @@
+# v3422 2015-06-29
 - Full support of Red Hat Enterprise Linux 7.
 - Make /etc/hosts generation more resilient to errors.
 # v3421 2015-06-11
