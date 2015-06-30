@@ -7,3 +7,4 @@ template "#{node[:opsworks_agent][:shared_dir]}/TARGET_VERSION" do
   mode 0600
   variables :version => node.opsworks.agent_version
 end
+#test4
