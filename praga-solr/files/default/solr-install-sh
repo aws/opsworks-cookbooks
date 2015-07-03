@@ -4,9 +4,9 @@ if [ -h /opt/solr-5.2.1 ]; then
   rm -rf /opt/solr-5.2.1
 fi
 
-cd /tmp && curl -O 'https://archive.apache.org/dist/lucene/solr/5.2.1/solr-5.2.1-src.tgz'
+cd /tmp && curl -O 'https://archive.apache.org/dist/lucene/solr/5.2.1/solr-5.2.1.tgz'
 
-tar zxvf /tmp/solr-5.2.1-src.tgz -C /opt/
+tar zxvf /tmp/solr-5.2.1.tgz -C /opt/
 
 if [ -h /opt/solr ]; then
   rm -f /opt/solr
