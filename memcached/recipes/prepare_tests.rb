@@ -1,12 +1,10 @@
-# dependencie for the memcached gem, not needed (and not available) for rhel7
-unless rhel7?
-  package 'libmemcached development libraries' do
-    package_name value_for_platform_family(
-      "rhel" => "libmemcached-devel",
-      "debian" => "libmemcached-dev"
-    )
-  end.run_action(:install)
-end
+# dependencie for the memcached gem
+package "libmemcached development libraries" do
+  package_name value_for_platform_family(
+    "rhel" => "libmemcached-devel",
+    "debian" => "libmemcached-dev"
+  )
+end.run_action(:install)
 
 package 'libsasl2-dev' do
   package_name value_for_platform_family(
