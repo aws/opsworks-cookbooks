@@ -6,7 +6,7 @@ fi
 
 cd /tmp && curl -O 'https://archive.apache.org/dist/lucene/solr/5.2.1/solr-5.2.1-src.tgz'
 
-tar zxvf /tmp/solr-5.2.1.tgz -C /opt/
+tar zxvf /tmp/solr-5.2.1-src.tgz-C /opt/
 
 if [ ! -h /opt/solr ]; then
   ln -s  /opt/solr-5.2.1 /opt/solr
