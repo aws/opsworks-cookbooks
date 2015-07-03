@@ -30,8 +30,6 @@ node[:deploy].each do |app_name, deploy|
 
   end
 
-  execute "if [ ! -d '/mnt/var/solr' ]; then mkdir /mnt/var/solr; fi;"
-
   execute '/opt/solr/bin/solr restart' do
     user "deploy"
   end
