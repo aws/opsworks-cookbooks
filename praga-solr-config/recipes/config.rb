@@ -31,7 +31,7 @@ node[:deploy].each do |app_name, deploy|
     #})
 
   end
-  execute 'chmod 755 /opt/solr/bin/sols'
+  execute 'chmod 755 /opt/solr/bin/solr'
   execute '/opt/solr/bin/solr restart' do
     user "deploy"
   end
