@@ -17,7 +17,9 @@ node[:deploy].each do |app_name, deploy|
     owner 'deploy'
     source "config"
   end
-
+  Chef::Log.info(node[:config])
+  Chef::Log.info(env)
+  
   template "/opt/solr/bin/solr.in.sh" do
     source "solr.in.sh.erb"
     owner deploy[:user]
