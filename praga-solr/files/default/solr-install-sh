@@ -8,9 +8,11 @@ cd /tmp && curl -O 'https://archive.apache.org/dist/lucene/solr/5.2.1/solr-5.2.1
 
 tar zxvf /tmp/solr-5.2.1-src.tgz -C /opt/
 
-if [ ! -h /opt/solr ]; then
-  ln -s  /opt/solr-5.2.1/solr /opt/solr
+if [ -h /opt/solr ]; then
+  rm -f /opt/solr
 fi
+
+ln -s  /opt/solr-5.2.1/solr /opt/solr
 
 mv /opt/solr/server/solr  /opt/solr/server/solr-default
 
