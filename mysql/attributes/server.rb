@@ -23,7 +23,7 @@ end
 
 default[:mysql][:server_root_password] = root_pw
 
-if platform?("redhat") && Chef::VersionConstraint.new("~> 7.0").include?(node["platform_version"])
+if rhel7?
   default[:mysql][:name] = "mysql55-mysql"
   default[:mysql][:bin_dir] = "/opt/rh/mysql55/root/usr/bin"
 else

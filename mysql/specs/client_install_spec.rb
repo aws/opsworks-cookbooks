@@ -10,7 +10,7 @@ describe_recipe 'mysql::client' do
     if node[:opsworks][:layers].has_key?('db-master')
       case node[:platform]
       when 'centos','redhat','fedora','amazon'
-        if Chef::VersionConstraint.new("~> 7.0").include?(node["platform_version"])
+        if rhel7?
           package("mariadb-devel").must_be_installed
         else
           package("#{mysql_name}-devel").must_be_installed

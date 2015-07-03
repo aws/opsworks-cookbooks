@@ -38,7 +38,7 @@ default['opsworks_java']['datasources'] = {}
 
 default['opsworks_java']['tomcat']['base_version'] = node['opsworks_java']['java_app_server_version'].to_i
 
-if node[:platform] == "redhat" && Chef::VersionConstraint.new("~> 7.0").include?(node["platform_version"])
+if rhel7?
   default['opsworks_java']['tomcat']['service_name'] = "tomcat"
   default['opsworks_java']['tomcat']['catalina_base_dir'] = "/etc/tomcat"
   default['opsworks_java']['tomcat']['webapps_base_dir'] = "/var/lib/tomcat/webapps"

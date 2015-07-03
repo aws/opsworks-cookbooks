@@ -1,5 +1,5 @@
 os_release =
-  if node[:platform] == "redhat" && Chef::VersionConstraint.new("~> 7.0").include?(node["platform_version"])
+  if rhel7?
     os_release = File.read("/etc/redhat-release").chomp
   else
     `head -1 /etc/issue | sed -e 's/ \\\\.*//'`.chomp

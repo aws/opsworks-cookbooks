@@ -1,5 +1,5 @@
 # dependencie for the memcached gem, not needed (and not available) for rhel7
-unless platform?("redhat") && Chef::VersionConstraint.new("~> 7.0").include?(node["platform_version"])
+unless rhel7?
   package 'libmemcached development libraries' do
     package_name value_for_platform_family(
       "rhel" => "libmemcached-devel",

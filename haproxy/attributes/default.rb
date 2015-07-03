@@ -38,7 +38,7 @@ default[:haproxy][:retries] = '3'
 default[:haproxy][:httpclose] = true
 default[:haproxy][:http_server_close] = false
 
-if node[:platform] == "redhat" && Chef::VersionConstraint.new("~> 7.0").include?(node["platform_version"])
+if rhel7?
   default[:haproxy][:stats_socket_path] = "/var/lib/haproxy/stats"
 else
   default[:haproxy][:stats_socket_path] = '/tmp/haproxy.sock'

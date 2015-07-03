@@ -52,7 +52,7 @@ def asset_url
   _platform_version = node[:platform_version]
   if %w(redhat centos).include?(node["platform"]) && Chef::VersionConstraint.new("~> 6.0").include?(node["platform_version"])
     _platform_version = "6"
-  elsif %w(redhat centos).include?(node["platform"]) && Chef::VersionConstraint.new("~> 7.0").include?(node["platform_version"])
+  elsif rhel7?
     _platform_version = "7"
   end
 
