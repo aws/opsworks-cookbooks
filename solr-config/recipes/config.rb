@@ -10,7 +10,7 @@ node[:deploy].each do |app_name, deploy|
   Chef::Log.info(deploy)
 
   env = deploy["rails_env"]
-  execute "mv #{node[:config][env][:path]}/solr #{node[:config][env][:path]}/solr-default"
+  execute "if [ -f #{node[:config][env][:path]}/solr ]; then mv #{node[:config][env][:path]}/solr #{node[:config][env][:path]}/solr-default; fi"
   remote_directory "#{node[:config][env][:path]}/solr" do
     files_mode '0640'
     mode '0770'
