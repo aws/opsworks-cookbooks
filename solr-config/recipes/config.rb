@@ -11,7 +11,7 @@ node[:deploy].each do |app_name, deploy|
 
   env = deploy["rails_env"]
   execute "mv #{node[:config][env][:path]}/solr #{node[:config][env][:path]}/solr-default"
-  remote_directory "#{node[:config][env][:path]}" do
+  remote_directory "#{node[:config][env][:path]}/solr" do
     files_mode '0640'
     mode '0770'
     owner 'deploy'
