@@ -5,8 +5,8 @@ node[:deploy].each do |app_name, deploy|
   env = deploy[:rails_env]
 
   Chef::Log.info(env)
+
   remote_directory "#{node[:search][env][:path]}/#{node[:search][env][:core_name]}" do
-  # /opt/solr/server/solr/#{node[:search][env][:core_name]}" do
     files_mode '0640'
     files_owner 'deploy'
     mode '0770'
