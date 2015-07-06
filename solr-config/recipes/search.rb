@@ -5,7 +5,7 @@ node[:deploy].each do |app_name, deploy|
   env = deploy[:rails_env]
 
   Chef::Log.info(env)
-  remote_directory "/opt/solr/server/solr/#{node[:search][env][:core_name]}" do
+  remote_directory "#{node[:search][env][:path]}/#{node[:search][env][:core_name]}" do
   # /opt/solr/server/solr/#{node[:search][env][:core_name]}" do
     files_mode '0640'
     files_owner 'deploy'
@@ -15,7 +15,7 @@ node[:deploy].each do |app_name, deploy|
     source "cores/#{node[:search][env][:core_name]}"
   end
 
-  template "/opt/solr/server/solr/#{node[:search][env][:core_name]}/conf/data-config.xml" do
+  template "#{node[:search][env][:path]}/#{node[:search][env][:core_name]}/conf/data-config.xml" do
     source "cores/data-config.xml.erb"
     owner deploy[:user]
     group 'www-data'
@@ -31,7 +31,7 @@ node[:deploy].each do |app_name, deploy|
     })
   end
 
-  template "/opt/solr/server/solr/#{node[:search][env][:core_name]}/core.properties" do
+  template "#{node[:search][env][:path]}/#{node[:search][env][:core_name]}/core.properties" do
     source "cores/core.properties.erb"
     owner deploy[:user]
     group 'www-data'
@@ -39,10 +39,9 @@ node[:deploy].each do |app_name, deploy|
     variables({ :name => node[:search][env][:core_name]})
   end
 
-  execute "chmod 755 /opt/solr/bin/solr"
 
-  execute '/opt/solr/bin/solr restart' do
-    user "deploy"
+  service 'solr' do
+    supports :restart => true, :status => true
+    action [:enable, :start]
   end
-
 end
