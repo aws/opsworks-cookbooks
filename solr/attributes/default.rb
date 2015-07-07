@@ -13,6 +13,6 @@ default['solr']['port']     = '8984'
 default['solr']['pid_file'] = '/var/run/solr.pid'
 default['solr']['log_file'] = "/opt/solr-#{default['solr']['version']}/server/logs/solr.log"
 default['solr']['user']     = 'deploy'
-default['solr']['group']    = 'deploy'
+default['solr']['group']    = 'www-data'
 default['solr']['install_java'] = true
 default['solr']['java_options'] = '-Xms512M -Xmx20480M'
