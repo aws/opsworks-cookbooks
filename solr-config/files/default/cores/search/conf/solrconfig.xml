@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config>
-  <luceneMatchVersion>5.0.0</luceneMatchVersion>
+  <luceneMatchVersion>5.2.1</luceneMatchVersion>
   <lib dir="../../contrib/extraction/lib" regex=".*\.jar" />
   <lib dir="../../dist/" regex="solr-cell-\d.*\.jar" />
 
@@ -13,8 +13,8 @@
   <lib dir="../../contrib/velocity/lib" regex=".*\.jar" />
 
   <!-- data import handler -->
-  <lib dir="../../lib/dist/" regex="solr-dataimporthandler-.*\.jar" />
-  <lib dir="../../lib/" regex=".*\.jar" />
+  <!--<lib dir="../../lib/dist/" regex="solr-dataimporthandler-.*\.jar" />-->
+  <!--<lib dir="../../lib/" regex=".*\.jar" />-->
   <dataDir>${solr.data.dir:}</dataDir>
   <directoryFactory name="DirectoryFactory"
                     class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}">
@@ -97,7 +97,7 @@
   </requestDispatcher>
   <requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
     <lst name="defaults">
-      <str name="config">/opt/solr/server/solr/search/conf/data-config.xml</str>
+      <str name="config">./data-config.xml</str>
     </lst>
   </requestHandler>
   <requestHandler name="/select" class="solr.SearchHandler">
@@ -164,7 +164,7 @@
       <str name="stats.field">{!tag=t1}vendedor</str>
       <int name="stats.limit">1000</int>
       <str name="facet.pivot">{!stats=t1}dna_crc</str>
-      
+
     </lst>
   </requestHandler>
 

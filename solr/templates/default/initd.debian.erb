@@ -10,19 +10,19 @@
 # Description:       Start/stop Solr Server
 ### END INIT INFO
 
-PATH=/sbin:/usr/sbin:/bin:/usr/bin
-SOLR_HOME=<%= @solr_home %>
-SOLR_DIR=<%= @solr_dir %>/example
-PORT=<%= @port %>
-PIDFILE=<%= @pid_file %>
-LOGFIlE=<%= @log_file %>
-USER=<%= @user %>
-JAVA_OPTS=<%= @java_options %>
+PATH="/sbin:/usr/sbin:/bin:/usr/bin"
+SOLR_HOME="<%= @solr_home %>"
+SOLR_DIR="<%= @solr_dir %>/example"
+PORT="<%= @port %>"
+PIDFILE="<%= @pid_file %>"
+LOGFIlE="<%= @log_file %>"
+USER="<%= @user %>"
+JAVA_OPTS="<%= @java_options %>"
 DESC="start/stop Solr Server"
-NAME=solr
-DAEMON=/usr/bin/java
+NAME="solr"
+DAEMON="/usr/bin/java"
 DAEMON_ARGS="$JAVA_OPTS -Dsolr.solr.home=$SOLR_HOME -Djetty.port=$PORT -jar start.jar"
-SCRIPTNAME=/etc/init.d/$NAME
+SCRIPTNAME="/etc/init.d/$NAME"
 
 # Exit gracefully if the package is not installed
 [ -x "$DAEMON" ] || exit 0
