@@ -5,7 +5,7 @@
 # Copyright 2013, David Radcliffe
 #
 
-default['solr']['version']  = '5.2.1'
+default['solr']['version']  = '5.0.0'
 default['solr']['url']      = "https://archive.apache.org/dist/lucene/solr/#{node['solr']['version']}/solr-#{node['solr']['version']}.tgz"
 default['solr']['data_dir'] = "/opt/solr-#{default['solr']['version']}/server"
 default['solr']['dir']      = "/opt/solr"
