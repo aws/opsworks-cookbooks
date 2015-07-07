@@ -15,7 +15,8 @@ node[:deploy].each do |app_name, deploy|
 
   template "#{node[:config][env][:root]}/../bin/solr.in.sh" do
     owner 'deploy'
-    variables => { solr_java_mem: node[:config][env][:solr_java_mem] }
+    variables( solr_java_mem: node[:config][env][:solr_java_mem] )
+    source 'solr.in.sh'
 
   end
 
