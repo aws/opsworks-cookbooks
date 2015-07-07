@@ -4,21 +4,20 @@ node[:deploy].each do |app_name, deploy|
 
   env = deploy["rails_env"].to_sym
 
-  remote_directory "#{node[:config][env][:root]}/solr-webapp/webapp/WEB-INF/lib/ext-lib" do
+  remote_directory "#{node[:default][env][:root]}/solr-webapp/webapp/WEB-INF/lib/ext-lib" do
     files_mode '0640'
     mode '0770'
     owner 'deploy'
     source "config"
   end
 
-  template "#{node[:config][env][:root]}/../bin/solr.in.sh" do
+  template "#{node[:default][env][:root]}/../bin/solr.in.sh" do
     owner 'deploy'
-    variables( solr_java_mem: node[:config][env][:solr_java_mem] )
+    variables( solr_java_mem: node[:default][env][:solr_java_mem] )
     source 'solr.in.sh'
-
   end
 
-  remote_directory "#{node[:config][env][:root]}/solr" do
+  remote_directory "#{node[:default][env][:root]}/solr" do
     files_mode '0640'
     mode '0770'
     owner 'deploy'
