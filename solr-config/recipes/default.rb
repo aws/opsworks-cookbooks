@@ -8,7 +8,7 @@ node[:deploy].each do |app_name, deploy|
     files_mode '0640'
     mode '0770'
     owner 'deploy'
-    source "config"
+    source "ext-lib"
   end
 
   template "#{node[:default][env][:root]}/../bin/solr.in.sh" do
@@ -16,14 +16,7 @@ node[:deploy].each do |app_name, deploy|
     variables( solr_java_mem: node[:default][env][:solr_java_mem] )
     source 'solr.in.sh'
   end
-
-  remote_directory "#{node[:default][env][:root]}/solr" do
-    files_mode '0640'
-    mode '0770'
-    owner 'deploy'
-    source "ext-lib"
-  end
-
+  
   service 'solr' do
     supports :restart => true, :status => true
     action [:enable, :start]
