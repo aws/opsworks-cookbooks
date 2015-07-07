@@ -4,8 +4,6 @@ node[:deploy].each do |app_name, deploy|
 
   env = deploy["rails_env"].to_sym
 
-  execute "if [ -f #{node[:config][env][:root]}/solr ]; then mv #{node[:config][env][:path]}/solr #{node[:config][env][:root]}/solr-#{Time.now.to_s}; fi"
-
   remote_directory "#{node[:config][env][:root]}/solr-webapp/webapp/WEB-INF/lib/ext-lib" do
     files_mode '0640'
     mode '0770'
