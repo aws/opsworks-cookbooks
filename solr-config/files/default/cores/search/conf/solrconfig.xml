@@ -14,7 +14,7 @@
 
   <!-- data import handler -->
   <!--<lib dir="../../lib/dist/" regex="solr-dataimporthandler-.*\.jar" />-->
-  <lib dir="../../../lib/ext-lib/" regex=".*\.jar" />
+  <lib dir="../../lib/dist/" regex=".*\.jar" />
   <dataDir>${solr.data.dir:}</dataDir>
   <directoryFactory name="DirectoryFactory"
                     class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}">

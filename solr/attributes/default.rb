@@ -16,3 +16,4 @@ default['solr']['user']     = 'deploy'
 default['solr']['group']    = 'www-data'
 default['solr']['install_java'] = true
 default['solr']['java_options'] = '-Xms512M -Xmx20480M'
+  

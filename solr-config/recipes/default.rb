@@ -4,7 +4,7 @@ node[:deploy].each do |app_name, deploy|
 
   env = deploy["rails_env"].to_sym
 
-  remote_directory "#{node[:default][env][:root]}/lib/ext-lib" do
+  remote_directory "#{node[:default][env][:root]}/lib/dist" do
     files_mode '0640'
     mode '0770'
     owner 'deploy'
