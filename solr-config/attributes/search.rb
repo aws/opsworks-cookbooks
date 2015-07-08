@@ -1,4 +1,4 @@
-default[:search][:staging][:path] = "/opt/solr-5.2.1/server/solr"
+default[:search][:staging][:path] = "/opt/solr-5.0.0/server/solr"
 default[:search][:staging][:core_name] = "search"
 default[:search][:staging][:url] = "jdbc:mysql://dev.virtualshelf.net/estantevirtual"
 default[:search][:staging][:user] = "ev-search"
