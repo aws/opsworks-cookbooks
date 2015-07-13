@@ -15,7 +15,7 @@ node[:deploy].each do |app_name, deploy|
     owner 'root'
     variables( solr_java_mem: node[:default][env][:solr_java_mem] )
     mode '0755'
-    source 'solr_initd.sh.erb'
+    source 'solr_init.d.sh.erb'
   end
 
   bash 'cp_dataimporthandler' do
