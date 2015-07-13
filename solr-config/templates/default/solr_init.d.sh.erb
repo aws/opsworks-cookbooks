@@ -10,7 +10,7 @@
 # Description:       Start/stop Solr Server
 ### END INIT INFO
 
-SOLR_BIN="/opt/solr-5.2.1/bin/solr"
+SOLR_BIN="/opt/solr-<%= @version %>/bin/solr"
 #START_OPT="-m 10g"
 START_OPT="-m <%= @solr_java_mem %>"
 
