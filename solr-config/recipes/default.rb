@@ -11,11 +11,20 @@ node[:deploy].each do |app_name, deploy|
     source "ext-lib"
   end
 
-  template "#{node[:default][env][:root]}/../bin/solr.in.sh" do
-    owner 'deploy'
+  template "/etc/init.d/solr" do
+    owner 'root'
     variables( solr_java_mem: node[:default][env][:solr_java_mem] )
-    source 'solr.in.sh.erb'
+    mode '0755'
+    source 'solr_initd.sh'
   end
+
+  bash 'cp_dataimporthandler' do
+    cwd ::File.dirname(#{node[:default][env][:root])
+    code <<-EOH
+      cp ../dist/solr-dataimporthandler* lib/dist/
+    EOH
+  end
+
 
   service 'solr' do
     supports :restart => true, :status => true
