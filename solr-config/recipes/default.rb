@@ -23,7 +23,7 @@ node[:deploy].each do |app_name, deploy|
   bash 'cp_dataimporthandler' do
     cwd ::File.dirname(node[:default][env][:root])
     code <<-EOH
-      cp ../dist/solr-dataimporthandler* lib/dist/
+      cp #{node[:default][env][:root]}/../dist/solr-dataimporthandler* #{node[:default][env][:root]}/lib/dist/
     EOH
   end
 
