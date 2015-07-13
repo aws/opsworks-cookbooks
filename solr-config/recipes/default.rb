@@ -11,6 +11,8 @@ node[:deploy].each do |app_name, deploy|
     source "ext-lib"
   end
 
+  Chef::Log.info node[:default][env][:solr_java_mem]
+
   template "/etc/init.d/solr" do
     owner 'root'
     variables( solr_java_mem: node[:default][env][:solr_java_mem] )
