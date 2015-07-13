@@ -12,11 +12,11 @@
 
 SOLR_BIN="/opt/solr-<%= @version %>/bin/solr"
 #START_OPT="-m 10g"
-START_OPT="-m <%= @solr_java_mem %>"
+START_OPT="<%= @solr_java_mem %>"
 
 
 # Exit gracefully if the package is not installed
-[ -x "$DAEMON" ] || exit 0
+[ -x "$SOLR_BIN" ] || exit 0
 
 # Load the VERBOSE setting and other rcS variables
 . /lib/init/vars.sh
