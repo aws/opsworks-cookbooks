@@ -33,11 +33,11 @@ module OpsWorks
           mode 0755
         end
 
-        bucket, remote_path = OpsWorks::SCM::S3.parse_uri(scm_options[:repository])
+        s3_bucket, s3_key = OpsWorks::SCM::S3.parse_uri(scm_options[:repository])
 
         s3_file "#{tmpdir}/archive" do
-          bucket bucket
-          remote_path remote_path
+          bucket s3_bucket
+          remote_path s3_key
           aws_access_key_id scm_options[:user]
           aws_secret_access_key scm_options[:password]
           owner "root"
