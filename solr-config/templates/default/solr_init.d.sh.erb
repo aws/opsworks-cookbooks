@@ -72,7 +72,6 @@ case "$1" in
     log_daemon_msg "Restarting $DESC" "$NAME"
     do_stop
     do_start
-  esac
   ;;
   *)
   echo "Usage: $0 {start|stop|status|restart|force-reload}" >&2
