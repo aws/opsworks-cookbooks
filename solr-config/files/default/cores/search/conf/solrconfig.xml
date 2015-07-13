@@ -100,6 +100,28 @@
       <str name="config">./data-config.xml</str>
     </lst>
   </requestHandler>
+
+  <requestHandler name="/ungrouped" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="wt">json</str>
+      <str name="echoParams">explicit</str>
+      <int name="rows">10000</int>
+      <str name="df">text</str>
+      <str name="facet">false</str>
+      <str name="group.ngroups">true</str>
+      <str name="stats">false</str>
+      <str name="wt">csv</str>
+      <str name="fl">autor</str>
+      <str name="fl">titulo</str>
+      <str name="fl">editora</str>
+      <str name="fl">ano</str>
+      <str name="fl">preco_f</str>
+      <str name="fl">descr</str>
+      <str name="fl">estante</str>
+      <str name="fq">dna_nvends_ativos:1</str>
+    </lst>
+  </requestHandler>
+
   <requestHandler name="/select" class="solr.SearchHandler">
     <lst name="defaults">
       <str name="wt">json</str>
