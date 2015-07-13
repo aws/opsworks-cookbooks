@@ -103,7 +103,7 @@
 
   <requestHandler name="/ungrouped" class="solr.SearchHandler">
     <lst name="defaults">
-      <str name="wt">json</str>
+      <str name="wt">csv</str>
       <str name="echoParams">explicit</str>
       <int name="rows">10000</int>
       <str name="df">text</str>
