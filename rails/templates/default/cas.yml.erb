@@ -30,8 +30,9 @@ staging:
         username_column: "username"
         password_column: "password_digest"
         extra_attributes:
-          id: "external_user_id"
+          id: "id"
           name: "name"
+          external_user_id: "external_user_id"
 
 production:
   <<: *defaults
@@ -49,5 +50,6 @@ production:
         username_column: "username"
         password_column: "password_digest"
         extra_attributes:
-          id: "external_user_id"
+          id: "id"
           name: "name"
+          external_user_id: "external_user_id"
