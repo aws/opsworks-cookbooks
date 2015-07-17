@@ -12,9 +12,9 @@ node[:deploy].each do |application, deploy|
     connector_jar_path = ::File.join(node['opsworks_java']['tomcat']['java_shared_lib_dir'], connector_jar)
     include_recipe "opsworks_java::mysql_connector"
   when "postgresql"
-    connector_jar = node[:platform].eql?('ubuntu') ? 'postgresql-jdbc4.jar' : 'postgresql-jdbc.jar'
+    connector_jar = 'postgresql-9.4.jdbc41.jar'; 
     connector_jar_path = ::File.join(node['opsworks_java']['tomcat']['java_shared_lib_dir'], connector_jar)
-    include_recipe "opsworks_java::postgresql_connector"
+    include_recipe "opsworks_java::postgresql_connector9"
   else
     connector_jar = ""
     connector_jar_path = ""
