@@ -1,0 +1,17 @@
+# encoding: UTF-8
+Ohai::Config[:plugin_path] << "/opt/aws/opsworks/current/plugins"
+
+local_mode true
+cookbook_path ["/opt/aws/opsworks/current/<%= @cookbooks_path %>"]
+file_cache_path "/var/lib/aws/opsworks/cache.stage1"
+node_path "/var/lib/aws/opsworks/data/nodes"
+data_bag_path "/var/lib/aws/opsworks/data/data_bags"
+log_level :info
+
+%w{BUNDLE_GEMFILE GEM_HOME GEM_PATH RUBYLIB RUBYOPT}.each do |env|
+  ENV[env] = nil
+end
+
+ENV['PATH'] = "/usr/local/bin:/usr/local/sbin:#{ENV['PATH']}"
+
+File.umask 022
