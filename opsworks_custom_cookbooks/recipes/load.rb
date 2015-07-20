@@ -20,6 +20,9 @@ else
     owner 'aws'
     group 'aws'
     mode '0644'
+    variables({
+     :cookbooks_path => "cookbooks"
+  })
   end
 end
 
