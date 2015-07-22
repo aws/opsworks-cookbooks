@@ -1,5 +1,5 @@
 <dataConfig>
-  <dataSource type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://praga-sg.c6orwgo57rj2.us-east-1.rds.amazonaws.com/praga_staging" user="praga" password="praga" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
+  <dataSource type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://praga-sg.c6orwgo57rj2.us-east-1.rds.amazonaws.com/praga_staging" user="praga" password="pragastaging" readOnly="true" autoCommit="false" transactionIsolation="TRANSACTION_READ_COMMITTED" holdability="CLOSE_CURSORS_AT_COMMIT"/>
   <document>
     <!-- quanto maior o valor no campo 'priority' melhor eh a posicao do registro -->
     <entity name="reference_book" query="select 10 as priority, codebar, concat('reference_', id) as id, isbn, title, author, publisher, formatted_author, category, edition, year, pages from reference.publications where active=true">
