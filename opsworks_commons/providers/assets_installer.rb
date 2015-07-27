@@ -49,14 +49,20 @@ def asset_name
 end
 
 def asset_url
+  _platform = node[:platform]
   _platform_version = node[:platform_version]
-  if %w(redhat centos).include?(node["platform"]) && Chef::VersionConstraint.new("~> 6.0").include?(node["platform_version"])
+
+  if rhel6? || rhel7?
+    _platform = "redhat"
+  end
+
+  if rhel6?
     _platform_version = "6"
   elsif rhel7?
     _platform_version = "7"
   end
 
-  @asset_url ||= URI.parse("#{node[:opsworks_commons][:assets_url]}/packages/#{node[:platform]}/#{_platform_version}/#{asset_name}")
+  @asset_url ||= URI.parse("#{node[:opsworks_commons][:assets_url]}/packages/#{_platform}/#{_platform_version}/#{asset_name}")
 end
 
 # download assets using the downloader.sh
