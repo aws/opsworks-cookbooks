@@ -1,5 +1,19 @@
 define :opsworks_deploy_dir do
 
+  # before creating a deploy directory ensure
+  # bind mounts have been made due to a race condition
+  # with the automounter
+
+  if node[:opsworks_initial_setup].attribute?(:bind_mounts)
+    node[:opsworks_initial_setup][:bind_mounts][:mounts].each do |dir, source|
+      execute "Check for bind mounts before creating the deploy directory" do
+        command "grep -q #{dir} /proc/mounts"
+        retries 10
+      end
+    end
+  end
+
+
   directory "#{params[:path]}/shared" do
     group params[:group]
     owner params[:user]
