@@ -1,4 +1,3 @@
-
 node[:deploy].each do |app_name, deploy|
   Chef::Log.info(deploy)
 
@@ -28,7 +27,6 @@ node[:deploy].each do |app_name, deploy|
       cp #{node[:default][env][:root]}/../dist/solr-dataimporthandler* #{node[:default][env][:root]}/lib/dist/
     EOH
   end
-
 
   service 'solr' do
     supports :restart => true, :status => true
