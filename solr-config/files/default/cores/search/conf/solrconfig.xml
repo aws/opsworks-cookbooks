@@ -118,6 +118,7 @@
       <str name="fl">preco_f</str>
       <str name="fl">descr</str>
       <str name="fl">estante</str>
+      <str name="facet.sort">false</str>
       <str name="fq">dna_nvends_ativos:1</str>
     </lst>
   </requestHandler>
@@ -135,6 +136,7 @@
       <str name="facet.field">vendedor</str>
       <str name="facet.field">editora</str>
       <str name="facet.field">tipo</str>
+      <str name="facet.sort">false</str>
       <str name="facet.query">preco:[0 TO 9.99]</str>
       <str name="facet.query">preco:[10 TO 19.99]</str>
       <str name="facet.query">preco:[20 TO 29.99]</str>
@@ -176,6 +178,7 @@
       <str name="facet.field">editora</str>
       <str name="facet.field">estante</str>
       <str name="facet.field">tipo</str>
+      <str name="facet.sort">false</str>
       <str name="facet.query">preco:[0 TO 9.99]</str>
       <str name="facet.query">preco:[10 TO 19.99]</str>
       <str name="facet.query">preco:[20 TO 29.99]</str>

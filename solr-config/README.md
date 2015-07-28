@@ -7,11 +7,10 @@ This cookbook makes your favorite breakfast sandwich.
 
 Requirements
 ------------
-TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
+para instalação das configurações dos cores é necessário instalar antes o(s) cookbook(s)
+  - solr::default
+  - solr-config::default
 
-e.g.
-#### packages
-- `toaster` - praga-solr-opsworks-cookbook needs toaster to brown your bagel.
 
 Attributes
 ----------
