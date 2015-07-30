@@ -123,6 +123,12 @@ module S3FileLib
       begin
         response = do_request("GET", url, bucket, path, aws_access_key_id, aws_secret_access_key, token, region)
         break
+      rescue client::MovedPermanently, client::Found, client::TemporaryRedirect => e
+        uri = URI.parse(e.response.header['location'])
+        path = uri.path
+        uri.path = ""
+        url = uri.to_s
+        retry
       rescue => e
         if attempts < retries
           Chef::Log.warn e.response
