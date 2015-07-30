@@ -36,13 +36,16 @@ when 'git'
     repository node[:opsworks_custom_cookbooks][:scm][:repository]
     revision node[:opsworks_custom_cookbooks][:scm][:revision]
     retries 2
+    notifies :run, "execute[Update custom cookbook Git submodules]", :immediately
+
     not_if do
-      node[:opsworks_custom_cookbooks][:scm][:repository].blank?
+      node[:opsworks_custom_cookbooks][:scm][:repository].blank? || ::File.directory?(node[:opsworks_custom_cookbooks][:destination])
     end
   end
 
   execute "Update custom cookbook Git submodules" do
     command "git submodule update --init --recursive"
+    action :nothing
 
     user node[:opsworks_custom_cookbooks][:user]
     group node[:opsworks_custom_cookbooks][:group]
@@ -50,7 +53,7 @@ when 'git'
     retries 2
 
     only_if do
-      node[:opsworks_custom_cookbooks][:enable_submodules] && !node[:opsworks_custom_cookbooks][:scm][:repository].blank?
+      node[:opsworks_custom_cookbooks][:enable_submodules]
     end
   end
 when 'svn'
