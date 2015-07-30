@@ -6,25 +6,27 @@ server {
   location / {
     root   <%= @application[:absolute_document_root] %>;
     index  index.html index.htm index.php;
+    try_files $uri $uri/ /index.html = 404;
+    sendfile off;
   }
-  
+
   # Block all svn access
   if ($request_uri ~* ^.*\.svn.*$) {
      return 404;
   }
-  
+
   # Block all git access
   if ($request_uri ~* ^.*\.git.*$) {
      return 404;
   }
-  
+
   location /nginx_status {
     stub_status on;
     access_log off;
     allow 127.0.0.1;
     deny all;
   }
-  
+
 }
 
 <% if @application[:ssl_support] %>
@@ -32,7 +34,7 @@ server {
   listen   443;
   server_name  <%= @application[:domains].join(" ") %> <%= node[:hostname] %>;
   access_log  <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>-ssl.access.log;
-  
+
   ssl on;
   ssl_certificate <%= node[:nginx][:dir] %>/ssl/<%= @application[:domains].first %>.crt;
   ssl_certificate_key <%= node[:nginx][:dir] %>/ssl/<%= @application[:domains].first %>.key;
@@ -43,13 +45,15 @@ server {
   location / {
     root   <%= @application[:absolute_document_root] %>;
     index  index.html index.htm index.php;
+    try_files $uri $uri/ /index.html = 404;
+    sendfile off;
   }
-  
+
   # Block all svn access
   if ($request_uri ~* ^.*\.svn.*$) {
      return 404;
   }
-  
+
   # Block all git access
   if ($request_uri ~* ^.*\.git.*$) {
      return 404;
