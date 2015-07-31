@@ -1,3 +1,4 @@
+- Change the default Node.js version to v0.12.7
 - Logging added for Node.js apps. STDOUT and STDERR logged and rotated in the shared/log directory.
 - Make custom cookbook submodule checkout update explicit.
 - Added workaround for https://github.com/aws/opsworks-cookbooks/issues/213 that will check to ensure bind mounts have been made before the deploy directory is created.
