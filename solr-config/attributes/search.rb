@@ -1,6 +1,6 @@
 default[:search][:staging][:path] = "/opt/solr-5.2.1/server/solr"
 default[:search][:staging][:core_name] = "search"
-default[:search][:staging][:url] = "jdbc:mysql://104.239.155.212/estantevirtual"
+default[:search][:staging][:url] = "jdbc:mysql://174.143.111.169/estantevirtual"
 default[:search][:staging][:user] = "solr"
 default[:search][:staging][:password] = "RCifH0slt7"
 default[:search][:staging][:drive] = "com.mysql.jdbc.Driver"
@@ -12,7 +12,7 @@ default[:search][:staging][:deltaQuery] = "select c.rec_id FROM catalogo c INNER
 
 default[:search][:production][:path] = "/opt/solr-5.2.1/server/solr"
 default[:search][:production][:core_name] = "search"
-default[:search][:production][:url] = "jdbc:mysql://104.239.155.212/estantevirtual"
+default[:search][:production][:url] = "jdbc:mysql://174.143.111.169/estantevirtual"
 default[:search][:production][:user] = "solr"
 default[:search][:production][:password] = "RCifH0slt7"
 default[:search][:production][:drive] = "com.mysql.jdbc.Driver"
