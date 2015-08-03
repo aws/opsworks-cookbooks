@@ -2,7 +2,7 @@ node[:deploy].each do |app_name, deploy|
 
   Chef::Log.info(deploy)
 
-  env = deploy[:rails_env]
+  env = deploy[:rails_env].present? ?  deploy[:rails_env] : 'production'
 
   Chef::Log.info(env)
 
