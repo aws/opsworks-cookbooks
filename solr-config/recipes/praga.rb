@@ -1,5 +1,5 @@
 node[:deploy].each do |app_name, deploy|
-  env = deploy[:rails_env]
+  env = deploy[:rails_env].present? ?  deploy[:rails_env] : 'production'
 
   remote_directory "#{node[:praga][env][:path]}/#{node[:praga][env][:core_name]}" do
     files_mode '0640'
