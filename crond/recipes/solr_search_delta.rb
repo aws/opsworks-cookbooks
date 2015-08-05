@@ -1,6 +1,6 @@
 cron "solr-search-delta" do
   #action node.tags.include?('solr-search-delta') ? :create : :delete
-  minute '*/1'
+  minute '*/5'
   hour '*'
   weekday '*'
   user "deploy"
