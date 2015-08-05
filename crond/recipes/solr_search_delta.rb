@@ -1,5 +1,5 @@
 cron "solr-search-delta" do
-  action node.tags.include?('solr-search-delta') ? :create : :delete
+  #action node.tags.include?('solr-search-delta') ? :create : :delete
   minute '*/1'
   hour '*'
   weekday '*'
@@ -7,6 +7,6 @@ cron "solr-search-delta" do
   mailto "asilva@estantevirtual.com.br"
   home "/opt/solr-5.2.1/server"
   command %w{
-    wget -q http://52.2.195.49:8983/solr/dataimport?&command=delta-import&wt=json
+    wget -q http://127.0.0.1:8983/solr/search/dataimport?&optimze=true&command=delta-import&wt=json
   }.join(' ')
 end
