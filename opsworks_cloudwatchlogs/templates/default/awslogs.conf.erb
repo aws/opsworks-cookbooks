@@ -1,0 +1,14 @@
+[general]
+state_file = <%= @state_file %>
+
+<% @cloudwatchlogs.each do |layer_name, layer_logs| %>
+<% layer_logs.each do |log| %>
+[<%= layer_name %> <%= log["file"] %>]
+datetime_format = [%Y-%m-%d %H:%M:%S]
+log_group_name = <%= layer_name %>
+log_stream_name = <%= @hostname %> - <%= log["file"] %>
+initial_position = start_of_file
+file = <%= log["file"] %>
+
+<% end %>
+<% end %>
