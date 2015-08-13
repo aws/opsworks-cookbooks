@@ -1,12 +1,13 @@
 <dataConfig>
-  <dataSource type="JdbcDataSource" driver="<%= @driver %>" 
-    url="<%= @url %>" 
+  <dataSource type="JdbcDataSource" driver="<%= @driver %>"
+    url="<%= @url %>"
     password="<%= @password %>"
-    user="<%= @user %>"/>
+    user="<%= @user %>"
+    connectionTimeout="5000" readTimeout="10000"/>
   <document>
     <entity name="search" query="<%= @query %>"
       deltaImportQuery="<%= @deltaImportQuery %>"
-      deltaQuery="<%= @deltaQuery %>">	
+      deltaQuery="<%= @deltaQuery %>">
     </entity>
   </document>
 </dataConfig>
