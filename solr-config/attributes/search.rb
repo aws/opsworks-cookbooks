@@ -1,6 +1,6 @@
 default[:search][:staging][:path] = "/opt/solr-5.2.1/server/solr"
 default[:search][:staging][:core_name] = "search"
-default[:search][:staging][:url] = "jdbc:mysql://dev.virtualshelf.net/estantevirtual"
+default[:search][:staging][:url] = "jdbc:mysql://dev.virtualshelf.net:3308/estantevirtual"
 default[:search][:staging][:user] = "solr"
 default[:search][:staging][:password] = "RCifH0slt7"
 default[:search][:staging][:drive] = "com.mysql.jdbc.Driver"
