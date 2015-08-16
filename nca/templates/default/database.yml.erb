@@ -8,12 +8,12 @@
       username: <%= @database[:username].to_s.inspect %>
       password: <%= @database[:password].to_s.inspect %>
       reconnect: <%= @database[:reconnect] ? 'true' : 'false' %>
-        <% if @database[:pool] -%>
-          pool: <%= @database[:pool].to_i.inspect %>
-        <% end -%>
-        <% if @database[:port] -%>
-          port: <%= @database[:port].to_i.inspect %>
-        <% end -%>
+      <% if @database[:pool] -%>
+      pool: <%= @database[:pool].to_i.inspect %>
+      <% end -%>
+      <% if @database[:port] -%>
+      port: <%= @database[:port].to_i.inspect %>
+      <% end -%>
 
     <% end -%>
 <% end %>
@@ -27,7 +27,7 @@
   password: <%= v["password"].to_s.inspect %>
   reconnect: <%= v["reconnect"] ? 'true' : 'false' %>
   <% if v["port"] -%>
-    port: <%= v["port"].to_i.inspect %>
+  port: <%= v["port"].to_i.inspect %>
   <% end -%>
   <% if v["sslca"] -%>
   sslca: '<%= @folder %>/current/config/ca/<%= k %>.pem'
