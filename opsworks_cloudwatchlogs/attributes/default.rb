@@ -7,3 +7,6 @@ else
   default["cloudwatchlogs"]["home_dir"] = "/var/awslogs" # Contains the awslogs package
   default["cloudwatchlogs"]["state_file"] = "/var/awslogs/state/agent-state" # See http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/QuickStartChef.html
 end
+
+default["cloudwatchlogs"]["AGENT_LOGS"] = "/var/log/aws/opsworks/*.log"
+default["cloudwatchlogs"]["CHEF_LOGS"] = "/var/lib/aws/opsworks/chef/*.log"
