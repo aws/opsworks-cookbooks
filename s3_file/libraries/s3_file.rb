@@ -130,6 +130,7 @@ module S3FileLib
         url = uri.to_s
         retry
       rescue => e
+        raise e unless e.respond_to? :response
         if attempts < retries
           Chef::Log.warn e.response
           next
