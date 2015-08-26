@@ -1,3 +1,4 @@
+- Improving download from s3 by replacing s3curl with s3_file cookbook.
 - Change the default Node.js version to v0.12.7
 - Logging added for Node.js apps. STDOUT and STDERR logged and rotated in the shared/log directory.
 - Make custom cookbook submodule checkout update explicit.
