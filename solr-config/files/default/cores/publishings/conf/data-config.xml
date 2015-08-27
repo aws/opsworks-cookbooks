@@ -1,6 +1,6 @@
 <dataConfig>
   <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver" 
-    url="jdbc:mysql://104.239.155.212/estantevirtual"
+    url="jdbc:mysql://174.143.111.169/estantevirtual"
     password="RCifH0slt7"
     autoReconnect="true"
     user="solr"/>
