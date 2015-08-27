@@ -47,7 +47,8 @@
   <dataDir>${solr.data.dir:}</dataDir>
 
   <!-- libs -->
-  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-dataimporthandler-.*\.jar" />
+  <!-- <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-dataimporthandler-.*\.jar" /> -->
+  <lib dir="../../lib/dist/" regex=".*\.jar" />
 
 
   <!-- The DirectoryFactory to use for indexes.
@@ -425,7 +426,7 @@
 
   <requestHandler name="/dataimport" class="solr.DataImportHandler">
     <lst name="defaults">
-      <str name="config">db-data-config.xml</str>
+      <str name="config">data-config.xml</str>
     </lst>
   </requestHandler>
 
