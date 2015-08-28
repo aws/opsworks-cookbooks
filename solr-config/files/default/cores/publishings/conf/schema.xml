@@ -118,7 +118,7 @@
 
    <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->
-   <field name="text" type="textSuggest" indexed="true" stored="false" multiValued="true"/>
+   <field name="text" type="textSuggest" indexed="true" stored="true" multiValued="true"/>
 
 
    <!-- Dynamic field definitions allow using convention over configuration

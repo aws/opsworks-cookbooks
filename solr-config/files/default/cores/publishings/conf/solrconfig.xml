@@ -438,7 +438,7 @@
       <str name="lookupImpl">FSTLookupFactory</str>
       <str name="dictionaryImpl">DocumentDictionaryFactory</str>
       <!-- <str name="exactMatchFirst">true</str> -->
-      <str name="field">autor</str>
+      <str name="field">text</str>
       <str name="weightField">quantidade_i</str>
       <str name="suggestAnalyzerFieldType">textSuggest</str>
       <str name="buildOnStartup">true</str>
@@ -448,7 +448,7 @@
       <str name="name">default</str>
       <str name="lookupImpl">FuzzyLookupFactory</str>
       <str name="dictionaryImpl">DocumentDictionaryFactory</str>
-      <str name="field">autor</str>
+      <str name="field">text</str>
       <str name="weightField">quantidade_i</str>
       <str name="suggestAnalyzerFieldType">textSuggest</str>
       <str name="buildOnStartup">true</str>
@@ -459,7 +459,7 @@
       <str name="lookupImpl">AnalyzingInfixLookupFactory</str>
       <str name="highlight">false</str>
       <str name="dictionaryImpl">DocumentDictionaryFactory</str>
-      <str name="field">autor</str>
+      <str name="field">text</str>
       <str name="weightField">quantidade_i</str>
       <str name="suggestAnalyzerFieldType">textSuggest</str>
       <str name="buildOnStartup">true</str>
@@ -480,7 +480,7 @@
   <requestHandler name="/suggest" class="solr.SearchHandler" startup="lazy">
     <lst name="defaults">
       <str name="suggest">true</str>
-      <str name="suggest.count">20</str>
+      <str name="suggest.count">60</str>
       <str name="suggest.dictionary">mySuggester</str>
     </lst>
     <arr name="components">
