@@ -1,3 +1,5 @@
+- Updating the default 2.0, 2.1 and 2.2 versions of Ruby to 2.0.0p647, 2.1.7 and 2.2.3
+
 # v3426 2015-08-27
 - Improving download from s3 by replacing s3curl with s3_file cookbook.
 - Change the default Node.js version to v0.12.7
