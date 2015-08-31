@@ -42,26 +42,25 @@
     </entity>
  -->
     <entity name="sku"
-     query="select 'sku' as type, concat('sku-', s.id) as id, publication_id, p.book_id, seller_id, price, (CASE WHEN is_new THEN 1 ELSE 0 END) novo, (CASE WHEN is_new THEN 0 ELSE 1 END) usado, b.title, p.isbn, p.issn from skus s join publications p on s.publication_id = p.id join books b on p.book_id = b.id">
-
-      <field name="novo_i" column="novo"/>
-      <field name="usado_i" column="usado"/>
+     query="SELECT 
+              md5(concat(b.id, p.id, s.id)) as id,
+              b.id book_id, b.title, b.synopsis,  md5(synopsis) md5_synopsis, b.volume, 
+              p.id as publication_id, p.isbn, p.issn, p.barcode, p.edition, p.weight, p.height, p.width, p.depth, p.year, p.pages, pbrs.name publisher, 
+              s.id as sku, s.seller_id as seller_id, s.price, (CASE WHEN s.is_new THEN 1 ELSE 0 END) new, 
+              (CASE WHEN s.is_new THEN 1 ELSE 0 END) used, s.quantity, p.isbn, p.issn, p.barcode
+            FROM books b
+            left join publications p on p.book_id = b.id
+            left join skus s on s.publication_id = p.id
+            inner join publishers pbrs on pbrs.id = p.publisher_id
+            ">
 
 
       <entity name="author" query="select concat(first_name, ' ', last_name) author_name from authors a join authors_books ab on a.id = ab.author_id where ab.book_id = ${sku.book_id}">
 
         <field name="authors" column="author_name"/>
       </entity>
-      
-<!-- 
-      <entity name="Seller" ... >
 
-      </entity>
- -->
-     <field name="publicationid_i" column="publication_id"/>
-
-
-   </entity>
+    </entity>
 
 
   </document>

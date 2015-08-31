@@ -467,7 +467,12 @@
        <str name="echoParams">explicit</str>
        <str name="wt">json</str>
        <str name="indent">true</str>
-       <str name="df">isbn,issn,barcode</str>
+       <str name="rows">1</str>
+       <str name="fl">book_id, publication_id, authors, title, volume, isbn, issn, barcode, edition, year, weight, width, height, depth, pages, publisher</str> 
+       <str name="group">on</str>
+       <str name="group.field">publication_id</str>
+
+       <str name="df">publication_search_field</str>
      </lst>
   </requestHandler>  
 

@@ -112,20 +112,10 @@
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
    <field name="text" type="text_general" indexed="true" stored="true" required="false" multiValued="true" />
 
-   <!-- apagar se nao estiver utilizando -->
-   
-   <field name="isbns" type="string" indexed="true" stored="true" required="false" multiValued="true" />
-   <field name="issns" type="string" indexed="true" stored="true" required="false" multiValued="true" />
-
-   <field name="type" type="string" indexed="true" stored="true" required="false" multiValued="false" />
-
    <!-- Book -->
    <field name="author" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="authors" type="text_general" indexed="true" stored="true" required="false" multiValued="true" />
-
    <field name="s_authors" type="string" indexed="true" stored="true" required="false" multiValued="true" />
-
-
    <field name="title" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="volume" type="string" indexed="true" stored="true" required="false" multiValued="false" />
 
@@ -138,15 +128,20 @@
    <field name="year" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="cover" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="weight" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="height" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="depth" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="width" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="pages" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="book_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="publication_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="publisher" type="string" indexed="true" stored="true" required="false" multiValued="false" />
 
-   <field name="prices" type="float" indexed="true" stored="true" required="false" multiValued="true" />
+   <field name="publication_search_field" type="string" indexed="true" stored="false" required="false" multiValued="true" />
 
    <!-- Sku -->
    <field name="price" type="float" indexed="true" stored="true" required="false" multiValued="false" />
-   <field name="type" type="int" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="seller_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="sku" type="string" indexed="true" stored="true" required="false" multiValued="false" />
 
 
   
@@ -213,8 +208,15 @@
    <copyField source="title" dest="title_s"/>
    <copyField source="isbn" dest="text"/>
    <copyField source="issn" dest="text"/>
+   
+   <!-- Para a busca por publicacao via ISBN, ISSN, Codigo de Barras -->
+   <copyField source="isbn" dest="publication_search_field"/>
+   <copyField source="issn" dest="publication_search_field"/>
+   <copyField source="barcode" dest="publication_search_field"/>
 
    <copyField source="authors" dest="s_authors"/>
+
+
   <!--
    <copyField source="body" dest="text"/>
   -->
