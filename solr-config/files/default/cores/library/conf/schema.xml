@@ -136,6 +136,10 @@
    <field name="publication_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="publisher" type="string" indexed="true" stored="true" required="false" multiValued="false" />
 
+   <field name="created_at" type="date" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="deleted_at" type="date" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="updated_at" type="date" indexed="true" stored="true" required="false" multiValued="false" />
+
    <field name="publication_search_field" type="string" indexed="true" stored="false" required="false" multiValued="true" />
 
    <!-- Sku -->
