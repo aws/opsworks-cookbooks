@@ -476,6 +476,19 @@
      </lst>
   </requestHandler>  
 
+  <!-- A request handler that returns indented JSON by default -->
+  <requestHandler name="/get_skus" class="solr.SearchHandler">
+     <lst name="defaults">
+       <str name="echoParams">explicit</str>
+       <str name="wt">json</str>
+       <str name="indent">true</str>
+       <str name="rows">100</str>
+       <str name="fl">sku, book_id, publication_id, authors, title, volume, isbn, issn, barcode, edition, year, weight, width, height, depth, pages, publisher, created_at, updated_at, deleted_at, seller_id</str> 
+
+       <str name="df">seller_id</str>
+     </lst>
+  </requestHandler>  
+
   <requestHandler name="/find_book" class="solr.SearchHandler">
      <lst name="defaults">
        <str name="echoParams">explicit</str>
