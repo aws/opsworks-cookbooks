@@ -2,45 +2,13 @@
 <!--     user="amsterdam"
     password="amsterdam" -->
   <dataSource type="JdbcDataSource" driver="org.postgresql.Driver"
-    url="jdbc:postgresql://localhost/Library_development"
+    url="jdbc:postgresql://library-sg.c6orwgo57rj2.us-east-1.rds.amazonaws.com/library_staging"
+    user="librarysg"
+    password="library-sg"
     autoReconnect="true"
     />
   <document>
- <!--    <entity root="true" name="book" query="SELECT 'book' as type, id, title, synopsis, md5(synopsis) as synopsis_md5, 'PARENT' as cat from BOOKS"
-      deltaImportQuery=""
-      deltaQuery="">
-      
-      <field name="title" column="title"/>
-      <field name="synopsis" column="synopsis"/>
 
-
-      <entity name="author" query="select first_name, last_name from authors_books ab join authors a on ab.author_id = a.id where ab.book_id = ${book.id}">
-        <field name="authors" column="last_name"/>
-      </entity>
-
-
-      <entity name="publication" child="true" query="select concat('pb', id) as id, isbn, issn, edition, weight, 'CHILD' as cat from publications where book_id = ${book.id}">
-        <field name="isbns" column="isbn"/>
-        <field column="isbn"/>
-        <field column="issn"/>
-        <field column="edition"/>
-        <field column="weight"/>
-      </entity>
-
-    </entity> -->
-
-    <!-- <entity name="publication" query="select concat('publication', id) as id, 'publication' as type, isbn, issn, edition from publications"> -->
-
-<!--     <entity name="publication"
-     query="select 'publication' as type, p.id as id, p.isbn, p.issn, b.title, b.synopsis, p.edition, b.id as book_id, b.volume from publications p join books b on p.book_id = b.id">
-    
-      <entity name="author" query="select concat(first_name, ' ', last_name) author_name from authors a join authors_books ab on a.id = ab.author_id where ab.book_id = ${publication.book_id}">
-
-        <field name="authors" column="author_name"/>
-      </entity>
-
-    </entity>
- -->
     <entity name="sku"
      query="SELECT 
               md5(concat(b.id, p.id, s.id)) as id,
