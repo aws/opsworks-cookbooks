@@ -1,1 +1,1 @@
-default['s3_file']['rest-client']['version'] = '1.7.3'
+default['s3_file']['rest-client']['version'] = '1.6.7'
