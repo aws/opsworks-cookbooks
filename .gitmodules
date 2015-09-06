@@ -1,0 +1,3 @@
+[submodule "opsworks_sidekiq"]
+	path = opsworks_sidekiq
+	url = https://github.com/romanbsd/opsworks_sidekiq.git
