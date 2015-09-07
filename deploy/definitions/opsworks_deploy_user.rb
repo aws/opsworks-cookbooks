@@ -1,7 +1,13 @@
 define :opsworks_deploy_user do
   deploy = params[:deploy_data]
 
-  group deploy[:group]
+  group deploy[:group] do
+    not_if do
+      existing_groups = []
+      Etc.group {|group| existing_groups << group['name']}
+      existing_groups.include?(deploy[:group])
+    end
+  end
 
   user deploy[:user] do
     action :create
