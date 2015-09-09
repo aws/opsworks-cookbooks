@@ -78,5 +78,3 @@ remote_file local_custom_pkg_file do
     notifies :run, "execute[extract #{local_custom_pkg_file} to #{node['opsworks_java']['jvm_pkg']['java_home_basedir']}]", :immediately
   end
 end
-
-include_recipe 'opsworks_java::tomcat_setup'
