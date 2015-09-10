@@ -527,45 +527,7 @@
        <str name="fl">sku, seller_id, sku_created_at, edition, cover, year, price, publisher, isbn, volume, new, used, year</str>
 
      </lst>
-  </requestHandler>    
-
-  <requestHandler name="/get_book" class="solr.SearchHandler">
-     <lst name="defaults">
-       <str name="echoParams">explicit</str>
-       <str name="wt">json</str>
-       <str name="indent">true</str>
-       <str name="df">book_id</str>
-       <str name="rows">1</str>
-
-       <str name="defType">edismax</str>
-       <str name="group">on</str>
-       <str name="group.field">book_id</str>
-       <str name="group.limit">1</str>
-       <!-- ordena pela data de atualizaçao da publicacao, ou seja, pega a publicacao mais recente -->
-       <str name="group.sort">updated_at desc</str>
-
-       <str name="facet">true</str>
-
-       <str name="facet">on</str>
-       <str name="facet.missing">true</str>
-       <str name="facet.field">authors_s</str>
-       <str name="facet.field">volume</str>
-       <str name="facet.field">isbn</str>
-       <str name="facet.field">edition</str>
-       <str name="facet.field">publisher</str>
-       <str name="facet.field">publication_id</str>
-
-
-
-       <str name="facet.mincount">1</str>
-
-       <str name="json.facet">{total_new:"sum(new)", total_used: "sum(used)", unique_sellers: "unique(seller_id)", min_price: "min(price)", max_price: "max(price)"}</str>
-
-
-       <str name="fl">title, volume, authors, book_id, edition, cover, synopsis</str>
-
-     </lst>
-  </requestHandler>    
+  </requestHandler>     
 
   <!--
     The export request handler is used to export full sorted result sets.
