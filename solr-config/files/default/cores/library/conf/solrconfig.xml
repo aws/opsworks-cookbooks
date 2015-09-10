@@ -507,6 +507,7 @@
        <!-- garante que só trará resultados se tiver um sku -->
        <str name="fq">sku:["" TO *]</str>
        <!-- <str name="df">book_slug</str> -->
+       <str name="rows">100</str>
        <str name="defType">edismax</str>
 
        <str name="facet">on</str>
@@ -518,6 +519,8 @@
        <str name="facet.field">publisher</str>
        <str name="facet.field">publication_id</str>
        <str name="facet.field">year</str>
+       <str name="facet.field">new</str>
+       <str name="facet.field">used</str>
 
        <str name="facet.mincount">1</str>
 
