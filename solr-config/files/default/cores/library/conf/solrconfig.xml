@@ -472,13 +472,13 @@
   <requestHandler name="/search" class="solr.SearchHandler">
      <lst name="defaults">
        <str name="defType">edismax</str>
-       <str name="qf">authors title publisher</str>
+       <str name="qf">authors^20 title^5 publisher</str>
 
        <str name="echoParams">explicit</str>
        <str name="wt">json</str>
        <str name="indent">true</str>
        <str name="rows">30</str>
-       <str name="fl">book_id, authors, title</str> 
+       <str name="fl">book_id, authors, title, cover</str> 
 
        <str name="group">on</str>
        <str name="group.field">book_id</str>
@@ -493,7 +493,6 @@
        <str name="json.facet">{total_books:"unique(book_id)"}</str>
 
        <str name="stats">true</str>
-       <str name="stats.field">{!cardinality=true}book_id</str>
        <str name="stats.field">{!tag=sku_stats min=true max=true}price</str>
        <str name="stats.field">{!tag=sku_stats sum=true}new</str>
        <str name="stats.field">{!tag=sku_stats sum=true}used</str>
