@@ -471,30 +471,34 @@
 
   <requestHandler name="/search" class="solr.SearchHandler">
      <lst name="defaults">
+       <str name="defType">edismax</str>
+       <str name="qf">authors title publisher</str>
+
        <str name="echoParams">explicit</str>
        <str name="wt">json</str>
        <str name="indent">true</str>
        <str name="rows">30</str>
-       <str name="fl">book_id, authors, title, volume, edition, year, publisher</str> 
+       <str name="fl">book_id, authors, title</str> 
+
        <str name="group">on</str>
        <str name="group.field">book_id</str>
-
-       <str name="defType">dismax</str>
-       <str name="qf">authors title publisher</str>
-
+       <str name="group.facet">true</str>
+       
        <str name="facet">on</str>
        <str name="facet.missing">false</str>
        <str name="facet.field">s_authors</str>
-       <str name="facet.field">volume</str>
-       <str name="facet.field">edition</str>
-       <str name="facet.field">publisher</str>
-       <str name="facet.field">year</str>
-       <str name="facet.field">new</str>
-       <str name="facet.field">used</str>
 
        <str name="facet.mincount">1</str>
 
        <str name="json.facet">{total_books:"unique(book_id)"}</str>
+
+       <str name="stats">true</str>
+       <str name="stats.field">{!cardinality=true}book_id</str>
+       <str name="stats.field">{!tag=sku_stats min=true max=true}price</str>
+       <str name="stats.field">{!tag=sku_stats sum=true}new</str>
+       <str name="stats.field">{!tag=sku_stats sum=true}used</str>
+       <str name="stats.field">{!tag=sku_stats cardinality=true}seller_id</str>
+       <str name="facet.pivot">{!stats=sku_stats}book_id</str>
      </lst>
   </requestHandler>  
 
