@@ -472,7 +472,7 @@
   <requestHandler name="/search" class="solr.SearchHandler">
      <lst name="defaults">
        <str name="defType">edismax</str>
-       <str name="qf">authors^20 title^5 publisher</str>
+       <str name="qf">authors^40 title^20 publisher^10 synopsis</str>
 
        <str name="echoParams">explicit</str>
        <str name="wt">json</str>

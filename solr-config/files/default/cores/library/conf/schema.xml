@@ -118,6 +118,7 @@
    <field name="s_authors" type="string" indexed="true" stored="true" required="false" multiValued="true" />
    <field name="title" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="volume" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="synopsis" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
 
    
    <!-- Publicacao -->
