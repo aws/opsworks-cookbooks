@@ -485,6 +485,8 @@
 
        <str name="hl">true</str>
        <str name="hl.fl">authors,title</str>
+       <str name="hl.simple.pre"></str>
+       <str name="hl.simple.post"></str>
      </lst>
   </requestHandler>  
 
