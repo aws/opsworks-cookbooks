@@ -499,10 +499,11 @@
        <str name="wt">json</str>
        <str name="indent">true</str>
        <str name="rows">30</str>
-       <str name="fl">book_id, authors, title, cover</str> 
+       <str name="fl">book_id, authors, title, year, cover</str> 
 
        <str name="group">on</str>
        <str name="group.field">book_id</str>
+       <str name="group.sort">year asc</str>
        <str name="group.facet">true</str>
        
        <str name="facet">on</str>
