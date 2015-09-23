@@ -54,7 +54,7 @@
       >
 
         <entity name="author" pk="book_id" dataSource="library"
-          query="select concat(first_name, ' ', last_name) author_name from authors a
+          query="select full_name as author_name from authors a
           join authors_books ab on a.id = ab.author_id where ab.book_id = ${sku.book_id}"
           deltaQuery="select ab.book_id from authors a
           join authors_books ab on a.id = ab.author_id where a.updated_at &gt; '${dih.last_index_time}'"

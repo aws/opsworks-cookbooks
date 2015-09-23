@@ -586,9 +586,10 @@
 
        <str name="facet.mincount">1</str>
 
-       <str name="fl">sku, seller_id, sku_created_at, edition, cover, year, price, publisher, isbn, volume, new, used, year</str>
+       <str name="fl">sku, seller_id, sku_created_at, edition, cover, year, price, publisher, isbn, volume, new, used, year, weight</str>
 
        <str name="json.facet">{total_new:"sum(new)", total_used: "sum(used)", unique_sellers: "unique(seller_id)", min_price: "min(price)", max_price: "max(price)"}</str>
+
 
      </lst>
   </requestHandler>     
