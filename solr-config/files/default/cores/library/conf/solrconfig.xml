@@ -41,7 +41,8 @@
 
   <!-- para funcionar local --> 
 <!--   
-   <lib dir="../../ext-lib" regex="postgresql-9.3.*\.jar" />
+  <lib dir="../../ext-lib" regex="postgresql-9.3.*\.jar" />
+  <lib dir="../../ext-lib" regex="mysql-connector-java-5.1.*\.jar" />
   <lib dir="../../ext-lib" regex="solr-dataimporthandler-5.3.0.jar" /> 
 -->
 
@@ -566,22 +567,28 @@
 
        <str name="facet">on</str>
        <str name="facet.missing">false</str>
-       <str name="facet.field">s_authors</str>
-       <str name="facet.field">volume</str>
-       <str name="facet.field">isbn</str>
        <str name="facet.field">edition</str>
        <str name="facet.field">publisher</str>
-       <str name="facet.field">publication_id</str>
-       <str name="facet.field">year</str>
-       <str name="facet.field">new</str>
-       <str name="facet.field">used</str>
+       <str name="facet.field">seller_id</str>
+       <!-- A ordem do facet.query é importante para a aplicação -->
+       <str name="facet.query">price:[* TO 5]</str>
+       <str name="facet.query">price:[* TO 12]</str>
+       <str name="facet.query">price:[* TO 30]</str>
+       <str name="facet.query">price:[* TO 100]</str>
+       <str name="facet.query">price:[100 TO *]</str>
+       <str name="facet.query">year:[2010 TO *]</str>
+       <str name="facet.query">year:[2000 TO *]</str>
+       <str name="facet.query">year:[1990 TO *]</str>
+       <str name="facet.query">year:[* TO 1990]</str>
+       <str name="facet.query">sku_created_at:[* TO NOW-7DAY]</str>
+       <str name="facet.query">sku_created_at:[* TO NOW-14DAY]</str>
+       <str name="facet.query">sku_created_at:[* TO NOW-30DAY]</str>
 
        <str name="facet.mincount">1</str>
 
-       <str name="json.facet">{total_new:"sum(new)", total_used: "sum(used)", unique_sellers: "unique(seller_id)", min_price: "min(price)", max_price: "max(price)"}</str>
-
-
        <str name="fl">sku, seller_id, sku_created_at, edition, cover, year, price, publisher, isbn, volume, new, used, year</str>
+
+       <str name="json.facet">{total_new:"sum(new)", total_used: "sum(used)", unique_sellers: "unique(seller_id)", min_price: "min(price)", max_price: "max(price)"}</str>
 
      </lst>
   </requestHandler>     
