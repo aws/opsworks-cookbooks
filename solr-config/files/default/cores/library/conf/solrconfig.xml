@@ -569,7 +569,8 @@
        <str name="facet.missing">false</str>
        <str name="facet.field">edition</str>
        <str name="facet.field">publisher</str>
-       <str name="facet.field">seller_id</str>
+       <str name="facet.field">seller_name</str>
+       <str name="facet.field">seller_city</str>
        <!-- A ordem do facet.query é importante para a aplicação -->
        <str name="facet.query">price:[* TO 5]</str>
        <str name="facet.query">price:[* TO 12]</str>
