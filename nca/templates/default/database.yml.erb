@@ -1,6 +1,6 @@
 <% if @database[:host] -%>
   <% ([@environment]).uniq.each do |env| -%>
-  <%= env %>:
+<%= env %>:
   adapter: <%= @database[:adapter].to_s.inspect %>
   database: <%= @database[:database].to_s.inspect %>
   encoding: <%= (@database[:encoding] || 'utf8').to_s.inspect %>
