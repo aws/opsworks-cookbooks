@@ -10,9 +10,9 @@
 
   <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver"
     name="evmain"
-    url="jdbc:mysql://174.143.111.169/estantevirtual"
+    url="jdbc:mysql://localhost:3307/estantevirtual"
+    user="estantevirtual"
     password="RCifH0slt7"
-    password="pCcA6Mi3EAVo1Frkr78x"
     autoReconnect="true" />
   <document>
 
@@ -64,11 +64,9 @@
         </entity>
 
         <entity name="seller" pk="sku_id" dataSource="evmain"
-          query="select nome, cidade from usuarios u
+          query="select u.nome, coalesce(u.cidade, l.cidade) as cidade from usuarios u
+           left join localidades l on u.cidade_id = l.location_id
            where u.user_id = '${sku.seller_id}'"
-          deltaQuery="select ab.book_id from authors a
-          join authors_books ab on a.id = ab.author_id where a.updated_at &gt; '${dih.last_index_time}'"
-          parentDeltaQuery="select id from books where id='${author.book_id}'"
         >
           <field name="seller_name" column="nome"/>
           <field name="seller_city" column="cidade"/>
