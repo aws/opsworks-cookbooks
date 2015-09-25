@@ -154,6 +154,7 @@
    <!-- Seller -->
    <field name="seller_name" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="seller_city" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="seller_state" type="string" indexed="true" stored="true" required="false" multiValued="false" />
 
    <!-- Dynamic field definitions allow using convention over configuration
        for fields via the specification of patterns to match field names. 
