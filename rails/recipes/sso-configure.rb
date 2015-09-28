@@ -7,7 +7,10 @@ node[:deploy].each do |application, deploy|
     action :nothing
   end
 
-  execute "if [ ! -f /srv/www/monaco/current/config/cas.yml ]; then ln -s /srv/www/monaco/shared/config/cas.yml /srv/www/monaco/current/config/cas.yml; fi"
+  execute "if [ ! -f /srv/www/monaco/current/config/cas.yml ]; then ln -sf /srv/www/monaco/shared/config/cas.yml /srv/www/monaco/current/config/cas.yml; fi" do
+    group deploy[:group]
+    user deploy[:user]
+  end
 
   template "#{deploy[:deploy_to]}/shared/config/cas.yml" do
     source "cas.yml.erb"
