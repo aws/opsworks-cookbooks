@@ -11,7 +11,7 @@
   <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver"
     name="evmain"
     url="jdbc:mysql://174.143.111.169/estantevirtual"
-    user="estantevirtual"
+    user="solr"
     password="RCifH0slt7"
     autoReconnect="true" />
 
