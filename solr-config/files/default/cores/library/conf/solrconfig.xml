@@ -40,11 +40,11 @@
   <!-- imports -->
 
   <!-- para funcionar local --> 
-
+  <!--
   <lib dir="../../ext-lib" regex="postgresql-9.3.*\.jar" />
   <lib dir="../../ext-lib" regex="mysql-connector-java-5.1.*\.jar" />
   <lib dir="../../ext-lib" regex="solr-dataimporthandler-5.1.0.jar" /> 
-
+  -->
 
   <!-- para funcionar no solr de staging -->
   <lib dir="../../lib/dist/" regex=".*\.jar" />
@@ -501,6 +501,8 @@
        <str name="indent">true</str>
        <str name="rows">30</str>
        <str name="fl">book_id, authors, title, year, cover</str> 
+
+       <str name="sort">score desc</str>
 
        <str name="bq">sku:[* TO *]^2.0</str>
 
