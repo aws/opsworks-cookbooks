@@ -7,7 +7,7 @@ node[:deploy].each do |application, deploy|
     action :nothing
   end
 
-  execute "if [ ! -f /srv/www/monaco/current/config/cas.yml ]; then ln -s /srv/www/monaco/shared/config/cas.yml /srv/www/monaco/current/config/cas.yml; fi" do
+  execute "if [ ! -f /srv/www/monaco/current/config/cas.yml ]; then ln -sf /srv/www/monaco/shared/config/cas.yml /srv/www/monaco/current/config/cas.yml; fi" do
     group deploy[:group]
     user deploy[:user]
   end
