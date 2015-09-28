@@ -2,18 +2,19 @@
 
   <dataSource type="JdbcDataSource" driver="org.postgresql.Driver"
     name="library"
-    url="jdbc:postgresql://library-sg.c6orwgo57rj2.us-east-1.rds.amazonaws.com/library_staging"
+    url="jdbc:postgresql://library-sg.c6orwgo57rj2.us-east-1.rds.amazonaws.com:5432/library_staging"
     user="librarysg"
     password="library-sg"
     autoReconnect="true"
-    />
+  />
 
   <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver"
     name="evmain"
-    url="jdbc:mysql://174.143.111.169/estantevirtual"
+    url="jdbc:mysql://174.143.111.169:3306/estantevirtual"
     user="solr"
     password="RCifH0slt7"
-    autoReconnect="true" />
+    autoReconnect="true"
+  />
 
 
   <document>
