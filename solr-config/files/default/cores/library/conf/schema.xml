@@ -151,11 +151,6 @@
    <field name="used" type="int" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="sku_created_at" type="date" indexed="true" stored="true" required="false" multiValued="false" />
 
-   <!-- Seller -->
-   <field name="seller_name" type="string" indexed="true" stored="true" required="false" multiValued="false" />
-   <field name="seller_city" type="string" indexed="true" stored="true" required="false" multiValued="false" />
-   <field name="seller_state" type="string" indexed="true" stored="true" required="false" multiValued="false" />
-
    <!-- Dynamic field definitions allow using convention over configuration
        for fields via the specification of patterns to match field names. 
        EXAMPLE:  name="*_i" will match any field ending in _i (like myid_i, z_i)

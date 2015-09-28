@@ -8,13 +8,6 @@
     autoReconnect="true"
     />
 
-  <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver"
-    name="evmain"
-    url="jdbc:mysql://174.143.111.169/estantevirtual"
-    user="solr"
-    password="RCifH0slt7"
-    autoReconnect="true" />
-
 
   <document>
 
@@ -63,16 +56,6 @@
           parentDeltaQuery="select id from books where id='${author.book_id}'"
         >
           <field name="authors" column="author_name"/>
-        </entity>
-
-        <entity name="seller" pk="sku_id" dataSource="evmain"
-          query="select u.nome, coalesce(u.cidade, l.cidade) as cidade, coalesce(u.estado, l.uf) as estado from usuarios u
-           left join localidades l on u.cidade_id = l.location_id
-           where u.user_id = '${sku.seller_id}'"
-        >
-          <field name="seller_name" column="nome"/>
-          <field name="seller_city" column="cidade"/>
-          <field name="seller_state" column="estado"/>
         </entity>
     </entity>
 
