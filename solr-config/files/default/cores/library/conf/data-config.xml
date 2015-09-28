@@ -1,7 +1,7 @@
 <dataConfig>
-<!--     user="amsterdam"
-    password="amsterdam" -->
+
   <dataSource type="JdbcDataSource" driver="org.postgresql.Driver"
+    name="library"
     url="jdbc:postgresql://library-sg.c6orwgo57rj2.us-east-1.rds.amazonaws.com/library_staging"
     user="librarysg"
     password="library-sg"
@@ -9,10 +9,13 @@
     />
 
   <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver"
+    name="evmain"
     url="jdbc:mysql://174.143.111.169/estantevirtual"
+    user="estantevirtual"
     password="RCifH0slt7"
-    autoReconnect="true"
-    user="solr"/>
+    autoReconnect="true" />
+
+
   <document>
 
     <entity name="sku" pk="id" dataSource="library"
