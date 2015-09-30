@@ -529,12 +529,12 @@
   </requestHandler>  
 
   <!-- A request handler that returns indented JSON by default -->
-  <requestHandler name="/get_book_publications" class="solr.SearchHandler">
+  <requestHandler name="/get_publications" class="solr.SearchHandler">
      <lst name="defaults">
        <str name="echoParams">explicit</str>
        <str name="wt">json</str>
        <str name="indent">true</str>
-       <str name="df">book_id</str>
+       <str name="df">isbn, issn, bar_code</str>
        <str name="rows">100</str>
        <str name="fl">book_id, publication_id, authors, title, volume, isbn, issn, barcode, edition, year, weight, width, height, depth, pages, publisher, created_at, updated_at, deleted_at</str> 
        <str name="group">on</str>
