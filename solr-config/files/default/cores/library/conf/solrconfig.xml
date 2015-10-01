@@ -528,6 +528,22 @@
      </lst>
   </requestHandler>  
 
+  <requestHandler name="/get_books" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="q">
+        (_query_:"{!edismax qf='authors' v=$author}"
+        AND _query_:"{!edismax qf='title' v=$title}")
+      </str>
+      <str name="fl">book_id, authors, title, year, cover</str> 
+
+      <str name="group">on</str>
+      <str name="group.field">book_id</str>
+      <str name="group.sort">year asc</str>
+
+       <str name="json.facet">{total_books:"unique(book_id)"}</str>
+    </lst>
+  </requestHandler>
+
   <!-- A request handler that returns indented JSON by default -->
   <requestHandler name="/get_publications" class="solr.SearchHandler">
      <lst name="defaults">
