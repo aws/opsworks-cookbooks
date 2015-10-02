@@ -1,0 +1,189 @@
+#!/usr/bin/env ruby
+
+require "openssl"
+require "securerandom"
+require "digest"
+require "optparse"
+require "tempfile"
+
+BLOCKSIZE_TO_READ = 1024 * 1000
+
+options = {}
+optparse = OptionParser.new do |opts|
+  opts.banner = "Usage: encode_file [options]"
+  opts.on("-k", "--key_name [PATH]", String, "Encryption Key Path") do |k|
+    options[:key_name] = k
+  end
+  opts.on("-i", "--input_file [PATH]", String, "Path to target file for encryption.") do |i|
+    options[:input_file] = i
+  end
+  opts.on("-o", "--output_file [PATH]", String, "Destination path for encrypted file.") do |o|
+    options[:output_file] = o
+  end
+  opts.on("-e", "--encryption_mode", "Toggle encryption mode.") do
+    options[:encryption_mode] = true
+  end
+  opts.on("-d", "--decryption_mode", "Toggle decryption mode.") do
+    options[:decryption_mode] = true
+  end
+  opts.on("-c", "--checksum_mode", "Toggle checksum mode (SHA256).") do
+    options[:checksum_mode] = true
+  end
+  opts.on("-g", "--generate_key", "Generate a new 256bit key.") do
+    options[:generate_key] = true
+  end
+  opts.on('-h', '--help', 'Display this screen') do
+    puts opts
+    exit
+  end
+end
+
+begin
+  optparse.parse!
+  exclusive = [:encryption_mode, :decryption_mode, :checksum_mode, :generate_key]
+  toggle = exclusive.select{ |param| options[param].nil? }
+  if toggle.empty? and toggle.length != 3
+    puts "Options cannot be used together: #{toggle.join(', ')}"
+    puts optparse
+    exit
+  elsif toggle.length == exclusive.length
+    puts "One of the following options must be used: #{toggle.join(', ')}"
+    puts optparse
+    exit
+  end
+  unless ([:encryption_mode, :decryption_mode] & options.keys).empty?
+    manditory = [:key_name, :input_file]
+    missing = manditory.select{ |param| options[param].nil? }
+    unless missing.empty?
+      puts "Missing options: #{missing.join(', ')}"
+      puts optparse
+      exit
+    end
+  end
+rescue OptionParser::InvalidOption, OptionParser::MissingArgument
+  puts $!.to_s
+  puts optparse
+  exit
+end
+
+def aes256_encrypt(key, file_path, output_path)
+  key = Digest::SHA256.digest(key) if(key.kind_of?(String) && 32 != key.bytesize)
+  aes = OpenSSL::Cipher.new('AES-256-CBC')
+  aes.encrypt
+  aes.key = key
+  if output_path.nil?
+    File.open(file_path, "rb") do |fi|
+      while buffer = fi.read(BLOCKSIZE_TO_READ)
+        $stdout.write aes.update(buffer)
+      end
+      $stdout.write aes.final
+    end
+  else
+    encrypt_file = Tempfile.new("encode")
+    File.open(encrypt_file, "wb") do |ef|
+      File.open(file_path, "rb") do |fi|
+        while buffer = fi.read(BLOCKSIZE_TO_READ)
+          ef.write aes.update(buffer)
+        end
+      end
+      ef.write aes.final
+    end
+    ::FileUtils.mv(encrypt_file.path, output_path)
+  end
+end
+
+def aes256_decrypt(key, file_path, output_path)
+  key = Digest::SHA256.digest(key) if(key.kind_of?(String) && 32 != key.bytesize)
+  aes = OpenSSL::Cipher.new('AES-256-CBC')
+  aes.decrypt
+  aes.key = key
+  if output_path.nil?
+    File.open(file_path, "rb") do |fi|
+      while buffer = fi.read(BLOCKSIZE_TO_READ)
+        $stdout.write aes.update(buffer)
+      end
+    end
+    $stdout.write aes.final
+  else
+    decrypt_file = Tempfile.new("decode")
+    File.open(decrypt_file, "wb") do |df|
+      File.open(file_path, "rb") do |fi|
+        while buffer = fi.read(BLOCKSIZE_TO_READ)
+          df.write aes.update(buffer)
+        end
+      end
+      df.write aes.final
+    end
+    ::FileUtils.mv(decrypt_file.path, output_path)
+  end
+end
+
+def random_sha256(output_path)
+  random_key = SecureRandom.hex(32)
+  if output_path.nil?
+    $stdout.write random_key
+  else
+    key_out = Tempfile.new("keygen")
+    File.open(key_out, "wb") do |df|
+      df.write random_key
+    end
+    ::FileUtils.mv(key_out.path, output_path)
+  end
+end
+
+def read_key(key_path)
+  (File.read(key_path)).strip
+end
+
+def sha256_digest(file_path, output_path)
+  sha256 = Digest::SHA256.new
+
+  File.open(file_path, "rb") do |fi|
+    while buffer = fi.read(BLOCKSIZE_TO_READ)
+      sha256.update buffer
+    end
+  end
+
+  if output_path.nil?
+    $stdout.write(sha256)
+  else
+    digest_file = Tempfile.new("digest")
+    File.open(digest_file, "wb") do |df|
+      df.write sha256
+    end
+    ::FileUtils.mv(digest_file.path, output_path)
+  end
+end
+
+if options[:encryption_mode]
+  key = read_key(options[:key_name])
+  if options[:output_file]
+    aes256_encrypt(key,options[:input_file], options[:output_file])
+  else
+    aes256_encrypt(key,options[:input_file], nil)
+  end
+end
+if options[:decryption_mode]
+  key = read_key(options[:key_name])
+  if options[:output_file]
+    aes256_decrypt(key, options[:input_file], options[:output_file])
+  else
+    aes256_decrypt(key, options[:input_file], nil)
+  end
+end
+
+if options[:checksum_mode]
+  if options[:destination_file_path]
+    sha256_digest(options[:input_file], options[:destination_file_path])
+  else
+    sha256_digest(options[:input_file], nil)
+  end
+end
+
+if options[:generate_key]
+  if options[:destination_file_path]
+    random_sha256(options[:destination_file_path])
+  else
+    random_sha256(nil)
+  end
+end

@@ -34,7 +34,7 @@ describe_recipe 'opsworks_initial_setup::bind_mounts' do
 
     ephemeral_device = OpsWorks::ShellOut.shellout("df #{ephemeral_mount_point} | grep ^/").split.first
 
-    ['/var/log/mysql', '/srv/www', '/var/www', httpd_logs_path].each do |bind_mount_dir|
+    ["/var/log/mysql", "/srv/www", "/var/www", httpd_logs_path].each do |bind_mount_dir|
       OpsWorks::ShellOut.shellout("findmnt -c #{bind_mount_dir}").must_match %r{^#{bind_mount_dir}\s#{ephemeral_device}}
     end
   end

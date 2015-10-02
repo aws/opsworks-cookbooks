@@ -36,8 +36,8 @@ when 'centos','redhat','fedora','amazon'
   execute "/sbin/shutdown -r +2 &" do
     only_if do
       installed_kernels = OpsWorks::ShellOut.shellout("rpm -q --last kernel")
-      latest_installed_kernel = installed_kernels.gsub(/^kernel-(\S+).*/, '\1').strip!.lines.first.strip!
-      current_used_kernel = OpsWorks::ShellOut.shellout("uname -r").strip!
+      latest_installed_kernel = installed_kernels.gsub(/^kernel-(\S+).*/, '\1').lines.first.strip
+      current_used_kernel = OpsWorks::ShellOut.shellout("uname -r").strip
       reboot_required = latest_installed_kernel != current_used_kernel
       if node[:dependencies][:allow_reboot]
         reboot_required

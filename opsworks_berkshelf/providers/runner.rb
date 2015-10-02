@@ -14,9 +14,12 @@ action :berks_install do
         berks_install_command,
         :cwd => ::File.dirname(OpsWorks::Berkshelf.berksfile),
         :environment  => {
-          "BERKSHELF_PATH" => Opsworks::InstanceAgent::Environment.berkshelf_cache_path
+          "BERKSHELF_PATH" => Opsworks::InstanceAgent::Environment.berkshelf_cache_path,
+          "LC_ALL" => "en_US.UTF-8"
         }
       )
+
+      ::FileUtils.rm_rf Opsworks::InstanceAgent::Environment.berkshelf_cache_path
     end
 
     only_if do

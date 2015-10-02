@@ -5,8 +5,10 @@ end
 
 include_recipe 'opsworks_initial_setup::sysctl'
 include_recipe 'opsworks_initial_setup::limits'
-include_recipe 'opsworks_initial_setup::bind_mounts'
-include_recipe 'opsworks_initial_setup::vol_mount_point'
+if infrastructure_class?('ec2')
+  include_recipe 'opsworks_initial_setup::bind_mounts'
+  include_recipe 'opsworks_initial_setup::vol_mount_point'
+end
 include_recipe 'opsworks_initial_setup::remove_landscape'
 include_recipe 'opsworks_initial_setup::ldconfig'
 

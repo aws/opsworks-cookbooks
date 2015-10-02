@@ -13,6 +13,7 @@ action :install do
         provider Chef::Provider::Package::Dpkg
       elsif platform_family?("rhel")
         provider Chef::Provider::Package::Yum
+        options "--disablerepo=*"
       end
 
       # to run during chef compile phase and thus keep the execution
@@ -50,12 +51,15 @@ end
 def asset_url
   _platform = node[:platform]
   _platform_version = node[:platform_version]
-  # Hack to get RedHat 6 to online state until we have proper userspace
-  # Ruby packages or removed Ruby dependency from custom layer.
-  if ["redhat", "centos"].include?(_platform)
-    _platform = "amazon"
-    #ToDo: this should be a global attribute in the commons cookbook
-    _platform_version = "2013.09"
+
+  if rhel6? || rhel7?
+    _platform = "redhat"
+  end
+
+  if rhel6?
+    _platform_version = "6"
+  elsif rhel7?
+    _platform_version = "7"
   end
 
   @asset_url ||= URI.parse("#{node[:opsworks_commons][:assets_url]}/packages/#{_platform}/#{_platform_version}/#{asset_name}")
@@ -80,8 +84,8 @@ def local_asset
     # remove all downloaded file for this asset, also failed attemps.
     ::FileUtils.rm_rf(Dir["#{asset_basedir}.*"], :verbose => true) rescue Chef::Log.error "Couldn't cleanup downloaded assets for #{@new_resource.name}."
   elsif @new_resource.ignore_failure
-    Chef::Log.error "Failed to download asset #{asset_name} for #{@new_resource.name}."
+    Chef::Log.error "Failed to download asset #{asset_name} for #{@new_resource.name} with url #{asset_url}."
   elsif !@new_resource.ignore_failure
-    raise Chef::Exceptions::ResourceNotFound, "Failed to download asset #{@new_resource.asset} for #{@new_resource.name}."
+    raise Chef::Exceptions::ResourceNotFound, "Failed to download asset #{@new_resource.asset} for #{@new_resource.name} with url #{asset_url}."
   end
 end

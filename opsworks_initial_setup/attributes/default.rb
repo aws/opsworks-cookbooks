@@ -62,7 +62,7 @@ default[:opsworks_initial_setup][:limits][:rtprio] = nil
 default[:opsworks_initial_setup][:yum_dump_file] = File.join(Chef::CHEF_ROOT, "chef", "provider", "package", "yum-dump.py")
 default[:opsworks_initial_setup][:yum_dump_lock_timeout] = 120
 
-default[:opsworks_initial_setup][:autofs_map_file] = "/etc/auto.opsworks"
+default[:opsworks_initial_setup][:autofs_map_file] = "/etc/auto.opsworks" if infrastructure_class?('ec2')
 
 case node[:platform]
 when 'redhat','centos','fedora','amazon'
@@ -72,10 +72,11 @@ when 'debian','ubuntu'
 end
 
 default[:opsworks_initial_setup][:bind_mounts][:mounts] = {
-  '/var/log/mysql' => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/log/mysql",
+  "/var/log/mysql" => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/log/mysql",
   '/srv/www' => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/srv/www",
   '/var/www' => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/www",
 }
+
 case node[:platform]
 when 'redhat','centos','fedora','amazon'
   default[:opsworks_initial_setup][:bind_mounts][:mounts]['/var/log/httpd'] = "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/log/apache2"

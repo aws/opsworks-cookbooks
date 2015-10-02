@@ -1,7 +1,12 @@
 include_recipe 'opsworks_java::tomcat_service'
 
+tomcat_env_config_file = case node[:platform]
+                         when "redhat" then ::File.join(node["opsworks_java"]["tomcat"]["system_env_dir"], "tomcat")
+                         else ::File.join(node["opsworks_java"]["tomcat"]["system_env_dir"], "tomcat#{node["opsworks_java"]["tomcat"]["base_version"]}")
+                         end
+
 template 'tomcat environment configuration' do
-  path ::File.join(node['opsworks_java']['tomcat']['system_env_dir'], "tomcat#{node['opsworks_java']['tomcat']['base_version']}")
+  path tomcat_env_config_file
   source 'tomcat_env_config.erb'
   owner 'root'
   group 'root'

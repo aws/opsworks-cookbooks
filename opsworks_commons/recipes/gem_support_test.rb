@@ -4,6 +4,8 @@ if node[:opsworks][:run_cookbook_tests]
     version '= 1.2.0'
     package_name "awesome_print"
     action :install
+    retries 8
+    retry_delay 15
   end
 
   execute "use gem_package awesome_print" do

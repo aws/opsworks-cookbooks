@@ -67,7 +67,7 @@ service 'gmetad' do
   action :stop
 end
 
-include_recipe 'opsworks_ganglia::bind-mount-data'
+include_recipe 'opsworks_ganglia::bind-mount-data' if infrastructure_class?('ec2')
 
 template '/etc/ganglia/gmetad.conf' do
   source 'gmetad.conf.erb'
@@ -76,7 +76,7 @@ template '/etc/ganglia/gmetad.conf' do
 end
 
 execute "fix permissions on ganglia rrds directory" do
- command "chown -R #{node[:ganglia][:rrds_user]}:#{node[:ganglia][:user]} #{node[:ganglia][:datadir]}/rrds"
+ command "chown -R #{node[:ganglia][:rrds_user]}:#{node[:ganglia][:user]} #{node[:ganglia][:original_datadir]}/rrds"
 end
 
 include_recipe 'apache2::service'
