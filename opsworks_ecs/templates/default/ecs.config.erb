@@ -2,3 +2,9 @@ ECS_LOGFILE=/log/ecs-agent.log
 ECS_LOGLEVEL=<%= node["opsworks_ecs"]["ecs-agent"]["loglevel"] %>
 ECS_DATADIR=/data
 ECS_CLUSTER=<%= node["opsworks_ecs"]["ecs_cluster_name"] %>
+<% if node["opsworks_ecs"]["auth"]["type"] -%>
+ECS_ENGINE_AUTH_TYPE=<%= node["opsworks_ecs"]["auth"]["type"] %>
+<% end -%>
+<% if node["opsworks_ecs"]["auth"]["data"] -%>
+ECS_ENGINE_AUTH_DATA=<%= node["opsworks_ecs"]["auth"]["data"] %>
+<% end -%>
