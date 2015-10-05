@@ -559,7 +559,7 @@
      </lst>
   </requestHandler>  
 
-  <requestHandler name="/get_publisher" class="solr.SearchHandler">
+  <requestHandler name="/get_publishers" class="solr.SearchHandler">
      <lst name="defaults">
        <str name="echoParams">explicit</str>
        <str name="wt">json</str>
