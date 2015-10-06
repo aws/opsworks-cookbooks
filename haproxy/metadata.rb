@@ -6,6 +6,7 @@ long_description  IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version           '0.7'
 recipe 'haproxy', 'Install and configure a HAProxy instance'
 recipe 'haproxy::configure', 'reconfigure and restart HAProxy'
+recipe 'haproxy::test', 'test new haproxy config'
 
 ['debian','ubuntu'].each do |os|
   supports os
