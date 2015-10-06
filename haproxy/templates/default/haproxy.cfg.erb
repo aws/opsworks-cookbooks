@@ -76,7 +76,18 @@ backend php_app_servers
   server <%= backend['name'] %> <%= backend['ip'] %>:80 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] * node[:haproxy][:maxcon_factor_php_app] %> check inter <%= node[:haproxy][:check_interval] %>
   <% end -%>  
 <% end -%>
-  
+
+<% if !node[:haproxy][:custom_backends].empty? -%>  
+backend custom_app_servers
+  balance <%= node[:haproxy][:balance] %>
+  option redispatch
+  option forwardfor
+  option httpchk <%= node[:haproxy][:health_check_method] %> <%= node[:haproxy][:health_check_url] %>
+  <% node[:haproxy][:custom_backends].each do |backend| -%>
+  server <%= backend['name'] %> <%= backend['ip'] %>:80 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] * node[:haproxy][:maxcon_factor_php_app] %> check inter <%= node[:haproxy][:check_interval] %>
+  <% end -%>  
+<% end -%>
+ 
 <% if !node[:haproxy][:php_backends].empty? -%>  
 backend php_app_servers
   balance <%= node[:haproxy][:balance] %>
