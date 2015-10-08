@@ -1,0 +1,3 @@
+task :with_env, [:command] do |_, args|
+  exec %Q{ bundle exec rake #{args[:command]} RAILS_ENV=<%= @rails_env %> <%= @env_vars %> }
+end

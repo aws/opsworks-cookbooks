@@ -1,0 +1,3 @@
+task 'rails_console' do
+  exec %Q{<%= @env_vars %> RAILS_ENV=production bundle exec rails console}
+end
