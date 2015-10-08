@@ -7,8 +7,8 @@
 
 define :custom_env_template do
   
-  template "#{params[:deploy][:deploy_to]}/shared/config/application.yml" do
-    source "application.yml.erb"
+  template "#{params[:deploy][:deploy_to]}/shared/.env" do
+    source ".env.erb"
     owner params[:deploy][:user]
     group params[:deploy][:group]
     mode "0660"
