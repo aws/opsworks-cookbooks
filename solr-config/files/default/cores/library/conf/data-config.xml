@@ -41,8 +41,8 @@
             left join publications p on p.book_id = b.id
             left join skus s on s.publication_id = p.id
             left join publishers pbrs on pbrs.id = p.publisher_id
-            WHERE md5(concat(b.id, p.id, s.id))='${dih.delta.id}'"
-     deltaQuery="SELECT md5(concat(b.id, p.id, s.id)) as id
+            WHERE b.id='${dih.delta.id}'"
+     deltaQuery="SELECT b.id as id
             FROM books b
             left join publications p on p.book_id = b.id
             left join skus s on s.publication_id = p.id
