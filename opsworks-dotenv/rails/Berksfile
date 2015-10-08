@@ -1,0 +1,5 @@
+source "https://api.berkshelf.com"
+
+metadata
+
+cookbook: "deploy", github: "aws/opsworks-cookbooks", rel: 'deploy'

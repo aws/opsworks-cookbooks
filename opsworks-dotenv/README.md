@@ -1,54 +1,60 @@
-opsworks\_custom\_env
-===================
+opsworks-dotenv
+===============
 
-This cookbook allows Rails apps on [Amazon OpsWorks](http://aws.amazon.com/opsworks/) to separate their configuration from their code. In keeping with [Heroku's twelve-factor app](http://www.12factor.net/config), the configuration is made available to the app's environment.
+Configure the environment for you Rails application using OpsWorks, Chef and Dotenv
 
-To accomplish this, the cookbook maintains a `config/application.yml` file in each respective app's deploy directory. E.g.:
 
-    ---
-    FOO: "http://www.yahoo.com"
-    BAR: "1001"
+### install
 
-Your application can then load its settings directly from this file, or use [Figaro](https://github.com/laserlemon/figaro) to automatically make these settings available in the app's `ENV` (recommended).
+Add the Dotenv gem to your `Gemfile`
 
-Configuration values are specified in the [stack's custom JSON](http://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-json.html). Example:
+```ruby
+gem 'dotenv-rails'
+```
 
-    {
-      "custom_env": {
-        "my_app": {
-          "FOO": "http://www.yahoo.com",
-          "BAR": "1001"
-        }
+run bundle
+
+```bash
+$ bundle
+```
+
+as soon as possible, load the environment through Dotenv
+
+
+```ruby
+# application.rb
+require File.expand_path('../boot', __FILE__)
+require 'dotenv'
+Dotenv.load
+
+```
+
+
+### configure
+
+In the OpsWorks stack dashboard click on stack Settings and supply your ENV configuration.
+For example:
+
+```json
+{
+  "deploy":{
+    "app_name":{
+      "symlink_before_migrate":{
+        ".env" : ".env"
       },
-      
-      "deploy": {
-        "my_app": {
-          "symlink_before_migrate": {
-            "config/application.yml": "config/application.yml"
-          }
-        }
+      "app_env": {
+        "YOUR_ENV_KEY": "KEY_VALUE",
+        "ANOTHER_ENV_KEY": "SECOND_VALUE"
       }
     }
+  }
+}
+```
 
-**Note** that the `symlink_before_migrate` attribute is necessary so that OpsWorks automatically symlinks the shared file when setting up release directories or deploying a new version.
+The `symlink_before_migrate` key just tells OpsWorks to create a link to `.env` file in `shared`
+application folder into  `current`, so it can be picked up by Rails.
+
+You can now deploy your app and enjoy the `ENV`
 
 
-Caveats
--------
-
-At the moment, only default Opsworks configurations for Apache/Passenger and Unicorn/Nginx style Rails apps are supported.
-
-
-Opsworks Set-Up
----------------
-
-* Add `custom_env` and `symlink_before_migrate` attributes to the stack's custom JSON as in the example above.
-* Associate the `opsworks_custom_env::configure` custom recipe with the _Deploy_ event in your rails app's layer.
-
-A deploy isn't necessary if you just want to update the custom configuration. Instead, update the stack's custom JSON, then choose to _Run Command_ > _execute recipes_ and enter `opsworks_custom_env::configure` into the _Recipes to execute_ field. Executing the recipe will write an updated `application.yml` file and restart unicorn workers.
-
-Copyright and License
--------
-
-(c) 2013-2014 [Joey Aghion](http://joey.aghion.com), [Artsy](http://artsy.net). See [LICENSE](LICENSE) for details.
 
