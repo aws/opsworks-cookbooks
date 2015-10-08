@@ -1,0 +1,6 @@
+name             'opsworks-elasticsearch-reindex'
+maintainer       'Saurabh Bhatia'
+maintainer_email ''
+license          'All rights reserved'
+description      'Reindexes on Deploy'
+version          '1.0.0'
