@@ -552,7 +552,7 @@
        <str name="indent">true</str>
        <str name="df">publication_search_field</str>
        <str name="rows">100</str>
-       <str name="fl">book_id, publication_id, authors, title, volume, isbn, issn, barcode, edition, year, weight, width, height, depth, pages, publisher, created_at, updated_at, deleted_at</str> 
+       <str name="fl">book_id, publication_id, authors, title, volume, isbn, issn, barcode, edition, year, weight, width, height, depth, pages, publisher, created_at, updated_at, deleted_at, cover</str>
        <str name="group">on</str>
        <str name="group.field">publication_id</str>
        <str name="group.sort">year desc</str>
