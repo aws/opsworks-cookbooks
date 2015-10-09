@@ -13,7 +13,7 @@
 
     <entity name="sku" pk="id" dataSource="library"
      query="SELECT 
-              md5(concat(b.id, p.id, s.id)) as id,
+              md5(concat(b.id, '|', p.id, '|', s.id)) as id,
               b.id book_id, b.title, b.synopsis,  md5(synopsis) md5_synopsis, b.volume, 
               p.id as publication_id, p.isbn, p.issn, p.barcode, p.edition, p.weight,
               p.height, p.width, p.depth, p.year, p.pages, pbrs.name publisher, pbrs.id publisher_id,
@@ -27,7 +27,7 @@
             left join publications p on p.book_id = b.id
             left join skus s on s.publication_id = p.id
             left join publishers pbrs on pbrs.id = p.publisher_id"
-     deltaImportQuery="SELECT md5(concat(b.id, p.id, s.id)) as id,
+     deltaImportQuery="SELECT md5(concat(b.id, '|', p.id, '|', s.id)) as id,
               b.id book_id, b.title, b.synopsis,  md5(synopsis) md5_synopsis, b.volume, 
               p.id as publication_id, p.isbn, p.issn, p.barcode, p.edition, p.weight, p.height,
               p.height, p.width, p.depth, p.year, p.pages, pbrs.name publisher, pbrs.id publisher_id,
