@@ -55,7 +55,7 @@
           join authors_books ab on a.id = ab.author_id where ab.book_id = ${sku.book_id}"
           deltaQuery="select ab.book_id from authors a
           join authors_books ab on a.id = ab.author_id where a.updated_at &gt; '${dih.last_index_time}'"
-          parentDeltaQuery="select id from books where id='${author.book_id}'"
+          parentDeltaQuery="select '${author.book_id}' as id"
         >
           <field name="authors" column="author_name"/>
         </entity>
