@@ -1,9 +1,9 @@
-
-# Author:: Caroline Fenlon <carfenlon@gmail.com>
-# Cookbook Name:: logentries
+#
+# Author:: Joe Heung <joe.heung@logentries.com>
+# Cookbook Name:: logentries_agent
 # Recipe:: default
 #
-# Copyright 2011 Logentries, JLizard
+# Copyright 2015 Logentries, Revelops Ireland Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,19 +16,6 @@
 # limitations under the License.
 #
 
-execute "echo 'deb http://rep.logentries.com/ maverick main' >/etc/apt/sources.list.d/logentries.list"
-execute "gpg --keyserver pgp.mit.edu --recv-keys C43C79AD && gpg -a --export C43C79AD | apt-key add -"
-execute "apt-get update"
-execute "apt-get install --yes logentries"
-execute "le register --user-key #{node[:le][:userkey]} --name='#{node[:le][:hostname]}'"
-execute "apt-get install --yes -qq logentries-daemon"
+include_recipe 'logentries_agent::install'
+include_recipe 'logentries_agent::configure'
 
-class Chef::Recipe
-  include FollowLogs
-end
-
-# Follow logs from the JSON config
-follow_logs()
-
-# Start the service
-execute "service logentries restart"
