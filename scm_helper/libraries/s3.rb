@@ -45,7 +45,7 @@ module OpsWorks
           mode "0600"
           # per default it's host-style addressing
           # but older versions of rest-client doesn't support host-style addressing with `_` in bucket name
-          s3_url "https://s3.amazonaws.com/#{s3_bucket}"
+          s3_url "https://s3.amazonaws.com/#{s3_bucket}" if s3_bucket.include?("_")
           action :create
         end
 
