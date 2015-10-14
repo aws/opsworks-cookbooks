@@ -37,7 +37,12 @@ node[:deploy].each do |application, deploy|
       # Convert attribute classes to plain old ruby objects
       config = options[:config] ? options[:config].to_hash : {}
       config.each do |k, v|
-        config[k] = v
+        case v
+        when v.kind_of?(Array)
+          config[k] = v.to_a
+        when v.kind_of?(Hash)
+          config[k] = v.to_hash
+        end
       end
 
       # Generate YAML string
