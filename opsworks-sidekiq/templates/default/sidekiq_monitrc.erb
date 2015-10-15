@@ -1,0 +1,15 @@
+<% @workers.each do |worker, options| %>
+  <% (options[:process_count] || 1).times do |n| %>
+  <% identifier = "#{@application}-#{worker}#{n+1}" %>
+  <% conf_file = "#{@deploy[:deploy_to]}/shared/config/sidekiq_#{worker}#{n+1}.yml" %>
+  <% pid_file = "#{@deploy[:deploy_to]}/shared/pids/sidekiq_#{identifier}.pid" %>
+  <% syslog = @syslog ? "2>&1 | logger -t sidekiq-#{identifier}" : '' %>
+
+check process sidekiq_<%= identifier %>
+  with pidfile <%= pid_file %>
+  start program = "/bin/su - <%= @deploy[:user] %> -c 'cd <%= @deploy[:current_path] %> && RAILS_ENV=<%= @deploy[:rails_env] %> bundle exec sidekiq -C <%= conf_file %> -r <%= @deploy[:current_path] %> -P  <%= pid_file %> <%= syslog %>'" with timeout 90 seconds
+  stop  program = "/bin/su - <%= @deploy[:user] %> -c 'kill -s TERM `cat <%= pid_file %>`'" with timeout 90 seconds
+  group sidekiq_<%= @application %>_group
+
+  <% end %>
+<% end %>
