@@ -17,30 +17,30 @@
 #
 
 
-# case node['platform']
-#   when 'ubuntu'
-#     execute "echo 'deb http://rep.logentries.com/ maverick main' >/etc/apt/sources.list.d/logentries.list"
-#     execute "gpg --keyserver pgp.mit.edu --recv-keys C43C79AD && gpg -a --export C43C79AD | apt-key add -"
-#     execute "apt-get update"
-#     execute "apt-get install --yes logentries"
-#     execute "le register --user-key #{deploy[:application]['le']['account_key']} --name='#{deploy[:application]['le']['hostname']}'"
-#     execute "apt-get install --yes -qq logentries-daemon"
-#   when 'centos', 'redhat', 'amazon', 'scientific'
-#     yum_repository 'logentries' do
-#       description 'Logentries repo'
-#       baseurl 'http://rep.logentries.com/rh/\$basearch'
-#       gpgkey 'http://rep.logentries.com/RPM-GPG-KEY-logentries'
-#       action :create
-#     end
-#   when 'debian'
-#     apt_repository 'logentries' do
-#       uri 'http://rep.logentries.com/'
-#       distribution node['le']['deb']
-#       components ['main']
-#       keyserver node['le']['pgp_key_server']
-#       key 'C43C79AD'
-#     end
-# end
+case node['platform']
+  when 'ubuntu'
+    execute "echo 'deb http://rep.logentries.com/ maverick main' >/etc/apt/sources.list.d/logentries.list"
+    execute "gpg --keyserver pgp.mit.edu --recv-keys C43C79AD && gpg -a --export C43C79AD | apt-key add -"
+    execute "apt-get update"
+    execute "apt-get install --yes logentries"
+    execute "le register --user-key #{deploy[:application]['le']['account_key']} --name='#{deploy[:application]['le']['hostname']}'"
+    execute "apt-get install --yes -qq logentries-daemon"
+  when 'centos', 'redhat', 'amazon', 'scientific'
+    yum_repository 'logentries' do
+      description 'Logentries repo'
+      baseurl 'http://rep.logentries.com/rh/\$basearch'
+      gpgkey 'http://rep.logentries.com/RPM-GPG-KEY-logentries'
+      action :create
+    end
+  when 'debian'
+    apt_repository 'logentries' do
+      uri 'http://rep.logentries.com/'
+      distribution node['le']['deb']
+      components ['main']
+      keyserver node['le']['pgp_key_server']
+      key 'C43C79AD'
+    end
+end
 #TODO: do something different (or nothing?) for Red Hat?
 # I imagine its at least a different path; I don't have
 # any RPM machines around to look at.
