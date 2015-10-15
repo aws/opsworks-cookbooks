@@ -23,7 +23,7 @@ case node['platform']
     execute "gpg --keyserver pgp.mit.edu --recv-keys C43C79AD && gpg -a --export C43C79AD | apt-key add -"
     execute "apt-get update"
     execute "apt-get install --yes logentries"
-    execute "le register --user-key #{default['le']['account_key']} --name='#{default['le']['hostname']}'"
+    execute "le register --user-key #{deploy[:application]['le']['account_key']} --name='#{deploy[:application]['le']['hostname']}'"
     execute "apt-get install --yes -qq logentries-daemon"
   when 'centos', 'redhat', 'amazon', 'scientific'
     yum_repository 'logentries' do
