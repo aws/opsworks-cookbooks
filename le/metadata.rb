@@ -15,7 +15,4 @@ issues_url        'https://github.com/logentries/le_chef/issues' if respond_to?(
 supports 'ubuntu'
 supports 'rhel'
 
-depends 'apt'
-depends 'yum'
-
 suggests 'java', '~> 1.22'
