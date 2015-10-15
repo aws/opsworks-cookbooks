@@ -11,7 +11,7 @@ This cookbook uses monit to manage 1 or more Sidekiq *processes* per machine, ea
 Prerequisites
 -------------
 
-Assumes you have redis installed, configured and the connection with sidekiq established. This does not handle any redis connection setup.
+Assumes you have redis installed, configured and the connection with sidekiq established. This does not handle any redis connection setup. You can do this on aws elasticache
 
 Configuration Examples
 ----------------------
