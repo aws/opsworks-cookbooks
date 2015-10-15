@@ -1,0 +1,38 @@
+# This example config should work with Ubuntu 12.04+.  It
+# allows you to manage Sidekiq instances with
+# Upstart, Ubuntu's native service management tool.
+#
+# NOTE: This is heavily inspired by Sidekiq's example sidekiq.conf
+#
+# Save this config as /etc/init/sidekiq-APPNAME.conf then mange sidekiq with:
+#   sudo start sidekiq-<%= @app_name %>
+#   sudo stop sidekiq-<%= @app_name %>
+#   sudo status sidekiq-<%= @app_name %>
+#
+# or use the service command:
+#   sudo service sidekiq-<%= @app_name %> {start,stop,restart,status}
+
+description "Sidekiq Upstart process"
+
+start on started network-services
+stop on stopping network-services
+
+# change to match your deployment user
+setuid <%= @user %>
+setgid <%= @group %>
+
+respawn
+respawn limit 3 30
+
+# TERM and USR1 are sent by sidekiqctl when stopping sidekiq.  Without declaring these as normal exit codes, it just respawns.
+normal exit 0 TERM USR1
+
+chdir "<%= @release_path %>"
+
+<% @env.each do |k,v| %>
+env <%= k %>=<%= (v || '').to_s.gsub('"', '\\"') %>
+<% end %>
+
+script
+  exec <%= @start_command %>
+end script
