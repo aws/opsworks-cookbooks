@@ -1,3 +1,5 @@
+- Adding postgres adapter detection based on the Gemfile, fixes https://github.com/aws/opsworks-cookbooks/issues/136
+
 # v3427 2015-09-11
 - Updating the default 2.0, 2.1 and 2.2 versions of Ruby to 2.0.0p647, 2.1.7 and 2.2.3
 
