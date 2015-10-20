@@ -16,6 +16,7 @@ depends "unicorn"
 depends "opsworks_java"
 depends "php"
 depends "mysql"
+depends "opsworks_postgresql"
 depends "opsworks_nodejs"
 depends "opsworks_aws_flow_ruby"
 

@@ -16,7 +16,7 @@ module OpsWorks
             'mysql2'
           elsif bundle_list.include?("pg")
             Chef::Log.info("Looks like #{app_name} uses pg in its Gemfile")
-            'postgresql'
+            "postgresql"
           else
             Chef::Log.info("Gem mysql2 not found in the Gemfile of #{app_name}, defaulting to mysql")
             'mysql'
