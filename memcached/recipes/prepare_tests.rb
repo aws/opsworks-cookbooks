@@ -1,5 +1,5 @@
 # dependencie for the memcached gem
-package 'libmemcached development libraries' do
+package "libmemcached development libraries" do
   package_name value_for_platform_family(
     "rhel" => "libmemcached-devel",
     "debian" => "libmemcached-dev"

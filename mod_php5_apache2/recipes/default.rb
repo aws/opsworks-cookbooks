@@ -14,6 +14,16 @@ node[:deploy].each do |application, deploy|
   end
   next if node[:deploy][application][:database].nil?
 
+  bash "Enable network database access for httpd" do
+    boolean = "httpd_can_network_connect_db"
+    user "root"
+    code <<-EOH
+      semanage boolean --modify #{boolean} --on
+    EOH
+    not_if { OpsWorks::ShellOut.shellout("/usr/sbin/getsebool #{boolean}") =~ /#{boolean}\s+-->\s+on\)/ }
+    only_if { platform_family?("rhel") && ::File.exist?("/usr/sbin/getenforce") && OpsWorks::ShellOut.shellout("/usr/sbin/getenforce").strip == "Enforcing" }
+  end
+
   case node[:deploy][application][:database][:type]
   when "postgresql"
     include_recipe 'mod_php5_apache2::postgresql_adapter'

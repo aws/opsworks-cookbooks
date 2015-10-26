@@ -41,12 +41,16 @@ when 'rhel'
   default[:apache][:group]         = 'apache'
   default[:apache][:binary]        = '/usr/sbin/httpd'
   default[:apache][:icondir]       = '/var/www/icons/'
-  default[:apache][:init_script]   = '/etc/init.d/httpd'
-  default[:apache][:version]       = '2.2'
+  default[:apache][:init_script]   = "service httpd"
+  if rhel7?
+    default[:apache][:version]       = "2.4"
+  else
+    default[:apache][:version]       = "2.2"
+  end
   default[:apache][:conf_available_dir]  = "#{node[:apache][:dir]}/conf.d"
   default[:apache][:conf_enabled_dir]    = "#{node[:apache][:dir]}/conf.d"
   default[:apache][:pid_file]      = '/var/run/httpd/httpd.pid'
-  default[:apache][:lock_dir]      = 'log'
+  default[:apache][:lock_dir]      = '/var/run/httpd'
   default[:apache][:lib_dir]       = node[:kernel][:machine] =~ /^i[36']86$/ ? '/usr/lib/httpd' : '/usr/lib64/httpd'
   default[:apache][:libexecdir]    = "#{node[:apache][:lib_dir]}/modules"
   default[:apache][:document_root] = '/var/www/html'
@@ -56,7 +60,7 @@ when 'debian'
   default[:apache][:user]          = 'www-data'
   default[:apache][:group]         = 'www-data'
   default[:apache][:binary]        = '/usr/sbin/apache2'
-  default[:apache][:icondir]       = '/usr/share/apache2/icons'
+  default[:apache][:icondir]       = '/usr/share/apache2/icons/'
   default[:apache][:init_script]   = '/etc/init.d/apache2'
   if platform?('ubuntu') && node[:platform_version] == '14.04'
     default[:apache][:version]             = '2.4'

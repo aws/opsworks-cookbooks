@@ -184,6 +184,18 @@ define :opsworks_deploy do
     end
   end
 
+  bash "Enable selinux var_log_t target for application log files" do
+    dir_path_log = "#{deploy[:deploy_to]}/shared/log"
+    context = "var_log_t"
+
+    user "root"
+    code <<-EOH
+    semanage fcontext --add --type #{context} "#{dir_path_log}(/.*)?" && restorecon -rv "#{dir_path_log}"
+    EOH
+    not_if { OpsWorks::ShellOut.shellout("/usr/sbin/semanage fcontext -l") =~ /^#{Regexp.escape("#{dir_path_log}(/.*)?")}\s.*\ssystem_u:object_r:#{context}:s0/ }
+    only_if { platform_family?("rhel") && ::File.exist?("/usr/sbin/getenforce") && OpsWorks::ShellOut.shellout("/usr/sbin/getenforce").strip == "Enforcing" }
+  end
+
   template "/etc/logrotate.d/opsworks_app_#{application}" do
     backup false
     source "logrotate.erb"

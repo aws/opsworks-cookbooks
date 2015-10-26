@@ -19,39 +19,40 @@ packages = []
 case node[:platform_family]
 when 'debian'
   packages = [
-    'php5-xsl',
-    'php5-curl',
-    'php5-xmlrpc',
-    'php5-sqlite',
-    'php5-dev',
-    'php5-gd',
-    'php5-cli',
-    'php5-sasl',
-    'php5-mcrypt',
-    'php5-memcache',
-    'php-pear',
-    'php-xml-parser',
-    'php-mail-mime',
-    'php-db',
-    'php-mdb2',
-    'php-html-common'
+    "php5-xsl",
+    "php5-curl",
+    "php5-xmlrpc",
+    "php5-sqlite",
+    "php5-dev",
+    "php5-gd",
+    "php5-cli",
+    "php5-sasl",
+    "php5-mcrypt",
+    "php5-memcache",
+    "php-pear",
+    "php-xml-parser",
+    "php-mail-mime",
+    "php-db",
+    "php-mdb2",
+    "php-html-common"
   ]
 when 'rhel'
   packages = [
-    'php-xml',
-    'php-common',
-    'php-xmlrpc',
-    'php-devel',
-    'php-gd',
-    'php-cli',
-    'php-pear-Auth-SASL',
-    'php-mcrypt',
-    'php-pecl-memcache',
-    'php-pear',
-    'php-pear-XML-Parser',
-    'php-pear-Mail-Mime',
-    'php-pear-DB',
-    'php-pear-HTML-Common'
+    "php-xml",
+    "php-common",
+    "php-xmlrpc",
+    "php-gd",
+    "php-cli",
+    "php-pear-Auth-SASL",
+    "php-mcrypt",
+    "php-pecl-memcache",
+    "php-pear",
+    "php-pear-XML-Parser",
+    "php-pear-DB",
+    "php-pear-HTML-Common",
+    "php",
+    "php-devel",
+    "php-pear-Mail-Mime"
   ]
 end
 

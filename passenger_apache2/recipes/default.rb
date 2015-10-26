@@ -62,3 +62,12 @@ execute "passenger_module" do
   creates node[:passenger][:module_path]
   notifies :restart, "service[apache2]"
 end
+
+bash "Enable selinux httpd_t for passenger" do
+  user "root"
+  code <<-EOH
+    semanage permissive -a httpd_t
+  EOH
+  not_if { OpsWorks::ShellOut.shellout("/usr/sbin/semanage permissive -l") =~ /httpd_t/ }
+  only_if { platform_family?("rhel") && ::File.exist?("/usr/sbin/getenforce") && OpsWorks::ShellOut.shellout("/usr/sbin/getenforce").strip == "Enforcing" }
+end

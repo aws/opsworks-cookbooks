@@ -23,6 +23,15 @@ end
 
 default[:mysql][:server_root_password] = root_pw
 
+if rhel7?
+  default[:mysql][:name] = "mysql55-mysql"
+  default[:mysql][:bin_dir] = "/opt/rh/mysql55/root/usr/bin"
+else
+  default[:mysql][:name] = "mysql"
+  default[:mysql][:bin_dir] = "/usr/bin"
+end
+
+
 debian_pw = String.new
 while debian_pw.length < 20
   debian_pw << OpenSSL::Random.random_bytes(1).gsub(/\W/, '')
@@ -37,18 +46,18 @@ default[:mysql][:port]                 = 3306
 case node[:platform]
 when 'centos','redhat','fedora','amazon'
   default[:mysql][:datadir]              = '/var/lib/mysql'
-  default[:mysql][:logdir]               = '/var/log/mysql'
+  default[:mysql][:logdir]               = "/var/log/mysql"
   default[:mysql][:basedir]              = '/usr'
   default[:mysql][:user]                 = 'mysql'
   default[:mysql][:group]                = 'mysql'
   default[:mysql][:root_group]           = 'root'
-  default[:mysql][:mysqladmin_bin]       = '/usr/bin/mysqladmin'
-  default[:mysql][:mysql_bin]            = '/usr/bin/mysql'
+  default[:mysql][:mysqladmin_bin]       = "#{node[:mysql][:bin_dir]}/mysqladmin"
+  default[:mysql][:mysql_bin]            = "#{node[:mysql][:bin_dir]}/mysql"
 
   set[:mysql][:conf_dir]                 = '/etc'
   set[:mysql][:confd_dir]                = '/etc/mysql/conf.d'
   set[:mysql][:socket]                   = '/var/lib/mysql/mysql.sock'
-  set[:mysql][:pid_file]                 = '/var/run/mysqld/mysqld.pid'
+  set[:mysql][:pid_file]                 = "/var/run/mysqld/mysqld.pid"
   set[:mysql][:grants_path]              = '/etc/mysql_grants.sql'
 when 'debian','ubuntu'
   default[:mysql][:datadir]              = '/var/lib/mysql'
@@ -57,8 +66,8 @@ when 'debian','ubuntu'
   default[:mysql][:user]                 = 'mysql'
   default[:mysql][:group]                = 'mysql'
   default[:mysql][:root_group]           = 'root'
-  default[:mysql][:mysqladmin_bin]       = '/usr/bin/mysqladmin'
-  default[:mysql][:mysql_bin]            = '/usr/bin/mysql'
+  default[:mysql][:mysqladmin_bin]       = "#{node[:mysql][:bin_dir]}/mysqladmin"
+  default[:mysql][:mysql_bin]            = "#{node[:mysql][:bin_dir]}/mysql"
 
   set[:mysql][:conf_dir]                 = '/etc/mysql'
   set[:mysql][:confd_dir]                = '/etc/mysql/conf.d'

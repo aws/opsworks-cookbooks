@@ -1,7 +1,7 @@
  This instance is managed with AWS OpsWorks.
 
    ######  OpsWorks Summary  ######
-   Operating System: <%= `head -1 /etc/issue | sed -e 's/ \\\\.*//'`.chomp %>
+   Operating System: <%= @os_release %>
    OpsWorks Instance: <%= @instance[:hostname] %>
    OpsWorks Instance ID: <%= @instance[:id] %>
    OpsWorks Layers: <%= @instance[:layers].map{|id| @layers[id][:name] }.join(', ') %>

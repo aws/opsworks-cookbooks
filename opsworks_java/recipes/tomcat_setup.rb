@@ -11,6 +11,7 @@ bash '(re-)start autofs earlier' do
   code <<-EOC
     service autofs restart
   EOC
+  only_if { infrastructure_class?('ec2') }
   notifies :restart, 'service[tomcat]'
 end
 

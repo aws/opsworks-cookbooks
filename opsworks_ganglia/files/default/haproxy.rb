@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+# This file is deprecated and replaced by the corresponding template.
+# This file is left because of backwards compatibility.
 
 class Array; def sum; inject( nil ) { |sum,x| sum ? sum+x : x }; end; end
 class Array; def mean; sum / size; end; end

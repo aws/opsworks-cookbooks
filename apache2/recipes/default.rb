@@ -54,7 +54,7 @@ bash 'logdir_existence_and_restart_apache2' do
   EOF
   action :nothing
   notifies :restart, resources(:service => 'apache2')
-  timeout 30
+  timeout 70
 end
 
 if platform_family?('rhel')

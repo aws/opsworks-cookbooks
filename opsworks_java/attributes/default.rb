@@ -37,7 +37,19 @@ default['opsworks_java']['jvm_pkg']['java_home_basedir'] = '/usr/local'
 default['opsworks_java']['datasources'] = {}
 
 default['opsworks_java']['tomcat']['base_version'] = node['opsworks_java']['java_app_server_version'].to_i
-default['opsworks_java']['tomcat']['service_name'] = "tomcat#{node['opsworks_java']['tomcat']['base_version']}"
+
+if rhel7?
+  default['opsworks_java']['tomcat']['service_name'] = "tomcat"
+  default['opsworks_java']['tomcat']['catalina_base_dir'] = "/etc/tomcat"
+  default['opsworks_java']['tomcat']['webapps_base_dir'] = "/var/lib/tomcat/webapps"
+  default['opsworks_java']['tomcat']['lib_dir'] = "/usr/share/tomcat/lib"
+else
+  default['opsworks_java']['tomcat']['service_name'] = "tomcat#{node['opsworks_java']['tomcat']['base_version']}"
+  default['opsworks_java']['tomcat']['catalina_base_dir'] = "/etc/tomcat#{node['opsworks_java']['tomcat']['base_version']}"
+  default['opsworks_java']['tomcat']['webapps_base_dir'] = "/var/lib/tomcat#{node['opsworks_java']['tomcat']['base_version']}/webapps"
+  default['opsworks_java']['tomcat']['lib_dir'] = "/usr/share/tomcat#{node['opsworks_java']['tomcat']['base_version']}/lib"
+end
+
 default['opsworks_java']['tomcat']['port'] = 8080
 default['opsworks_java']['tomcat']['secure_port'] = 8443
 default['opsworks_java']['tomcat']['ajp_port'] = 8009
@@ -52,9 +64,7 @@ default['opsworks_java']['tomcat']['use_threadpool'] = false
 default['opsworks_java']['tomcat']['threadpool_max_threads'] = 150
 default['opsworks_java']['tomcat']['threadpool_min_spare_threads'] = 4
 default['opsworks_java']['tomcat']['connection_timeout'] = 20000
-default['opsworks_java']['tomcat']['catalina_base_dir'] = "/etc/tomcat#{node['opsworks_java']['tomcat']['base_version']}"
-default['opsworks_java']['tomcat']['webapps_base_dir'] = "/var/lib/tomcat#{node['opsworks_java']['tomcat']['base_version']}/webapps"
-default['opsworks_java']['tomcat']['lib_dir'] = "/usr/share/tomcat#{node['opsworks_java']['tomcat']['base_version']}/lib"
+
 default['opsworks_java']['tomcat']['java_shared_lib_dir'] = '/usr/share/java'
 default['opsworks_java']['tomcat']['context_dir'] = ::File.join(node['opsworks_java']['tomcat']['catalina_base_dir'], 'Catalina', 'localhost')
 default['opsworks_java']['tomcat']['mysql_connector_jar'] = 'mysql-connector-java.jar'

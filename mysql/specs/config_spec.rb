@@ -16,11 +16,12 @@ describe_recipe 'mysql::config' do
   end
 
   it 'should still have mysql running after my.cnf installation' do
+    mysql_name = node[:mysql][:name] || "mysql"
     case node[:platform]
-    when 'centos','redhat','fedora','amazon'
-      service('mysqld').must_be_running
-    when 'ubuntu','debian'
-      service('mysql').must_be_running
+    when "redhat", "centos", "fedora", "amazon"
+      service("#{mysql_name}d").must_be_running
+    else
+      service("mysql").must_be_running
     end
   end
 end

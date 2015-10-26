@@ -51,14 +51,10 @@ if node[:opsworks][:layers].has_key?('monitoring-master')
     package node[:ganglia][:monitor_plugins_package_name]
   end
 
-  execute 'stop gmond with non-updated configuration' do
-    command value_for_platform_family(
-      "rhel" => '/etc/init.d/gmond stop',
-      "debian" =>
-        platform?('ubuntu') && node[:platform_version] == '14.04' ? \
-          'service ganglia-monitor status | grep stop || service ganglia-monitor stop' : \
-          '/etc/init.d/ganglia-monitor stop'
-    )
+  service "gmond" do
+    service_name value_for_platform_family("rhel" => "gmond", "debian" => "ganglia-monitor")
+    action :stop
+    init_command "/usr/sbin/service ganglia-monitor" if platform?("ubuntu") && node[:platform_version] == "14.04"
   end
 
   # old broken installations have this empty directory

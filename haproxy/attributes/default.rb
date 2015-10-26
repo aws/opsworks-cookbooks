@@ -37,7 +37,14 @@ default[:haproxy][:default_max_connections] = '80000'
 default[:haproxy][:retries] = '3'
 default[:haproxy][:httpclose] = true
 default[:haproxy][:http_server_close] = false
-default[:haproxy][:stats_socket_path] = '/tmp/haproxy.sock'
+
+if rhel7?
+  default[:haproxy][:stats_socket_path] = "/var/lib/haproxy/stats"
+else
+  default[:haproxy][:stats_socket_path] = '/tmp/haproxy.sock'
+end
+
+
 default[:haproxy][:stats_socket_level] = nil # nil for default or 'user', 'operator', 'admin'
 
 # load factors for maxcon

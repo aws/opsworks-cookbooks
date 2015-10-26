@@ -3,7 +3,10 @@ require 'resolv'
 include_recipe 'mysql::client'
 include_recipe 'mysql::prepare'
 
-package 'mysql-server'
+# for backwards compatiblity default the package name to mysql
+mysql_name = node[:mysql][:name] || "mysql"
+
+package "#{mysql_name}-server"
 
 if platform?('ubuntu') && node[:platform_version].to_f < 10.04
   remote_file '/tmp/mysql_init.patch' do
@@ -26,25 +29,26 @@ end
 
 include_recipe 'mysql::service'
 
-service 'mysql' do
+service "mysql" do
   action :enable
 end
 
-service 'mysql' do
+service "mysql" do
   action :stop
 end
+
 
 include_recipe 'mysql::ebs' if infrastructure_class?('ec2')
 include_recipe 'mysql::config'
 
-service 'mysql' do
+service "mysql" do
   action :start
 end
 
 if platform?('centos','redhat','fedora','amazon')
   execute 'assign root password' do
-    command "/usr/bin/mysqladmin -u root password \"#{node[:mysql][:server_root_password]}\""
+    command "#{node[:mysql][:mysqladmin_bin]} -u root password \"#{node[:mysql][:server_root_password]}\""
     action :run
-    only_if "/usr/bin/mysql -u root -e 'show databases;'"
+    only_if "#{node[:mysql][:mysql_bin]} -u root -e 'show databases;'"
   end
 end

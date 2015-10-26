@@ -13,7 +13,7 @@ describe_recipe 'deploy::mysql' do
   end
 
   def mysql_command(deploy)
-    "/usr/bin/mysql -u #{deploy[:database][:username]} \
+    "#{node[:mysql][:mysql_bin]} -u #{deploy[:database][:username]} \
      #{node[:mysql][:server_root_password].blank? ? '' : "-p#{node[:mysql][:server_root_password]}"}"
   end
 end

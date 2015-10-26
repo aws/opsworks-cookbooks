@@ -54,4 +54,9 @@ describe_recipe 'opsworks_agent_monit::default' do
     files.length.must_be :>=, 1
     files.each {|f| file(f).wont_include "invoked oom-killer" }
   end
+
+  it "will update the systemd configuration" do
+    skip unless file("/lib/systemd/system/monit.service").exists?
+    file("/lib/systemd/system/monit.service").must_include "KillMode = process"
+  end
 end

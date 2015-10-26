@@ -72,10 +72,11 @@ when 'debian','ubuntu'
 end
 
 default[:opsworks_initial_setup][:bind_mounts][:mounts] = {
-  '/var/log/mysql' => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/log/mysql",
+  "/var/log/mysql" => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/log/mysql",
   '/srv/www' => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/srv/www",
   '/var/www' => "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/www",
 }
+
 case node[:platform]
 when 'redhat','centos','fedora','amazon'
   default[:opsworks_initial_setup][:bind_mounts][:mounts]['/var/log/httpd'] = "#{node[:opsworks_initial_setup][:ephemeral_mount_point]}/var/log/apache2"
