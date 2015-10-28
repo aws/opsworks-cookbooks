@@ -748,6 +748,12 @@
        <str name="wt">json</str>
        <str name="indent">true</str>
        <str name="df">id</str>
+       <str name="mlt.fl">title</str>
+       <str name="mlt.mindf">1</str>
+       <str name="mlt.mintf">1</str>
+       <str name="fq">{!collapse field=book_id}</str>
+       <str name="fq">is_moderated:true</str>
+       <str name="fl">score,*</str>
      </lst>
   </requestHandler>
 
@@ -766,5 +772,4 @@
   <admin>
     <defaultQuery>*:*</defaultQuery>
   </admin>
-
 </config>

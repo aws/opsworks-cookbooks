@@ -145,6 +145,7 @@
    <field name="publication_search_field" type="string" indexed="true" stored="false" required="false" multiValued="true" />
 
    <!-- Sku -->
+   <field name="is_moderated" type="boolean" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="price" type="float" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="seller_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="sku" type="string" indexed="true" stored="true" required="false" multiValued="false" />
@@ -370,12 +371,16 @@
         <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
         -->
         <filter class="solr.LowerCaseFilterFactory"/>
+        <!-- <filter class="solr.BrazilianStemFilterFactory"/> -->
+        <!-- <filter class="solr.EdgeNGramFilterFactory" minGramSize="2" maxGramSize="15"/> -->
       </analyzer>
       <analyzer type="query">
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
         <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
         <filter class="solr.LowerCaseFilterFactory"/>
+        <!-- <filter class="solr.BrazilianStemFilterFactory"/> -->
+        <!-- <filter class="solr.EdgeNGramFilterFactory" minGramSize="2" maxGramSize="15"/> -->
       </analyzer>
     </fieldType>
 
