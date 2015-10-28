@@ -1,3 +1,4 @@
+# v3428 2015-10-28
 - Adding postgres adapter detection based on the Gemfile, fixes https://github.com/aws/opsworks-cookbooks/issues/136
 
 # v3427 2015-09-11
