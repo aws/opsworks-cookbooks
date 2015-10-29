@@ -11,6 +11,13 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  directory "#{deploy[:deploy_to]}/shared/config/initializers/" do
+    owner deploy[:user]
+    group deploy[:group]
+    recursive true
+    action :create
+  end
+
   template "#{deploy[:deploy_to]}/shared/config/initializers/checkout_constants.rb" do
     source "checkout_constants.rb.erb"
     cookbook 'checkout'
@@ -22,6 +29,10 @@ node[:deploy].each do |application, deploy|
     only_if do
       ( consts.length >= 1 ) && File.directory?("#{deploy[:deploy_to]}/shared/config/initializers")
     end
+  end
+
+  link "#{deploy[:deploy_to]}/shared/config/initializers/checkout_constants.rb" do
+    to "#{deploy[:deploy_to]}/current/config/initializers/checkout_constants.rb"
   end
 
 end
