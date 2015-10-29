@@ -31,8 +31,8 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-  link "#{deploy[:deploy_to]}/shared/config/initializers/checkout_constants.rb" do
-    to "#{deploy[:deploy_to]}/current/config/initializers/checkout_constants.rb"
+  link "#{deploy[:deploy_to]}/current/config/initializers/checkout_constants.rb" do
+    to "#{deploy[:deploy_to]}/shared/config/initializers/checkout_constants.rb"
   end
 
 end
