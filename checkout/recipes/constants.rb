@@ -9,6 +9,12 @@ node[:deploy].each do |application, deploy|
     if k.match(/^PAYPAL_/)
       consts[k] = v
     end
+    if k.match(/^URL_EV_MAIN/)
+      consts[k] = v
+    end
+    if k.match(/^CHECKOUT_DOMAIN/)
+      consts[k] = v
+    end
   end
 
   directory "#{deploy[:deploy_to]}/shared/config/initializers/" do
@@ -33,6 +39,8 @@ node[:deploy].each do |application, deploy|
 
   link "#{deploy[:deploy_to]}/current/config/initializers/checkout_constants.rb" do
     to "#{deploy[:deploy_to]}/shared/config/initializers/checkout_constants.rb"
+    group deploy[:group]
+    owner deploy[:user]
   end
 
 end
