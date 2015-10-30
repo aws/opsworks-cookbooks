@@ -142,6 +142,7 @@ module S3FileLib
         error = e.respond_to?(:response) ? e.response : e
         if attempts < retries
           Chef::Log.warn(error)
+          sleep 5
           next
         else
           Chef::Log.fatal(error)
