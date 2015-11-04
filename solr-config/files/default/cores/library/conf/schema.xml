@@ -119,6 +119,7 @@
    <field name="title" type="text_general" indexed="true" stored="true" required="false" multiValued="false" termVectors="true" />
    <field name="volume" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="synopsis" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="grouped_by" type="string" indexed="true" stored="true" required="false" multiValued="false" />
 
    
    <!-- Publicacao -->
