@@ -117,6 +117,13 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
   # Need to reset for clustering #
   execute 'reset-node' do
     command 'rabbitmqctl stop_app && rabbitmqctl reset && rabbitmqctl start_app'
+    notifies :run, 'execute[add-cluster]', :immediately
     action :nothing
   end
+
+  execute 'add-cluster' do
+     command "rabbitmqctl stop_app && rabbitmqctl join_cluster node['rabbitmq']['cluster_disk_nodes'][0] && rabbitmqctl start_app"
+     action :nothing
+  end
+
 end
