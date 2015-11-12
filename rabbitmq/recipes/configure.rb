@@ -98,7 +98,8 @@ else
 end
 
 if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing_erlang_key)
-  include_recipe 'opsworks_rabbitmq::cluster'
+  # include_recipe 'opsworks_rabbitmq::cluster'
+  include_recipe 'rabbitmq::cluster'
 
   log "stop #{node['rabbitmq']['serice_name']} to change erlang cookie" do
     notifies :stop, "service[#{node['rabbitmq']['service_name']}]", :immediately
