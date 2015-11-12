@@ -91,40 +91,40 @@ template "#{node['rabbitmq']['config']}.config" do
   notifies :restart, "service[#{node['rabbitmq']['service_name']}]", :immediately
 end
 
-if File.exist?(node['rabbitmq']['erlang_cookie_path']) && File.readable?((node['rabbitmq']['erlang_cookie_path']))
-  existing_erlang_key =  File.read(node['rabbitmq']['erlang_cookie_path']).strip
-else
-  existing_erlang_key = ''
-end
+# if File.exist?(node['rabbitmq']['erlang_cookie_path']) && File.readable?((node['rabbitmq']['erlang_cookie_path']))
+#   existing_erlang_key =  File.read(node['rabbitmq']['erlang_cookie_path']).strip
+# else
+#   existing_erlang_key = ''
+# end
 
-if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing_erlang_key)
-  # include_recipe 'opsworks_rabbitmq::cluster'
-  include_recipe 'rabbitmq::cluster'
+# if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing_erlang_key)
+#   # include_recipe 'opsworks_rabbitmq::cluster'
+#   include_recipe 'rabbitmq::cluster'
 
-  log "stop #{node['rabbitmq']['serice_name']} to change erlang cookie" do
-    notifies :stop, "service[#{node['rabbitmq']['service_name']}]", :immediately
-  end
+#   log "stop #{node['rabbitmq']['serice_name']} to change erlang cookie" do
+#     notifies :stop, "service[#{node['rabbitmq']['service_name']}]", :immediately
+#   end
 
-  template node['rabbitmq']['erlang_cookie_path'] do
-    source 'doterlang.cookie.erb'
-    cookbook 'rabbitmq'
-    owner 'rabbitmq'
-    group 'rabbitmq'
-    mode 00400
-    notifies :start, "service[#{node['rabbitmq']['service_name']}]", :immediately
-    notifies :run, 'execute[reset-node]', :immediately
-  end
+#   template node['rabbitmq']['erlang_cookie_path'] do
+#     source 'doterlang.cookie.erb'
+#     cookbook 'rabbitmq'
+#     owner 'rabbitmq'
+#     group 'rabbitmq'
+#     mode 00400
+#     notifies :start, "service[#{node['rabbitmq']['service_name']}]", :immediately
+#     notifies :run, 'execute[reset-node]', :immediately
+#   end
 
-  # Need to reset for clustering #
-  execute 'reset-node' do
-    command 'rabbitmqctl stop_app && rabbitmqctl reset && rabbitmqctl start_app'
-    notifies :run, 'execute[add-cluster]', :immediately
-    action :nothing
-  end
+#   # Need to reset for clustering #
+#   execute 'reset-node' do
+#     command 'rabbitmqctl stop_app && rabbitmqctl reset && rabbitmqctl start_app'
+#     notifies :run, 'execute[add-cluster]', :immediately
+#     action :nothing
+#   end
 
-  execute 'add-cluster' do
-     command "rabbitmqctl stop_app && rabbitmqctl join_cluster node['rabbitmq']['cluster_disk_nodes'][0] && rabbitmqctl start_app"
-     action :nothing
-  end
+#   execute 'add-cluster' do
+#      command "rabbitmqctl stop_app && rabbitmqctl join_cluster node['rabbitmq']['cluster_disk_nodes'][0] && rabbitmqctl start_app"
+#      action :nothing
+#   end
 
-end
+# end
