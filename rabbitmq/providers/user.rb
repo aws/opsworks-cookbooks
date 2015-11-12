@@ -85,7 +85,7 @@ action :add do
     new_password = new_resource.password.gsub("'", "'\\\\''")
     cmd = "rabbitmqctl add_user #{new_resource.user} '#{new_password}'"
     execute "rabbitmqctl add_user #{new_resource.user}" do # ~FC009
-      sensitive true
+      # sensitive true
       command cmd
       Chef::Log.info "Adding RabbitMQ user '#{new_resource.user}'."
     end
