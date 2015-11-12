@@ -180,6 +180,12 @@ template "#{node['rabbitmq']['config']}.config" do
     :kernel => format_kernel_parameters
     )
   notifies :restart, "service[#{node['rabbitmq']['service_name']}]", :immediately
+  notifies :run, 'execute[management-plugin]', :immediately
+end
+
+execute 'management-plugin' do
+    command 'rabbitmq-plugins enable rabbitmq_management'    
+    action :nothing
 end
 
 if File.exist?(node['rabbitmq']['erlang_cookie_path']) && File.readable?((node['rabbitmq']['erlang_cookie_path']))
