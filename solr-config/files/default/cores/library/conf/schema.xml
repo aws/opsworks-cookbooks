@@ -136,7 +136,7 @@
    <field name="pages" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="book_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="publication_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
-   <field name="publisher" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="publisher" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="publisher_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
 
    <field name="created_at" type="date" indexed="true" stored="true" required="false" multiValued="false" />
