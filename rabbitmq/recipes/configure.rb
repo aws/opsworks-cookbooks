@@ -128,3 +128,7 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
   end
 
 end
+
+rabbitmq_plugin "rabbitmq_management" do
+    action :enable
+end
