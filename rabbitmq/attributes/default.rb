@@ -90,13 +90,13 @@ default['rabbitmq']['enabled_users'] =
     [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
   },
   { :name => default['rabbitmq']['rabbit_user'], :password => default['rabbitmq']['rabbit_pass'], :rights =>
-    [{ :vhost => [], :conf => '.*', :write => '.*', :read => '.*' }]
+    [{ :vhost => '/', :conf => '.*', :write => '.*', :read => '.*' }]
   }]
-  
+
 default['rabbitmq']['disabled_users'] = []
 
 # plugins
-default['rabbitmq']['enabled_plugins'] = []
+default['rabbitmq']['enabled_plugins'] = ["rabbitmq_management",]
 default['rabbitmq']['disabled_plugins'] = []
 default['rabbitmq']['community_plugins'] = nil
 
