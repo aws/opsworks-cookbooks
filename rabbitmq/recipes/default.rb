@@ -248,6 +248,14 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
 
 end
 
+# Setting Policies
+Chef::Log.debug "Setando as Policies ha-all:all"
+rabbitmq_policy "ha-all" do
+  pattern "^(?!amq\\.).*"
+  params ({"ha-mode"=>"all"})
+  priority 1
+  action :set
+end
 service node['rabbitmq']['service_name'] do
     action [:enable, :start]
 end
