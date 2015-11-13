@@ -238,13 +238,13 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
         action :nothing
     end
 
-    if rabbitmq_cluster_nodes.first
-        Chef::Log.debug "Adicionando ao cluster no node #{rabbitmq_cluster_nodes.first}"
-        execute 'add-cluster' do
-            command "rabbitmqctl stop_app && rabbitmqctl join_cluster #{rabbitmq_cluster_nodes.first}"
-            action :nothing       
-        end
+    
+    Chef::Log.debug "Adicionando ao cluster no node #{rabbitmq_cluster_nodes.first}"
+    execute 'add-cluster' do
+        command "rabbitmqctl stop_app && rabbitmqctl join_cluster #{rabbitmq_cluster_nodes.first}"
+        action :nothing       
     end
+
 
 end
 
@@ -256,6 +256,7 @@ rabbitmq_policy "ha-all" do
   priority 1
   action :set
 end
+
 service node['rabbitmq']['service_name'] do
     action [:enable, :start]
 end
