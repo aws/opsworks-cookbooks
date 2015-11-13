@@ -251,9 +251,8 @@ end
 # Setting Policies
 Chef::Log.debug "Setando as Policies ha-all:all"
 rabbitmq_policy "ha-all" do
-  pattern "^(?!amq\\.).*"
+  pattern "^ha\."
   params ({"ha-mode"=>"all"})
-  priority 1
   action :set
 end
 
