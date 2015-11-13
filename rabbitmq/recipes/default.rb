@@ -179,14 +179,9 @@ template "#{node['rabbitmq']['config']}.config" do
   variables(
     :kernel => format_kernel_parameters
     )
-  notifies :restart, "service[#{node['rabbitmq']['service_name']}]", :immediately
-  notifies :run, 'execute[management-plugin]', :immediately
+  notifies :restart, "service[#{node['rabbitmq']['service_name']}]", :immediately  
 end
 
-# execute 'management-plugin' do
-#     command 'rabbitmq-plugins enable rabbitmq_management'    
-#     action :nothing
-# end
 
 # Activating Mnagement-plugin 
 Chef::Log.debug "Ativando a interface Administrativa - rabbitmq_management'"
