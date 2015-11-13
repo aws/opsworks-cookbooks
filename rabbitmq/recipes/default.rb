@@ -241,7 +241,7 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
     if rabbitmq_cluster_nodes.first
         Chef::Log.debug "Adicionando ao cluster no node #{rabbitmq_cluster_nodes.first}"
         execute 'add-cluster' do
-            command "rabbitmqctl stop_app && rabbitmqctl join_cluster #{rabbitmq_cluster_nodes.first} && rabbitmqctl start_app"
+            command "rabbitmqctl stop_app && rabbitmqctl join_cluster #{rabbitmq_cluster_nodes.first}"
             action :nothing       
         end
     end
@@ -250,10 +250,10 @@ end
 
 # Setting Policies
 Chef::Log.debug "Setando as Policies ha-all:all"
-rabbitmq_policy "ha-all" do
-  pattern "^ha\."
-  params ({"ha-mode"=>"all"})
-  action :set
+execute 'set-policies' do
+    hash_config = {"ha-mode": "all"}
+    command "rabbitmqctl set_policy ha-all \"^ha\.\" '#{hash_config.to_s}'"
+    action :nothing       
 end
 
 service node['rabbitmq']['service_name'] do
