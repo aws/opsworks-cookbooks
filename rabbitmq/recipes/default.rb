@@ -234,7 +234,7 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
     # Need to reset for clustering #
     execute 'reset-node' do
         command 'rabbitmqctl stop_app && rabbitmqctl reset'
-        # notifies :run, 'execute[add-cluster]', :immediately
+        notifies :run, 'execute[add-cluster]', :immediately
         action :nothing
     end
 
@@ -246,14 +246,6 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
         end
     end
 
-end
-
-# Setting Policies
-Chef::Log.debug "Setando as Policies ha-all:all"
-execute 'set-policies' do
-    hash_config = {"ha-mode" => "all"}
-    command "rabbitmqctl set_policy ha-all \"^ha\.\" '#{hash_config.to_s}'"
-    action :nothing       
 end
 
 service node['rabbitmq']['service_name'] do
