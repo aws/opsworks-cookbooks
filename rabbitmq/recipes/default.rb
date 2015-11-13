@@ -239,15 +239,16 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
     # Need to reset for clustering #
     execute 'reset-node' do
         command 'rabbitmqctl stop_app && rabbitmqctl reset'
-        notifies :run, 'execute[add-cluster]', :immediately
+        # notifies :run, 'execute[add-cluster]', :immediately
         action :nothing
     end
 
-    Chef::Log.debug "Adicionando ao cluster no node #{rabbitmq_cluster_nodes.first}"
-    execute 'add-cluster' do
-        command "rabbitmqctl stop_app && rabbitmqctl join_cluster #{rabbitmq_cluster_nodes.first} && rabbitmqctl start_app"
-        action :nothing
-        only_if rabbitmq_cluster_nodes.first
+    if rabbitmq_cluster_nodes.first
+        Chef::Log.debug "Adicionando ao cluster no node #{rabbitmq_cluster_nodes.first}"
+        execute 'add-cluster' do
+            command "rabbitmqctl stop_app && rabbitmqctl join_cluster #{rabbitmq_cluster_nodes.first} && rabbitmqctl start_app"
+            action :nothing       
+        end
     end
 
 end
