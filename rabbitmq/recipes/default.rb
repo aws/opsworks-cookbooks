@@ -237,11 +237,9 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
         notifies :run, 'execute[add-cluster]', :immediately
         action :nothing
     end
-
     
-    Chef::Log.debug "Adicionando ao cluster no node #{rabbitmq_cluster_nodes.first}"
     execute 'add-cluster' do
-        command "rabbitmqctl stop_app && rabbitmqctl join_cluster #{rabbitmq_cluster_nodes.first}"
+        command "rabbitmqctl stop_app && rabbitmqctl join_cluster #{rabbitmq_cluster_nodes[0]}"
         action :nothing       
     end
 
