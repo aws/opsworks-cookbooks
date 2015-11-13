@@ -247,6 +247,7 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
     execute 'add-cluster' do
         command "rabbitmqctl stop_app && rabbitmqctl join_cluster #{rabbitmq_cluster_nodes.first} && rabbitmqctl start_app"
         action :nothing
+        only_if rabbitmq_cluster_nodes.first
     end
 
 end
