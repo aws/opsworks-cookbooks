@@ -183,9 +183,29 @@ template "#{node['rabbitmq']['config']}.config" do
   notifies :run, 'execute[management-plugin]', :immediately
 end
 
-execute 'management-plugin' do
-    command 'rabbitmq-plugins enable rabbitmq_management'    
-    action :nothing
+# execute 'management-plugin' do
+#     command 'rabbitmq-plugins enable rabbitmq_management'    
+#     action :nothing
+# end
+
+# Activating Mnagement-plugin 
+Chef::Log.debug "Ativando a interface Administrativa"
+rabbitmq_plugin plugin do
+    action :enable
+    notifies :restart, "service[#{node['rabbitmq']['service_name']}]"
+end
+
+Chef::Log.debug "Criando e o usuario basico"
+# Create User to access the Management Interface
+rabbitmq_user "rabbit" do
+  password "123123"
+  action :add
+end
+
+# Set user as Administrator
+rabbitmq_user "rabbit" do
+  tag "administrator"
+  action :set_tags
 end
 
 if File.exist?(node['rabbitmq']['erlang_cookie_path']) && File.readable?((node['rabbitmq']['erlang_cookie_path']))
@@ -223,6 +243,7 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
         action :nothing
     end
 
+    Chef::Log.debug "Adicionando ao cluster no node #{rabbitmq_cluster_nodes.first}"
     execute 'add-cluster' do
         command "rabbitmqctl stop_app && rabbitmqctl join_cluster #{rabbitmq_cluster_nodes.first} && rabbitmqctl start_app"
         action :nothing
@@ -230,6 +251,14 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
 
 end
 
+# Setting Policies
+Chef::Log.debug "Setando as Policies ha-all:all"
+rabbitmq_policy "ha-all" do
+  pattern "^(?!amq\\.).*"
+  params ({"ha-mode"=>"all"})
+  priority 1
+  action :set
+end
 
 service node['rabbitmq']['service_name'] do
     action [:enable, :start]

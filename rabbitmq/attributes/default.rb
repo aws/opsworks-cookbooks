@@ -27,11 +27,6 @@ default['rabbitmq']['config_template_cookbook'] = 'rabbitmq'
 default['rabbitmq']['default_user'] = 'guest'
 default['rabbitmq']['default_pass'] = 'guest'
 
-# rabbitmq user
-default['rabbitmq']['rabbit_user'] = 'rabbit'
-default['rabbitmq']['rabbit_pass'] = '123123'
-
-
 # loopback_users
 # List of users which are only permitted to connect to the broker via a loopback interface (i.e. localhost).
 # If you wish to allow the default guest user to connect remotely, you need to change this to [].
@@ -88,9 +83,6 @@ default['rabbitmq']['disabled_virtualhosts'] = []
 default['rabbitmq']['enabled_users'] =
   [{ :name => 'guest', :password => 'guest', :rights =>
     [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
-  },
-  { :name => default['rabbitmq']['rabbit_user'], :password => default['rabbitmq']['rabbit_pass'], :rights =>
-    [{ :vhost => '/', :conf => '.*', :write => '.*', :read => '.*' }]
   }]
 
 default['rabbitmq']['disabled_users'] = []
