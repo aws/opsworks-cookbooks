@@ -251,7 +251,7 @@ end
 # Setting Policies
 Chef::Log.debug "Setando as Policies ha-all:all"
 execute 'set-policies' do
-    hash_config = {"ha-mode": "all"}
+    hash_config = {"ha-mode" => "all"}
     command "rabbitmqctl set_policy ha-all \"^ha\.\" '#{hash_config.to_s}'"
     action :nothing       
 end
