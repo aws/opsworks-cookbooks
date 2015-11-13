@@ -189,8 +189,8 @@ end
 # end
 
 # Activating Mnagement-plugin 
-Chef::Log.debug "Ativando a interface Administrativa"
-rabbitmq_plugin plugin do
+Chef::Log.debug "Ativando a interface Administrativa - rabbitmq_management'"
+rabbitmq_plugin "rabbitmq_management" do
     action :enable
     notifies :restart, "service[#{node['rabbitmq']['service_name']}]"
 end
