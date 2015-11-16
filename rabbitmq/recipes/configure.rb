@@ -112,11 +112,6 @@ rabbitmq_user "rabbit" do
   action :set_tags
 end
 
-if File.exist?(node['rabbitmq']['erlang_cookie_path']) && File.readable?((node['rabbitmq']['erlang_cookie_path']))
-  existing_erlang_key =  File.read(node['rabbitmq']['erlang_cookie_path']).strip
-else
-  existing_erlang_key = ''
-end
 
 if node['rabbitmq']['cluster']  
     #include_recipe 'rabbitmq::cluster'
@@ -129,6 +124,7 @@ if node['rabbitmq']['cluster']
 
     node.set['rabbitmq']['clustering']['cluster_nodes'] = rabbitmq_cluster_nodes
 
+    Chef::Log.debug "Criando e o usuario basico"
     # # Need to reset for clustering #
     # execute 'reset-node' do
     #     command 'rabbitmqctl stop_app && rabbitmqctl reset'

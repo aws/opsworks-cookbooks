@@ -182,6 +182,12 @@ template "#{node['rabbitmq']['config']}.config" do
   notifies :restart, "service[#{node['rabbitmq']['service_name']}]", :immediately  
 end
 
+if File.exist?(node['rabbitmq']['erlang_cookie_path']) && File.readable?((node['rabbitmq']['erlang_cookie_path']))
+  existing_erlang_key =  File.read(node['rabbitmq']['erlang_cookie_path']).strip
+else
+  existing_erlang_key = ''
+end
+
 if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing_erlang_key)  
     log "stop #{node['rabbitmq']['serice_name']} to change erlang cookie- setup default" do
         notifies :stop, "service[#{node['rabbitmq']['service_name']}]", :immediately
