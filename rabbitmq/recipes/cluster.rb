@@ -1,35 +1,44 @@
-# Encoding: utf-8
 #
-# Cookbook Name:: opsworks_rabbitmq
+# Cookbook Name:: rabbitmq
 # Recipe:: cluster
 #
-# Copyright (c) 2015, Verdigris Technologies Inc
-# All rights reserved.
+# Author: Sunggun Yu <sunggun.dev@gmail.com>
+# Copyright (C) 2015 Sunggun Yu
 #
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
-# * Redistributions of source code must retain the above copyright notice, this
-# list of conditions and the following disclaimer.
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
-# * Redistributions in binary form must reproduce the above copyright notice,
-# this list of conditions and the following disclaimer in the documentation
-# and/or other materials provided with the distribution.
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 #
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+require 'json'
 
-# Configurable through stack's custom JSON
-rabbitmq_layer = node['rabbitmq']['opsworks']['layer_name']
+include_recipe 'rabbitmq::configure'
 
-instances = node[:opsworks][:layers][rabbitmq_layer][:instances]
-rabbitmq_cluster_nodes = instances.map{ |name, attrs| "rabbit@#{name}" }
-node.set['rabbitmq']['cluster_disk_nodes'] = rabbitmq_cluster_nodes
+cluster_nodes = node['rabbitmq']['clustering']['cluster_nodes']
+cluster_nodes = cluster_nodes.to_json
+
+if node['rabbitmq']['cluster']
+  # Manual clustering
+  unless node['rabbitmq']['clustering']['use_auto_clustering']
+    # Join in cluster
+    rabbitmq_cluster cluster_nodes do
+      action :join
+    end
+  end
+  # Set cluster name : It will be skipped once same cluster name has been set in the cluster.
+  rabbitmq_cluster cluster_nodes do
+    cluster_name node['rabbitmq']['clustering']['cluster_name']
+    action :set_cluster_name
+  end
+  # Change the cluster node type
+  rabbitmq_cluster cluster_nodes do
+    action :change_cluster_node_type
+  end
+end

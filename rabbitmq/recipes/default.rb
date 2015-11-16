@@ -182,42 +182,8 @@ template "#{node['rabbitmq']['config']}.config" do
   notifies :restart, "service[#{node['rabbitmq']['service_name']}]", :immediately  
 end
 
-
-# Activating Mnagement-plugin 
-Chef::Log.debug "Ativando a interface Administrativa - rabbitmq_management'"
-rabbitmq_plugin "rabbitmq_management" do
-    action :enable
-    notifies :restart, "service[#{node['rabbitmq']['service_name']}]"
-end
-
-Chef::Log.debug "Criando e o usuario basico"
-# Create User to access the Management Interface
-rabbitmq_user "rabbit" do
-  password "123123"
-  action :add
-end
-
-# Set user as Administrator
-rabbitmq_user "rabbit" do
-  tag "administrator"
-  action :set_tags
-end
-
-if File.exist?(node['rabbitmq']['erlang_cookie_path']) && File.readable?((node['rabbitmq']['erlang_cookie_path']))
-  existing_erlang_key =  File.read(node['rabbitmq']['erlang_cookie_path']).strip
-else
-  existing_erlang_key = ''
-end
-
 if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing_erlang_key)  
-    #include_recipe 'rabbitmq::cluster'
-    rabbitmq_layer = node['rabbitmq']['opsworks']['layer_name']
-
-    instances = node[:opsworks][:layers][rabbitmq_layer][:instances]
-    rabbitmq_cluster_nodes = instances.map{ |name, attrs| "rabbit@#{name}" }
-    node.set['rabbitmq']['cluster_disk_nodes'] = rabbitmq_cluster_nodes
-
-    log "stop #{node['rabbitmq']['serice_name']} to change erlang cookie" do
+    log "stop #{node['rabbitmq']['serice_name']} to change erlang cookie- setup default" do
         notifies :stop, "service[#{node['rabbitmq']['service_name']}]", :immediately
     end
 
@@ -231,30 +197,7 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
         notifies :run, 'execute[reset-node]', :immediately
     end
 
-    # Need to reset for clustering #
-    execute 'reset-node' do
-        command 'rabbitmqctl stop_app && rabbitmqctl reset'
-        notifies :run, 'execute[add-cluster]', :immediately
-        action :nothing
-    end
-    
-    execute 'add-cluster' do
-        command "rabbitmqctl stop_app && rabbitmqctl join_cluster #{rabbitmq_cluster_nodes[0]}"
-        action :nothing       
-    end
-
-
 end
 service node['rabbitmq']['service_name'] do
     action [:enable, :start]
 end
-
-# Setting Policies
-Chef::Log.debug "Setando as Policies ha-all:all"
-rabbitmq_policy "ha-all" do
-  pattern "^ha.).*"
-  params ({"ha-mode"=>"all"})
-  priority 1
-  action :set
-end
-
