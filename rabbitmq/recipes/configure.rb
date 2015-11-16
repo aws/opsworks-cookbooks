@@ -124,13 +124,7 @@ if node['rabbitmq']['cluster']
 
     node.set['rabbitmq']['clustering']['cluster_nodes'] = rabbitmq_cluster_nodes
 
-    Chef::Log.debug "Criando e o usuario basico"
-    # # Need to reset for clustering #
-    # execute 'reset-node' do
-    #     command 'rabbitmqctl stop_app && rabbitmqctl reset'
-    #     notifies :run, 'execute[add-cluster]', :immediately
-    #     action :nothing
-    # end
+    
     
     # execute 'add-cluster' do
     #     command "rabbitmqctl stop_app && rabbitmqctl join_cluster #{rabbitmq_cluster_nodes[0]}"

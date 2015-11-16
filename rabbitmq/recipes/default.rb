@@ -203,6 +203,13 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
         notifies :run, 'execute[reset-node]', :immediately
     end
 
+    # Need to reset for clustering 
+    execute 'reset-node' do
+        command 'rabbitmqctl stop_app && rabbitmqctl reset'
+        notifies :run, 'execute[add-cluster]', :immediately
+    action :nothing
+end
+
 end
 service node['rabbitmq']['service_name'] do
     action [:enable, :start]
