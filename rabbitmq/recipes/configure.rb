@@ -114,34 +114,33 @@ end
 
 
 if node['rabbitmq']['cluster']  
-    #include_recipe 'rabbitmq::cluster'
+    # Layer Name  
     rabbitmq_layer = node['rabbitmq']['opsworks']['layer_name']
-
+    
+    # Instances successfully activated
     instances = node[:opsworks][:layers][rabbitmq_layer][:instances]
-    rabbitmq_cluster_nodes = instances.map{ |name, attrs| {"name" => "rabbit@#{name}" }
+    # rabbitmq_cluster_nodes = instances.map{ |name, attrs| "rabbit@#{name}" }
 
+    rabbitmq_cluster_nodes = instances.map{|name, attr| {:name=>"rabbit@#{name}",:type=>'disc'} }
+
+    # Cluster Name
+    node.set['rabbitmq']['clustering']['cluster_name'] = 'rabbit-iv'
+    
+    # Cluster Nodes
     node.set['rabbitmq']['cluster_disk_nodes'] = rabbitmq_cluster_nodes
-
     node.set['rabbitmq']['clustering']['cluster_nodes'] = rabbitmq_cluster_nodes
 
-    
-    
-    # execute 'add-cluster' do
-    #     command "rabbitmqctl stop_app && rabbitmqctl join_cluster #{rabbitmq_cluster_nodes[0]}"
-    #     action :nothing       
-    # end
-
-    
 end
+
 service node['rabbitmq']['service_name'] do
     action [:enable, :start]
 end
 
-# Setting Policies
-Chef::Log.debug "Setando as Policies ha-all:all"
-rabbitmq_policy "ha-all" do
-  pattern "^ha.).*"
-  params ({"ha-mode"=>"all"})
-  priority 1
-  action :set
-end
+# # Setting Policies
+# Chef::Log.debug "Setando as Policies ha-all:all"
+# rabbitmq_policy "ha-all" do
+#   pattern "^ha.).*"
+#   params ({"ha-mode"=>"all"})
+#   priority 1
+#   action :set
+# end
