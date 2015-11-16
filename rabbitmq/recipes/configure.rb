@@ -136,6 +136,10 @@ service node['rabbitmq']['service_name'] do
     action [:enable, :start]
 end
 
+node.set['rabbitmq']['policies']['ha-all']['pattern'] = '^(?!amq\\.).*'
+node.set['rabbitmq']['policies']['ha-all']['params'] = { 'ha-mode' => 'all' }
+node.set['rabbitmq']['policies']['ha-all']['priority'] = 0
+
 # # Setting Policies
 # Chef::Log.debug "Setando as Policies ha-all:all"
 # rabbitmq_policy "ha-all" do
