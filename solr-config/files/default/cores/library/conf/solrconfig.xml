@@ -491,6 +491,22 @@
      </lst>
   </requestHandler>  
 
+  <requestHandler name="/publisher_autocomplete" class="solr.SearchHandler">
+     <lst name="defaults">
+       <str name="defType">edismax</str>
+       <str name="qf">publisher</str>
+
+       <str name="echoParams">explicit</str>
+       <str name="wt">json</str>
+       <str name="indent">true</str>
+       <str name="rows">30</str>
+       <str name="fl">publisher</str>
+
+       <str name="group">on</str>
+       <str name="group.field">publisher_id</str>
+     </lst>
+  </requestHandler>
+
   <requestHandler name="/search" class="solr.SearchHandler">
      <lst name="defaults">
        <str name="defType">edismax</str>
