@@ -1,3 +1,6 @@
+# v3429 2015-11-19
+- Improve robustness of s3_file resource (retries, caught exceptions).
+
 # v3428 2015-10-28
 - Adding postgres adapter detection based on the Gemfile, fixes https://github.com/aws/opsworks-cookbooks/issues/136
 
