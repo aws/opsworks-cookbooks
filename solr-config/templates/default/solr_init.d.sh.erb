@@ -12,7 +12,7 @@
 
 SOLR_BIN="/opt/solr-<%= @version %>/bin/solr"
 #START_OPT="-m 10g"
-START_OPT="<%= @solr_java_mem %>"
+START_OPT="<%= @solr_java_mem %> <%= @solr_data_dir unless @solr_data_dir.empty? %>"
 
 
 # Exit gracefully if the package is not installed
