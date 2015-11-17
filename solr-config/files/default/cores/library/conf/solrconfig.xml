@@ -433,6 +433,8 @@
 
     -->
 
+  <requestHandler name="/update" class="solr.UpdateRequestHandler"/>
+
   <!-- Data import handler -->  
   <requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
     <lst name="defaults">

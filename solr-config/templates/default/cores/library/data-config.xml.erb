@@ -2,9 +2,9 @@
 
   <dataSource type="JdbcDataSource" driver="org.postgresql.Driver"
     name="library"
-    url="jdbc:postgresql://library-sg.c6orwgo57rj2.us-east-1.rds.amazonaws.com:5432/library_staging"
-    user="librarysg"
-    password="library-sg"
+    url="jdbc:postgresql://<%= @database_url %>:5432/<%= @db_name %>"
+    user="<%= @db_user %>"
+    password="<%= @db_password %>"
     autoReconnect="true"
   />
 
