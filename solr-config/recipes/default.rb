@@ -15,7 +15,8 @@ node[:deploy].each do |app_name, deploy|
   template "/etc/init.d/solr" do
     owner 'root'
     variables( solr_java_mem: node['default'][env]['solr_java_mem'],
-               version: node['default'][env]['solr_version']
+               version: node['default'][env]['solr_version'],
+               solr_data_dir: node['default'][env]['data_dir']
               )
     mode '0755'
     source 'solr_init.d.sh.erb'
