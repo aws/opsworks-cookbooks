@@ -112,6 +112,12 @@ rabbitmq_user "rabbit" do
   action :set_tags
 end
 
+rabbitmq_user "rabbit" do
+  vhost '/'
+  permissions "'.*' '.*' '.*'"
+  action :set_permissions
+end
+
 
 if node['rabbitmq']['cluster']  
     # Layer Name  
