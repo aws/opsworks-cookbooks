@@ -157,7 +157,6 @@ def join_cluster(cluster_name)
       cmd_update = get_shellout(cmd_update)
       Chef::Log.info('[rabbitmq_cluster] update the cluster to rejoin the node.')
       cmd_update.run_command
-      join_cluster(cluster_name)
     elsif err.include?('cannot_cluster_node_with_itself')
       Chef::Log.info('[rabbitmq_cluster] Cannot cluster node itself, error will be ignored.')
     else
