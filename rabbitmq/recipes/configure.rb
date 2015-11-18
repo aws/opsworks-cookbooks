@@ -99,13 +99,15 @@ rabbitmq_plugin "rabbitmq_management" do
     notifies :restart, "service[#{node['rabbitmq']['service_name']}]"
 end
 
-Chef::Log.debug "Criando e o usuario basico"
+
+Chef::Log.info("Criando e o usuario basico")
 # Create User to access the Management Interface
 rabbitmq_user "rabbit" do
   password "123123"
   action :add
 end
 
+Chef::Log.info("Configurando as permissões")
 # Set user as Administrator
 rabbitmq_user "rabbit" do
   tag "administrator"
@@ -114,7 +116,7 @@ end
 
 rabbitmq_user "rabbit" do
   vhost '/'
-  permissions "'.*' '.*' '.*'"
+  permissions ".* .* .*"
   action :set_permissions
 end
 
@@ -125,8 +127,7 @@ if node['rabbitmq']['cluster']
     
     # Instances successfully activated
     instances = node[:opsworks][:layers][rabbitmq_layer][:instances]
-    # rabbitmq_cluster_nodes = instances.map{ |name, attrs| "rabbit@#{name}" }
-
+    Chef::Log.info("Setando os nós do cluster de acordo com as instancias criadas")
     rabbitmq_cluster_nodes = instances.map{|name, attr| {:name=>"rabbit@#{name}",:type=>'disc'} }
 
     # Cluster Name
