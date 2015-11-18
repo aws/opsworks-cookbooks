@@ -140,7 +140,8 @@ end
 
 # Join cluster.
 def join_cluster(cluster_name)
-  cmd = "rabbitmqctl join_cluster --ram #{cluster_name}"
+  # cmd = "rabbitmqctl join_cluster --ram #{cluster_name}"
+  cmd = "rabbitmqctl join_cluster #{cluster_name}"
   Chef::Log.debug("[rabbitmq_cluster] Executing #{cmd}")
   cmd = get_shellout(cmd)
   cmd.run_command

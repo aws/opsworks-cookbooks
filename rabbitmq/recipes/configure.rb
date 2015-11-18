@@ -100,25 +100,34 @@ rabbitmq_plugin "rabbitmq_management" do
 end
 
 
-Chef::Log.info("Criando e o usuario basico")
-# Create User to access the Management Interface
-rabbitmq_user "rabbit" do
-  password "123123"
-  action :add
-end
+Chef::Log.info("Creating user and Setting the permissions and group")
+# Create User -  access the Management Interface
+node.set['rabbitmq']['enabled_users'] =
+  [{ :name => 'guest', :password => 'guest', :rights =>
+    [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
+  }
+  { :name => 'rabbit', :password => '123123', :tag => 'administrator', :rights =>
+    [{ :vhost => '/', :conf => '.*', :write => '.*', :read => '.*' }]
+  }]
 
-Chef::Log.info("Configurando as permissões")
-# Set user as Administrator
-rabbitmq_user "rabbit" do
-  tag "administrator"
-  action :set_tags
-end
 
-rabbitmq_user "rabbit" do
-  vhost '/'
-  permissions ".* .* .*"
-  action :set_permissions
-end
+# rabbitmq_user "rabbit" do
+#   password "123123"
+#   action :add
+# end
+
+# Chef::Log.info("Configurando as permissões")
+# # Set user as Administrator
+# rabbitmq_user "rabbit" do
+#   tag "administrator"
+#   action :set_tags
+# end
+
+# rabbitmq_user "rabbit" do
+#   vhost '/'
+#   permissions ".* .* .*"
+#   action :set_permissions
+# end
 
 
 if node['rabbitmq']['cluster']  
