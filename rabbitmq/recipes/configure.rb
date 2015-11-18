@@ -105,7 +105,7 @@ Chef::Log.info("Creating user and Setting the permissions and group")
 node.set['rabbitmq']['enabled_users'] =
   [{ :name => 'guest', :password => 'guest', :rights =>
     [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
-  }
+  },
   { :name => 'rabbit', :password => '123123', :tag => 'administrator', :rights =>
     [{ :vhost => '/', :conf => '.*', :write => '.*', :read => '.*' }]
   }]
