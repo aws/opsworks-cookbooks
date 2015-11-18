@@ -11,7 +11,12 @@
 ### END INIT INFO
 
 SOLR_BIN="/opt/solr-<%= @version %>/bin/solr"
+<<<<<<< HEAD
 START_OPT="<%= @solr_java_mem %><%= " -Dsolr.data.dir=#{@solr_data_dir}" unless @solr_data_dir.empty? %>"
+=======
+#START_OPT="-m 10g"
+START_OPT="<%= @solr_java_mem %> <%= @solr_data_dir unless @solr_data_dir.empty? %>"
+>>>>>>> mod_new
 
 
 # Exit gracefully if the package is not installed
