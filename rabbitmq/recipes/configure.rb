@@ -100,7 +100,7 @@ rabbitmq_plugin "rabbitmq_management" do
 end
 
 
-Chef::Log.info("Creating user and Setting the permissions and group")
+Chef::Log.info("Creating and Setting all permissions and groups to the user")
 # Create User -  access the Management Interface
 node.set['rabbitmq']['enabled_users'] =
   [{ :name => 'guest', :password => 'guest', :rights =>

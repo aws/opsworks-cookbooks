@@ -29,6 +29,7 @@
                     {verify,<%= node['rabbitmq']['ssl_verify'] %>},
                     {fail_if_no_peer_cert,<%= node['rabbitmq']['ssl_fail_if_no_peer_cert'] %>}]},
 <% end %>
+{log_levels,[{connection, error}]},
 <% if node['rabbitmq']['tcp_listen'] -%>
     {tcp_listen_options, [binary, {packet,<%= node['rabbitmq']['tcp_listen_packet'] %>},
                                   {reuseaddr,<%= node['rabbitmq']['tcp_listen_reuseaddr'] %>},
