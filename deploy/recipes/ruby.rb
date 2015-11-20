@@ -19,4 +19,9 @@ node[:deploy].each do |application, deploy|
     action :run
   end
 
+  execute "running bundle" do
+    command "cd #{deploy[:deploy_to]}/current & bundle install"
+    action :run
+  end
+
 end
