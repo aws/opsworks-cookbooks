@@ -21,7 +21,7 @@ node[:deploy].each do |application, deploy|
 
   execute "running bundle" do
     user deploy[:user]
-    command "cd #{deploy[:deploy_to]}/current & bundle install --path vendor"
+    command "cd #{deploy[:deploy_to]}/current && bundle install --path vendor"
     action :run
   end
 
