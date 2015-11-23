@@ -29,7 +29,7 @@ node[:deploy].each do |application, deploy|
   execute "updating crontab" do
     user deploy[:user]
     cwd "#{deploy[:deploy_to]}/current"
-    command "whenever -w"
+    command "bundle exec whenever -w"
     action :run
   end
 
