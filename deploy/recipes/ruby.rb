@@ -26,4 +26,11 @@ node[:deploy].each do |application, deploy|
     action :run
   end
 
+  execute "updating crontab" do
+    user deploy[:user]
+    cwd "#{deploy[:deploy_to]}/current"
+    command "whenever -w"
+    action :run
+  end
+
 end
