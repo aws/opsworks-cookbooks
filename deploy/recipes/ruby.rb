@@ -26,9 +26,7 @@ node[:deploy].each do |application, deploy|
     action :run
   end
 
-  cron_env = {"PATH" => "/usr/local/bin"}
   execute "updating crontab" do
-    environment cron_env
     user deploy[:user]
     cwd "#{deploy[:deploy_to]}/current"
     command "bundle exec whenever -w"
