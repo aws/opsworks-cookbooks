@@ -33,4 +33,17 @@ node[:deploy].each do |application, deploy|
     action :run
   end
 
+  template "#{deploy[:deploy_to]}/shared/config/etl.rb.erb" do
+    source 'etl.rb.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+        :etl => node[:etl]
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
+
 end

@@ -1,0 +1,14 @@
+ENV['HYENA_HOST'] = '<%= @etl[:hyena][:host] %>'
+ENV['HYENA_USERNAME'] = '<%= @etl[:hyena][:username] %>'
+ENV['HYENA_PASSWORD'] = '<%= @etl[:hyena][:password] %>'
+ENV['HYENA_DATABASE'] = '<%= @etl[:hyena][:database] %>'
+
+ENV['JOOMLA_HOST'] = '<%= @etl[:joomla][:host] %>'
+ENV['JOOMLA_USERNAME'] = '<%= @etl[:joomla][:username] %>'
+ENV['JOOMLA_PASSWORD'] = '<%= @etl[:joomla][:password] %>'
+ENV['JOOMLA_DATABASE'] = '<%= @etl[:joomla][:database] %>'
+
+
+Rollbar.configure do |config|
+  config.access_token = '<%= @etl[:rollbar][:access_token] %>'
+end
