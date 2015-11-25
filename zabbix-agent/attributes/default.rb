@@ -60,7 +60,7 @@ default['zabbix']['agent']['conf']['HostMetadata'] = nil
 default['zabbix']['agent']['conf']['Hostname']     = nil # defaults to HostnameItem
 # default['zabbix']['agent']['conf']['HostnameItem'] = nil # set by system.hostname
 unless node['platform'] == 'windows'
-  default['zabbix']['agent']['conf']['HostnameItem'] = 'system.run[hostname -f]'
+  default['zabbix']['agent']['conf']['HostnameItem'] = 'system.run[hostname]'
 end
 # default['zabbix']['agent']['conf']['Include']  = nil #default
 default['zabbix']['agent']['conf']['Include']      = default['zabbix']['agent']['include_dir']
