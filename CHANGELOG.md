@@ -1,3 +1,4 @@
+# v3430 2015-11-25
 # v3429 2015-11-19
 - Improve robustness of s3_file resource (retries, caught exceptions).
 
