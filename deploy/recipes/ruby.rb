@@ -33,13 +33,13 @@ node[:deploy].each do |application, deploy|
     action :run
   end
 
-  template "#{deploy[:deploy_to]}/shared/config/etl.rb.erb" do
-    source 'etl.rb.erb'
+  template "#{deploy[:deploy_to]}/shared/config/settings.yml" do
+    source 'settings.yml.erb'
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
     variables(
-        :etl => node[:etl]
+        :etl_settings => node[:etl_settings]
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
