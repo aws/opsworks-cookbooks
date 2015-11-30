@@ -1,0 +1,6 @@
+# The first rule of this file is: Do not edit.
+# The second rule of this file is: Do not edit.
+# Created by chef zabbix-agent::configure
+<% node['zabbix']['agent']['user_parameter'].each do |user_parameter| -%>
+UserParameter=<%= user_parameter %>
+<% end -%>

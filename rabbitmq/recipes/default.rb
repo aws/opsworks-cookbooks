@@ -179,7 +179,7 @@ template "#{node['rabbitmq']['config']}.config" do
   variables(
     :kernel => format_kernel_parameters
     )
-  notifies :restart, "service[#{node['rabbitmq']['service_name']}]", :immediately
+  notifies :restart, "service[#{node['rabbitmq']['service_name']}]", :immediately  
 end
 
 if File.exist?(node['rabbitmq']['erlang_cookie_path']) && File.readable?((node['rabbitmq']['erlang_cookie_path']))
@@ -188,27 +188,29 @@ else
   existing_erlang_key = ''
 end
 
-if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing_erlang_key)
-  log "stop #{node['rabbitmq']['serice_name']} to change erlang cookie" do
-    notifies :stop, "service[#{node['rabbitmq']['service_name']}]", :immediately
-  end
+if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing_erlang_key)  
+    log "stop #{node['rabbitmq']['serice_name']} to change erlang cookie- setup default" do
+        notifies :stop, "service[#{node['rabbitmq']['service_name']}]", :immediately
+    end
 
-  template node['rabbitmq']['erlang_cookie_path'] do
-    source 'doterlang.cookie.erb'
-    owner 'rabbitmq'
-    group 'rabbitmq'
-    mode 00400
-    notifies :start, "service[#{node['rabbitmq']['service_name']}]", :immediately
-    notifies :run, 'execute[reset-node]', :immediately
-  end
+    template node['rabbitmq']['erlang_cookie_path'] do
+        source 'doterlang.cookie.erb'
+        cookbook 'rabbitmq'
+        owner 'rabbitmq'
+        group 'rabbitmq'
+        mode 00400
+        notifies :start, "service[#{node['rabbitmq']['service_name']}]", :immediately
+        notifies :run, 'execute[reset-node]', :immediately
+    end
 
-  # Need to reset for clustering #
-  execute 'reset-node' do
-    command 'rabbitmqctl stop_app && rabbitmqctl reset && rabbitmqctl start_app'
+    # Need to reset for clustering 
+    execute 'reset-node' do
+        command 'rabbitmqctl stop_app && rabbitmqctl reset'
+        # notifies :run, 'execute[add-cluster]', :immediately
     action :nothing
-  end
 end
 
+end
 service node['rabbitmq']['service_name'] do
-  action [:enable, :start]
+    action [:enable, :start]
 end

@@ -73,7 +73,7 @@ default['rabbitmq']['tcp_listen_reuseaddr']  = true
 default['rabbitmq']['tcp_listen_backlog'] = 128
 default['rabbitmq']['tcp_listen_nodelay'] = true
 default['rabbitmq']['tcp_listen_exit_on_close'] = false
-default['rabbitmq']['tcp_listen_keepalive'] = false
+default['rabbitmq']['tcp_listen_keepalive'] = true
 
 # virtualhosts
 default['rabbitmq']['virtualhosts'] = []
@@ -84,10 +84,11 @@ default['rabbitmq']['enabled_users'] =
   [{ :name => 'guest', :password => 'guest', :rights =>
     [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
   }]
+
 default['rabbitmq']['disabled_users'] = []
 
 # plugins
-default['rabbitmq']['enabled_plugins'] = []
+default['rabbitmq']['enabled_plugins'] = ["rabbitmq_management",]
 default['rabbitmq']['disabled_plugins'] = []
 default['rabbitmq']['community_plugins'] = nil
 
@@ -101,7 +102,7 @@ when 'smartos'
 end
 
 # heartbeat
-default['rabbitmq']['heartbeat'] = 580
+default['rabbitmq']['heartbeat'] = 80
 
 # Example HA policies
 default['rabbitmq']['policies']['ha-all']['pattern'] = '^(?!amq\\.).*'

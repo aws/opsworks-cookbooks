@@ -40,11 +40,11 @@
   <!-- imports -->
 
   <!-- para funcionar local --> 
-  <!--
+
   <lib dir="../../ext-lib" regex="postgresql-9.3.*\.jar" />
   <lib dir="../../ext-lib" regex="mysql-connector-java-5.1.*\.jar" />
-  <lib dir="../../ext-lib" regex="solr-dataimporthandler-5.1.0.jar" /> 
-  -->
+  <lib dir="../../ext-lib" regex="solr-dataimporthandler-5.3.0.jar" /> 
+
 
   <!-- para funcionar no solr de staging -->
   <lib dir="../../lib/dist/" regex=".*\.jar" />
@@ -433,6 +433,8 @@
 
     -->
 
+  <requestHandler name="/update" class="solr.UpdateRequestHandler"/>
+
   <!-- Data import handler -->  
   <requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
     <lst name="defaults">
@@ -491,6 +493,22 @@
      </lst>
   </requestHandler>  
 
+  <requestHandler name="/publisher_autocomplete" class="solr.SearchHandler">
+     <lst name="defaults">
+       <str name="defType">edismax</str>
+       <str name="qf">publisher</str>
+
+       <str name="echoParams">explicit</str>
+       <str name="wt">json</str>
+       <str name="indent">true</str>
+       <str name="rows">30</str>
+       <str name="fl">publisher</str>
+
+       <str name="group">on</str>
+       <str name="group.field">publisher_id</str>
+     </lst>
+  </requestHandler>
+
   <requestHandler name="/search" class="solr.SearchHandler">
      <lst name="defaults">
        <str name="defType">edismax</str>
@@ -525,6 +543,7 @@
        <str name="stats.field">{!tag=sku_stats sum=true}used</str>
        <str name="stats.field">{!tag=sku_stats cardinality=true}seller_id</str>
        <str name="facet.pivot">{!stats=sku_stats}book_id</str>
+       <str name="facet.pivot">{!stats=sku_stats}authors</str>
      </lst>
   </requestHandler>  
 
@@ -748,6 +767,12 @@
        <str name="wt">json</str>
        <str name="indent">true</str>
        <str name="df">id</str>
+       <str name="mlt.fl">title,authors</str>
+       <str name="mlt.mindf">1</str>
+       <str name="mlt.mintf">1</str>
+       <str name="fq">{!collapse field=book_id}</str>
+       <str name="fq">is_moderated:true</str>
+       <str name="fl">score,*</str>
      </lst>
   </requestHandler>
 
@@ -766,5 +791,4 @@
   <admin>
     <defaultQuery>*:*</defaultQuery>
   </admin>
-
 </config>

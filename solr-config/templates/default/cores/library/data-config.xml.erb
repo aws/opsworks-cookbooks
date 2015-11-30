@@ -2,19 +2,18 @@
 
   <dataSource type="JdbcDataSource" driver="org.postgresql.Driver"
     name="library"
-    url="jdbc:postgresql://library-sg.c6orwgo57rj2.us-east-1.rds.amazonaws.com:5432/library_staging"
-    user="librarysg"
-    password="library-sg"
+    url="jdbc:postgresql://<%= @db_url %>:5432/<%= @db_name %>"
+    user="<%= @db_user %>"
+    password="<%= @db_password %>"
     autoReconnect="true"
   />
-
 
   <document>
 
     <entity name="sku" pk="id" dataSource="library"
      query="SELECT 
-              md5(concat(b.id, '|', p.id, '|', s.id)) as id,
-              b.id book_id, b.title, b.synopsis,  md5(synopsis) md5_synopsis, b.volume, 
+              md5(concat(b.id, '|', p.id, '|', s.id)) as id, is_moderated,
+              b.id book_id, b.title, b.synopsis,  md5(synopsis) md5_synopsis, b.volume, b.grouped_by,
               p.id as publication_id, p.isbn, p.issn, p.barcode, p.edition, p.weight,
               p.height, p.width, p.depth, p.year, p.pages, pbrs.name publisher, pbrs.id publisher_id,
               p.created_at,
@@ -27,8 +26,8 @@
             left join publications p on p.book_id = b.id
             left join skus s on s.publication_id = p.id
             left join publishers pbrs on pbrs.id = p.publisher_id"
-     deltaImportQuery="SELECT md5(concat(b.id, '|', p.id, '|', s.id)) as id,
-              b.id book_id, b.title, b.synopsis,  md5(synopsis) md5_synopsis, b.volume, 
+     deltaImportQuery="SELECT md5(concat(b.id, '|', p.id, '|', s.id)) as id, is_moderated,
+              b.id book_id, b.title, b.synopsis,  md5(synopsis) md5_synopsis, b.volume, b.grouped_by,
               p.id as publication_id, p.isbn, p.issn, p.barcode, p.edition, p.weight, p.height,
               p.height, p.width, p.depth, p.year, p.pages, pbrs.name publisher, pbrs.id publisher_id,
               p.created_at,
