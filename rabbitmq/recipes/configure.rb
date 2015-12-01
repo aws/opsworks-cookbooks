@@ -131,20 +131,23 @@ node.set['rabbitmq']['enabled_users'] =
 
 
 if node['rabbitmq']['cluster']  
-    # Layer Name  
-    rabbitmq_layer = node['rabbitmq']['opsworks']['layer_name']
-    
-    # Instances successfully activated
-    instances = node[:opsworks][:layers][rabbitmq_layer][:instances]
+  # Layer Name  
+  rabbitmq_layer = node['rabbitmq']['opsworks']['layer_name']
+  
+  # Instances successfully activated
+  instances = node[:opsworks][:layers][rabbitmq_layer][:instances]
+
+  # Cluster Name
+  node.set['rabbitmq']['clustering']['cluster_name'] = 'rabbit-iv'
+
+  if instances.length > 1 
     Chef::Log.info("Setando os nós do cluster de acordo com as instancias criadas")
     rabbitmq_cluster_nodes = instances.map{|name, attr| {:name=>"rabbit@#{name}",:type=>'disc'} }
 
-    # Cluster Name
-    node.set['rabbitmq']['clustering']['cluster_name'] = 'rabbit-iv'
-    
     # Cluster Nodes
     node.set['rabbitmq']['cluster_disk_nodes'] = rabbitmq_cluster_nodes
     node.set['rabbitmq']['clustering']['cluster_nodes'] = rabbitmq_cluster_nodes
+  end
 
 end
 
