@@ -106,7 +106,7 @@ node.set['rabbitmq']['enabled_users'] =
   [{ :name => 'guest', :password => 'guest', :rights =>
     [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
   },
-  { :name => 'rabbit', :password => '123123', :tag => 'administrator', :rights =>
+  { :name => 'rabbit', :password => 'C*HfF4n!', :tag => 'administrator', :rights =>
     [{ :vhost => '/', :conf => '.*', :write => '.*', :read => '.*' }]
   }]
 
@@ -134,13 +134,17 @@ if node['rabbitmq']['cluster']
   # Layer Name  
   rabbitmq_layer = node['rabbitmq']['opsworks']['layer_name']
   
-  # Instances successfully activated
-  instances = node[:opsworks][:layers][rabbitmq_layer][:instances]
-
   # Cluster Name
-  node.set['rabbitmq']['clustering']['cluster_name'] = 'rabbit-iv'
+  node.set['rabbitmq']['clustering']['cluster_name'] = 'rabbit-ev'
 
-  if instances.length > 1 
+  Chef::Log.info(node['rabbitmq']['opsworks']['instances'])
+
+
+  unless node['rabbitmq']['opsworks']['instances'].nil?
+    # Instances successfully activated
+    instances = node['rabbitmq']['opsworks']['instances']
+    #instances = node[:opsworks][:layers][rabbitmq_layer][:instances]
+
     Chef::Log.info("Setando os nós do cluster de acordo com as instancias criadas")
     rabbitmq_cluster_nodes = instances.map{|name, attr| {:name=>"rabbit@#{name}",:type=>'disc'} }
 
