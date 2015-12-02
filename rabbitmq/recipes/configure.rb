@@ -99,42 +99,59 @@ rabbitmq_plugin "rabbitmq_management" do
     notifies :restart, "service[#{node['rabbitmq']['service_name']}]"
 end
 
-Chef::Log.debug "Criando e o usuario basico"
-# Create User to access the Management Interface
-rabbitmq_user "rabbit" do
-  password "123123"
-  action :add
-end
 
-# Set user as Administrator
-rabbitmq_user "rabbit" do
-  tag "administrator"
-  action :set_tags
-end
+Chef::Log.info("Creating and Setting all permissions and groups to the user")
+# Create User -  access the Management Interface
+node.set['rabbitmq']['enabled_users'] =
+  [{ :name => 'guest', :password => 'guest', :rights =>
+    [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
+  },
+  { :name => 'rabbit', :password => 'C*HfF4n!', :tag => 'administrator', :rights =>
+    [{ :vhost => '/', :conf => '.*', :write => '.*', :read => '.*' }]
+  }]
 
-rabbitmq_user "rabbit" do
-  vhost '/'
-  permissions "'.*' '.*' '.*'"
-  action :set_permissions
-end
+
+# rabbitmq_user "rabbit" do
+#   password "123123"
+#   action :add
+# end
+
+# Chef::Log.info("Configurando as permissões")
+# # Set user as Administrator
+# rabbitmq_user "rabbit" do
+#   tag "administrator"
+#   action :set_tags
+# end
+
+# rabbitmq_user "rabbit" do
+#   vhost '/'
+#   permissions ".* .* .*"
+#   action :set_permissions
+# end
 
 
 if node['rabbitmq']['cluster']  
-    # Layer Name  
-    rabbitmq_layer = node['rabbitmq']['opsworks']['layer_name']
-    
-    # Instances successfully activated
-    instances = node[:opsworks][:layers][rabbitmq_layer][:instances]
-    # rabbitmq_cluster_nodes = instances.map{ |name, attrs| "rabbit@#{name}" }
+  # Layer Name  
+  rabbitmq_layer = node['rabbitmq']['opsworks']['layer_name']
+  
+  # Cluster Name
+  node.set['rabbitmq']['clustering']['cluster_name'] = 'rabbit-ev'
 
+  Chef::Log.info(node['rabbitmq']['opsworks']['instances'])
+
+
+  unless node['rabbitmq']['opsworks']['instances'].nil?
+    # Instances successfully activated
+    instances = node['rabbitmq']['opsworks']['instances']
+    #instances = node[:opsworks][:layers][rabbitmq_layer][:instances]
+
+    Chef::Log.info("Setando os nós do cluster de acordo com as instancias criadas")
     rabbitmq_cluster_nodes = instances.map{|name, attr| {:name=>"rabbit@#{name}",:type=>'disc'} }
 
-    # Cluster Name
-    node.set['rabbitmq']['clustering']['cluster_name'] = 'rabbit-iv'
-    
     # Cluster Nodes
     node.set['rabbitmq']['cluster_disk_nodes'] = rabbitmq_cluster_nodes
     node.set['rabbitmq']['clustering']['cluster_nodes'] = rabbitmq_cluster_nodes
+  end
 
 end
 
