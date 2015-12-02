@@ -21,3 +21,4 @@ _yardoc
 doc/
 /Gemfile.lock
 build
+*.swp
