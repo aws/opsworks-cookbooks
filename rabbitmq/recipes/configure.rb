@@ -91,15 +91,6 @@ template "#{node['rabbitmq']['config']}.config" do
   notifies :restart, "service[#{node['rabbitmq']['service_name']}]", :immediately
 end
 
-
-# Activating Mnagement-plugin 
-Chef::Log.debug "Ativando a interface Administrativa - rabbitmq_management'"
-rabbitmq_plugin "rabbitmq_management" do
-    action :enable
-    notifies :restart, "service[#{node['rabbitmq']['service_name']}]"
-end
-
-
 Chef::Log.info("Creating and Setting all permissions and groups to the user")
 # Create User -  access the Management Interface
 node.set['rabbitmq']['enabled_users'] =
@@ -137,13 +128,9 @@ if node['rabbitmq']['cluster']
   # Cluster Name
   node.set['rabbitmq']['clustering']['cluster_name'] = 'rabbit-ev'
 
-  Chef::Log.info(node['rabbitmq']['opsworks']['instances'])
-
-
-  unless node['rabbitmq']['opsworks']['instances'].nil?
+  begin
     # Instances successfully activated
-    instances = node['rabbitmq']['opsworks']['instances']
-    #instances = node[:opsworks][:layers][rabbitmq_layer][:instances]
+    instances = node[:opsworks][:layers][rabbitmq_layer][:instances]
 
     Chef::Log.info("Setando os nós do cluster de acordo com as instancias criadas")
     rabbitmq_cluster_nodes = instances.map{|name, attr| {:name=>"rabbit@#{name}",:type=>'disc'} }
@@ -151,12 +138,21 @@ if node['rabbitmq']['cluster']
     # Cluster Nodes
     node.set['rabbitmq']['cluster_disk_nodes'] = rabbitmq_cluster_nodes
     node.set['rabbitmq']['clustering']['cluster_nodes'] = rabbitmq_cluster_nodes
+  rescue
+    Chef::Log.info("Primeiro Nó ")
   end
 
 end
 
+# Activating Mnagement-plugin 
+Chef::Log.debug "Ativando a interface Administrativa - rabbitmq_management'"
+rabbitmq_plugin "rabbitmq_management" do
+  action :enable
+  #notifies :restart, "service[#{node['rabbitmq']['service_name']}]"
+end
+
 service node['rabbitmq']['service_name'] do
-    action [:enable, :start]
+  action [:enable, :start]
 end
 
 node.set['rabbitmq']['policies']['ha-all']['pattern'] = '^(?!amq\\.).*'
