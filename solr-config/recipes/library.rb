@@ -36,11 +36,13 @@ node[:deploy].each do |app_name, deploy|
              )
   end
 
-  template "/etc/cron.d/solr_library_delta_import" do
-    owner 'root'
-    variables({ :cron_delta_import => node['library'][env]['cron_delta_import'] })
-    mode '0755'
-    source 'solr_library_delta_import_cron.sh.erb'
+  cron "solr_library_delta_import" do
+    action :create
+    minute "#{node['library'][env]['cron_delta_import_min']}"
+    hour '*'
+    weekday '*'
+    user "root"
+    command "curl --data \"command=delta-import&commit=true&wt=json&indent=true&verbose=false&clean=false&optimize=false&debug=false\" http://localhost:8983/solr/library/dataimporta >/dev/null 2>&1" 
   end
 
   service 'solr' do
