@@ -551,7 +551,7 @@
     <lst name="defaults">
       <str name="q">
         (_query_:"{!edismax qf='authors' v=$author}"
-        AND _query_:"{!edismax qf='title' v=$title}")
+        AND _query_:"{!edismax qf='title' v=$title q.op=$title_operator}")
       </str>
       <str name="fl">book_id, authors, title, year, cover</str> 
 
