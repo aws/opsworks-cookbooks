@@ -598,7 +598,7 @@
        <str name="wt">json</str>
        <str name="indent">true</str>
        <str name="rows">100</str>
-       <str name="fl">sku, book_id, publication_id, authors, title, volume, isbn, issn, barcode, edition, year, publisher, updated_at, deleted_at, seller_id, price, sku_created_at, used, new</str> 
+       <str name="fl">sku, book_id, publication_id, authors, title, volume, isbn, issn, barcode, edition, year, publisher, updated_at, deleted_at, seller_id, price, sku_created_at, used, new, quantity</str> 
 
        <str name="df">seller_id</str>
      </lst>

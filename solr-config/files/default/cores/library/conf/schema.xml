@@ -155,6 +155,7 @@
    <field name="new" type="int" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="used" type="int" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="sku_created_at" type="date" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="quantity" type="int" indexed="false" stored="true" required="false" multiValued="false" />
 
    <!-- Dynamic field definitions allow using convention over configuration
        for fields via the specification of patterns to match field names. 
