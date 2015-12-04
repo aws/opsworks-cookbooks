@@ -1,40 +1,29 @@
 default: &default
-  cloudsearch_endpoint_url: <%= @etl_settings[:cloudsearch][:endpoint_url] %>
-  cloudsearch_region: <%= @etl_settings[:cloudsearch][:region] %>
-  rollbar_token: <%= @etl_settings[:rollbar][:token] %>
+  cloudsearch:
+    endpoint_url: <%= @etl_settings[:cloudsearch][:endpoint_url] %>
+    region: <%= @etl_settings[:cloudsearch][:region] %>
+  rollbar:
+    token: <%= @etl_settings[:rollbar][:token] %>
 
 production:
   <<: *default
-  hyena_host: <%= @etl_settings[:hyena][:host] %>
-  hyena_username: <%= @etl_settings[:hyena][:username] %>
-  hyena_password: <%= @etl_settings[:hyena][:password] %>
-  hyena_database: <%= @etl_settings[:hyena][:database] %>
+  hyena:
+    adapter: mysql
+    host: <%= @etl_settings[:hyena][:host] %>
+    username: <%= @etl_settings[:hyena][:username] %>
+    password: <%= @etl_settings[:hyena][:password] %>
+    database: <%= @etl_settings[:hyena][:database] %>
 
-  joomla_host: <%= @etl_settings[:joomla][:host] %>
-  joomla_username: <%= @etl_settings[:joomla][:username] %>
-  joomla_password: <%= @etl_settings[:joomla][:password] %>
-  joomla_database: <%= @etl_settings[:joomla][:database] %>
+  joomla:
+    adapter: mysql
+    host: <%= @etl_settings[:joomla][:host] %>
+    username: <%= @etl_settings[:joomla][:username] %>
+    password: <%= @etl_settings[:joomla][:password] %>
+    database: <%= @etl_settings[:joomla][:database] %>
 
-test:
-  <<: *default
-  hyena_host: localhost
-  hyena_username: hyena_test
-  hyena_password: hyena_test
-  hyena_database: hyena_test
-
-  joomla_host: localhost
-  joomla_username: hyena_test
-  joomla_password: hyena_test
-  joomla_database: hyena_test
-
-snapci:
-  <<: *default
-  hyena_host: <%= ENV['SNAP_DB_MYSQL_HOST'] %>
-  hyena_username: <%= ENV['SNAP_DB_MYSQL_USER'] %>
-  hyena_password: <%= ENV['SNAP_DB_MYSQL_PASSWORD'] %>
-  hyena_database: <%= ENV['HYENA_DATABASE'] %>
-
-  joomla_host: <%= ENV['SNAP_DB_MYSQL_HOST'] %>
-  joomla_username: <%= ENV['SNAP_DB_MYSQL_USER'] %>
-  joomla_password: <%= ENV['SNAP_DB_MYSQL_PASSWORD'] %>
-  joomla_database: <%= ENV['HYENA_DATABASE'] %>
+  quantum:
+    adapter: postgresql
+    host: <%= @etl_settings[:quantum][:host] %>
+    username: <%= @etl_settings[:quantum][:username] %>
+    password: <%= @etl_settings[:quantum][:password] %>
+    database: <%= @etl_settings[:quantum][:database] %>
