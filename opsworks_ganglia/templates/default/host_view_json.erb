@@ -15,7 +15,7 @@
     if node[:opsworks][:rails_stack][:name] == 'apache_passenger'
       reports << 'passenger_memory_stats_report'
       reports << 'passenger_status_report'
-    elsif node[:opsworks][:rails_stack][:name] == 'nginx_unicorn'
+    elsif node[:opsworks][:rails_stack][:name].include?('nginx')
       reports << 'nginx_status_report'
     else
     end

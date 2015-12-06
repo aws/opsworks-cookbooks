@@ -17,7 +17,7 @@ $conf['optional_graphs'] = array();
 <% if (node[:opsworks][:layers].has_key?("rails-app") && node[:opsworks][:rails_stack][:name] == 'apache_passenger' && !node[:opsworks][:layers]['rails-app']['instances'].empty? ) -%>
   array_push($conf['optional_graphs'], 'passenger_memory_stats', 'passenger_status');
 <% end -%>
-<% if node[:opsworks][:layers].has_key?("rails-app") && node[:opsworks][:rails_stack][:name] == 'nginx_unicorn' && !node[:opsworks][:layers]['rails-app']['instances'].empty? -%>
+<% if node[:opsworks][:layers].has_key?("rails-app") && node[:opsworks][:rails_stack][:name].include?('nginx') && !node[:opsworks][:layers]['rails-app']['instances'].empty? -%>
   array_push($conf['optional_graphs'], 'nginx_status');
 <% end -%>
 <% if node[:opsworks][:layers].has_key?("web") && !node[:opsworks][:layers]['web']['instances'].empty? -%>
