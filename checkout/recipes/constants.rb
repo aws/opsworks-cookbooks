@@ -18,6 +18,9 @@ node[:deploy].each do |application, deploy|
     if k.match(/^ACTIVE_ITEM/)
       consts[k] = v
     end
+    if k.match(/^MOIP_/)
+      consts[k] = v
+    end
   end
 
   directory "#{deploy[:deploy_to]}/shared/config/initializers/" do
