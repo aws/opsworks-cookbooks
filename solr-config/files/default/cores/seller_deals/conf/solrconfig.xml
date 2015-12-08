@@ -472,43 +472,6 @@
      </lst>
   </requestHandler>
 
-  <requestHandler name="/autocomplete" class="solr.SearchHandler">
-     <lst name="defaults">
-       <str name="defType">edismax</str>
-       <str name="qf">authors^20 title^5</str>
-
-       <str name="echoParams">explicit</str>
-       <str name="wt">json</str>
-       <str name="indent">true</str>
-       <str name="rows">30</str>
-       <str name="fl">authors, title</str> 
-
-       <str name="group">on</str>
-       <str name="group.field">book_id</str>
-
-       <str name="hl">true</str>
-       <str name="hl.fl">authors,title</str>
-       <str name="hl.simple.pre"></str>
-       <str name="hl.simple.post"></str>
-     </lst>
-  </requestHandler>  
-
-  <requestHandler name="/publisher_autocomplete" class="solr.SearchHandler">
-     <lst name="defaults">
-       <str name="defType">edismax</str>
-       <str name="qf">publisher</str>
-
-       <str name="echoParams">explicit</str>
-       <str name="wt">json</str>
-       <str name="indent">true</str>
-       <str name="rows">30</str>
-       <str name="fl">publisher</str>
-
-       <str name="group">on</str>
-       <str name="group.field">publisher_id</str>
-     </lst>
-  </requestHandler>
-
   <requestHandler name="/search" class="solr.SearchHandler">
      <lst name="defaults">
        <str name="defType">edismax</str>
@@ -518,150 +481,19 @@
        <str name="wt">json</str>
        <str name="indent">true</str>
        <str name="rows">30</str>
-       <str name="fl">book_id, authors, title, year, cover</str> 
-
-       <str name="sort">score desc</str>
-
-       <str name="bq">sku:[* TO *]^2.0</str>
+       <str name="fl">seller_id</str> 
 
        <str name="group">on</str>
-       <str name="group.field">book_id</str>
-       <str name="group.sort">year asc</str>
+       <str name="group.field">order_id</str>
+       <str name="group.sort">sold_at asc</str>
        <str name="group.facet">true</str>
        
        <str name="facet">on</str>
        <str name="facet.missing">false</str>
-       <str name="facet.field">s_authors</str>
-
-       <str name="facet.mincount">1</str>
-
-       <str name="json.facet">{total_books:"unique(book_id)"}</str>
-
-       <str name="stats">true</str>
-       <str name="stats.field">{!tag=sku_stats min=true max=true}price</str>
-       <str name="stats.field">{!tag=sku_stats sum=true}new</str>
-       <str name="stats.field">{!tag=sku_stats sum=true}used</str>
-       <str name="stats.field">{!tag=sku_stats cardinality=true}seller_id</str>
-       <str name="facet.pivot">{!stats=sku_stats}book_id</str>
-       <str name="facet.pivot">{!stats=sku_stats}authors</str>
+       <str name="facet.field">authors</str>
+       <str name="facet.field">titles</str>
      </lst>
   </requestHandler>  
-
-  <requestHandler name="/get_books" class="solr.SearchHandler">
-    <lst name="defaults">
-      <str name="q">
-        (_query_:"{!edismax qf='authors' v=$author}"
-        AND _query_:"{!edismax qf='title' v=$title}")
-      </str>
-      <str name="fl">book_id, authors, title, year, cover</str> 
-
-      <str name="group">on</str>
-      <str name="group.field">book_id</str>
-      <str name="group.sort">year asc</str>
-
-       <str name="json.facet">{total_books:"unique(book_id)"}</str>
-    </lst>
-  </requestHandler>
-
-  <!-- A request handler that returns indented JSON by default -->
-  <requestHandler name="/get_publications" class="solr.SearchHandler">
-     <lst name="defaults">
-       <str name="echoParams">explicit</str>
-       <str name="wt">json</str>
-       <str name="indent">true</str>
-       <str name="df">publication_search_field</str>
-       <str name="rows">100</str>
-       <str name="fl">book_id, publication_id, authors, title, volume, isbn, issn, barcode, edition, year, weight, width, height, depth, pages, publisher, created_at, updated_at, deleted_at, cover</str>
-       <str name="group">on</str>
-       <str name="group.field">publication_id</str>
-       <str name="group.sort">year desc</str>
-     </lst>
-  </requestHandler>  
-
-  <requestHandler name="/get_publishers" class="solr.SearchHandler">
-     <lst name="defaults">
-       <str name="echoParams">explicit</str>
-       <str name="wt">json</str>
-       <str name="indent">true</str>
-       <str name="df">publisher</str>
-       <str name="rows">100</str>
-       <str name="fl">publisher, publisher_id</str> 
-       <str name="group">on</str>
-       <str name="group.field">publisher_id</str>
-     </lst>
-  </requestHandler>  
-
-  <!-- A request handler that returns indented JSON by default -->
-  <requestHandler name="/get_skus" class="solr.SearchHandler">
-     <lst name="defaults">
-       <str name="echoParams">explicit</str>
-       <str name="wt">json</str>
-       <str name="indent">true</str>
-       <str name="rows">100</str>
-       <str name="fl">sku, book_id, publication_id, authors, title, volume, isbn, issn, barcode, edition, year, publisher, updated_at, deleted_at, seller_id, price, sku_created_at, used, new</str> 
-
-       <str name="df">seller_id</str>
-     </lst>
-  </requestHandler> 
-
-
-  <requestHandler name="/get_book_skus" class="solr.SearchHandler">
-     <lst name="defaults">
-       <str name="echoParams">explicit</str>
-       <str name="wt">json</str>
-       <str name="indent">true</str>
-       <str name="df">book_id</str>
-       <!-- garante que só trará resultados se tiver um sku -->
-       <str name="fq">sku:["" TO *]</str>
-       <!-- <str name="df">book_slug</str> -->
-       <str name="rows">100</str>
-       <str name="defType">edismax</str>
-
-       <str name="facet">on</str>
-       <str name="facet.missing">false</str>
-       <str name="facet.field">edition</str>
-       <str name="facet.field">publisher</str>
-       <str name="facet.field">seller_id</str>
-       <!-- A ordem do facet.query é importante para a aplicação -->
-       <str name="facet.query">price:[* TO 5]</str>
-       <str name="facet.query">price:[* TO 12]</str>
-       <str name="facet.query">price:[* TO 30]</str>
-       <str name="facet.query">price:[* TO 100]</str>
-       <str name="facet.query">price:[100 TO *]</str>
-       <str name="facet.query">year:[2010 TO *]</str>
-       <str name="facet.query">year:[2000 TO *]</str>
-       <str name="facet.query">year:[1990 TO *]</str>
-       <str name="facet.query">year:[* TO 1990]</str>
-       <str name="facet.query">sku_created_at:[* TO NOW-7DAY]</str>
-       <str name="facet.query">sku_created_at:[* TO NOW-14DAY]</str>
-       <str name="facet.query">sku_created_at:[* TO NOW-30DAY]</str>
-
-       <str name="facet.mincount">1</str>
-
-       <str name="fl">sku, seller_id, sku_created_at, edition, cover, year, price, publisher, isbn, volume, new, used, year, weight</str>
-
-       <str name="json.facet">{total_new:"sum(new)", total_used: "sum(used)", unique_sellers: "unique(seller_id)", min_price: "min(price)", max_price: "max(price)"}</str>
-
-
-     </lst>
-  </requestHandler>     
-
-  <!--
-    The export request handler is used to export full sorted result sets.
-    Do not change these defaults.
-  -->
-  <requestHandler name="/export" class="solr.SearchHandler">
-    <lst name="invariants">
-      <str name="rq">{!xport}</str>
-      <str name="wt">xsort</str>
-      <str name="distrib">false</str>
-    </lst>
-
-    <arr name="components">
-      <str>query</str>
-    </arr>
-  </requestHandler>
-
 
   <initParams path="/update/**,/query,/select,/tvrh,/elevate,/spell">
     <lst name="defaults">
