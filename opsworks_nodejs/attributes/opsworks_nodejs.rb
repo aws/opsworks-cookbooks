@@ -17,7 +17,7 @@
 include_attribute 'deploy'
 include_attribute 'opsworks_commons::default'
 
-default[:opsworks_nodejs][:version] = '0.10.38'
+default[:opsworks_nodejs][:version] = '0.12.9'
 default[:opsworks_nodejs][:pkgrelease] = '1'
 
 arch = RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'
