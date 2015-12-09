@@ -26,6 +26,10 @@ server {
     try_files $uri/index.html $uri/index.htm @unicorn;
   }
 
+  location ~ \.(svg|ttf|ttc|otf|eot|woff|woff2)$ {
+    add_header Access-Control-Allow-Origin "*";
+  }
+
   location @unicorn {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
@@ -82,6 +86,10 @@ server {
 
   location / {
     try_files $uri/index.html $uri/index.htm @unicorn;
+  }
+
+  location ~ \.(svg|ttf|ttc|otf|eot|woff|woff2)$ {
+    add_header Access-Control-Allow-Origin "*";
   }
 
   location @unicorn {
