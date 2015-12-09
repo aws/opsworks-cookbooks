@@ -49,9 +49,10 @@
             WHERE s.updated_at &gt; '${dih.last_index_time}' or p.updated_at &gt; '${dih.last_index_time}' or b.updated_at &gt; '${dih.last_index_time}'"
       >
 
-        <entity name="author" pk="book_id" dataSource="library"
+        <entity name="author" pk="book_id" dataSource="library" processor="SqlEntityProcessor" cacheImpl="SortedMapBackedCache"
           query="select full_name as author_name from authors a
-          join authors_books ab on a.id = ab.author_id where ab.book_id = ${sku.book_id}"
+                                                join authors_books ab on a.id = ab.author_id"
+          where="book_id=sku.book_id"
           deltaQuery="select ab.book_id from authors a
           join authors_books ab on a.id = ab.author_id where a.updated_at &gt; '${dih.last_index_time}'"
           parentDeltaQuery="select '${author.book_id}' as id"
