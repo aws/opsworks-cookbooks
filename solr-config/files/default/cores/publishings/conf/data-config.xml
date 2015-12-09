@@ -1,11 +1,11 @@
 <dataConfig>
   <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver" 
-    url="jdbc:mysql://174.143.111.169/estantevirtual"
+    url="jdbc:mysql://192.168.100.231:3306/estantevirtual"
     password="RCifH0slt7"
     autoReconnect="true"
     user="solr"/>
     <document>
-      <entity name="publishing" query="select dna_crc, autor, titulo, dna_nvends_ativos from booktree_20150525.booktree_radicais where remarcado=0 and dna_nvends_ativos > 1">
+      <entity name="publishing" query="select dna_crc, autor, titulo, dna_nvends_ativos from booktree_20151021.booktree_radicais where remarcado=0 and dna_nvends_ativos > 1">
 
         <field column="dna_crc" name="id" />
         <field column="autor" name="autor_t" />
