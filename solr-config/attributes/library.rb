@@ -16,3 +16,9 @@ default['library']['production']['database_name'] = "library_production"
 default['library']['production']['database_user'] = "libraryprod"
 default['library']['production']['database_password'] = "password"
 default['library']['production']['cron_delta_import'] = '*/45 * * * *'
+
+
+default[:logrotate][:rotate] = 2
+default[:logrotate][:dateformat] = false # set to '-%Y%m%d' to have date formatted logs
+  
+

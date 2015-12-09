@@ -16,4 +16,8 @@ default['solr']['user']     = 'deploy'
 default['solr']['group']    = 'www-data'
 default['solr']['install_java'] = true
 default['solr']['java_options'] = '-Xms512M -Xmx20480M'
+
+
+default[:logrotate][:rotate] = 30
+default[:logrotate][:dateformat] = false # set to '-%Y%m%d' to have date formatted logs
   

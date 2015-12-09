@@ -27,6 +27,8 @@ default['rabbitmq']['config_template_cookbook'] = 'rabbitmq'
 default['rabbitmq']['default_user'] = 'guest'
 default['rabbitmq']['default_pass'] = 'guest'
 
+default['rabbitmq']['users_ev'] = false
+
 # loopback_users
 # List of users which are only permitted to connect to the broker via a loopback interface (i.e. localhost).
 # If you wish to allow the default guest user to connect remotely, you need to change this to [].
