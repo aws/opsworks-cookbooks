@@ -1,8 +1,8 @@
 <dataConfig>
 
   <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver"
-    url="jdbc:mysql://127.0.0.1:3307/estantevirtual"                                                                                                           
-    password="6rie66"                                                                          
+    url="jdbc:mysql://192.168.100.231:3306/estantevirtual"                                                                                                           
+    password="RCifH0slt7" 
     autoReconnect="true"                                                                           
     user="evreader"
     name="seller_deals_ds"
