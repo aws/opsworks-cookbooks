@@ -537,13 +537,13 @@
 
        <str name="json.facet">{total_books:"unique(book_id)"}</str>
 
-       <str name="stats">true</str>
-       <str name="stats.field">{!tag=sku_stats min=true max=true}price</str>
-       <str name="stats.field">{!tag=sku_stats sum=true}new</str>
-       <str name="stats.field">{!tag=sku_stats sum=true}used</str>
-       <str name="stats.field">{!tag=sku_stats cardinality=true}seller_id</str>
-       <str name="facet.pivot">{!stats=sku_stats}book_id</str>
-       <str name="facet.pivot">{!stats=sku_stats}authors</str>
+       <!-- <str name="stats">true</str> -->
+       <!-- <str name="stats.field">{!tag=sku_stats min=true max=true}price</str> -->
+       <!-- <str name="stats.field">{!tag=sku_stats sum=true}new</str> -->
+       <!-- <str name="stats.field">{!tag=sku_stats sum=true}used</str> -->
+       <!-- <str name="stats.field">{!tag=sku_stats cardinality=true}seller_id</str> -->
+       <!-- <str name="facet.pivot">{!stats=sku_stats}book_id</str> -->
+       <!-- <str name="facet.pivot">{!stats=sku_stats}authors</str> -->
      </lst>
   </requestHandler>  
 
