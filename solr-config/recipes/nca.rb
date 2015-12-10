@@ -15,6 +15,7 @@ node[:deploy].each do |app_name, deploy|
     action [:enable, :start]
   end
 
+
   template "/etc/logrotate.d/solr" do
     source "cores/logrotate.erb"
     owner 'root'
