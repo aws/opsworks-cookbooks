@@ -9,6 +9,9 @@ node[:deploy].each do |application, deploy|
     if k.match(/^PAYPAL_/)
       consts[k] = v
     end
+    if k.match(/^REDIS_/)
+      consts[k] = v
+    end
     if k.match(/^URL_EV_MAIN/)
       consts[k] = v
     end
