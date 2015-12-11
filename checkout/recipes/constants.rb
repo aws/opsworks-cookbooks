@@ -6,22 +6,7 @@ node[:deploy].each do |application, deploy|
   consts = Hash.new
 
   deploy[:environment_variables].each do |k, v|
-    if k.match(/^PAYPAL_/)
-      consts[k] = v
-    end
-    if k.match(/^REDIS_/)
-      consts[k] = v
-    end
-    if k.match(/^URL_EV_MAIN/)
-      consts[k] = v
-    end
-    if k.match(/^CHECKOUT_DOMAIN/)
-      consts[k] = v
-    end
-    if k.match(/^ACTIVE_ITEM/)
-      consts[k] = v
-    end
-    if k.match(/^MOIP_/)
+    if k.match(/^(PAYPAL_|REDIS_|EV_MAIN_|CHECKOUT_|MOIP_)/)
       consts[k] = v
     end
   end
