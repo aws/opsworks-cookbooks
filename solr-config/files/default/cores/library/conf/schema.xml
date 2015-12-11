@@ -122,6 +122,7 @@
    <field name="volume" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="synopsis" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="grouped_by" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="bookshelf" type="string" indexed="true" stored="true" required="false" multiValued="false" />
 
    
    <!-- Publicacao -->

@@ -532,6 +532,7 @@
        <str name="facet">on</str>
        <str name="facet.missing">false</str>
        <str name="facet.field">s_authors</str>
+       <str name="facet.field">bookshelf</str>
 
        <str name="facet.mincount">1</str>
 
