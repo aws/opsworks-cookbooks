@@ -112,13 +112,21 @@
       >
 
         <entity name="author" pk="book_id" dataSource="library"
-          query="select full_name as author_name from authors a
-          join authors_books ab on a.id = ab.author_id where ab.book_id = ${sku.book_id}"
+          query="SElECT
+                    full_name AS author_name,
+                    ab.book_id AS book_id
+                 FROM authors a
+                 JOIN authors_books ab ON a.id = ab.author_id
+          "
+          cacheImpl="SortedMapBackedCache"
+          cacheKey="book_id"
+          cacheLookup="sku.book_id"
           deltaQuery="select ab.book_id from authors a
           join authors_books ab on a.id = ab.author_id where a.updated_at &gt; '${dih.last_index_time}'"
           parentDeltaQuery="select '${author.book_id}' as id"
         >
           <field name="authors" column="author_name"/>
+          <field name="BOOK_ID" column="book_id"/>
         </entity>
     </entity>
 
