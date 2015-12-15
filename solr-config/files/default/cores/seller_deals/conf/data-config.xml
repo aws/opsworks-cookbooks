@@ -1,7 +1,6 @@
 <dataConfig>
-
   <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver"
-    url="jdbc:mysql://192.168.100.231:3306/estantevirtual"                                                                                                           
+    url="jdbc:mysql://192.168.100.231:3306/estantevirtual"                                                                                 
     password="RCifH0slt7" 
     autoReconnect="true"                                                                           
     user="evreader"
@@ -51,12 +50,17 @@
 
 
       <entity name="title_and_authors" pk="order_id" dataSource="seller_deals_ds"
-          query="
+        query="
           select 
             vi.titulo as 'title', 
-            vi.autor as 'author'
-            from venda_items vi
-            where vi.order_id = ${order.order_id}" 
+            vi.autor as 'author',
+            vi.order_id
+            from venda_items vi"
+            
+        cacheImpl="SortedMapBackedCache"
+        cacheLookup="order.order_id"
+        cacheKey="order_id"
+
         deltaQuery="                                                                               
            select 
              vi.order_id
