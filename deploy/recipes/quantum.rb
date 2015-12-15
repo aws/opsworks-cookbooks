@@ -45,4 +45,17 @@ node[:deploy].each do |application, deploy|
       File.exists?("#{deploy[:deploy_to]}/shared/config/initializers")
     end
   end
+
+  template "#{deploy[:deploy_to]}/shared/config/initializers/rollbar.rb" do
+    source 'quantum/rollbar.rb.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+        :quantum_settings => node[:quantum_settings]
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config/initializers")
+    end
+  end
 end
