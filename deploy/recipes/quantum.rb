@@ -29,6 +29,10 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  execute "create initializiers directory in shared/config" do
+    command "mkdir -p #{deploy[:deploy_to]}/shared/config/initializers/"
+  end
+
   template "#{deploy[:deploy_to]}/shared/config/initializers/aws.rb" do
     source 'quantum/aws.rb.erb'
     mode '0660'
