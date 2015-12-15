@@ -1,0 +1,5 @@
+Aws.config.update({
+  credentials: Aws::Credentials.new(
+    Rails.application.config_for(:amazon).fetch('<%= @quantum_settings[:access_key_id] %>'), 
+    Rails.application.config_for(:amazon).fetch('<%= @quantum_settings[:secret_access_key] %>'))
+})
