@@ -768,7 +768,7 @@
        <str name="wt">json</str>
        <str name="indent">true</str>
        <str name="df">id</str>
-       <str name="mlt.fl">title,authors</str>
+       <str name="mlt.fl">title_simple,authors_simple</str>
        <str name="mlt.mindf">1</str>
        <str name="mlt.mintf">1</str>
        <str name="fq">{!collapse field=book_id}</str>
