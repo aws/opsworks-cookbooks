@@ -8,7 +8,7 @@ node[:deploy].each do |application, deploy|
     owner deploy[:user]
     group deploy[:group]
     variables(
-        :etl_settings => node[:etl_settings]
+        :quantum_settings => node[:quantum_settings]
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
