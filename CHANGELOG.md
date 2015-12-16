@@ -1,3 +1,4 @@
+- Allow postgres package names to set in custom JSON.
 - Update the Node.js default version to 0.12.9
 
 # v3430 2015-11-25
