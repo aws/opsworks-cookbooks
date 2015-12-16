@@ -112,7 +112,7 @@
    <field name="sold_at" type="date" indexed="false" stored="true" required="true" multiValued="false" />
    <field name="status" type="int" indexed="true" stored="true" required="true" multiValued="false" /> 
    <field name="order_id" type="int" indexed="true" stored="true" required="true" multiValued="false" /> 
-   <field name="buyer_name" type="string" indexed="false" stored="true" required="true" multiValued="false" />
+   <field name="buyer_name" type="string" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="delivery_city" type="string" indexed="false" stored="true" required="true" multiValued="false" />
    <field name="delivery_state" type="string" indexed="false" stored="true" required="true" multiValued="false" />
    <field name="delivery_zip_code" type="string" indexed="false" stored="true" required="true" multiValued="false" />
