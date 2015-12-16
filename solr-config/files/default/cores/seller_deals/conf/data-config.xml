@@ -29,7 +29,7 @@
             select                                                          
                 vd.log as 'sold_at',                                        
                 v.status,                                                   
-                v.order_id,                                                 
+                cast(v.order_id as char) as order_id, 
                 vd.dest_nome as 'buyer_name',                               
                 vd.dest_cidade as 'delivery_city',                          
                 vd.dest_estado as 'delivery_state',                         
@@ -39,40 +39,41 @@
                 v.vendedor as 'seller_id'                                   
             from vendas v                                                   
             left join vendas_detalhes vd on v.order_id = vd.order_id        
-            where v.order_id = '${dih.delta.id}'
+            where v.order_id = '${dataimporter.delta.order_id}'
         "
         deltaQuery="
           SELECT v.order_id
           FROM vendas v
-          WHERE v.log &gt; '${dih.last_index_time}'
+          WHERE v.log &gt; '${dataimporter.last_index_time}'
         "
       >
-
-
+      
       <entity name="title_and_authors" pk="order_id" dataSource="seller_deals_ds"
         query="
           select 
             vi.titulo as 'title', 
             vi.autor as 'author',
             vi.order_id
-            from venda_items vi"
-            
+            from venda_items vi" 
         cacheImpl="SortedMapBackedCache"
         cacheLookup="order.order_id"
         cacheKey="order_id"
 
         deltaQuery="                                                                               
            select 
-             vi.order_id
+             cast(vi.order_id as char) as order_id,
+             vi.autor as 'author',
+             vi.titulo as 'title'
            from venda_items vi 
-           join vendas_detalhes vd on vd.order_id = vi.order_id
-           where vd.log &gt; '${dih.last_index_time}'                                                
-        "  
-        parenteDeltaQuery="select '${order.order_id}' as order_id"                                        
-      >                                                                                            
-        <field name="authors" column="author"/>                                               
-        <field name="titles" column="title"/>                                               
-      </entity>                                                                                    
+           join vendas v on v.order_id = vi.order_id
+           where v.log &gt; '${dataimporter.last_index_time}'  
+        "
+      >
+        <field name="authors" column="author"/>
+        <field name="titles" column="title"/>
+      </entity>
     </entity>
   </document>
 </dataConfig>
+
+    
