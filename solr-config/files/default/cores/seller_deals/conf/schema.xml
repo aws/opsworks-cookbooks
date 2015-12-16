@@ -119,8 +119,7 @@
    <field name="total" type="double" indexed="false" stored="true" required="true" multiValued="false" />
    <field name="buyer_id" type="int" indexed="false" stored="true" required="true" multiValued="false" /> 
    <field name="seller_id" type="int" indexed="true" stored="true" required="true" multiValued="false" /> 
-   <field name="authors" type="string" indexed="false" stored="true" required="true" multiValued="true" /> 
-   <field name="titles" type="string" indexed="false" stored="true" required="true" multiValued="true" /> 
+   <field name="items" type="string" indexed="false" stored="true" required="true" multiValued="false" /> 
 
    <!-- Dynamic field definitions allow using convention over configuration
        for fields via the specification of patterns to match field names. 
