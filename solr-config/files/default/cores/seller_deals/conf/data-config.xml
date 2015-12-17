@@ -27,7 +27,7 @@
             ) as items
           from vendas v 
           left join vendas_detalhes vd on v.order_id = vd.order_id
-          where where vd.log > DATE_SUB(NOW(), INTERVAL 6 MONTH);
+          where vd.log > DATE_SUB(NOW(), INTERVAL 6 MONTH);
         "
         deltaImportQuery="
           select                                                                                   
