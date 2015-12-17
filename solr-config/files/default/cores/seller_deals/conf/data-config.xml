@@ -1,9 +1,9 @@
 <dataConfig>
   <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver"
-    url="jdbc:mysql://192.168.100.231:3306/estantevirtual"                                                                                 
-    password="RCifH0slt7" 
+    url="jdbc:mysql://ev-slave.internal.ev:3306/estantevirtual"                                                                                 
+    password="I3b9TFgCWh" 
     autoReconnect="true"                                                                           
-    user="evreader"
+    user="solr-sellerdeals"
     name="seller_deals_ds"
   />
 
