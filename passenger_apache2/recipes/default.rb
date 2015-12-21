@@ -53,7 +53,8 @@ end
 
 ruby_block "ensure only our passenger version is installed by deinstalling any other version" do
   block do
-    ensure_only_gem_version('passenger', node[:passenger][:version])
+    ensure_only_gem_version("rack", node[:passenger][:rack_version])
+    ensure_only_gem_version("passenger", node[:passenger][:version])
   end
 end
 
