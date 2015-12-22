@@ -3,7 +3,7 @@ Chef::Log.level = :debug
 
 node[:deploy].each do |application, deploy|
 
-  template "#{deploy[:deploy_to]}/shared/config/amazon.yml" do
+  template "#{deploy[:deploy_to]}/shared/config/aws.yml" do
     source 'quantum/amazon.yml.erb'
     mode '0660'
     owner deploy[:user]

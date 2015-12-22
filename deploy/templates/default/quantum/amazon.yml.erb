@@ -1,11 +1,14 @@
 default: &default
   proposals:
-    documents_region: <%= @quantum_settings[:proposals][:documents_region] %>
-    documents_bucket: <%= @quantum_settings[:proposals][:documents_bucket] %>
-    cloudsearch_url: <%= @quantum_settings[:proposals][:cloudsearch_url] %>
+    documents_bucket:
+      region: <%= @quantum_settings[:proposals][:documents_region] %>
+      name: <%= @quantum_settings[:proposals][:documents_bucket] %>
+    cloudsearch:
+      url: <%= @quantum_settings[:proposals][:cloudsearch_url] %>
   claims:
-    documents_region: <%= @quantum_settings[:claims][:documents_region] %>
-    documents_bucket: <%= @quantum_settings[:claims][:documents_bucket] %>
+    documents_bucket:
+      region: <%= @quantum_settings[:claims][:documents_region] %>
+      name: <%= @quantum_settings[:claims][:documents_bucket] %>
 
 staging:
   <<: *default
