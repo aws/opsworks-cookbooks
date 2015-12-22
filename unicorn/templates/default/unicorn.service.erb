@@ -25,17 +25,6 @@ def unicorn_running?
   end
 end
 
-def different_gemfile?
-  if File.exists?("#{ROOT_PATH}/current/Gemfile")
-    dir = Dir["#{ROOT_PATH}/releases/*"]
-    previous_release_path = dir.sort[dir.size-2]
-    if !previous_release_path.nil? && File.exists?("#{previous_release_path}/Gemfile")
-      return Digest::MD5.hexdigest(File.read("#{ROOT_PATH}/current/Gemfile")) != Digest::MD5.hexdigest(File.read("#{previous_release_path}/Gemfile"))
-    end
-  end
-  false
-end
-
 def start_unicorn
   if File.exists?("#{ROOT_PATH}/current/Gemfile")
     puts "OpsWorks: Gemfile detected - running Unicorn with bundle exec"
@@ -65,14 +54,8 @@ def restart_unicorn
 end
 
 def clean_restart
-  if different_gemfile?
-    puts "Found a previous version with a different Gemfile: Doing a stop & start"
-    stop_unicorn if unicorn_running?
-    start_unicorn
-  else
-    puts "No previous version with a different Gemfile found. Assuming a quick restart without re-loading gems is save"
-    restart_unicorn
-  end
+  stop_unicorn if unicorn_running?
+  start_unicorn
 end
 
 def status_unicorn
