@@ -18,8 +18,6 @@
 # limitations under the License.
 #
 
-package "checkout"
-
 template "nginx.conf" do
   path "#{node[:nginx][:dir]}/nginx.conf"
   source "nginx.conf.erb"
