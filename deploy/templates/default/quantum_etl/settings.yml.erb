@@ -1,7 +1,4 @@
 default: &default
-  cloudsearch:
-    endpoint_url: <%= @etl_settings[:cloudsearch][:endpoint_url] %>
-    region: <%= @etl_settings[:cloudsearch][:region] %>
   rollbar:
     token: <%= @etl_settings[:rollbar][:token] %>
 
