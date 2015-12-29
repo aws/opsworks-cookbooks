@@ -6,13 +6,16 @@ describe_recipe 'ebs::default' do
 
   describe 'packages' do
     it 'should install xfs packages' do
-      package('xfsprogs').must_be_installed
       case node[:platform_family]
       when 'debian'
+        package('xfsprogs').must_be_installed
         package('xfsdump').must_be_installed
         package('xfslibs-dev').must_be_installed
       when 'rhel'
-        package("xfsprogs-devel").must_be_installed unless Chef::VersionConstraint.new("~> 6.0").include?(node["platform_version"])
+        unless Chef::VersionConstraint.new("~> 6.0").include?(node["platform_version"])
+          package('xfsprogs').must_be_installed
+          package("xfsprogs-devel").must_be_installed
+        end
       end
     end
   end

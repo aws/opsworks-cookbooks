@@ -7,8 +7,8 @@ LECAGY_PACKAGES = []
 pm_helper = OpsWorks::PackageManagerHelper.new(node)
 current_package_info = pm_helper.summary(PACKAGE_BASENAME)
 
-if current_package_info.version && current_package_info.version =~ /^#{node[:opsworks_nodejs][:version]}.#{node[:opsworks_nodejs][:pkgrelease]}/
-  Chef::Log.info("Userspace NodeJS version is up-to-date (#{node[:opsworks_nodejs][:version]} release #{node[:opsworks_nodejs][:pkgrelease]})")
+if current_package_info.version && current_package_info.version.start_with?(node[:opsworks_nodejs][:version])
+  Chef::Log.info("Userspace NodeJS version is up-to-date (#{node[:opsworks_nodejs][:version]})")
 else
 
   packages_to_remove = pm_helper.installed_packages.select do |pkg, version|
