@@ -1,6 +1,3 @@
-rails_env = new_resource.environment["RAILS_ENV"]
-dotenv_contents = ''
-
 node[:deploy].each do |application, deploy|
   # this should be used with figaro gem
   dotenv_path = "#{release_path}/config/application.yml"
