@@ -1,7 +1,7 @@
 dotenv_contents = ''
 node[:deploy].each do |application, deploy|
   # this should be used with figaro gem
-  dotenv_path = "#{deploy[:deploy_to]}/current/application.yml"
+  dotenv_path = "#{deploy[:deploy_to]}/current/config/application.yml"
   if deploy[:application_type] == 'rails'
     # Dotenv file with sensitive data stored in the OpsWorks' layer.
     deploy[:environment].to_hash.each do |key, value|
