@@ -18,7 +18,7 @@ node[:deploy].each do |application, deploy|
   end
 
   template "/etc/init/resque-#{application}-scheduler.conf" do
-    source "resque.scheduler.conf.erb"
+    source "resque-scheduler.conf.erb"
     mode '0644'
     variables deploy: deploy
   end
