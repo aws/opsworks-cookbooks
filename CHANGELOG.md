@@ -1,3 +1,5 @@
+- After creating RAID arrays update initramfs to prevent device mapping issues on reboot.
+
 # v3431 2015-12-22
 - Fixed passenger and unicorn gem installation issue
 - Updating the default 2.0, 2.1 and 2.2 versions of Ruby to 2.0.0p648, 2.1.8 and 2.2.4

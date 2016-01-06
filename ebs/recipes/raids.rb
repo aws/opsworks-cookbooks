@@ -1,5 +1,6 @@
 package 'mdadm'
 package 'lvm2'
+require "mkmf"
 
 execute 'Load device mapper kernel module' do
   command 'modprobe dm-mod'
@@ -71,15 +72,30 @@ node.set[:ebs][:raids].each do |raid_device, options|
     pass 0
   end
 
-  template 'mdadm configuration' do
-    path value_for_platform(
-      ['centos','redhat','fedora','amazon'] => {'default' => '/etc/mdadm.conf'},
-      'default' => '/etc/mdadm/mdadm.conf'
+  execute "update initramfs" do
+    command value_for_platform_family(
+      "rhel" => "dracut -H -f /boot/initramfs-#{node["kernel"]["release"]}.img #{node["kernel"]["release"]}",
+      "debian" => "update-initramfs -u"
     )
-    source 'mdadm.conf.erb'
+    only_if do
+      value_for_platform_family(
+        "rhel" => find_executable0("dracut"),
+        "debian" => find_executable0("update-initramfs")
+      )
+    end
+    action :nothing
+  end
+
+  template "mdadm configuration" do
+    path value_for_platform(
+      ["centos","redhat","fedora","amazon"] => {"default" => "/etc/mdadm.conf"},
+      "default" => "/etc/mdadm/mdadm.conf"
+    )
+    source "mdadm.conf.erb"
     mode 0644
-    owner 'root'
-    group 'root'
+    owner "root"
+    group "root"
+    notifies :run, "execute[update initramfs]", :immediately
   end
 
   template 'rc.local script' do
