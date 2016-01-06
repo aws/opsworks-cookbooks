@@ -1,0 +1,13 @@
+#!upstart
+description "Resque worker <%= @instance %> <%= @queue %>"
+respawn
+start on starting resque-<%= @application %>
+stop on stopping resque-<%= @application %>
+
+env QUEUE=<%= @queue %>
+env RACK_ENV=<%= @rack_env %>
+env TERM_CHILD=1
+
+chdir <%= @deploy[:deploy_to] %>/current
+
+exec sudo -u deploy -E -- bundle exec rake resque:scheduler >> /var/log/resque/<%= @application %>-<%= @instance %>-scheduler.log 2>&1
