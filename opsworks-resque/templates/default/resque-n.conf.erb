@@ -10,4 +10,5 @@ env TERM_CHILD=1
 
 chdir <%= @deploy[:deploy_to] %>/current
 
-exec sudo -u deploy -E -- bundle exec rake resque:work >> /var/log/resque/<%= @application %>-<%= @instance %>.log 2>&1
+exec sudo -u deploy -E -- bundle exec rake resque:work >> /var/log/resque/<%= @application %>-<%= @instance %>-work.log 2>&1
+exec sudo -u deploy -E -- bundle exec rake resque:scheduler >> /var/log/resque/<%= @application %>-<%= @instance %>-scheduler.log 2>&1
