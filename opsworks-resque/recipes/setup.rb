@@ -17,6 +17,12 @@ node[:deploy].each do |application, deploy|
     variables deploy: deploy
   end
 
+  template "/etc/init/resque-#{application}-scheduler.conf" do
+    source "resque.scheduler.conf.erb"
+    mode '0644'
+    variables deploy: deploy
+  end
+
   settings = node[:resque][application]
   # configure rails_env in case of non-rails app
   rack_env = deploy[:rails_env] || settings[:rack_env] || settings[:rails_env]
