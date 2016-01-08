@@ -26,7 +26,7 @@ node[:deploy].each do |application, deploy|
                }, ]
   end
 
-  node[:srvlog] << {:logfile => "/srv/www/#{deploy[:application]}/current/log/unicorn.stderr.log",
+  node.set[:srvlog] << {:logfile => "/srv/www/#{deploy[:application]}/current/log/unicorn.stderr.log",
                 :buffer_duration => 5000,
                 :initial_position => "start_of_file",
                 :log_group_name => node[:opsworks][:stack][:name],
@@ -34,7 +34,7 @@ node[:deploy].each do |application, deploy|
                 :datetime_format => false
                }
 
-  node[:srvlog] << {:logfile => "/srv/www/#{deploy[:application]}/current/log/unicorn.stdout.log",
+  node.set[:srvlog] << {:logfile => "/srv/www/#{deploy[:application]}/current/log/unicorn.stdout.log",
               :buffer_duration => 5000,
               :initial_position => "start_of_file",
               :log_group_name => node[:opsworks][:stack][:name],
