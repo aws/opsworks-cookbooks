@@ -1,5 +1,5 @@
 
-rails_env = new_resource.environment["RAILS_ENV"]
+rails_env = node["deploy"]["staging_nca"]["rails_env"]
 
 Chef::Log.info("RAILS_ENV ${rails_env}")
 
