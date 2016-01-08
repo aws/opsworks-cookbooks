@@ -33,11 +33,13 @@ state_file = /var/awslogs/state/agent-state
 # log_stream_name = <%= node[:opsworks][:instance][:hostname] %>
 
 <% @srvlog.each do |log| %>
-	[<%= log[:logfile] %>]
-	datetime_format = <%= log[:datetime_format] %>
-	file = <%= log[:logfile] %>
-	buffer_duration = <%= log[:buffer_duration] %>
-	log_stream_name = <%= log[:log_stream_name] %>
-	initial_position = <%= log[:initial_position] %>
-	log_group_name = <%= log[:log_group_name] %>
+[<%= log[:logfile] %>]
+<% if  log[:datetime_format] -%>
+datetime_format = <%= log[:datetime_format] %>
+<% end -%>
+file = <%= log[:logfile] %>
+buffer_duration = <%= log[:buffer_duration] %>
+log_stream_name = <%= log[:log_stream_name] %>
+initial_position = <%= log[:initial_position] %>
+log_group_name = <%= log[:log_group_name] %>
 <% end %>
