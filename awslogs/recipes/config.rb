@@ -45,11 +45,13 @@ node[:deploy].each do |application, deploy|
              } 
 end
 
+node.set[:srvlog] = srvlog
+
 template "/tmp/cwlogs.cfg" do
   cookbook "awslogs"
   source "cwlogs.cfg.erb"
   owner "root"
   group "root"
   mode 0644
-  variables(:srvlog => srvlog )
+  variables(:srvlog => node[:srvlog] )
 end
