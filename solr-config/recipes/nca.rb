@@ -14,14 +14,16 @@ node[:deploy].each do |app_name, deploy|
     supports :restart => true, :status => true
     action [:enable, :start]
   end
-#  template "/etc/logrotate.d/solr" do
-#    source "cores/logrotate.erb"
-#    owner 'root'
-#    group 'root'
-#    mode 0644
-#    variables(:log_dirs => "#{node['default'][env]['root']}/log",
-#              :bin_dir => "#{node['default'][env]['root']}/bin"
-#            )
-#  end
+
+
+  template "/etc/logrotate.d/solr" do
+    source "cores/logrotate.erb"
+    owner 'root'
+    group 'root'
+    mode 0644
+    variables(:log_dirs => "#{node['default'][env]['root']}/log",
+              :bin_dir => "#{node['default'][env]['root']}/bin"
+            )
+  end
   
 end
