@@ -6,4 +6,4 @@ default[:srvlog] = [{ :logfile => '/var/log/syslog',
                       :initial_position => 'start_of_file',
                       :log_group_name => node[:opsworks][:stack][:name],
                       :log_stream_name => node[:opsworks][:instance][:hostname],
-                      :datetime_format => ''}, ]
+                      :datetime_format => false}, ]
