@@ -5,7 +5,7 @@ Chef::Log.info("RAILS_ENV ${rails_env}")
 
 
 template "/tmp/cwlogs.cfg" do
-  cookbook "logs"
+  cookbook "awslogs"
   source "cwlogs.cfg.erb"
   owner "root"
   group "root"
