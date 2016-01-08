@@ -1,6 +1,4 @@
 
-srv_log = []
-
 node[:deploy].each do |application, deploy|
 
   deploy = node[:deploy][application]
@@ -11,24 +9,24 @@ node[:deploy].each do |application, deploy|
   Chef::Log.info(deploy[:rails_env])
 
   if deploy[:rails_env] == "staging"
-    srv_log << {:logfile => "/srv/www/#{deploy[:application]}/current/log/staging.log",
+    node.set[:srvlog] = [{:logfile => "/srv/www/#{deploy[:application]}/current/log/staging.log",
                 :buffer_duration => 5000,
                 :initial_position => "start_of_file",
                 :log_group_name => node[:opsworks][:stack][:name],
                 :log_stream_name => "staging",
                 :datetime_format => false
-               }
+               }, ]
   else
-    srv_log << {:logfile => "/srv/www/#{deploy[:application]}/current/log/production.log",
+    node.set[:srvlog] = [{:logfile => "/srv/www/#{deploy[:application]}/current/log/production.log",
                 :buffer_duration => 5000,
                 :initial_position => "start_of_file",
                 :log_group_name => node[:opsworks][:stack][:name],
                 :log_stream_name => "staging",
                 :datetime_format => false
-               }
+               }, ]
   end
 
-  srv_log << {:logfile => "/srv/www/#{deploy[:application]}/current/log/unicorn.stderr.log",
+  node[:srvlog] << {:logfile => "/srv/www/#{deploy[:application]}/current/log/unicorn.stderr.log",
                 :buffer_duration => 5000,
                 :initial_position => "start_of_file",
                 :log_group_name => node[:opsworks][:stack][:name],
@@ -36,7 +34,7 @@ node[:deploy].each do |application, deploy|
                 :datetime_format => false
                }
 
-  srv_log << {:logfile => "/srv/www/#{deploy[:application]}/current/log/unicorn.stdout.log",
+  node[:srvlog] << {:logfile => "/srv/www/#{deploy[:application]}/current/log/unicorn.stdout.log",
               :buffer_duration => 5000,
               :initial_position => "start_of_file",
               :log_group_name => node[:opsworks][:stack][:name],
@@ -44,8 +42,6 @@ node[:deploy].each do |application, deploy|
               :datetime_format => false
              } 
 end
-
-node.set[:srvlog] = srvlog
 
 template "/tmp/cwlogs.cfg" do
   cookbook "awslogs"
