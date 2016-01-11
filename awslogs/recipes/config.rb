@@ -6,23 +6,23 @@ node[:deploy].each do |application, deploy|
   Chef::Log.info("Catching the application data from #{deploy[:application]}")
   Chef::Log.info("Environment: RAILS_ENV #{deploy[:rails_env]}")
 
-  node.set[:srvlog][:group_name] = node[:opsworks][:stack][:name].gsub("_","").split().join().capitalize
-  Chef::Log.info("Group Name: #{node[:srvlog][:group_name]}")
+  Chef::Log.info("Group Name: #{node[:opsworks][:stack][:name].gsub("_","").split().join().capitalize.to_s}")
 
 
   if deploy[:rails_env] == "staging"
+
     node.set[:srvlog] = [{:logfile => "/srv/www/#{deploy[:application]}/current/log/staging.log",
                 :buffer_duration => 5000,
                 :initial_position => "start_of_file",
-                :log_group_name => node[:srvlog][:group_name],
+                :log_group_name => node[:opsworks][:stack][:name].gsub("_","").split().join().capitalize.to_s,
                 :log_stream_name => "staging",
-                :datetime_format => "%b %d %H:%M:%S"
+                :datetime_format => "%b %d %H:%M:%S" 
                }, ]
   else
     node.set[:srvlog] = [{:logfile => "/srv/www/#{deploy[:application]}/current/log/production.log",
                 :buffer_duration => 5000,
                 :initial_position => "start_of_file",
-                :log_group_name => node[:srvlog][:group_name],
+                :log_group_name => node[:opsworks][:stack][:name].gsub("_","").split().join().capitalize.to_s,
                 :log_stream_name => "production",
                 :datetime_format => "%b %d %H:%M:%S"
                }, ]
@@ -31,7 +31,7 @@ node[:deploy].each do |application, deploy|
   node.set[:srvlog] << {:logfile => "/srv/www/#{deploy[:application]}/current/log/unicorn.stderr.log",
                 :buffer_duration => 5000,
                 :initial_position => "start_of_file",
-                :log_group_name => node[:srvlog][:group_name],
+                :log_group_name => node[:opsworks][:stack][:name].gsub("_","").split().join().capitalize.to_s,
                 :log_stream_name => "unicorn-error",
                 :datetime_format => "%b %d %H:%M:%S"
                }
@@ -39,7 +39,7 @@ node[:deploy].each do |application, deploy|
   node.set[:srvlog] << {:logfile => "/srv/www/#{deploy[:application]}/current/log/unicorn.stdout.log",
               :buffer_duration => 5000,
               :initial_position => "start_of_file",
-              :log_group_name => node[:srvlog][:group_name],
+              :log_group_name => node[:opsworks][:stack][:name].gsub("_","").split().join().capitalize.to_s,
               :log_stream_name => "unicorn-out",
               :datetime_format => "%b %d %H:%M:%S"
              } 
