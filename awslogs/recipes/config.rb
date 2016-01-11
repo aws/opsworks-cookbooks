@@ -3,10 +3,8 @@ node[:deploy].each do |application, deploy|
 
   deploy = node[:deploy][application]
 
-  Chef::Log.info("Catching the application data")
-  Chef::Log.info(deploy[:application])
-  Chef::Log.info("Environment: RAILS_ENV")
-  Chef::Log.info(deploy[:rails_env])
+  Chef::Log.info("Catching the application data from #{deploy[:application]}")
+  Chef::Log.info("Environment: RAILS_ENV #{deploy[:rails_env]}")
 
   if deploy[:rails_env] == "staging"
     node.set[:srvlog] = [{:logfile => "/srv/www/#{deploy[:application]}/current/log/staging.log",
@@ -52,4 +50,4 @@ template "/tmp/cwlogs.cfg" do
   mode 0644
   variables(:srvlog => node[:srvlog] )
 end
-
+Chef::Log.info("Config file successfully created")
