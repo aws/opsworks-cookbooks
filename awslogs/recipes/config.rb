@@ -3,9 +3,9 @@ node[:deploy].each do |application, deploy|
 
   deploy = node[:deploy][application]
 
-  Chef::Log.info("application")
+  Chef::Log.info("Catching the application data")
   Chef::Log.info(deploy[:application])
-  Chef::Log.info("RAILS_ENV")
+  Chef::Log.info("Environment: RAILS_ENV")
   Chef::Log.info(deploy[:rails_env])
 
   if deploy[:rails_env] == "staging"
@@ -43,6 +43,7 @@ node[:deploy].each do |application, deploy|
              } 
 end
 
+Chef::Log.info("Rasing the config file")
 template "/tmp/cwlogs.cfg" do
   cookbook "awslogs"
   source "cwlogs.cfg.erb"
@@ -52,11 +53,3 @@ template "/tmp/cwlogs.cfg" do
   variables(:srvlog => node[:srvlog] )
 end
 
-template "/root/.aws/credentials" do
-  cookbook "awslogs"
-  source "credentials.erb"
-  owner "root"
-  group "root"
-  mode 0600
-  variables(:aws_access_key_id => node[:aws_access_key_id], :aws_secret_access_key => node[:aws_secret_access_key] )
-end

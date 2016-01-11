@@ -1,6 +1,8 @@
 default[:cwlogs][:logfile] = '/var/log/aws/opsworks/opsworks-agent.log'
 
 
+default[:cwlogs][:service_name] = 'awslogs'
+
 default[:srvlog] = [{ :logfile => '/var/log/syslog',
                       :buffer_duration => 5000,
                       :initial_position => 'start_of_file',
