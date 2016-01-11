@@ -10,7 +10,7 @@ default[:srvlog] = [{ :logfile => '/var/log/syslog',
                       :initial_position => 'start_of_file',
                       :log_group_name => node[:opsworks][:stack][:name],
                       :log_stream_name => node[:opsworks][:instance][:hostname],
-                      :datetime_format => false}, ]
+                      :datetime_format => %b %d %H:%M:%S}, ]
 
 default[:aws_access_key_id] = 'AKIAJ672IUAWZK5O72KQ'
 default[:aws_secret_access_key] = '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'
