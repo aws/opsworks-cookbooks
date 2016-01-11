@@ -87,15 +87,7 @@ module S3FileLib
   end
 
   def self.do_request(method, url, bucket, path, aws_access_key_id, aws_secret_access_key, token, region)
-    if url.nil?
-      url = 'https://' + (
-        if bucket =~ /\./
-          "s3.amazonaws.com/#{bucket}"
-        else
-          "#{bucket}.s3.amazonaws.com"
-        end
-      )
-    end
+    url = build_endpoint_url(bucket, region) if url.nil?
 
     with_region_detect(region) do |real_region|
       client.reset_before_execution_procs
@@ -107,6 +99,20 @@ module S3FileLib
         end
       end
       client::Request.execute(:method => method, :url => "#{url}#{path}", :raw_response => true)
+    end
+  end
+
+  def self.build_endpoint_url(bucket, region)
+    endpoint = if region && region != "us-east-1"
+                 "s3-#{region}.amazonaws.com"
+               else
+                 "s3.amazonaws.com"
+               end
+
+    if bucket =~ /^[a-z0-9][a-z0-9-]+[a-z0-9]$/
+      "https://#{bucket}.#{endpoint}"
+    else
+      "https://#{endpoint}/#{bucket}"
     end
   end
 
