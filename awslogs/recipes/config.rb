@@ -14,7 +14,7 @@ node[:deploy].each do |application, deploy|
                 :initial_position => "start_of_file",
                 :log_group_name => node[:srvlog][:group_name],
                 :log_stream_name => "staging",
-                :datetime_format => false
+                :datetime_format => %b %d %H:%M:%S
                }, ]
   else
     node.set[:srvlog] = [{:logfile => "/srv/www/#{deploy[:application]}/current/log/production.log",
@@ -22,7 +22,7 @@ node[:deploy].each do |application, deploy|
                 :initial_position => "start_of_file",
                 :log_group_name => node[:srvlog][:group_name],
                 :log_stream_name => "production",
-                :datetime_format => false
+                :datetime_format => %b %d %H:%M:%S
                }, ]
   end
 
@@ -31,7 +31,7 @@ node[:deploy].each do |application, deploy|
                 :initial_position => "start_of_file",
                 :log_group_name => node[:srvlog][:group_name],
                 :log_stream_name => "unicorn-error",
-                :datetime_format => false
+                :datetime_format => %b %d %H:%M:%S
                }
 
   node.set[:srvlog] << {:logfile => "/srv/www/#{deploy[:application]}/current/log/unicorn.stdout.log",
@@ -39,7 +39,7 @@ node[:deploy].each do |application, deploy|
               :initial_position => "start_of_file",
               :log_group_name => node[:srvlog][:group_name],
               :log_stream_name => "unicorn-out",
-              :datetime_format => false
+              :datetime_format => %b %d %H:%M:%S
              } 
 end
 
