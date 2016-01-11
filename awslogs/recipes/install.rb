@@ -26,7 +26,6 @@ template "/root/.aws/credentials" do
   owner "root"
   group "root"
   mode 0600
-  variables(:aws_access_key_id => node[:aws_access_key_id], :aws_secret_access_key => node[:aws_secret_access_key] )
 end
 
 service node[:cwlogs][:service_name] do
