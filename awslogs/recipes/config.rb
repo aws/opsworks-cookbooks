@@ -51,3 +51,12 @@ template "/tmp/cwlogs.cfg" do
   mode 0644
   variables(:srvlog => node[:srvlog] )
 end
+
+template "/root/.aws/credentials" do
+  cookbook "awslogs"
+  source "credentials.erb"
+  owner "root"
+  group "root"
+  mode 0600
+  variables(:aws_access_key_id => node[:aws_access_key_id], :aws_secret_access_key => node[:aws_secret_access_key] )
+end
