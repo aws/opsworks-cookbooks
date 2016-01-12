@@ -1,3 +1,4 @@
+- Always restart Unicorn instead of a stop and start to prevent downtime during deploys.
 - After creating RAID arrays update initramfs to prevent device mapping issues on reboot.
 
 # v3431 2015-12-22
