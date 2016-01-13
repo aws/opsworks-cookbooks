@@ -8,7 +8,6 @@ default: &default
       region: <%= @quantum_settings[:claims][:documents_region] %>
       name: <%= @quantum_settings[:claims][:documents_bucket] %>
     queue:
-      region: <%= @quantum_settings[:claims][:queue_region] %>
       url: <%= @quantum_settings[:claims][:queue_url] %>
 
 staging:
