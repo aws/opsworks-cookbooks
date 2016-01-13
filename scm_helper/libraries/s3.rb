@@ -7,17 +7,21 @@ module OpsWorks
         uri = URI.parse(uri)
         uri_path_components = uri.path.split("/").reject{|p| p.empty?}
         virtual_host_match = uri.host.match(/\A(.+)\.s3(?:[-.](?:ap|eu|sa|us)-(?:.+-)\d|-external-1)?\.amazonaws\.com/i)
+        base_uri = uri.dup
+
         if virtual_host_match
           # virtual-hosted-style: http://bucket.s3.amazonaws.com or http://bucket.s3-aws-region.amazonaws.com
           bucket = virtual_host_match[1]
-          remote_path = uri_path_components.join("/")
+          base_uri.path = "/"
         else
           # path-style: http://s3.amazonaws.com/bucket or http://s3-aws-region.amazonaws.com/bucket
           bucket = uri_path_components[0]
-          remote_path = uri_path_components[1..-1].join("/")
+          base_uri.path = "/#{uri_path_components.shift}"
         end
 
-        [bucket, remote_path]
+        remote_path = uri_path_components.join("/") # remote_path don't allow a "/" at the beginning
+
+        [bucket, remote_path, base_uri.to_s.chomp("/")] # base_url don't allow a "/" at the end
       end
 
       def prepare_s3_checkouts(scm_options)
@@ -33,7 +37,7 @@ module OpsWorks
           mode 0755
         end
 
-        s3_bucket, s3_key = OpsWorks::SCM::S3.parse_uri(scm_options[:repository])
+        s3_bucket, s3_key, base_url = OpsWorks::SCM::S3.parse_uri(scm_options[:repository])
 
         s3_file "#{tmpdir}/archive" do
           bucket s3_bucket
@@ -43,9 +47,7 @@ module OpsWorks
           owner "root"
           group "root"
           mode "0600"
-          # per default it's host-style addressing
-          # but older versions of rest-client doesn't support host-style addressing with `_` in bucket name
-          s3_url "https://s3.amazonaws.com/#{s3_bucket}" if s3_bucket.include?("_")
+          s3_url base_url
           action :create
         end
 
