@@ -1,0 +1,28 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+<% s3 = YAML.load_file('.s3.yml') %>
+platforms:
+<% %w(11.16.4 12.0.1).each do |chef_version| 
+  %w(ubuntu-12.04 ubuntu-14.04 centos-6.6 centos-7.0).each do |platform|
+  %>
+  - name: <%= platform %>
+    driver_config:
+      require_chef_omnibus: <%= chef_version %>
+<% end 
+end %>
+suites:
+  - name: default
+    run_list:
+      - recipe[s3_file_test::default]
+    attributes:
+      s3_file_test:
+        file: <%= s3['file'] %>
+        bucket: <%= s3['bucket'] %>
+        region: <%= s3['region'] %>
+        access_key: <%= s3['access_key'] %>
+        secret_key: <%= s3['secret_key'] %>
+

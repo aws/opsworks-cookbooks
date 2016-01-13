@@ -87,7 +87,15 @@ module S3FileLib
   end
 
   def self.do_request(method, url, bucket, path, aws_access_key_id, aws_secret_access_key, token, region)
-    url = "https://#{bucket}.s3.amazonaws.com" if url.nil?
+    if url.nil?
+      url = 'https://' + (
+        if bucket =~ /\./
+          "s3.amazonaws.com/#{bucket}"
+        else
+          "#{bucket}.s3.amazonaws.com"
+        end
+      )
+    end
 
     with_region_detect(region) do |real_region|
       client.reset_before_execution_procs
@@ -122,7 +130,8 @@ module S3FileLib
     for attempts in 0..retries
       begin
         response = do_request("GET", url, bucket, path, aws_access_key_id, aws_secret_access_key, token, region)
-        break
+        return response
+        # break
       rescue client::MovedPermanently, client::Found, client::TemporaryRedirect => e
         uri = URI.parse(e.response.header['location'])
         path = uri.path
@@ -130,19 +139,18 @@ module S3FileLib
         url = uri.to_s
         retry
       rescue => e
-        error = e.respond_to?(:response) ? e.response : e
-        if attempts < retries
-          Chef::Log.warn(error)
-          sleep 5
-          next
-        else
-          Chef::Log.fatal(error)
-          raise e
+        if e.respond_to? :response
+          msg = e.response
+          if attempts < retries
+            Chef::Log.warn msg
+            next
+          else
+            Chef::Log.fatal msg
+          end
         end
+        raise e
       end
     end
-
-    return response
   end
 
   def self.aes256_decrypt(key, file)
@@ -201,6 +209,8 @@ module S3FileLib
   def self.client
     require 'rest-client'
     RestClient.proxy = ENV['http_proxy']
+    RestClient.proxy = ENV['https_proxy']
+    RestClient.proxy = ENV['no_proxy']
     RestClient
   end
 end
