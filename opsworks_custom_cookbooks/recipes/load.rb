@@ -1,5 +1,9 @@
 if node[:opsworks_custom_cookbooks][:enabled]
-  include_recipe "opsworks_custom_cookbooks::checkout"
+  if node[:opsworks][:activity] == "setup"
+    include_recipe "opsworks_custom_cookbooks::update"
+  else
+    include_recipe "opsworks_custom_cookbooks::checkout"
+  end
 else
   directory node[:opsworks_custom_cookbooks][:destination] do
     action :delete
