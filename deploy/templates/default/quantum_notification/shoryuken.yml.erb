@@ -1,0 +1,10 @@
+aws:
+  access_key_id:      <%= @quantum_notification_settings[:aws][:access_key_id] %>
+  secret_access_key:  <%= @quantum_notification_settings[:aws][:secret_access_key] %>
+  region:             <%= @quantum_notification_settings[:aws][:region] %>
+  
+concurrency: 5
+delay: 5
+
+queues:
+  - [quantum-development, 1]
