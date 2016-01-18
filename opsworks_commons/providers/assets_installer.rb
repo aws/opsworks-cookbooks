@@ -85,7 +85,10 @@ def local_asset
     ::FileUtils.rm_rf(Dir["#{asset_basedir}.*"], :verbose => true) rescue Chef::Log.error "Couldn't cleanup downloaded assets for #{@new_resource.name}."
   elsif @new_resource.ignore_failure
     Chef::Log.error "Failed to download asset #{asset_name} for #{@new_resource.name} with url #{asset_url}."
-  elsif !@new_resource.ignore_failure
-    raise Chef::Exceptions::ResourceNotFound, "Failed to download asset #{@new_resource.asset} for #{@new_resource.name} with url #{asset_url}."
+  else
+    msg = "Failed to download asset #{@new_resource.asset} for #{@new_resource.name} with url #{asset_url}."
+
+    msg += "\nThe asset is probably not available for your operating system (#{node[:platform]} #{node[:platform_version]})." if local_asset_path.include?("403 Forbidden")
+    raise Chef::Exceptions::ResourceNotFound, msg
   end
 end
