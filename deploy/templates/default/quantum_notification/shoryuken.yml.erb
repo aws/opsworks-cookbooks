@@ -7,4 +7,4 @@ concurrency: 5
 delay: 5
 
 queues:
-  - [quantum-development, 1]
+  - [<%= @quantum_notification_settings[:queue_name] %>, 1]
