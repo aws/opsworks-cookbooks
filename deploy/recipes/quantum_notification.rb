@@ -29,4 +29,12 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+
+  execute "restart" do
+    user deploy[:user]
+    cwd "#{deploy[:deploy_to]}/current"
+    command "bundle exec rake restart"
+    action :run
+  end
+
 end
