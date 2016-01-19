@@ -29,6 +29,18 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  template "#{deploy[:deploy_to]}/shared/config/settings.yml" do
+    source 'quantum_notification/settings.yml.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+        :quantum_notification_settings => node[:quantum_notification_settings]
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
 
   execute "restart" do
     user deploy[:user]
