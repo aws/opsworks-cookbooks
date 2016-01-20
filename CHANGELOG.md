@@ -1,11 +1,10 @@
 # v3432 2016-01-20
-- s3_file Improve URL generation by using region and improving virtual domain style addressing
-- s3_file Add a 5 second sleep between each retry
-- s3_file Enable retry for all kind of Exceptions
+- Improve handling of special characters in bucket names
+- Update s3_file to version 2.6.6
 - Skip mounting of volumes with no specified mount point
-- Always restart Unicorn instead of a stop and start to prevent downtime during deploys.
+- Always restart Unicorn instead of a stop and start to prevent downtime during deploys
 - Always update custom cookbook for setup command
-- After creating RAID arrays update initramfs to prevent device mapping issues on reboot.
+- After creating RAID arrays update initramfs to prevent device mapping issues on reboot
 
 # v3431 2015-12-22
 - Fixed passenger and unicorn gem installation issue
