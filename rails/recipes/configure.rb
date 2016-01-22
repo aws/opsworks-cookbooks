@@ -19,43 +19,6 @@ node[:deploy].each do |application, deploy|
     include_recipe "opsworks_postgresql::client_install"
   end
 
-
-  execute "create initializiers directory in shared/config" do
-    command "mkdir -p #{deploy[:deploy_to]}/shared/config/initializers/"
-  end
-
-
-  template "#{deploy[:deploy_to]}/shared/config/initializers/devise.rb" do
-    source 'quantum/devise.rb.erb'
-    cookbook 'rails'
-    mode "0660"
-    group deploy[:group]
-    owner deploy[:user]
-    variables(:quantum_settings => node[:quantum_settings])
-
-    notifies :run, "execute[restart Rails app #{application}]"
-
-    only_if do
-      File.directory?("#{deploy[:deploy_to]}/shared/config/initializers")
-    end
-  end
-
-  template "#{deploy[:deploy_to]}/shared/config/initializers/secrets.yml" do
-    source 'quantum/secrets.yml.erb'
-    cookbook 'rails'
-    mode "0660"
-    group deploy[:group]
-    owner deploy[:user]
-    variables(:quantum_settings => node[:quantum_settings])
-
-    notifies :run, "execute[restart Rails app #{application}]"
-
-    only_if do
-      File.directory?("#{deploy[:deploy_to]}/shared/config/initializers")
-    end
-  end
-
-
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
     source "database.yml.erb"
     cookbook 'rails'
