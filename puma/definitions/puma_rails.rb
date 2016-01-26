@@ -1,4 +1,4 @@
-define :opsworks_rails do
+define :puma_rails do
   deploy = params[:deploy_data]
   application = params[:app]
 
