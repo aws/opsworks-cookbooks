@@ -59,6 +59,7 @@ define :puma_deploy do
     end
   end
 
+  puma = node.default[:puma]
 
   if deploy[:scm] && deploy[:scm][:scm_type] != 'other'
     Chef::Log.debug("Checking out source code of application #{application}")
@@ -78,7 +79,7 @@ define :puma_deploy do
       symlinks(deploy[:symlinks]) unless deploy[:symlinks].nil?
       action deploy[:action]
 
-      retart_command "#{deploy[:puma][:restart_command]}"
+      restart_command "#{puma[:restart_command]}"
 
       case deploy[:scm][:scm_type].to_s
       when 'git'
