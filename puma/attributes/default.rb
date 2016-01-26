@@ -1,4 +1,4 @@
-normal[:puma][:recipe] = "puma::default"
-normal[:puma][:needs_reload] = true
-normal[:puma][:service] = 'puma'
-normal[:puma][:restart_command] = '../../shared/scripts/puma clean-restart'
+default[:puma][:recipe] = "puma::default"
+default[:puma][:needs_reload] = true
+default[:puma][:service] = 'puma'
+default[:puma][:restart_command] = '../../shared/scripts/puma clean-restart'
