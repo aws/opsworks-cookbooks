@@ -78,7 +78,7 @@ define :puma_deploy do
       symlinks(deploy[:symlinks]) unless deploy[:symlinks].nil?
       action deploy[:action]
 
-      retart_command "sleep #{deploy[:sleep_before_restart]} && #{deploy[:puma][:restart_command]}"
+      retart_command "#{deploy[:puma][:restart_command]}"
 
       case deploy[:scm][:scm_type].to_s
       when 'git'
