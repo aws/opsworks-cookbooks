@@ -1,0 +1,109 @@
+#!/usr/local/bin/ruby
+
+require 'etc'
+require 'digest/md5'
+
+ROOT_PATH="<%= @deploy[:deploy_to] %>"
+APP_NAME="<%= @application %>"
+PID_PATH="<%= @deploy[:deploy_to] %>/shared/pids/puma.pid"
+
+def run_and_print_command(command)
+  puts command
+  system(command) || exit(1)
+end
+
+def run_and_ignore_exitcode_and_print_command(command)
+  puts command
+  system(command)
+end
+
+def puma_running?
+  if File.exists?(PID_PATH) && (pid = File.read(PID_PATH).chomp) && system("ps aux | grep #{pid} | grep -v grep > /dev/null")
+    pid
+  else
+    false
+  end
+end
+
+def different_gemfile?
+  if File.exists?("#{ROOT_PATH}/current/Gemfile")
+    dir = Dir["#{ROOT_PATH}/releases/*"]
+    previous_release_path = dir.sort[dir.size-2]
+    if !previous_release_path.nil? && File.exists?("#{previous_release_path}/Gemfile")
+      return Digest::MD5.hexdigest(File.read("#{ROOT_PATH}/current/Gemfile")) != Digest::MD5.hexdigest(File.read("#{previous_release_path}/Gemfile"))
+    end
+  end
+  false
+end
+
+def start_puma
+  if File.exists?("#{ROOT_PATH}/current/Gemfile")
+    puts "OpsWorks: Gemfile detected - running puma with bundle exec"
+    run_and_ignore_exitcode_and_print_command "cd #{ROOT_PATH}/current && /usr/local/bin/bundle exec puma --env <%= @deploy[:rails_env] %> --daemonize -c #{ROOT_PATH}/shared/config/puma.conf"
+  else
+    puts "OpsWorks: no Gemfile detected - running plain puma"
+    run_and_ignore_exitcode_and_print_command "cd #{ROOT_PATH}/current && puma --env <%= @deploy[:rails_env] %> --daemonize -c #{ROOT_PATH}/shared/config/puma.conf"
+  end
+end
+
+def stop_puma
+  if puma_running?
+    if run_and_ignore_exitcode_and_print_command "kill -QUIT `cat #{PID_PATH}`"
+      `rm #{PID_PATH}`
+    end
+  else
+    puts "You can't stop puma, because it's not running"
+  end
+end
+
+def restart_puma
+	if puma_running?
+		run_and_ignore_exitcode_and_print_command "kill -USR2 `cat #{PID_PATH}`"
+	else
+		start_puma
+	end
+end
+
+def clean_restart
+  if different_gemfile?
+    puts "Found a previous version with a different Gemfile: Doing a stop & start"
+    stop_puma if puma_running?
+    start_puma
+  else
+    puts "No previous version with a different Gemfile found. Assuming a quick restart without re-loading gems is save"
+    restart_puma
+  end
+end
+
+def status_puma
+	if pid = puma_running?
+		puts "puma <%= @application %> running with PID #{pid}"
+		return true
+	else
+		puts "puma <%= @application %> not running"
+		return false
+  end
+end
+
+Process::Sys.setuid(uid = Etc.getpwnam("<%= @deploy[:user] %>").uid)
+puts "Set puma process UID to #{uid}"
+
+case ARGV[0]
+when "start"
+  puts "Starting puma #{APP_NAME}"
+  start_puma
+when "stop"
+  puts "Stopping puma #{APP_NAME}"
+  stop_puma
+when "status"
+  status_puma
+when "restart"
+  restart_puma
+when "clean-restart"
+  clean_restart
+else
+  puts "Usage: {start|stop|status|restart|clean-restart}"
+  exit 1
+end
+
+exit 0

@@ -61,6 +61,34 @@ define :puma_deploy do
 
   puma = node.default[:puma]
 
+  template "#{deploy[:deploy_to]}/shared/scripts/puma" do
+    mode '0755'
+    owner deploy[:user]
+    group deploy[:group]
+    source "puma.service.erb"
+    variables(:deploy => deploy, :application => application)
+  end
+
+  service "unicorn_#{application}" do
+    start_command "#{deploy[:deploy_to]}/shared/scripts/puma start"
+    stop_command "#{deploy[:deploy_to]}/shared/scripts/puma stop"
+    restart_command "#{deploy[:deploy_to]}/shared/scripts/puma restart"
+    status_command "#{deploy[:deploy_to]}/shared/scripts/puma status"
+    action :nothing
+  end
+
+  template "#{deploy[:deploy_to]}/shared/config/puma.conf" do
+    mode '0644'
+    owner deploy[:user]
+    group deploy[:group]
+    source "puma.conf.erb"
+    variables(
+      :deploy => deploy,
+      :application => application,
+      :environment => OpsWorks::Escape.escape_double_quotes(deploy[:environment_variables])
+    )
+  end
+
   if deploy[:scm] && deploy[:scm][:scm_type] != 'other'
     Chef::Log.debug("Checking out source code of application #{application}")
     deploy deploy[:deploy_to] do
