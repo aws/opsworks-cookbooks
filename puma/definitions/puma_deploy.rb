@@ -77,7 +77,7 @@ define :puma_deploy do
     action :nothing
   end
 
-  template "#{deploy[:deploy_to]}/shared/config/puma.conf" do
+  template "#{deploy[:deploy_to]}/shared/config/puma.rb" do
     mode '0644'
     owner deploy[:user]
     group deploy[:group]

@@ -39,10 +39,10 @@ end
 def start_puma
   if File.exists?("#{ROOT_PATH}/current/Gemfile")
     puts "OpsWorks: Gemfile detected - running puma with bundle exec"
-    run_and_ignore_exitcode_and_print_command "cd #{ROOT_PATH}/current && /usr/local/bin/bundle exec puma --env <%= @deploy[:rails_env] %> --daemonize -c #{ROOT_PATH}/shared/config/puma.conf"
+    run_and_ignore_exitcode_and_print_command "cd #{ROOT_PATH}/current && /usr/local/bin/bundle exec puma --env <%= @deploy[:rails_env] %> -C #{ROOT_PATH}/shared/config/puma.rb"
   else
     puts "OpsWorks: no Gemfile detected - running plain puma"
-    run_and_ignore_exitcode_and_print_command "cd #{ROOT_PATH}/current && puma --env <%= @deploy[:rails_env] %> --daemonize -c #{ROOT_PATH}/shared/config/puma.conf"
+    run_and_ignore_exitcode_and_print_command "cd #{ROOT_PATH}/current && puma --env <%= @deploy[:rails_env] %> -C #{ROOT_PATH}/shared/config/puma.rb"
   end
 end
 
