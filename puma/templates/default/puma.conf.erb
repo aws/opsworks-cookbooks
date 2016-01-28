@@ -3,6 +3,9 @@ workers 4
 
 worker_timeout 60
 
+pidfile '<%= @deploy[:deploy_to] %>/shared/pids/puma.pid'
+bind 'unix://<%= @deploy[:deploy_to] %>/shared/sockets/puma.sock'
+
 preload_app!
 
 on_worker_boot do
