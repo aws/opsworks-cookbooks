@@ -33,6 +33,20 @@ node[:deploy].each do |application, deploy|
     command "mkdir -p #{deploy[:deploy_to]}/shared/config/initializers/"
   end
 
+  template "#{deploy[:deploy_to]}/shared/config/initializers/devise.rb" do
+    source 'quantum/devise.rb.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+        :quantum_settings => node[:quantum_settings]
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config/initializers")
+    end
+  end
+
+
   template "#{deploy[:deploy_to]}/shared/config/initializers/aws.rb" do
     source 'quantum/aws.rb.erb'
     mode '0660'
@@ -58,4 +72,27 @@ node[:deploy].each do |application, deploy|
       File.exists?("#{deploy[:deploy_to]}/shared/config/initializers")
     end
   end
+
+  rails_env = deploy[:rails_env]
+  current_path = deploy[:current_path]
+
+  Chef::Log.info("Precompiling Rails assets with environment #{rails_env}")
+
+  execute 'rake assets:precompile' do
+    cwd current_path
+    user 'deploy'
+    command 'bundle exec rake assets:precompile'
+    environment 'RAILS_ENV' => rails_env
+  end
+
+  execute "restart Server" do
+    cwd deploy[:current_path]
+    command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:rails_stack][:restart_command]}"
+    action :run
+
+    only_if do
+      File.exists?(deploy[:current_path])
+    end
+  end
+
 end
