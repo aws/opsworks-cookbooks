@@ -1,7 +1,7 @@
 define :puma_deploy_dir do
 
   directory "#{params[:path]}/shared" do
-    group params[:group]
+    group 'nginx'
     owner params[:user]
     mode 0770
     action :create
@@ -12,7 +12,7 @@ define :puma_deploy_dir do
 
   ['log','config','system','pids','scripts','sockets'].each do |dir_name|
     directory "#{params[:path]}/shared/#{dir_name}" do
-      group params[:group]
+      group 'nginx'
       owner params[:user]
       mode 0770
       action :create
