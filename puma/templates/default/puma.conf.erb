@@ -1,0 +1,23 @@
+threads 8, 32
+workers 4
+
+worker_timeout 60
+
+daemonize
+
+pidfile '<%= @deploy[:deploy_to] %>/shared/pids/puma.pid'
+bind 'unix://<%= @deploy[:deploy_to] %>/shared/sockets/puma.sock'
+
+stdout_redirect '<%= @deploy[:deploy_to] %>/shared/log/stdout', '<%= @deploy[:deploy_to] %>/shared/log/stderr', true
+
+preload_app!
+
+on_worker_boot do
+  ActiveSupport.on_load(:active_record) do
+    ActiveRecord::Base.establish_connection
+  end
+end
+
+before_fork do
+  ActiveRecord::Base.connection_pool.disconnect!
+end
