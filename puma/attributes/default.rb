@@ -16,3 +16,5 @@ default[:puma][:delay] = 0.5
 default[:puma][:accept_filter] = "httpready"
 
 include_attribute "deploy::deploy"
+
+ault[:opsworks][:deploy_user][:group] = 'nginx'
