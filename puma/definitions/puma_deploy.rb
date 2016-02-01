@@ -1,4 +1,5 @@
 define :puma_deploy do
+  if !params[:app].empty?
   application = params[:app]
   deploy = params[:deploy_data]
 
@@ -180,4 +181,5 @@ define :puma_deploy do
     mode 0644
     variables( :log_dirs => ["#{deploy[:deploy_to]}/shared/log" ] )
   end
+end
 end
