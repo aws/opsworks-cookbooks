@@ -85,6 +85,13 @@ node[:deploy].each do |application, deploy|
     environment 'RAILS_ENV' => rails_env
   end
 
+  execute "updating crontab" do
+    user deploy[:user]
+    cwd "#{deploy[:deploy_to]}/current"
+    command "bundle exec whenever -w"
+    action :run
+  end
+  
   execute "restart Server" do
     cwd deploy[:current_path]
     command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:rails_stack][:restart_command]}"
