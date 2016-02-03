@@ -38,4 +38,13 @@ node[:deploy].each do |application, deploy|
       end
     end
   end
+
+  directory '/var/log/resque' do
+    owner deploy[:user]
+    group deploy[:group]
+    mode '755'
+    action :create
+    recursive true
+  end
+
 end
