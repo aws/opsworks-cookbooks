@@ -90,6 +90,7 @@ node[:deploy].each do |application, deploy|
     cwd "#{deploy[:deploy_to]}/current"
     command "bundle exec whenever -w"
     action :run
+    environment 'RAILS_ENV' => rails_env
   end
   
   execute "restart Server" do
