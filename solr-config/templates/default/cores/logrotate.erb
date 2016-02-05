@@ -1,4 +1,4 @@
-<% @log_dirs.each do |dir| %><%= dir %>/*.log <% end %> {
+<%= @log_dirs %>/*.log  {
         daily
         missingok
         rotate <%= node[:logrotate][:rotate] %>

@@ -1,5 +1,5 @@
-upstream unicorn_<%= @application[:domains].first %> {
- server unix:<%= @application[:deploy_to]%>/shared/sockets/unicorn.sock fail_timeout=0;
+upstream puma_<%= @application[:domains].first %> {
+ server unix:<%= @application[:deploy_to]%>/shared/sockets/puma.sock fail_timeout=0;
 }
 
 server {
@@ -23,18 +23,10 @@ server {
   <% end %>
 
   location / {
-    try_files $uri/index.html $uri/index.htm @unicorn;
+    try_files $uri/index.html $uri/index.htm @puma;
   }
 
-  location ~ \.(svg|ttf|ttc|otf|eot|woff|woff2)$ {
-      if ($http_origin ~* (https?://[^/]*\.virtualshelf\.net(:[0-9]+)?|https?://[^/]*\.estantevitual\.com\.br(:[0-9]+)?)) {
-        add_header 'Access-Control-Allow-Origin' "$http_origin";
-    }
-  }
-
-
-
-  location @unicorn {
+  location @puma {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_redirect off;
@@ -46,10 +38,8 @@ server {
     proxy_send_timeout <%= node[:nginx][:proxy_send_timeout] %>;
   <% end -%>
 
-    # If you don't find the filename in the static files
-    # Then request it from the unicorn server
     if (!-f $request_filename) {
-      proxy_pass http://unicorn_<%= @application[:domains].first %>;
+      proxy_pass http://puma_<%= @application[:domains].first %>;
       break;
     }
   }
@@ -89,16 +79,10 @@ server {
   <% end %>
 
   location / {
-    try_files $uri/index.html $uri/index.htm @unicorn;
+    try_files $uri/index.html $uri/index.htm @puma;
   }
 
-  location ~ \.(svg|ttf|ttc|otf|eot|woff|woff2)$ {
-      if ($http_origin ~* (https?://[^/]*\.virtualshelf\.net(:[0-9]+)?|https?://[^/]*\.estantevitual\.com\.br(:[0-9]+)?)) {
-        add_header 'Access-Control-Allow-Origin' "$http_origin";
-    }
-  }
-
-  location @unicorn {
+  location @puma {
     proxy_set_header X-Forwarded-Proto https;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
@@ -111,10 +95,8 @@ server {
     proxy_send_timeout <%= node[:nginx][:proxy_send_timeout] %>;
   <% end -%>
 
-    # If you don't find the filename in the static files
-    # Then request it from the unicorn server
     if (!-f $request_filename) {
-      proxy_pass http://unicorn_<%= @application[:domains].first %>;
+      proxy_pass http://puma_<%= @application[:domains].first %>;
       break;
     }
   }

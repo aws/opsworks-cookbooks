@@ -20,6 +20,13 @@ node[:deploy].each do |application, deploy|
   settings = node[:resque][application]
   # configure rails_env in case of non-rails app
   rack_env = deploy[:rails_env] || settings[:rack_env] || settings[:rails_env]
+  
+  template "/etc/init/resque-#{application}-scheduler.conf" do
+    source "resque-scheduler.conf.erb"
+    mode '0644'
+    variables application: application, rack_env: rack_env, deploy: deploy
+  end
+  
   settings[:workers].each do |queue, quantity|
 
     quantity.times do |idx|
@@ -31,4 +38,13 @@ node[:deploy].each do |application, deploy|
       end
     end
   end
+
+  directory '/var/log/resque' do
+    owner deploy[:user]
+    group deploy[:group]
+    mode '755'
+    action :create
+    recursive true
+  end
+
 end
