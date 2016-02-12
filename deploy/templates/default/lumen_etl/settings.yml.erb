@@ -1,0 +1,26 @@
+default: &default
+  rollbar:
+    token: <%= @etl_settings[:rollbar][:token] %>
+
+production:
+  <<: *default
+  hyena:
+    adapter: mysql
+    host: <%= @etl_settings[:hyena][:host] %>
+    username: <%= @etl_settings[:hyena][:username] %>
+    password: <%= @etl_settings[:hyena][:password] %>
+    database: <%= @etl_settings[:hyena][:database] %>
+
+  joomla:
+    adapter: mysql
+    host: <%= @etl_settings[:joomla][:host] %>
+    username: <%= @etl_settings[:joomla][:username] %>
+    password: <%= @etl_settings[:joomla][:password] %>
+    database: <%= @etl_settings[:joomla][:database] %>
+
+  lumen:
+    adapter: postgresql
+    host: <%= @etl_settings[:lumen][:host] %>
+    username: <%= @etl_settings[:lumen][:username] %>
+    password: <%= @etl_settings[:lumen][:password] %>
+    database: <%= @etl_settings[:lumen][:database] %>
