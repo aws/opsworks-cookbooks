@@ -43,7 +43,7 @@
 
   <lib dir="../../ext-lib" regex="postgresql-9.3.*\.jar" />
   <lib dir="../../ext-lib" regex="mysql-connector-java-5.1.*\.jar" />
-  <lib dir="../../ext-lib" regex="solr-dataimporthandler-5.3.0.jar" /> 
+  <lib dir="../../ext-lib" regex="solr-dataimporthandler-5.3.2.jar" />
 
 
   <!-- para funcionar no solr de staging -->
