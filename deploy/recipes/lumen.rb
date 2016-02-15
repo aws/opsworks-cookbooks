@@ -20,6 +20,19 @@ node[:deploy].each do |application, deploy|
     command "mkdir -p #{deploy[:deploy_to]}/shared/config/initializers/"
   end
 
+  template "#{deploy[:deploy_to]}/shared/config/initializers/rollbar.rb" do
+    source 'lumen/rollbar.rb.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+        :lumen_settings => node[:lumen_settings]
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config/initializers")
+    end
+  end
+
   rails_env = deploy[:rails_env]
   current_path = deploy[:current_path]
 
