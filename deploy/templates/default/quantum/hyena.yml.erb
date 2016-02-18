@@ -1,0 +1,14 @@
+default: &default
+  adapter: mysql
+  host: '<%= @quantum_settings[:hyena][:host] %>'
+  username: '<%= @quantum_settings[:hyena][:username] %>'
+  password: '<%= @quantum_settings[:hyena][:password] %>'
+  database: '<%= @quantum_settings[:hyena][:database] %>'
+
+
+staging:
+  <<: *default
+
+production:
+  <<: *default
+  
