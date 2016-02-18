@@ -17,7 +17,13 @@
 include_attribute 'deploy'
 include_attribute 'opsworks_commons::default'
 
-default[:opsworks_nodejs][:version] = '0.12.9'
+# This value is only to give some sane initialization. This value:
+#  - May not point to the latest available version
+#  - May not be valid for the used OS
+#  - Will be overwritten by the value set on the OpsWorks NodeJS layer of your Stack
+#  - May be overwritten by a value set in your Stack's custom JSON
+default[:opsworks_nodejs][:version] = '0.12.10'
+
 default[:opsworks_nodejs][:pkgrelease] = '1'
 
 arch = RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'
