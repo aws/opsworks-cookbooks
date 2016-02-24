@@ -18,10 +18,15 @@
 #
 
 if platform?('debian', 'ubuntu')
-  package 'libapache2-mod-fcgid'
+  package 'libapache2-mod-fcgid' do
+    retries 3
+    retry_delay 5
+  end
 elsif platform?('centos', 'redhat', 'fedora', 'amazon')
   package 'mod_fcgid' do
     notifies :run, "execute[generate-module-list]", :immediately
+    retries 3
+    retry_delay 5
   end
 
   file "#{node[:apache][:dir]}/conf.d/fcgid.conf" do
@@ -30,7 +35,11 @@ elsif platform?('centos', 'redhat', 'fedora', 'amazon')
   end
 elsif platform?('suse')
   apache_lib_path = RUBY_PLATFORM.match(/64/) ? '/usr/lib64/httpd' : '/usr/lib/httpd'
-  package 'httpd-devel'
+  package "httpd-devel" do
+    retries 3
+    retry_delay 5
+  end
+
   bash 'install-fcgid' do
     code <<-EOH
 (cd /tmp; wget http://superb-east.dl.sourceforge.net/sourceforge/mod-fcgid/mod_fcgid.2.2.tgz)

@@ -29,13 +29,22 @@ include_recipe 'apache2::service'
 
 case node[:platform]
 when "centos","redhat","amazon"
-  package "httpd-devel"
+  package "httpd-devel" do
+    retries 3
+    retry_delay 5
+  end
+
   if node['platform_version'].to_f < 6.0
-    package 'curl-devel'
+    package "curl-devel" do
+      retries 3
+      retry_delay 5
+    end
   else
     ['libcurl-devel','openssl-devel','zlib-devel'].each do |pkg|
       package pkg do
         action :upgrade
+        retries 3
+        retry_delay 5
       end
     end
   end
@@ -43,11 +52,16 @@ else
   ['apache2-prefork-dev','libapr1-dev'].each do |pkg|
     package pkg do
       action :upgrade
+        retries 3
+        retry_delay 5
     end
   end
 
   if node[:passenger][:version] >= '3.0.0'
-    package 'libcurl4-openssl-dev'
+    package "libcurl4-openssl-dev" do
+      retries 3
+      retry_delay 5
+    end
   end
 end
 

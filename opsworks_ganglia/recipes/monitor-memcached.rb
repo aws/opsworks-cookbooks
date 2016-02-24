@@ -1,10 +1,22 @@
 case node["platform_family"]
 when "rhel"
-  package 'perl-XML-Simple'
-  package 'perl-Cache-Memcached'
+  package "perl-XML-Simple" do
+    retries 3
+    retry_delay 5
+  end
+  package "perl-Cache-Memcached" do
+    retries 3
+    retry_delay 5
+  end
 when "debian"
-  package 'libxml-simple-perl'
-  package 'libcache-memcached-perl'
+  package "libxml-simple-perl" do
+    retries 3
+    retry_delay 5
+  end
+  package "libcache-memcached-perl" do
+    retries 3
+    retry_delay 5
+  end
 end
 
 template "/etc/ganglia/scripts/memcached" do

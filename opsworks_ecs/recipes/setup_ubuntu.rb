@@ -14,5 +14,7 @@ end
 execute "apt-get update"
 
 package "docker-engine" do
+  retries 3
+  retry_delay 5
   options "--no-install-recommends"
 end

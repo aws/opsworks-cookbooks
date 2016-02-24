@@ -1,4 +1,7 @@
-package 'socat'
+package "socat" do
+  retries 3
+  retry_delay 5
+end
 
 template "/etc/ganglia/scripts/haproxy" do
   source "haproxy.rb.erb"

@@ -15,7 +15,10 @@ template node["cloudwatchlogs"]["config_file"] do
 end
 
 if platform?("amazon")
-  package "awslogs"
+  package "awslogs" do
+    retries 3
+    retry_delay 5
+  end
 
   template "#{node['cloudwatchlogs']['home_dir']}/awscli.conf" do
     source "awscli.conf.erb"
@@ -32,7 +35,10 @@ else
     retries 3
   end
 
-  package "python"
+  package "python" do
+    retries 3
+    retry_delay 5
+  end
 
   execute "Install CloudWatch Logs agent" do
     command "/opt/aws/cloudwatch/awslogs-agent-setup.py -n -r '#{node['opsworks']['instance']['region']}' -c '#{node['cloudwatchlogs']['config_file']}'"

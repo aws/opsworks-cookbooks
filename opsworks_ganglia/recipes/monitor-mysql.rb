@@ -3,6 +3,8 @@ package 'python mysql support' do
     "rhel" => 'MySQL-python',
     "debian" => 'python-mysqldb'
   )
+  retries 3
+  retry_delay 5
 end
 
 template '/etc/ganglia/conf.d/mysql.pyconf' do

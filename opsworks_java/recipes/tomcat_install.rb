@@ -11,6 +11,8 @@ tomcat_pkgs = case node["platform_family"]
 tomcat_pkgs.each do |pkg|
   package pkg do
     action :install
+    retries 3
+    retry_delay 5
   end
 end
 

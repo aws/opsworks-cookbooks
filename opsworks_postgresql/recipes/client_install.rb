@@ -4,6 +4,8 @@ if node[:opsworks_postgresql] && ([:devel_package, :client_package].all? {|s| no
   [node[:opsworks_postgresql][:devel_package], node[:opsworks_postgresql][:client_package]].each do |pkg|
     package pkg do
       action :install
+      retries 3
+      retry_delay 5
     end
   end
 else
@@ -14,6 +16,8 @@ else
       "ubuntu" => {"default" => "libpq-dev"}
     )
     action :install
+    retries 3
+    retry_delay 5
   end
 
   package "postgresql-client" do
@@ -22,5 +26,7 @@ else
       "default" => "postgresql-client"
     )
     action :install
+    retries 3
+    retry_delay 5
   end
 end

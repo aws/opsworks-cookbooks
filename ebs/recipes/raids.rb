@@ -1,5 +1,12 @@
-package 'mdadm'
-package 'lvm2'
+package "mdadm" do
+  retries 3
+  retry_delay 5
+end
+
+package "lvm2" do
+  retries 3
+  retry_delay 5
+end
 require "mkmf"
 
 execute 'Load device mapper kernel module' do
