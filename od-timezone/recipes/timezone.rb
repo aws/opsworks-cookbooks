@@ -5,6 +5,9 @@ template "/etc/sysconfig/clock" do
   group "root"
   mode 0644
   variables(:clock => node[:timezone][:clock])
+  only_if do
+    File.directory?("/etc/sysconfig")
+  end
 end
 
 link "/etc/localtime" do
