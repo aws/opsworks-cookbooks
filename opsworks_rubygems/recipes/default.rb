@@ -1,5 +1,5 @@
 remote_file "/tmp/rubygems-#{node[:opsworks_rubygems][:version]}.tgz" do
-  source "http://production.cf.rubygems.org/rubygems/rubygems-#{node[:opsworks_rubygems][:version]}.tgz"
+  source "http://rubygems.org/rubygems/rubygems-#{node[:opsworks_rubygems][:version]}.tgz"
   not_if do
     ::File.exists?('/usr/local/bin/gem') && `/usr/local/bin/gem -v`.strip == node[:opsworks_rubygems][:version]
   end
