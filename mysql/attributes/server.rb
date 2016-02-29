@@ -26,6 +26,9 @@ default[:mysql][:server_root_password] = root_pw
 if rhel7?
   default[:mysql][:name] = "mysql55-mysql"
   default[:mysql][:bin_dir] = "/opt/rh/mysql55/root/usr/bin"
+  if platform?('centos') && node[:platform_version].to_f > 7
+    default[:mysql][:bin_dir] = "/bin"
+  end
 else
   default[:mysql][:name] = "mysql"
   default[:mysql][:bin_dir] = "/usr/bin"

@@ -4,7 +4,11 @@ mysql_name = node[:mysql][:name] || "mysql"
 service "mysql" do
   case node[:platform]
   when "redhat", "centos", "fedora", "amazon"
-    service_name "#{mysql_name}d"
+    if platform?('centos') && node[:platform_version].to_i >= 7
+      service_name "mariadb"
+	else
+	  service_name "#{mysql_name}d"
+    end
   else
     service_name "mysql"
   end

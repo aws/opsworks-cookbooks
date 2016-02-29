@@ -17,7 +17,11 @@ end
 
 case node[:platform]
 when "redhat", "centos", "fedora", "amazon"
-  package mysql_name
+  if rhel7?
+    package "mariadb"
+  else
+    package mysql_name
+  end
 else "ubuntu"
   package "mysql-client"
 end
