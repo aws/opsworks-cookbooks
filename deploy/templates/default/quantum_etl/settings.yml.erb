@@ -1,4 +1,5 @@
 default: &default
+  product_guarantee_fallback: <%= @etl_settings[:product_guarantee_fallback] %>
   rollbar:
     token: <%= @etl_settings[:rollbar][:token] %>
 
