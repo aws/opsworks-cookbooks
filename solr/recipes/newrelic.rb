@@ -14,5 +14,5 @@ end
 
 template "#{root_path}/newrelic/newrelic.yml" do
   source "newrelic.yml.erb"
-  variables(app_name: node["opsworks"]["stack"]["name"])
+  variables(app_name: "node["opsworks"]["stack"]["name"] - Solr")
 end
