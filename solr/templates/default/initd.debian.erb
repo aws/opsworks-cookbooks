@@ -10,31 +10,8 @@
 # Description:       Start/stop Solr Server
 ### END INIT INFO
 
-PATH="/sbin:/usr/sbin:/bin:/usr/bin"
-SOLR_HOME="<%= @solr_home %>"
 SOLR_DIR="<%= @solr_dir %>"
-PORT="<%= @port %>"
-PIDFILE="<%= @pid_file %>"
-LOGFIlE="<%= @log_file %>"
-USER="<%= @user %>"
-JAVA_OPTS="<%= @java_options %>"
-DESC="start/stop Solr Server"
-NAME="solr"
-DAEMON="/usr/bin/java"
-DAEMON_ARGS="$JAVA_OPTS -Dsolr.solr.home=$SOLR_HOME -Djetty.port=$PORT -jar start.jar"
-SCRIPTNAME="/etc/init.d/$NAME"
 NEWRELIC_PATH="$SOLR_DIR/newrelic/newrelic.jar"
-
-# Exit gracefully if the package is not installed
-[ -x "$DAEMON" ] || exit 0
-
-# Load the VERBOSE setting and other rcS variables
-. /lib/init/vars.sh
-
-# Define LSB log_* functions.
-# Depend on lsb-base (>= 3.2-14) to ensure that this file is present
-# and status_of_proc is working.
-. /lib/lsb/init-functions
 
 #
 # Function that starts the daemon/service
@@ -48,13 +25,8 @@ do_start()
   if [ -f $NEWRELIC_PATH ]; then
     NEWRELIC=" -javaagent:$NEWRELIC_PATH "
   fi
-
-  start-stop-daemon --start --quiet --pidfile $PIDFILE --chuid $USER --exec $DAEMON --test -- $NEWRELIC $DAEMON_ARGS > /dev/null \
-    || return 1
-  start-stop-daemon --start --quiet --pidfile $PIDFILE --chuid $USER --chdir $SOLR_DIR --background --make-pidfile --exec $DAEMON -- \
-    $NEWRELIC $DAEMON_ARGS \
-    || return 2
-  sleep 2
+  
+  SOLR_OPTS=$NEWRELIC $SOLR_DIR/bin/solr start
 }
 
 #
