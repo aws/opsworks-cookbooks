@@ -550,10 +550,7 @@
 
   <requestHandler name="/get_books" class="solr.SearchHandler">
     <lst name="defaults">
-      <str name="q">
-        (_query_:"{!edismax qf='authors' v=$author q.op='AND'}"
-        AND _query_:"{!edismax qf='title' v=$title q.op=$title_operator}")
-      </str>
+      <str name="q">{!boost b=if(is_moderated,2,1)}(_query_:"{!edismax qf='authors' v=$author q.op='AND'}" AND _query_:"{!edismax qf='title' v=$title q.op=$title_operator}")</str>
       <str name="fl">book_id, authors, title, year, cover</str> 
 
       <str name="group">on</str>
