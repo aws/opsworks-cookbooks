@@ -29,7 +29,7 @@ include_recipe 'apache2::service'
 
 case node[:platform]
 when "centos","redhat","amazon"
-  package "httpd-devel"
+  package node[:apache][:devel_package]
   if node['platform_version'].to_f < 6.0
     package 'curl-devel'
   else

@@ -30,7 +30,7 @@ elsif platform?('centos', 'redhat', 'fedora', 'amazon')
   end
 elsif platform?('suse')
   apache_lib_path = RUBY_PLATFORM.match(/64/) ? '/usr/lib64/httpd' : '/usr/lib/httpd'
-  package 'httpd-devel'
+  package node[:apache][:devel_package]
   bash 'install-fcgid' do
     code <<-EOH
 (cd /tmp; wget http://superb-east.dl.sourceforge.net/sourceforge/mod-fcgid/mod_fcgid.2.2.tgz)
