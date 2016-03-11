@@ -26,8 +26,10 @@ state_file = /var/awslogs/state/agent-state
 #datetime_format = %b %d %H:%M:%S
 #
 
-[<%= node[:opsworks][:stack][:name] %>]
-datetime_format = [%Y-%m-%d %H:%M:%S]
-log_group_name = <%= node[:opsworks][:stack][:name].gsub(' ', '_') %>
-file = <%= File.join(node[:deploy][:deploy_to], 'current', node[:cwlogs][:logfile]) %>
-log_stream_name = <%= node[:opsworks][:instance][:hostname] %>
+<% node[:deploy].each do |application, deploy| %>
+  [<%= [node[:opsworks][:stack][:name],  application].join('_').gsub(' ', '_') %>]
+  datetime_format = [%Y-%m-%d %H:%M:%S]
+  log_group_name = <%= [node[:opsworks][:stack][:name], application].join('_').gsub(' ', '_') %>
+  file = <%= File.join(node[:deploy][application][:deploy_to], 'current', node[:deploy][application][:cwlogs][:logfile]) %>
+  log_stream_name = <%= node[:opsworks][:instance][:hostname] %>
+<% end %>
