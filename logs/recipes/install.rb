@@ -8,6 +8,6 @@ remote_file "/opt/aws/cloudwatch/awslogs-agent-setup.py" do
 end
 
 execute "Install CloudWatch Logs agent" do
-  command "/opt/aws/cloudwatch/awslogs-agent-setup.py -n -r #{node.fetch(:cwlogs_region){'eu-central-1'}} -c /tmp/cwlogs.cfg"
+  command "/opt/aws/cloudwatch/awslogs-agent-setup.py -n -r #{node[:cwlogs_region] || 'eu-central-1'} -c /tmp/cwlogs.cfg"
   not_if { system "pgrep -f aws-logs-agent-setup" }
 end
