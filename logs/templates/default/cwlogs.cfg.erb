@@ -1,0 +1,33 @@
+[general]
+# Path to the AWSLogs agent's state file. Agent uses this file to maintain
+# client side state across its executions.
+state_file = /var/awslogs/state/agent-state
+
+
+## Each log file is defined in its own section. The section name doesn't
+## matter as long as its unique within this file.
+#
+#[kern.log]
+#
+## Path of log file for the agent to monitor and upload.
+#
+#file = /var/log/kern.log
+#
+## Name of the destination log group.
+#
+#log_group_name = kern.log
+#
+## Name of the destination log stream.
+#
+#log_stream_name = {instance_id}
+#
+## Format specifier for timestamp parsing.
+#
+#datetime_format = %b %d %H:%M:%S
+#
+
+[<%= node[:opsworks][:stack][:name] %>]
+datetime_format = [%Y-%m-%d %H:%M:%S]
+log_group_name = <%= node[:opsworks][:stack][:name].gsub(' ', '_') %>
+file = <%= File.join(node[:deploy][:deploy_to], 'current', node[:cwlogs][:logfile]) %>
+log_stream_name = <%= node[:opsworks][:instance][:hostname] %>
