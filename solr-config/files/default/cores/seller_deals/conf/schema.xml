@@ -120,7 +120,7 @@
    <field name="buyer_id" type="int" indexed="false" stored="true" required="true" multiValued="false" />
    <field name="seller_id" type="int" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="items" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
-   <field name="text" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
+   <field name="search" type="text_general" indexed="true" stored="false" required="true" multiValued="true" />
 
    <!-- Dynamic field definitions allow using convention over configuration
        for fields via the specification of patterns to match field names.
@@ -180,13 +180,11 @@
         is added to the index.  It's used either to index the same field differently,
         or to add multiple fields to the same field for easier/faster searching.  -->
 
-   <copyField source="body" dest="text" />
-   <copyField source="items" dest="text" />
-   <copyField source="text" dest="text" />
-   <copyField source="buyer_name" dest="text" />
-   <copyField source="delivery_city" dest="text" />
-   <copyField source="delivery_state" dest="text" />
-   <copyField source="delivery_zip_code" dest="text" />
+   <copyField source="items" dest="search" />
+   <copyField source="buyer_name" dest="search" />
+   <copyField source="delivery_city" dest="search" />
+   <copyField source="delivery_state" dest="search" />
+   <copyField source="delivery_zip_code" dest="search" />
 
 
     <!-- field type definitions. The "name" attribute is
