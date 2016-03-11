@@ -1,0 +1,14 @@
+default: &default
+  rollbar:
+    token: <%= @videl_settings[:rollbar][:token] %>
+
+# Production env is defined in aws stack settings
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+snapci:
+  <<: *default
