@@ -460,7 +460,7 @@
        <int name="rows">10</int>
        <str name="wt">json</str>
        <str name="indent">true</str>
-       <str name="df">text</str>
+       <str name="df">search</str>
      </lst>
 
   </requestHandler>
