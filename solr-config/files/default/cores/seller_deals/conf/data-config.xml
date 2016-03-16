@@ -18,7 +18,7 @@
             vd.dest_cidade as 'delivery_city',
             vd.dest_estado as 'delivery_state',
             vd.dest_cep    as 'delivery_zip_code',
-            v.fenvio       as 'delivery_method'
+            v.fenvio       as 'delivery_method',
             v.total,
             v.comprador    as 'buyer_id',
             v.vendedor     as 'seller_id',
@@ -39,7 +39,7 @@
              vd.dest_cidade as 'delivery_city',
              vd.dest_estado as 'delivery_state',
              vd.dest_cep    as 'delivery_zip_code',
-             v.fenvio       as 'delivery_method'
+             v.fenvio       as 'delivery_method',
              v.total,
              v.comprador    as 'buyer_id',
              v.vendedor     as 'seller_id',
