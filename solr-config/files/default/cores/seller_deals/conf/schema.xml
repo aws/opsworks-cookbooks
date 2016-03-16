@@ -116,6 +116,7 @@
    <field name="delivery_city" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="delivery_state" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="delivery_zip_code" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
+   <field name="delivery_method" type="string" indexed="false" stored="true" required="true" multiValued="false" />
    <field name="total" type="double" indexed="false" stored="true" required="true" multiValued="false" />
    <field name="buyer_id" type="int" indexed="false" stored="true" required="true" multiValued="false" />
    <field name="seller_id" type="int" indexed="true" stored="true" required="true" multiValued="false" />
