@@ -1,7 +1,4 @@
 default: &default
-  rollbar:
-    token: <%= @videl_settings[:rollbar][:token] %>
-
 
 # Production env is defined in aws stack settings
 
@@ -12,3 +9,6 @@ production:
   bucket_region: <%= @videl_settings[:bucket][:region] %>
   access_key_id: <%= @videl_settings[:access_key_id] %>
   secret_access_key: <%= @videl_settings[:secret_access_key] %>
+  rollbar:
+    token: <%= @videl_settings[:rollbar][:token] %>
+    enabled: <%= @videl_settings[:rollbar][:enabled] %>
