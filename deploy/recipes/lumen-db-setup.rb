@@ -17,7 +17,7 @@ node[:deploy].each do |application, deploy|
 
   Chef::Log.info("Rails Db Setup...")
 
-  execute 'rake db:drop db:create db:migrate agreement:create_pdu agreement:create_pcl' do
+  execute 'bin/rake db:drop db:create db:migrate agreement:create_pdu agreement:create_pcl' do
     cwd current_path
     user 'deploy'
     command 'rake db:drop db:create db:migrate agreement:create_pdu agreement:create_pcl'
