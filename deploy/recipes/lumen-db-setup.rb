@@ -20,7 +20,7 @@ node[:deploy].each do |application, deploy|
   execute 'bin/rake db:drop db:create db:migrate agreement:create_pdu agreement:create_pcl' do
     cwd current_path
     user 'deploy'
-    command 'rake db:drop db:create db:migrate agreement:create_pdu agreement:create_pcl'
+    command 'bin/rake db:drop db:create db:migrate agreement:create_pdu agreement:create_pcl'
     environment 'RAILS_ENV' => rails_env
   end
 
