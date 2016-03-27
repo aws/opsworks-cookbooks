@@ -6,7 +6,7 @@ node[:deploy].each do |application, deploy|
   execute "updating crontab" do
     user deploy[:user]
     cwd "#{deploy[:deploy_to]}/current"
-    command "bundle exec whenever -w -s environment=#{node[:quantum_etl_env]}"
+    command "bundle exec whenever -w -s environment=#{deploy[:env]}"
     action :run
   end
 
@@ -17,7 +17,7 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     variables(
         :etl_settings => node[:etl_settings],
-        :etl_env => node[:quantum_etl_env]
+        :etl_env => deploy[:env]
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
