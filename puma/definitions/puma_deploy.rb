@@ -89,6 +89,11 @@ define :puma_deploy do
     )
   end
 
+  puma_web_app do
+    application application
+    deploy deploy
+  end
+
   if deploy[:scm] && deploy[:scm][:scm_type] != 'other'
     Chef::Log.debug("Checking out source code of application #{application}")
     deploy deploy[:deploy_to] do
@@ -163,12 +168,6 @@ define :puma_deploy do
     block do
       ENV['HOME'] = "/root"
     end
-  end
-
-
-  puma_web_app do
-    application application
-    deploy deploy
   end
 
   template "/etc/logrotate.d/opsworks_app_#{application}" do
