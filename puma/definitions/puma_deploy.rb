@@ -112,8 +112,13 @@ define :puma_deploy do
       symlinks(deploy[:symlinks]) unless deploy[:symlinks].nil?
       action deploy[:action]
 
-      restart_command "#{puma[:restart_command]}"
-
+      execute "restarting-app" do
+        command "#{puma[:restart_command]}"
+        action :run
+        retries 5
+        retry_delay 2
+      end
+    
       case deploy[:scm][:scm_type].to_s
       when 'git'
         scm_provider :git
