@@ -70,6 +70,8 @@ define :puma_deploy do
   end
 
   service "unicorn_#{application}" do
+    retries 5
+    retry_delay 2
     start_command "#{deploy[:deploy_to]}/shared/scripts/puma start"
     stop_command "#{deploy[:deploy_to]}/shared/scripts/puma stop"
     restart_command "#{deploy[:deploy_to]}/shared/scripts/puma restart"
