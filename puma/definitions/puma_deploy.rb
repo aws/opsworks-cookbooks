@@ -77,6 +77,7 @@ define :puma_deploy do
     restart_command "#{deploy[:deploy_to]}/shared/scripts/puma restart"
     status_command "#{deploy[:deploy_to]}/shared/scripts/puma status"
     action :nothing
+    notifies :restart, 'service[nginx]', :immediately
   end
 
   template "#{deploy[:deploy_to]}/shared/config/puma.rb" do
