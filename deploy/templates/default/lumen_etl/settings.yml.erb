@@ -1,9 +1,10 @@
 default: &default
+
+<%= @etl_env %>:
+  <<: *default
   rollbar:
     token: <%= @etl_settings[:rollbar][:token] %>
-
-production:
-  <<: *default
+    enabled: <%= @etl_settings[:rollbar][:enabled] %>
   hyena:
     adapter: mysql
     host: <%= @etl_settings[:hyena][:host] %>
