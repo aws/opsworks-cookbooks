@@ -6,24 +6,23 @@ default: &default
     token: <%= @etl_settings[:rollbar][:token] %>
     enabled: <%= @etl_settings[:rollbar][:enabled] %>
   hyena:
-    adapter: mysql
     host: <%= @etl_settings[:hyena][:host] %>
     username: <%= @etl_settings[:hyena][:username] %>
     password: <%= @etl_settings[:hyena][:password] %>
     database: <%= @etl_settings[:hyena][:database] %>
 
   joomla:
-    adapter: mysql
     host: <%= @etl_settings[:joomla][:host] %>
     username: <%= @etl_settings[:joomla][:username] %>
     password: <%= @etl_settings[:joomla][:password] %>
     database: <%= @etl_settings[:joomla][:database] %>
 
   lumen:
-    adapter: postgresql
-    host: <%= @etl_settings[:lumen][:host] %>
-    username: <%= @etl_settings[:lumen][:username] %>
-    password: <%= @etl_settings[:lumen][:password] %>
-    database: <%= @etl_settings[:lumen][:database] %>
-    calculate_rates_agreements_url: <%= @etl_settings[:lumen][:calculate_rates_agreements_url] %>
-    check_status_agreements_url: <%= @etl_settings[:lumen][:check_status_agreements_url] %>
+    db:
+      host: <%= @etl_settings[:lumen][:host] %>
+      user: <%= @etl_settings[:lumen][:username] %>
+      password: <%= @etl_settings[:lumen][:password] %>
+      dbname: <%= @etl_settings[:lumen][:database] %>
+    rest_urls:
+      calculate_rates_agreements: <%= @etl_settings[:lumen][:calculate_rates_agreements_url] %>
+      check_status_agreements: <%= @etl_settings[:lumen][:check_status_agreements_url] %>
