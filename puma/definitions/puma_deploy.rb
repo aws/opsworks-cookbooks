@@ -70,11 +70,14 @@ define :puma_deploy do
   end
 
   service "unicorn_#{application}" do
+    retries 5
+    retry_delay 2
     start_command "#{deploy[:deploy_to]}/shared/scripts/puma start"
     stop_command "#{deploy[:deploy_to]}/shared/scripts/puma stop"
     restart_command "#{deploy[:deploy_to]}/shared/scripts/puma restart"
     status_command "#{deploy[:deploy_to]}/shared/scripts/puma status"
     action :nothing
+    notifies :restart, 'service[nginx]', :immediately
   end
 
   template "#{deploy[:deploy_to]}/shared/config/puma.rb" do
@@ -87,6 +90,11 @@ define :puma_deploy do
       :application => application,
       :environment => OpsWorks::Escape.escape_double_quotes(deploy[:environment_variables])
     )
+  end
+
+  puma_web_app do
+    application application
+    deploy deploy
   end
 
   if deploy[:scm] && deploy[:scm][:scm_type] != 'other'
@@ -107,8 +115,8 @@ define :puma_deploy do
       symlinks(deploy[:symlinks]) unless deploy[:symlinks].nil?
       action deploy[:action]
 
-      restart_command "#{puma[:restart_command]}"
-
+      restart_command "#{puma[:restart_command]} && sleep 10"
+    
       case deploy[:scm][:scm_type].to_s
       when 'git'
         scm_provider :git
@@ -163,12 +171,6 @@ define :puma_deploy do
     block do
       ENV['HOME'] = "/root"
     end
-  end
-
-
-  puma_web_app do
-    application application
-    deploy deploy
   end
 
   template "/etc/logrotate.d/opsworks_app_#{application}" do

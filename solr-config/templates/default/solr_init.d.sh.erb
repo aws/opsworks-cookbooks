@@ -13,7 +13,7 @@
 SOLR_DIR="/opt/solr-<%= @version %>"
 NEWRELIC_PATH="$SOLR_DIR/newrelic/newrelic.jar"
 SOLR_BIN="$SOLR_DIR/bin/solr"
-START_OPT="<%= @solr_java_mem %><%= " -Dsolr.data.dir=#{@solr_data_dir}" unless @solr_data_dir.empty? %>"
+START_OPT="<%= @solr_java_mem %><%= " -Dsolr.data.dir=#{@solr_data_dir}  -Duser.timezone=America/Sao_Paulo" unless @solr_data_dir.empty? %>"
 
 
 # Exit gracefully if the package is not installed
