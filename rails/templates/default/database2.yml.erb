@@ -14,6 +14,9 @@
   <% if @database[:port] -%>
   port: <%= @database[:port].to_i.inspect %>
   <% end -%>
+  <% if @database[:reaping_frequency] -%>
+  reaping_frequency: <%= @database[:reaping_frequency].to_i.inspect %>
+  <% end -%>
   <% end -%>
 <% end %>
 <% @dbs.each do |k, v| -%>
@@ -37,6 +40,9 @@
   <% end -%>
   <% if v["pool"] -%>
   pool: <%= v["pool"].to_i.inspect %>
+  <% end -%>
+  <% if v["reaping_frequency"] -%>
+  reaping_frequency: <%= v["reaping_frequency"].to_i.inspect %>
   <% end -%>
   <% if v["timeout"] -%>
   timeout: <%= v["timeout"].to_i.inspect %>
