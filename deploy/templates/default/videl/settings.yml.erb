@@ -1,8 +1,8 @@
 default: &default
 
-# Production env is defined in aws stack settings
+# production and staging env is defined in aws stack settings
 
-production:
+<%= @videl_env %>:
   <<: *default
   policy_info_url: <%= @videl_settings[:lumen][:host] %>
   bucket_name: <%= @videl_settings[:bucket][:name] %>
