@@ -2,6 +2,13 @@ default: &default
 
 <%= @etl_env %>:
   <<: *default
+   moneta:
+    backend: <%= @etl_settings[:moneta][:backend] %>
+    options: 
+    <% @etl_settings[:moneta][:options].each do |k, v| %>
+      <%= sprintf('%s: %s', k, v) %>
+    <% end %>
+
   rollbar:
     token: <%= @etl_settings[:rollbar][:token] %>
     enabled: <%= @etl_settings[:rollbar][:enabled] %>
