@@ -2,7 +2,7 @@ default: &default
 
 <%= @etl_env %>:
   <<: *default
-   moneta:
+  moneta:
     backend: <%= @etl_settings[:moneta][:backend] %>
     options: 
     <% @etl_settings[:moneta][:options].each do |k, v| %>
