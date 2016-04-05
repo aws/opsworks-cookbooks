@@ -29,7 +29,7 @@ node[:deploy].each do |application, deploy|
     next unless conf[:type] == 'sftp'
 
     template "/home/#{deploy[:user]}/.ssh/#{name}.pem" do
-      source 'sftp.pem.erb'
+      source 'videl/sftp.pem.erb'
       mode '0600'
       owner deploy[:user]
       group deploy[:group]
@@ -37,7 +37,7 @@ node[:deploy].each do |application, deploy|
     end
 
     template "#{deploy[:deploy_to]}/shared/config/#{name}.yml" do
-      source "sftp.yml.erb"
+      source "videl/sftp.yml.erb"
       mode '0660'
       owner deploy[:user]
       group deploy[:group]
