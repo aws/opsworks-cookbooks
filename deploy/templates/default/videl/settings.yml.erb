@@ -5,10 +5,6 @@ default: &default
 <%= @videl_env %>:
   <<: *default
   policy_info_url: <%= @videl_settings[:lumen][:host] %>
-  bucket_name: <%= @videl_settings[:bucket][:name] %>
-  bucket_region: <%= @videl_settings[:bucket][:region] %>
-  access_key_id: <%= @videl_settings[:access_key_id] %>
-  secret_access_key: <%= @videl_settings[:secret_access_key] %>
   rollbar:
     token: <%= @videl_settings[:rollbar][:token] %>
     enabled: <%= @videl_settings[:rollbar][:enabled] %>

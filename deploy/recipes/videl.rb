@@ -26,25 +26,26 @@ node[:deploy].each do |application, deploy|
 
 
   node[:senders].each do |name, conf|
-    next unless conf[:type] == 'sftp'
-
-    template "/home/#{deploy[:user]}/.ssh/#{name}.pem" do
-      source 'videl/sftp.pem.erb'
-      mode '0600'
-      owner deploy[:user]
-      group deploy[:group]
-      variables :private_key => conf[:options][:private_key]
+    if conf.has_key?(:sftp)
+      private_key_file = "/home/#{deploy[:user]}/.ssh/#{name}.pem"
+      template private_key_file do
+        source 'videl/sftp.pem.erb'
+        mode '0600'
+        owner deploy[:user]
+        group deploy[:group]
+        variables :private_key => conf[:sftp][:private_key_file]
+      end
+      conf[:sftp][:private_key_file] = private_key_file
     end
 
     template "#{deploy[:deploy_to]}/shared/config/#{name}.yml" do
-      source "videl/sftp.yml.erb"
+      source "videl/sender.yml.erb"
       mode '0660'
       owner deploy[:user]
       group deploy[:group]
       variables(
           :name => name,
-          :conf => conf,
-          :private_key_file => "/home/#{deploy[:user]}/.ssh/#{name}.pem"
+          :conf => conf
       )
       only_if do
         File.exists?("#{deploy[:deploy_to]}/shared/config")
