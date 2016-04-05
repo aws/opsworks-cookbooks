@@ -30,7 +30,7 @@ when "2.2"
 when "2.1"
   default[:ruby][:major_version] = '2'
   default[:ruby][:minor_version] = '1'
-  default[:ruby][:patch_version] = '8'
+  default[:ruby][:patch_version] = '9'
   default[:ruby][:pkgrelease]    = '1'
 
   default[:ruby][:full_version] = [node[:ruby][:major_version], node[:ruby][:minor_version]].join(".")
