@@ -12,6 +12,7 @@ default: &default
   rollbar:
     token: <%= @etl_settings[:rollbar][:token] %>
     enabled: <%= @etl_settings[:rollbar][:enabled] %>
+  
   hyena:
     host: <%= @etl_settings[:hyena][:host] %>
     username: <%= @etl_settings[:hyena][:username] %>
@@ -23,6 +24,13 @@ default: &default
     username: <%= @etl_settings[:joomla][:username] %>
     password: <%= @etl_settings[:joomla][:password] %>
     database: <%= @etl_settings[:joomla][:database] %>
+
+  jaguar:
+    host: <%= @etl_settings[:jaguar][:host] %>
+    username: <%= @etl_settings[:jaguar][:username] %>
+    password: <%= @etl_settings[:jaguar][:password] %>
+    database: <%= @etl_settings[:jaguar][:database] %>
+
 
   lumen:
     db:
