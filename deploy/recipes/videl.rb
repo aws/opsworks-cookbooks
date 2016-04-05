@@ -23,4 +23,39 @@ node[:deploy].each do |application, deploy|
       File.exists?("#{deploy[:deploy_to]}/shared/config")
     end
   end
+
+
+  node[:senders].each do |name, conf|
+    next unless conf[:type] == 'sftp'
+
+    template "/home/#{deploy[:user]}/.ssh/#{name}.pem" do
+      source 'sftp.pem.erb'
+      mode '0600'
+      owner deploy[:user]
+      group deploy[:group]
+      variables :private_key => conf[:options][:private_key]
+    end
+
+    template "#{deploy[:deploy_to]}/shared/config/#{name}.yml" do
+      source "sftp.yml.erb"
+      mode '0660'
+      owner deploy[:user]
+      group deploy[:group]
+      variables(
+          :name => name,
+          :conf => conf,
+          :private_key_file => "/home/#{deploy[:user]}/.ssh/#{name}.pem"
+      )
+      only_if do
+        File.exists?("#{deploy[:deploy_to]}/shared/config")
+      end
+    end
+
+  end
+
+
+
+
+
+
 end
