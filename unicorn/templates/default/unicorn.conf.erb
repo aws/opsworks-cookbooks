@@ -52,7 +52,7 @@ after_fork do |server, worker|
   end
 
   if defined?(EvMain::EvSuper)
-    EvMain::EvSuper.establish_connection(configurations["evmain_#{Rails.env}"])
+    EvMain::EvSuper.establish_connection("evmain_#{Rails.env}".to_sym)
   end
 
   # if preload_app is true, then you may also want to check and
