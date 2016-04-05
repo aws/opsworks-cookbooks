@@ -61,7 +61,13 @@
             LEFT JOIN bookshelves bs ON bs.id = b.bookshelf_id
             LEFT JOIN skus s ON s.publication_id = p.id
             "
-     deltaImportQuery="SELECT
+            deltaImportQuery="
+            WITH max_covers AS (
+              SELECT DISTINCT ON (publication_id) c.publication_id, first_value(c.cover) OVER wnd as cover , first_value(c.number_of_uploads) OVER wnd as number_of_uploads
+              FROM covers c
+              WINDOW wnd AS (PARTITION BY publication_id ORDER BY number_of_uploads DESC)
+            )
+            SELECT
               md5(concat(b.id, '|', p.id, '|', s.id)) as id,
               is_moderated,
               b.id::text book_id,
@@ -86,7 +92,7 @@
               p.created_at,
               p.updated_at,
               p.deleted_at,
-              p.cover,
+              c.cover,
               p.isbn,
               p.issn,
               p.barcode, 
@@ -100,6 +106,7 @@
               bs.name bookshelf
             FROM books b
             LEFT JOIN publications p ON p.book_id = b.id
+            LEFT JOIN max_covers c ON p.id = c.publication_id
             LEFT JOIN publishers pbrs ON pbrs.id = p.publisher_id
             LEFT JOIN bookshelves bs ON bs.id = b.bookshelf_id
             LEFT JOIN skus s ON s.publication_id = p.id
