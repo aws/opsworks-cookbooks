@@ -26,7 +26,7 @@ node[:deploy].each do |application, deploy|
 
 
   node[:senders].each do |name, conf|
-    sender_config = conf.dupe
+    sender_config = conf.clone
     if conf.has_key?(:sftp)
       private_key_file = "/home/#{deploy[:user]}/.ssh/#{name}.pem"
       template private_key_file do
