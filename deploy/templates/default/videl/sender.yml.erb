@@ -4,6 +4,6 @@
       <% @conf.each do |type, options| %>
         <%= type %>:
           <% options.each do |key, value| %>
-            <%= sprintf('%s: %s', key, value) %>
+            <%= sprintf("%s: '%s'", key, value) %>
           <% end %>
       <% end %>
