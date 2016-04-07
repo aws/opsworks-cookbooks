@@ -45,7 +45,7 @@ node[:deploy].each do |application, deploy|
       group deploy[:group]
       variables(
           :name => name,
-          :conf => node.default[:senders][name]
+          :conf => conf
       )
       only_if do
         File.exists?("#{deploy[:deploy_to]}/shared/config")
