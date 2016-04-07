@@ -26,6 +26,7 @@ node[:deploy].each do |application, deploy|
 
 
   node[:senders].each do |name, conf|
+    sender_config = conf.dupe
     if conf.has_key?(:sftp)
       private_key_file = "/home/#{deploy[:user]}/.ssh/#{name}.pem"
       template private_key_file do
@@ -35,7 +36,7 @@ node[:deploy].each do |application, deploy|
         group deploy[:group]
         variables :private_key => conf[:sftp][:private_key_file]
       end
-      conf[:sftp][:private_key_file] = private_key_file
+      sender_config[:sftp][:private_key_file] = private_key_file
     end
 
     template "#{deploy[:deploy_to]}/shared/config/#{name}.yml" do
@@ -45,7 +46,7 @@ node[:deploy].each do |application, deploy|
       group deploy[:group]
       variables(
           :name => name,
-          :conf => conf
+          :conf => sender_config
       )
       only_if do
         File.exists?("#{deploy[:deploy_to]}/shared/config")
