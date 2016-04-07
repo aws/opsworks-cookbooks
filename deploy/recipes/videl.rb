@@ -36,7 +36,7 @@ node[:deploy].each do |application, deploy|
         group deploy[:group]
         variables :private_key => conf[:sftp][:private_key_file]
       end
-      sender_config[:sftp][:private_key_file] = private_key_file
+      sender_config['sftp']['private_key_file'] = private_key_file
     end
 
     template "#{deploy[:deploy_to]}/shared/config/#{name}.yml" do
