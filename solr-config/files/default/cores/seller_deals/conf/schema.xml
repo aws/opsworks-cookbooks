@@ -182,6 +182,7 @@
         or to add multiple fields to the same field for easier/faster searching.  -->
 
    <copyField source="items" dest="search" />
+   <copyField source="order_id" dest="search" />
    <copyField source="buyer_name" dest="search" />
    <copyField source="delivery_city" dest="search" />
    <copyField source="delivery_state" dest="search" />
