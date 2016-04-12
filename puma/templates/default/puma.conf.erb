@@ -1,5 +1,5 @@
-threads 8, 32
-workers 4
+threads 1, 1
+workers 8
 
 worker_timeout 60
 
@@ -8,7 +8,7 @@ daemonize
 pidfile '<%= @deploy[:deploy_to] %>/shared/pids/puma.pid'
 bind 'unix://<%= @deploy[:deploy_to] %>/shared/sockets/puma.sock'
 
-stdout_redirect '<%= @deploy[:deploy_to] %>/shared/log/stdout', '<%= @deploy[:deploy_to] %>/shared/log/stderr', true
+stdout_redirect '<%= @deploy[:deploy_to] %>/shared/log/stdout.log', '<%= @deploy[:deploy_to] %>/shared/log/stderr.log', true
 
 preload_app!
 

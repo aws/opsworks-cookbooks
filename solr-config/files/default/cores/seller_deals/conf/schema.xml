@@ -116,11 +116,12 @@
    <field name="delivery_city" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="delivery_state" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="delivery_zip_code" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
+   <field name="delivery_method" type="string" indexed="false" stored="true" required="true" multiValued="false" />
    <field name="total" type="double" indexed="false" stored="true" required="true" multiValued="false" />
    <field name="buyer_id" type="int" indexed="false" stored="true" required="true" multiValued="false" />
    <field name="seller_id" type="int" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="items" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
-   <field name="search" type="text_general" indexed="true" stored="false" required="true" multiValued="true" />
+   <field name="search" type="text_general" indexed="true" stored="true" required="true" multiValued="true" />
 
    <!-- Dynamic field definitions allow using convention over configuration
        for fields via the specification of patterns to match field names.
@@ -181,6 +182,7 @@
         or to add multiple fields to the same field for easier/faster searching.  -->
 
    <copyField source="items" dest="search" />
+   <copyField source="order_id" dest="search" />
    <copyField source="buyer_name" dest="search" />
    <copyField source="delivery_city" dest="search" />
    <copyField source="delivery_state" dest="search" />
