@@ -13,5 +13,8 @@
 <% if @database[:port] -%>
   port: <%= @database[:port].to_i.inspect %>
 <% end -%>
+<% if @database[:schema_search_path] -%>
+  schema_search_path: <%= @database[:schema_search_path].to_s.inspect %>
+<% end -%>
 
 <% end %>
