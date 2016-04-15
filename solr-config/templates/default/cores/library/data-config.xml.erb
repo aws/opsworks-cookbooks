@@ -42,7 +42,7 @@
               p.created_at,
               p.updated_at,
               p.deleted_at,
-              c.cover,
+              COALESCE(p.cover, c.cover) as cover,
               p.isbn,
               p.issn,
               p.barcode, 
@@ -110,7 +110,11 @@
             LEFT JOIN publishers pbrs ON pbrs.id = p.publisher_id
             LEFT JOIN bookshelves bs ON bs.id = b.bookshelf_id
             LEFT JOIN skus s ON s.publication_id = p.id
-            WHERE b.id='${dih.delta.id}'"
+            WHERE b.id='${dih.delta.id}' and
+                  b.deleted_at is null and
+                  p.deleted_at is null and
+                  s.deleted_at is null and
+                  s.importing != 'true'"
      deltaQuery="SELECT b.id as id
             FROM books b
             LEFT JOIN publications p ON p.book_id = b.id
@@ -122,6 +126,19 @@
                   pbrs.updated_at &gt; '${dih.last_index_time}' or
                   b.updated_at &gt; '${dih.last_index_time}' or
                   bs.updated_at &gt; '${dih.last_index_time}'
+            "
+      deletedPkQuery="
+            SELECT md5(concat(b.id, '|', p.id, '|', s.id)) as id,
+            FROM books b
+            LEFT JOIN publications p ON p.book_id = b.id
+            LEFT JOIN publishers pbrs ON pbrs.id = p.publisher_id
+            LEFT JOIN bookshelves bs ON bs.id = b.bookshelf_id
+            LEFT JOIN skus s ON s.publication_id = p.id
+            WHERE s.deleted_at &gt; '${dih.last_index_time}' or
+                  p.deleted_at &gt; '${dih.last_index_time}' or
+                  pbrs.deleted_at &gt; '${dih.last_index_time}' or
+                  b.deleted_at &gt; '${dih.last_index_time}' or
+                  bs.deleted_at &gt; '${dih.last_index_time}'
             "
       >
 
