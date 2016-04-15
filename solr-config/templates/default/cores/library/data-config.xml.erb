@@ -55,15 +55,12 @@
               s.created_at sku_created_at,
               bs.name bookshelf
             FROM books b
-            LEFT JOIN publications p ON p.book_id = b.id
+            LEFT JOIN publications p ON (p.book_id = b.id and p.deleted_at is null)
             LEFT JOIN max_covers c ON p.id = c.publication_id
             LEFT JOIN publishers pbrs ON pbrs.id = p.publisher_id
             LEFT JOIN bookshelves bs ON bs.id = b.bookshelf_id
-            LEFT JOIN skus s ON s.publication_id = p.id
-            WHERE b.deleted_at is null AND
-                  p.deleted_at is null AND
-                  s.deleted_at is null AND
-                  s.importing != 'true'
+            LEFT JOIN skus s ON (s.publication_id = p.id and s.deleted_at is null and s.importing != 'true')
+            WHERE b.deleted_at is null
             "
             deltaImportQuery="
             WITH max_covers AS (
