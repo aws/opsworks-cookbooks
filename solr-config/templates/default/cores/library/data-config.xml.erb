@@ -60,6 +60,10 @@
             LEFT JOIN publishers pbrs ON pbrs.id = p.publisher_id
             LEFT JOIN bookshelves bs ON bs.id = b.bookshelf_id
             LEFT JOIN skus s ON s.publication_id = p.id
+            WHERE b.deleted_at is null AND
+                  p.deleted_at is null AND
+                  s.deleted_at is null AND
+                  s.importing != 'true'
             "
             deltaImportQuery="
             WITH max_covers AS (
