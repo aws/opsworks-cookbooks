@@ -33,6 +33,24 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  execute "create initializiers directory in app/views/shared" do
+    command "mkdir -p #{deploy[:deploy_to]}/shared/app/views/shared/"
+  end
+
+  template "#{deploy[:deploy_to]}/shared/app/views/shared/_rollbar.js.erb" do
+    source 'lumen/_rollbar.js.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+        :lumen_settings => node[:lumen_settings]
+        :lumen_env => deploy[:env]
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/app/views/shared")
+    end
+  end
+
   rails_env = deploy[:rails_env]
   current_path = deploy[:current_path]
 
