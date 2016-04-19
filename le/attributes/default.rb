@@ -1,9 +1,11 @@
 # Default
 default['le']['account_key'] = ''
+default['le']['data_bag_name'] = 'le'
+default['le']['data_bag_item_name'] = 'le'
 default['le']['hostname'] = node['hostname']
 
-default['le']['logs_to_follow'] = [{:name => 'unicorn_access', :log => '/srv/www/flatmates_production_final/shared/log/unicorn.stdout.log'},{:name => 'unicorn_error', :log => '/srv/www/flatmates_production_final/shared/log/unicorn.stderr.log'}]
-#default['le']['logs_to_follow'] = [{:name => 'syslog', :log => '/var/log/syslog', :token => '00000000-0000-0000-0000-000000000000'},{:name => 'varlog', :log => '/var/log/*.log', :token => '00000000-1111-0000-0000-000000000000'}]
+default['le']['logs_to_follow'] = [{name: 'unicorn_access', log: '/srv/www/flatmates_staging/shared/log/unicorn.stdout.log'}, {name: 'unicorn_error', log: '/srv/www/flatmates_staging/shared/log/unicorn.stderr.log'}]
+#default['le']['logs_to_follow'] = [{name: 'syslog', log: '/var/log/syslog', token: '00000000-0000-0000-0000-000000000000'},{name: 'varlog', log: '/var/log/*.log', token: '00000000-1111-0000-0000-000000000000'}]
 
 # Datahub
 default['le']['datahub']['enable'] = false
@@ -15,7 +17,3 @@ default['le']['pull-server-side-config'] = true
 
 # PGP Key Server
 default['le']['pgp_key_server'] = 'pgp.mit.edu'
-
-# Debian Release
-
-default['le']['deb'] = node['lsb']['codename']

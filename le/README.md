@@ -25,13 +25,28 @@ Attributes
 ### Default
 
 * `node['le']['account_key']` - your Logentries account_key (this can be found following [this link](https://logentries.com/doc/accountkey/))
+* `node['le']['data_bag_name']` - Name of a data bag containing account key.
+* `node['le']['data_bag_item_name']` - Name of a data bag item containing account key.
 * `node['le']['hostname']` - sets the hostname of the log to the machine name, defaults to `node['hostname']`
-* `node['le']['logs_to_follow']` - An array of logs to follow or a hash of arrays
+* `node['le']['logs_to_follow']` - An array of logs to follow or an array of hashes
 * `node['le']['datahub']['enable']` - To send logs to datahub set this to true. Default is false
 * `node['le']['datahub']['server_ip']` - IP of your datahub server
 * `node['le']['datahub']['port']` - port datahub is running on, normally port 10000
 * `node['le']['pull-server-side-config']` - Specifies whether to make an api call to pull configuration or not, by default this is set to true meaning an api call will be made to logentries.com. Default is true
 * `node['le']['deb']` - the distro of the debian platform , defaults to node['lsb']['codename'].
+
+Notice: If `node['le']['account_key']` is empty, then the chef will get account_key from the data bag.
+
+### Data bag
+Example of a data bag:
+
+```json
+{
+  "id": "le",
+  "account_key": "f8dbebcc-f907-41e1-9089-701134572b36"
+}
+```
+
 
 ### Example of logs_to_follow
 * caveats - name needs to be unique

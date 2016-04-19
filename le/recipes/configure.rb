@@ -45,7 +45,13 @@ else
   execute 'initialize logentries daemon' do
     command(lazy do
               cmd = "le register"
-              cmd += " --user-key #{le['account_key']}"
+              if le['account_key'].empty?
+                account_key_item = data_bag_item(le['data_bag_name'], le['data_bag_item_name'])
+                account_key = account_key_item['account_key']
+              else
+                account_key = le['account_key']
+              end
+              cmd += " --user-key #{account_key}"
               cmd += " --name='#{le['hostname']}'"
               cmd
             end)
