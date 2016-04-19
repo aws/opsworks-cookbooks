@@ -43,7 +43,7 @@ node[:deploy].each do |application, deploy|
     owner deploy[:user]
     group deploy[:group]
     variables(
-        :lumen_settings => node[:lumen_settings]
+        :lumen_settings => node[:lumen_settings],
         :lumen_env => deploy[:env]
     )
     only_if do
