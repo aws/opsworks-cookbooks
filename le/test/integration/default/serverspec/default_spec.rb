@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'logentries_agent::default' do
+describe 'le::default' do
 
   it 'installs package' do
     expect(package('logentries-daemon')).to be_installed

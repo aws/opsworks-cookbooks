@@ -2,7 +2,7 @@ require 'chefspec'
 require 'chefspec/berkshelf'
 
 
-describe 'logentries_agent::default' do
+describe 'le::default' do
   let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'installs logentries' do
