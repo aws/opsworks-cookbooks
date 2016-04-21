@@ -20,7 +20,7 @@
 
 case node['platform']
   when 'ubuntu'
-    execute "echo 'deb http://rep.logentries.com/ maverick main' >/etc/apt/sources.list.d/logentries.list"
+    execute "echo 'deb http://rep.logentries.com/ trusty main' >/etc/apt/sources.list.d/logentries.list"
     execute "gpg --keyserver pgp.mit.edu --recv-keys C43C79AD && gpg -a --export C43C79AD | apt-key add -"
     execute "apt-get update"
     execute "apt-get install --yes logentries"
