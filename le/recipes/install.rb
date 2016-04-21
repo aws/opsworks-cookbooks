@@ -20,13 +20,19 @@
 
 case node['platform']
   when 'ubuntu'
-    apt_repository 'logentries' do
-      uri 'http://rep.logentries.com/'
-      distribution node['lsb']['codename']
-      components ['main']
-      keyserver node['le']['pgp_key_server']
-      key 'C43C79AD'
-      retries 3
+    execute "echo 'deb http://rep.logentries.com/ maverick main' >/etc/apt/sources.list.d/logentries.list"
+    execute "gpg --keyserver pgp.mit.edu --recv-keys C43C79AD && gpg -a --export C43C79AD | apt-key add -"
+    execute "apt-get update"
+    execute "apt-get install --yes logentries"
+    execute "le register --user-key #{deploy[:application]['le']['account_key']} --name='#{deploy[:application]['le']['hostname']}'"
+    execute "apt-get install --yes -qq logentries-daemon"
+    # apt_repository 'logentries' do
+    #   uri 'http://rep.logentries.com/'
+    #   distribution node['lsb']['codename']
+    #   components ['main']
+    #   keyserver node['le']['pgp_key_server']
+    #   key 'C43C79AD'
+    #   retries 3
     end
   when 'centos', 'redhat', 'amazon', 'scientific'
     yum_repository 'logentries' do
