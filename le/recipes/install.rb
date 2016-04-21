@@ -23,7 +23,6 @@ case node['platform']
     execute "echo 'deb http://rep.logentries.com/ trusty main' >/etc/apt/sources.list.d/logentries.list"
     execute "gpg --keyserver pgp.mit.edu --recv-keys C43C79AD && gpg -a --export C43C79AD | apt-key add -"
     execute "apt-get update"
-    retries 3
 end
 
 dont_run_file = '/etc/default/logentries_not_to_be_run'
