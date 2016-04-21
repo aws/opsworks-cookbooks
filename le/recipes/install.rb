@@ -26,14 +26,6 @@ case node['platform']
     execute "apt-get install --yes logentries"
     execute "le register --user-key #{deploy[:application]['le']['account_key']} --name='#{deploy[:application]['le']['hostname']}'"
     execute "apt-get install --yes -qq logentries-daemon"
-    # apt_repository 'logentries' do
-    #   uri 'http://rep.logentries.com/'
-    #   distribution node['lsb']['codename']
-    #   components ['main']
-    #   keyserver node['le']['pgp_key_server']
-    #   key 'C43C79AD'
-    #   retries 3
-    end
 end
 
 dont_run_file = '/etc/default/logentries_not_to_be_run'
