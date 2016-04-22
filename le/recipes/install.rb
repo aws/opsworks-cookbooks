@@ -23,6 +23,15 @@ case node['platform']
     execute "echo 'deb http://rep.logentries.com/ trusty main' >/etc/apt/sources.list.d/logentries.list"
     execute "gpg --keyserver pgp.mit.edu --recv-keys C43C79AD && gpg -a --export C43C79AD | apt-key add -"
     execute "apt-get update"
+    execute "apt-get install --yes logentries"
+    execute "apt-get install --yes -qq logentries-daemon"
+    # apt_repository 'logentries' do
+    #   uri 'http://rep.logentries.com/'
+    #   distribution node['lsb']['codename']
+    #   components ['main']
+    #   keyserver node['le']['pgp_key_server']
+    #   key 'C43C79AD'
+    #   retries 3
 end
 
 dont_run_file = '/etc/default/logentries_not_to_be_run'
@@ -38,7 +47,10 @@ file 'remove_dont_run_file' do
   action :nothing
 end
 
-package %w(logentries logentries-daemon) do
-  action :install
-  notifies :delete, 'file[remove_dont_run_file]', :delayed
-end
+if deamon_package_resource.provider_for_action(:install).load_current_resource.version.nil?
+  resources("file[#{dont_run_file}]").action(:create)
+
+# package %w(logentries logentries-daemon) do
+#   action :install
+#   notifies :delete, 'file[remove_dont_run_file]', :delayed
+# end
