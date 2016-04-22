@@ -25,13 +25,6 @@ case node['platform']
     execute "apt-get update"
     execute "apt-get install --yes logentries"
     execute "apt-get install --yes -qq logentries-daemon"
-    # apt_repository 'logentries' do
-    #   uri 'http://rep.logentries.com/'
-    #   distribution node['lsb']['codename']
-    #   components ['main']
-    #   keyserver node['le']['pgp_key_server']
-    #   key 'C43C79AD'
-    #   retries 3
 end
 
 dont_run_file = '/etc/default/logentries_not_to_be_run'
@@ -42,11 +35,6 @@ file 'create_dont_run_file' do
   not_if 'test -e /etc/init.d/logentries'
 end
 
-file 'remove_dont_run_file' do
-  path dont_run_file
-  action :nothing
-end
-
 package 'logentries'
 deamon_package_resource = package 'logentries-daemon' do
   notifies :delete, "file[#{dont_run_file}]", :immediately
@@ -54,8 +42,4 @@ end
 
 if deamon_package_resource.provider_for_action(:install).load_current_resource.version.nil?
   resources("file[#{dont_run_file}]").action(:create)
-
-# package %w(logentries logentries-daemon) do
-#   action :install
-#   notifies :delete, 'file[remove_dont_run_file]', :delayed
 end
