@@ -53,4 +53,4 @@ if deamon_package_resource.provider_for_action(:install).load_current_resource.v
 # package %w(logentries logentries-daemon) do
 #   action :install
 #   notifies :delete, 'file[remove_dont_run_file]', :delayed
-# end
+end
