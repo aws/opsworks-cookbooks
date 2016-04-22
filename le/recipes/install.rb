@@ -47,6 +47,11 @@ file 'remove_dont_run_file' do
   action :nothing
 end
 
+package 'logentries'
+deamon_package_resource = package 'logentries-daemon' do
+  notifies :delete, "file[#{dont_run_file}]", :immediately
+end
+
 if deamon_package_resource.provider_for_action(:install).load_current_resource.version.nil?
   resources("file[#{dont_run_file}]").action(:create)
 
