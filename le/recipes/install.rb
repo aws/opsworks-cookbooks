@@ -39,6 +39,7 @@ package 'logentries'
 deamon_package_resource = package 'logentries-daemon' do
   if File.exist?('file[#{dont_run_file}]')
     notifies :delete, "file[#{dont_run_file}]", :immediately
+  end
 end
 
 if deamon_package_resource.provider_for_action(:install).load_current_resource.version.nil?
