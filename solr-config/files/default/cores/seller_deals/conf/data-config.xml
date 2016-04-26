@@ -10,46 +10,47 @@
   <document>
     <entity name="order" pk="order_id" dataSource="seller_deals_ds"
         query="
-         select
-            vd.log as 'sold_at',
-            v.status,
+         SELECT
+            vd.log AS 'sold_at',
+            IF(v.status = 1 AND atrasado = 1, 4, v.status) AS 'status',
             v.order_id,
-            vd.dest_nome   as 'buyer_name',
-            vd.dest_cidade as 'delivery_city',
-            vd.dest_estado as 'delivery_state',
-            vd.dest_cep    as 'delivery_zip_code',
-            v.fenvio       as 'delivery_method',
+            vd.dest_nome   AS 'buyer_name',
+            vd.dest_cidade AS 'delivery_city',
+            vd.dest_estado AS 'delivery_state',
+            vd.dest_cep    AS 'delivery_zip_code',
+            v.fenvio       AS 'delivery_method',
             v.total,
-            v.comprador    as 'buyer_id',
-            v.vendedor     as 'seller_id',
-            group_concat(concat(vi.autor, '-----author-----'), vi.titulo SEPARATOR '----line----') as items
-
-          from venda_items vi
-          join vendas v on vi.order_id = v.order_id
-          join vendas_detalhes vd on v.order_id = vd.order_id
-          where vd.log > DATE_SUB(NOW(), INTERVAL 6 MONTH)
-          group by order_id"
+            v.comprador    AS 'buyer_id',
+            v.vendedor     AS 'seller_id',
+            GROUP_CONCAT(concat(vi.autor, '-----author-----'), vi.titulo SEPARATOR '----line----') as items
+          FROM venda_items vi
+          JOIN vendas v ON vi.order_id = v.order_id
+          JOIN vendas_detalhes vd ON v.order_id = vd.order_id
+          WHERE vd.log > DATE_SUB(NOW(), INTERVAL 6 MONTH)
+          GROUP BY order_id"
 
         deltaImportQuery="
-          select
-             vd.log as 'sold_at',
-             v.status,
+          SELECT
+             vd.log AS 'sold_at',
+             IF(v.status = 1 AND atrasado = 1, 4, v.status) AS 'status',
              v.order_id,
-             vd.dest_nome   as 'buyer_name',
-             vd.dest_cidade as 'delivery_city',
-             vd.dest_estado as 'delivery_state',
-             vd.dest_cep    as 'delivery_zip_code',
-             v.fenvio       as 'delivery_method',
+             vd.dest_nome   AS 'buyer_name',
+             vd.dest_cidade AS 'delivery_city',
+             vd.dest_estado AS 'delivery_state',
+             vd.dest_cep    AS 'delivery_zip_code',
+             v.fenvio       AS 'delivery_method',
              v.total,
-             v.comprador    as 'buyer_id',
-             v.vendedor     as 'seller_id',
-             group_concat(concat(vi.autor, '-----author-----'), vi.titulo SEPARATOR '----line----') as 'items'
-
-           from venda_items vi
-           join vendas v on vi.order_id = v.order_id
-           join vendas_detalhes vd on v.order_id = vd.order_id
-           where v.order_id = '${dih.delta.order_id}' group by v.order_id
+             v.comprador    AS 'buyer_id',
+             v.vendedor     AS 'seller_id',
+             GROUP_CONCAT(concat(vi.autor, '-----author-----'), vi.titulo SEPARATOR '----line----') as 'items'
+           FROM venda_items vi
+           JOIN vendas v ON vi.order_id = v.order_id
+           JOIN vendas_detalhes vd ON v.order_id = vd.order_id
+           WHERE v.order_id = '${dih.delta.order_id}'
+           OR v.updated_at &gt; '${dih.last_index_time}'
+           GROUP BY v.order_id
         "
+
         deltaQuery="
           SELECT v.order_id
           FROM vendas v
