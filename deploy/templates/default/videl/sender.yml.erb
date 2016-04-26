@@ -4,6 +4,10 @@
       <% @conf.each do |type, options| %>
         <%= type %>:
           <% options.each do |key, value| %>
-            <%= sprintf("%s: '%s'", key, value) %>
+            <% if value.is_a?(Array) %>
+              <%= sprintf("%s: %s", key, value) %>
+            <% else %>
+              <%= sprintf("%s: '%s'", key, value) %>
+            <% end%>
           <% end %>
       <% end %>
