@@ -555,7 +555,7 @@
 
       <str name="group">on</str>
       <str name="group.field">book_id</str>
-      <str name="group.sort">year asc</str>
+      <str name="group.sort">if(exists(cover),1,0) desc, year asc</str>
 
        <str name="json.facet">{total_books:"unique(book_id)"}</str>
     </lst>
@@ -609,8 +609,6 @@
        <str name="wt">json</str>
        <str name="indent">true</str>
        <str name="df">book_id</str>
-       <!-- garante que só trará resultados se tiver um sku -->
-       <str name="fq">sku:["" TO *]</str>
        <!-- <str name="df">book_slug</str> -->
        <str name="rows">100</str>
        <str name="defType">edismax</str>
