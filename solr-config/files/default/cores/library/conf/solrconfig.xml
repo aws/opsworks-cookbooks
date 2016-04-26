@@ -526,7 +526,7 @@
 
        <str name="group">on</str>
        <str name="group.field">book_id</str>
-       <str name="group.sort">year asc</str>
+       <str name="group.sort">if(exists(cover),1,0) desc, year asc</str>
        <str name="group.facet">true</str>
        
        <str name="facet">on</str>
