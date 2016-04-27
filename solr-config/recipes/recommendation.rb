@@ -6,39 +6,39 @@ node[:deploy].each do |app_name, deploy|
 
   Chef::Log.info(env)
 
-  remote_directory "#{node['recommendation'][env]['path']}/#{node['recommendation'][env]['core_name']}" do
+  remote_directory "#{node['library'][env]['path']}/#{node['library'][env]['core_name']}" do
     files_mode '0640'
     files_owner 'deploy'
     mode '0770'
     owner 'deploy'
     recursive true
-    source "cores/#{node['recommendation'][env]['core_name']}"
+    source "cores/#{node['library'][env]['core_name']}"
   end
 
-  template "#{node['recommendation'][env]['path']}/#{node['recommendation'][env]['core_name']}/core.properties" do
+  template "#{node['library'][env]['path']}/#{node['library'][env]['core_name']}/core.properties" do
     source "cores/core.properties.erb"
     owner deploy[:user]
     group 'www-data'
     mode 0440
-    variables({ :name => node['recommendation'][env]['core_name']})
+    variables({ :name => node['library'][env]['core_name']})
   end
 
-  template "#{node['recommendation'][env]['path']}/#{node['recommendation'][env]['core_name']}/conf/data-config.xml" do
-    source "cores/#{node['recommendation'][env]['core_name']}/data-config.xml.erb"
+  template "#{node['library'][env]['path']}/#{node['library'][env]['core_name']}/conf/data-config.xml" do
+    source "cores/#{node['library'][env]['core_name']}/data-config.xml.erb"
     owner deploy[:user]
     group 'www-data'
     mode 0440
-    variables({ :db_url => node['recommendation'][env]['database_url'],
-                :db_name => node['recommendation'][env]['database_name'],
-                :db_url => node['recommendation'][env]['database_url'],
-                :db_user => node['recommendation'][env]['database_user'],
-                :db_password => node['recommendation'][env]['database_password']}
+    variables({ :db_url => node['library'][env]['database_url'],
+                :db_name => node['library'][env]['database_name'],
+                :db_url => node['library'][env]['database_url'],
+                :db_user => node['library'][env]['database_user'],
+                :db_password => node['library'][env]['database_password']}
              )
   end
 
   template "/etc/cron.d/solr_recommendation_delta_import" do
     owner 'root'
-    variables({ :cron_delta_import => node['recommendation'][env]['cron_delta_import'] })
+    variables({ :cron_delta_import => node['library'][env]['cron_delta_import'] })
     mode '0755'
     source 'solr_recommendation_delta_import_cron.sh.erb'
   end

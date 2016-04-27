@@ -1,0 +1,4 @@
+<% if false %>
+  <%= @cron_delta_import %> root curl --data "command=delta-import&commit=true&wt=json&indent=true&verbose=false&clean=false&optimize=false&debug=false" http://localhost:8983/solr/recommendation/dataimport >/dev/null 2>&1
+<% end %>
+<%= @cron_delta_import %> root curl --data "command=full-import&wt=json&indent=true&verbose=false" http://localhost:8983/solr/recommendation/dataimport >/dev/null 2>&1 
