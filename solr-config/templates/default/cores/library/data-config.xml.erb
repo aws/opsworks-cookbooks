@@ -1,5 +1,4 @@
 <dataConfig>
-
   <dataSource type="JdbcDataSource" driver="org.postgresql.Driver"
     name="library"
     url="jdbc:postgresql://<%= @db_url %>:5432/<%= @db_name %>"
@@ -17,9 +16,10 @@
               FROM covers c
               WINDOW wnd AS (PARTITION BY publication_id ORDER BY number_of_uploads DESC)
             )
-            SELECT 
+            SELECT
               md5(concat(b.id, '|', p.id, '|', s.id)) as id,
               is_moderated,
+              moderate_action_at,
               b.id book_id,
               b.title,
               b.synopsis,
@@ -45,11 +45,11 @@
               COALESCE(p.cover, c.cover) as cover,
               p.isbn,
               p.issn,
-              p.barcode, 
+              p.barcode,
               s.id as sku,
               s.seller_id as seller_id,
               s.price,
-              (CASE WHEN s.is_new is not null and s.is_new = 't' THEN 1 ELSE 0 END) new, 
+              (CASE WHEN s.is_new is not null and s.is_new = 't' THEN 1 ELSE 0 END) new,
               (CASE WHEN s.is_new is not null and s.is_new = 'f' THEN 1 ELSE 0 END) used,
               s.quantity,
               s.created_at sku_created_at,
@@ -71,6 +71,7 @@
             SELECT
               md5(concat(b.id, '|', p.id, '|', s.id)) as id,
               is_moderated,
+              moderate_action_at,
               b.id::text book_id,
               b.title,
               b.synopsis,
@@ -96,11 +97,11 @@
               c.cover,
               p.isbn,
               p.issn,
-              p.barcode, 
+              p.barcode,
               s.id as sku,
               s.seller_id as seller_id,
               s.price,
-              (CASE WHEN s.is_new is not null and s.is_new = 't' THEN 1 ELSE 0 END) new, 
+              (CASE WHEN s.is_new is not null and s.is_new = 't' THEN 1 ELSE 0 END) new,
               (CASE WHEN s.is_new is not null and s.is_new = 'f' THEN 1 ELSE 0 END) used,
               s.quantity,
               s.created_at sku_created_at,
