@@ -1,5 +1,5 @@
 default['recommendations']['staging']['solr_version'] = "5.3.2-SNAPSHOT"
-default['recommendations']['staging']['path'] = "/opt/solr-#{default['recommendations']['staging']['solr_version']}/server/"
+default['recommendations']['staging']['path'] = "/opt/solr-#{default['recommendations']['staging']['solr_version']}/server/solr/"
 default['recommendations']['staging']['core_name'] = "recommendations"
 default['recommendations']['staging']['database_url'] = "192.168.100.250"
 default['recommendations']['staging']['cron_delta_import'] = '*/5 * * * *'
@@ -8,7 +8,7 @@ default['recommendations']['staging']['database_user'] = "rme-staging"
 default['recommendations']['staging']['database_password'] = "pass-staging"
 
 default['recommendations']['production']['solr_version'] = "5.3.2-SNAPSHOT"
-default['recommendations']['production']['path'] = "/opt/solr-#{default['recommendations']['staging']['solr_version']}/server/"
+default['recommendations']['production']['path'] = "/opt/solr-#{default['recommendations']['staging']['solr_version']}/server/solr"
 default['recommendations']['production']['core_name'] = "recommendations"
 default['recommendations']['production']['database_url'] = "192.168.100.250"
 default['recommendations']['production']['database_name'] = "estantevirtual"
