@@ -545,7 +545,19 @@
        <!-- <str name="stats.field">{!tag=sku_stats cardinality=true}seller_id</str> -->
        <!-- <str name="facet.pivot">{!stats=sku_stats}book_id</str> -->
        <!-- <str name="facet.pivot">{!stats=sku_stats}authors</str> -->
-     </lst>
+
+       <!-- Optional, must match spell checker's name as defined above, defaults to "default" -->
+       <str name="spellcheck.dictionary">default</str>
+       <!-- omp = Only More Popular -->
+       <str name="spellcheck.onlyMorePopular">false</str>
+       <!-- exr = Extended Results -->
+       <str name="spellcheck.extendedResults">false</str>
+       <!--  The number of suggestions to return -->
+       <str name="spellcheck.count">10</str>
+    </lst>
+    <arr name="last-components">
+      <str>spellcheck</str>
+    </arr>
   </requestHandler>  
 
   <requestHandler name="/get_books" class="solr.SearchHandler">
@@ -782,6 +794,80 @@
       <str>terms</str>
     </arr>
   </requestHandler>
+
+
+  <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
+
+    <lst name="spellchecker">
+      <!--
+          Optional, it is required when more than one spellchecker is configured.
+          Select non-default name with spellcheck.dictionary in request handler.
+      -->
+      <str name="name">default</str>
+      <!-- The classname is optional, defaults to IndexBasedSpellChecker -->
+      <str name="classname">solr.IndexBasedSpellChecker</str>
+      <!--
+          Load tokens from the following field for spell checking,
+          analyzer for the field's type as defined in schema.xml are used
+      -->
+      <str name="field">text</str>
+      <!-- Optional, by default use in-memory index (RAMDirectory) -->
+      <str name="spellcheckIndexDir">./spellchecker</str>
+      <!-- Set the accuracy (float) to be used for the suggestions. Default is Float.MIN_VALUE -->
+      <str name="accuracy">0.7</str>
+      <!-- Require terms to occur in 1/100th of 1% of documents in order to be included in the dictionary -->
+      <!-- <float name="thresholdTokenFrequency">.00000001</float> -->
+    </lst>
+    <!-- a spellchecker that can break or combine words. (Solr 4.0 see SOLR-2993) -->
+    <lst name="spellchecker">
+      <str name="name">wordbreak</str>
+      <str name="classname">solr.WordBreakSolrSpellChecker</str>
+      <str name="field">spell</str>
+      <str name="combineWords">true</str>
+      <str name="breakWords">true</str>
+      <int name="maxChanges">3</int>
+    </lst>
+    <!-- Example of using different distance measure -->
+    <lst name="spellchecker">
+      <str name="name">jarowinkler</str>
+      <str name="field">lowerfilt</str>
+      <str name="distanceMeasure">org.apache.lucene.search.spell.JaroWinklerDistance</str>
+      <str name="spellcheckIndexDir">./spellchecker</str> 
+    </lst>
+
+    <!-- This field type's analyzer is used by the QueryConverter to tokenize the value for "q" parameter -->
+    <str name="queryAnalyzerFieldType">textSpell</str>
+  </searchComponent>
+  <!--
+      The SpellingQueryConverter to convert raw (CommonParams.Q) queries into tokens.  Uses a simple regular expression
+      to strip off field markup, boosts, ranges, etc. but it is not guaranteed to match an exact parse from the query parser.
+
+  Optional, defaults to solr.SpellingQueryConverter
+  -->
+  <queryConverter name="queryConverter" class="solr.SpellingQueryConverter"/>
+
+  <!--  Add to a RequestHandler
+       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+       NOTE:  YOU LIKELY DO NOT WANT A SEPARATE REQUEST HANDLER FOR THIS COMPONENT.  THIS IS DONE HERE SOLELY FOR
+       THE SIMPLICITY OF THE EXAMPLE.  YOU WILL LIKELY WANT TO BIND THE COMPONENT TO THE /select STANDARD REQUEST HANDLER.
+       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  -->
+  <requestHandler name="/spellCheckCompRH" class="solr.SearchHandler">
+    <lst name="defaults">
+      <!-- Optional, must match spell checker's name as defined above, defaults to "default" -->
+      <str name="spellcheck.dictionary">default</str>
+      <!-- omp = Only More Popular -->
+      <str name="spellcheck.onlyMorePopular">false</str>
+      <!-- exr = Extended Results -->
+      <str name="spellcheck.extendedResults">false</str>
+      <!--  The number of suggestions to return -->
+      <str name="spellcheck.count">10</str>
+    </lst>
+    <arr name="last-components">
+      <str>spellcheck</str>
+    </arr>
+  </requestHandler>
+  
 
   <!-- Legacy config for the admin interface -->
   <admin>
