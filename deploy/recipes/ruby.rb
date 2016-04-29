@@ -13,15 +13,15 @@ node[:deploy].each do |application, deploy|
     app application
   end
 
-  execute "installing bundle" do
-    command "sudo gem install bundler"
-    action :run
-  end
+  # execute "installing bundle" do
+  #   command "sudo gem install bundler"
+  #   action :run
+  # end
 
   execute "running bundle" do
     user deploy[:user]
     cwd "#{deploy[:deploy_to]}/current"
-    command "bundle install --path vendor"
+    command "./bin/bundle install --path vendor"
     action :run
   end
 end
