@@ -821,6 +821,7 @@
       <str name="accuracy">0.7</str>
       <!-- Require terms to occur in 1/100th of 1% of documents in order to be included in the dictionary -->
       <!-- <float name="thresholdTokenFrequency">.00000001</float> -->
+      <str name="buildOnCommit">true</str>
     </lst>
     <!-- a spellchecker that can break or combine words. (Solr 4.0 see SOLR-2993) -->
     <lst name="spellchecker">
