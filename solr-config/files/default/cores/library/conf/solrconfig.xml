@@ -512,13 +512,13 @@
   <requestHandler name="/search" class="solr.SearchHandler">
      <lst name="defaults">
        <str name="defType">edismax</str>
-       <str name="qf">authors^40 title^20 publisher^10 synopsis</str>
+       <str name="qf">authors^40 title^40 volume^30 publisher^10 synopsis</str>
 
        <str name="echoParams">explicit</str>
        <str name="wt">json</str>
        <str name="indent">true</str>
        <str name="rows">30</str>
-       <str name="fl">book_id, authors, title, year, cover</str>
+       <str name="fl">book_id, authors, title, volume, cover</str>
 
        <str name="sort">score desc</str>
 
