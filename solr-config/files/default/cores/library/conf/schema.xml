@@ -110,7 +110,7 @@
      tokens
    -->
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
-   <field name="text" type="text_general" indexed="true" stored="true" required="false" multiValued="true" />
+   <field name="text" type="text_spell" indexed="true" stored="true" required="false" multiValued="true" />
 
    <!-- Book -->
    <field name="author" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
@@ -229,6 +229,7 @@
 
    <copyField source="authors" dest="s_authors"/>
    <copyField source="authors" dest="authors_simple"/>
+   <copyField source="authors" dest="text"/>
 
 
   <!--
@@ -387,6 +388,16 @@
         <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
         <filter class="solr.LowerCaseFilterFactory"/>
         <!-- <filter class="solr.BrazilianStemFilterFactory"/> -->
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="text_spell" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+        <!-- in this example, we will only use synonyms at query time
+        <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
+        -->
       </analyzer>
     </fieldType>
 
