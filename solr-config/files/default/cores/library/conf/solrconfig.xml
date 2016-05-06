@@ -475,13 +475,14 @@
   <requestHandler name="/autocomplete" class="solr.SearchHandler">
      <lst name="defaults">
        <str name="defType">edismax</str>
-       <str name="qf">authors^20 title^5</str>
+       <str name="qf">authors title</str>
+       <str name="bf">if(is_moderated,2,1)</str>
 
        <str name="echoParams">explicit</str>
        <str name="wt">json</str>
        <str name="indent">true</str>
        <str name="rows">30</str>
-       <str name="fl">authors, title</str>
+       <str name="fl">authors, title, is_moderated, cover</str>
 
        <str name="group">on</str>
        <str name="group.field">book_id</str>
