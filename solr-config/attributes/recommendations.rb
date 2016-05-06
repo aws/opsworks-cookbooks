@@ -12,8 +12,8 @@ default['recommendations']['production']['path'] = "/opt/solr-#{default['recomme
 default['recommendations']['production']['core_name'] = "recommendations"
 default['recommendations']['production']['database_url'] = "192.168.100.250"
 default['recommendations']['production']['database_name'] = "estantevirtual"
-default['recommendations']['production']['database_user'] = "rme-prod"
-default['recommendations']['production']['database_password'] = "rme-prod"
+default['recommendations']['production']['database_user'] = "rme_prod"
+default['recommendations']['production']['database_password'] = "9PkFHBGXfBXP"
 default['recommendations']['production']['cron_delta_import'] = '*/45 * * * *'
 
 
