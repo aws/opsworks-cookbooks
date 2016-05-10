@@ -457,6 +457,7 @@
       -->
      <lst name="defaults">
        <str name="echoParams">explicit</str>
+       <str name="start">0</str>
        <int name="rows">10</int>
        <str name="wt">json</str>
        <str name="indent">true</str>
