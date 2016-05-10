@@ -6,7 +6,10 @@ include_recipe 'mysql::prepare'
 # for backwards compatiblity default the package name to mysql
 mysql_name = node[:mysql][:name] || "mysql"
 
-package "#{mysql_name}-server"
+package "#{mysql_name}-server" do
+  retries 3
+  retry_delay 5
+end
 
 if platform?('ubuntu') && node[:platform_version].to_f < 10.04
   remote_file '/tmp/mysql_init.patch' do

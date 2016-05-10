@@ -20,6 +20,7 @@ module OpsWorks
 
         remote_file "#{tmpdir}/archive" do
           source archive_url
+          retries 3
         end
 
         execute 'extract files' do

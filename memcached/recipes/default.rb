@@ -1,5 +1,7 @@
-package 'memcached' do
+package "memcached" do
   action :upgrade
+  retries 3
+  retry_delay 5
 end
 
 include_recipe 'memcached::service'

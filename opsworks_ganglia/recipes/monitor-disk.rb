@@ -1,4 +1,7 @@
-package "bc"
+package "bc" do
+  retries 3
+  retry_delay 5
+end
 
 disks = `mount | grep -E '/dev/sd|/dev/xvd' | awk '{print $1}'`.split("\n")
 

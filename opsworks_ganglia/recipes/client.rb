@@ -2,11 +2,23 @@ if node[:opsworks][:layers].has_key?('monitoring-master')
   case node[:platform_family]
   when "debian"
     if platform?('ubuntu') && node[:platform_version] == '14.04'
-      package node[:ganglia][:monitor_package_name]
-      package node[:ganglia][:monitor_plugins_package_name]
+      package node[:ganglia][:monitor_package_name] do
+        retries 3
+        retry_delay 5
+      end
+      package node[:ganglia][:monitor_plugins_package_name] do
+        retries 3
+        retry_delay 5
+      end
     else
-      package 'libapr1'
-      package 'libconfuse0'
+      package "libapr1" do
+        retries 3
+        retry_delay 5
+      end
+      package "libconfuse0" do
+        retries 3
+        retry_delay 5
+      end
 
       pm_helper = OpsWorks::PackageManagerHelper.new(node)
 
@@ -47,8 +59,14 @@ if node[:opsworks][:layers].has_key?('monitoring-master')
     end
 
   when "rhel"
-    package node[:ganglia][:monitor_package_name]
-    package node[:ganglia][:monitor_plugins_package_name]
+    package node[:ganglia][:monitor_package_name] do
+      retries 3
+      retry_delay 5
+    end
+    package node[:ganglia][:monitor_plugins_package_name] do
+      retries 3
+      retry_delay 5
+    end
   end
 
   service "gmond" do

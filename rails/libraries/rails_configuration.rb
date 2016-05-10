@@ -14,6 +14,9 @@ module OpsWorks
           adapter = if bundle_list.include?('mysql2')
             Chef::Log.info("Looks like #{app_name} uses mysql2 in its Gemfile")
             'mysql2'
+          elsif bundle_list.include?("pg")
+            Chef::Log.info("Looks like #{app_name} uses pg in its Gemfile")
+            "postgresql"
           else
             Chef::Log.info("Gem mysql2 not found in the Gemfile of #{app_name}, defaulting to mysql")
             'mysql'

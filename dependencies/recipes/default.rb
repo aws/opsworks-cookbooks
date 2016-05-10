@@ -14,6 +14,8 @@ when 'centos','redhat','fedora','amazon'
     package rpm do
       action :upgrade
       version(version)
+      retries 3
+      retry_delay 5
     end
   end
 when 'debian','ubuntu'
@@ -22,6 +24,8 @@ when 'debian','ubuntu'
     package deb do
       action :upgrade
       version(version)
+      retries 3
+      retry_delay 5
     end
   end
 end

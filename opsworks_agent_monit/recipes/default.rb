@@ -1,4 +1,7 @@
-package "monit"
+package "monit" do
+  retries 3
+  retry_delay 5
+end
 
 directory node[:monit][:conf_dir] do
   group "root"

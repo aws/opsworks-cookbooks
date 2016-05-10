@@ -3,4 +3,6 @@ package 'php-pgsql' do
     'rhel' => 'php-pgsql',
     'debian' => 'php5-pgsql'
   )
+  retries 3
+  retry_delay 5
 end

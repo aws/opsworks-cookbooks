@@ -66,5 +66,6 @@ default[:passenger][:high_performance_mode] = 'off'
 default[:passenger][:rails_spawn_method] = 'smart-lv2'
 default[:passenger][:max_pool_size] = 8 # usually will be set by OpsWorks directy. Override if you need a custom size
 default[:passenger][:friendly_error_pages] = 'off'
+default[:passenger][:rack_version] = "1.6.4"
 
 include_attribute "passenger_apache2::customize"
