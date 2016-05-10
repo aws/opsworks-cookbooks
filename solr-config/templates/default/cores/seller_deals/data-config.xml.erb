@@ -1,18 +1,18 @@
 <dataConfig>
   <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver"
-    url="jdbc:mysql://72.3.141.228:3306/estantevirtual"
-    password="I3b9TFgCWh"
+    url="jdbc:mysql://<%= @db_url %>:3306/<%= @db_name %>"
+    password="<%= @db_password %>"
     autoReconnect="true"
-    user="solr-sellerdeals"
-    name="seller_deals_ds"
+    user="<%= @db_user %>"
+    name="seller_deals"
   />
 
   <document>
-    <entity name="order" pk="order_id" dataSource="seller_deals_ds"
+    <entity name="order" pk="order_id" dataSource="seller_deals"
         query="
          SELECT
             vd.log AS 'sold_at',
-            IF(v.status = 1 AND atrasado = 1, 4, v.status) AS 'status',
+            SUM(IF(v.status = 1 AND atrasado = 1, 4, v.status)) AS status,
             v.order_id,
             vd.dest_nome   AS 'buyer_name',
             vd.dest_cidade AS 'delivery_city',
@@ -32,7 +32,7 @@
         deltaImportQuery="
           SELECT
              vd.log AS 'sold_at',
-             IF(v.status = 1 AND atrasado = 1, 4, v.status) AS 'status',
+             SUM(IF(v.status = 1 AND atrasado = 1, 4, v.status)) AS status,
              v.order_id,
              vd.dest_nome   AS 'buyer_name',
              vd.dest_cidade AS 'delivery_city',
