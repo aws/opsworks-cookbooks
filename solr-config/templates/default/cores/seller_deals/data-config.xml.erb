@@ -47,14 +47,14 @@
            JOIN vendas v ON vi.order_id = v.order_id
            JOIN vendas_detalhes vd ON v.order_id = vd.order_id
            WHERE v.order_id = '${dih.delta.order_id}'
-           OR v.updated_at &gt; '${dih.last_index_time}'
+           OR DATE_SUB(v.updated_at, INTERVAL 3 HOUR) &gt; '${dih.last_index_time}'
            GROUP BY v.order_id
         "
 
         deltaQuery="
           SELECT v.order_id
           FROM vendas v
-          WHERE v.log &gt; '${dih.last_index_time}'
+          WHERE DATE_SUB(v.log, INTERVAL 3 HOUR) &gt; '${dih.last_index_time}'
         "
       >
 
