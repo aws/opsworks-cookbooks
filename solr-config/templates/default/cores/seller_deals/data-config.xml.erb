@@ -12,7 +12,7 @@
         query="
          SELECT
             vd.log AS 'sold_at',
-            SUM(IF(v.status = 1 AND atrasado = 1, 4, v.status)) AS status,
+            IF(v.status = 1 AND atrasado = 1, 4, v.status) AS status,
             v.order_id,
             vd.dest_nome   AS 'buyer_name',
             vd.dest_cidade AS 'delivery_city',
@@ -32,7 +32,7 @@
         deltaImportQuery="
           SELECT
              vd.log AS 'sold_at',
-             SUM(IF(v.status = 1 AND atrasado = 1, 4, v.status)) AS status,
+             IF(v.status = 1 AND atrasado = 1, 4, v.status) AS status,
              v.order_id,
              vd.dest_nome   AS 'buyer_name',
              vd.dest_cidade AS 'delivery_city',
