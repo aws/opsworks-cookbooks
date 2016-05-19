@@ -11,8 +11,8 @@
   <document>
     <entity name="order" pk="order_id" dataSource="recommendations" transformer="RegexTransformer"
         query="
-        select vi.dna_crc as id, btp.autor as author_t, btp.titulo as title_t, e.url as shelf_t, group_concat(v.comprador) as buyers,
-        c.capa as cover_s 
+        select vi.dna_crc as id, btp.autor as author_t, btp.titulo as title_t, e.url as shelf_t, group_concat(v.comprador) as buyers, group_concat(vi.preco) as prices,
+        c.capa as cover_s , group_concat(v.log) as dates
         from venda_items vi  
         join vendas_detalhes vd using (order_id) 
         join vendas v using(order_id) 
@@ -24,6 +24,8 @@
         and vd.log >= '2013-11-01' group by vi.dna_crc">
 
       <field column="buyers_txt" splitBy="," sourceColName="buyers" />
+      <field column="prices_fs" splitBy="," sourceColName="prices" />
+      <field column="dates_ss" splitBy="," sourceColName="dates" />
     </entity>
 
   </document>
