@@ -6,13 +6,17 @@ server {
   listen 80;
   server_name <%= @application[:domains].join(" ") %> <%= node[:hostname] %>;
 
+  <% if node[:nginx] && node[:nginx][:force_https] %>
+  return 301 https://<%= @application[:domains].first %>$request_uri;
+  <% end %>
+
   <% if @application[:log_format] %>
     <% @application[:log_format].each do |log_format_name| %>
   access_log <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>.access.<%= log_format_name %>.log <%= log_format_name %>;
     <% end %>
   <% else %>
   access_log <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>.access.log;
-  <%end %>
+  <% end %>
 
   keepalive_timeout 5;
 
@@ -72,7 +76,7 @@ server {
   listen   443;
   server_name <%= @application[:domains].join(" ") %> <%= node[:hostname] %>;
   access_log <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>-ssl.access.log;
-  
+
   ssl on;
   ssl_certificate /etc/nginx/ssl/<%= @application[:domains].first %>.crt;
   ssl_certificate_key /etc/nginx/ssl/<%= @application[:domains].first %>.key;
