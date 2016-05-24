@@ -22,3 +22,6 @@ doc/
 /Gemfile.lock
 build
 *.swp
+
+.DS_Store
+deploy/.DS_Store
