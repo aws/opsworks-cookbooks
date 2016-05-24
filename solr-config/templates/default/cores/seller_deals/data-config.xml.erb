@@ -53,7 +53,7 @@
         deltaQuery="
           SELECT v.order_id
           FROM vendas v
-          WHERE DATE_ADD(v.log, INTERVAL 3 HOUR) &gt; '${dih.last_index_time}'
+          WHERE DATE_ADD(v.updated_at, INTERVAL 3 HOUR) &gt; '${dih.last_index_time}'
         "
       >
 
