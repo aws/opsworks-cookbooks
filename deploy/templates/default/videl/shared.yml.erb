@@ -1,0 +1,18 @@
+default: &default
+
+# production and staging env is defined in aws stack settings
+
+<%= @videl_env %>:
+  <<: *default
+  mail:
+    smtp_host: <%= @videl_settings[:mail][:smtp_host] %>
+    smtp_port: <%= @videl_settings[:mail][:smtp_port] %>
+    domain: <%= @videl_settings[:mail][:domain] %>
+    smtp_user_name: <%= @videl_settings[:mail][:smtp_user_name] %>
+    smtp_password: <%= @videl_settings[:mail][:smtp_password] %>
+  pec_mail: 
+    smtp_host: <%= @videl_settings[:pec_mail][:smtp_host] %>
+    smtp_port: <%= @videl_settings[:pec_mail][:smtp_port] %>
+    domain: <%= @videl_settings[:pec_mail][:domain] %>
+    smtp_user_name: <%= @videl_settings[:pec_mail][:smtp_user_name] %>
+    smtp_password: <%= @videl_settings[:pec_mail][:smtp_password] %>     

@@ -24,6 +24,20 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  template "#{deploy[:deploy_to]}/shared/config/shared.yml" do
+    source 'videl/shared.yml.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+      :videl_settings => node[:shared],
+      :videl_env => deploy[:env]
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
+
 
   node[:senders].each do |name, conf|
     sender_config = JSON.parse(conf.to_hash.to_json)
