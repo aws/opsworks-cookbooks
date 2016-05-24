@@ -16,3 +16,9 @@ default: &default
     domain: <%= @videl_settings[:pec_mail][:domain] %>
     smtp_user_name: <%= @videl_settings[:pec_mail][:smtp_user_name] %>
     smtp_password: <%= @videl_settings[:pec_mail][:smtp_password] %>     
+  amazon_s3:
+    bucket_name: <%= @videl_settings[:amazon_s3][:bucket_name] %>
+    bucket_region: <%= @videl_settings[:amazon_s3][:bucket_region] %>
+    access_key_id: <%= @videl_settings[:amazon_s3][:access_key_id] %>
+    secret_access_key: <%= @videl_settings[:amazon_s3][:secret_access_key] %>
+    upload_folder: <%= @videl_settings[:amazon_s3][:upload_folder] %>
