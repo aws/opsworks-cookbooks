@@ -115,8 +115,8 @@ define :puma_deploy do
       symlinks(deploy[:symlinks]) unless deploy[:symlinks].nil?
       action deploy[:action]
 
-      restart_command "#{puma[:restart_command]} && sleep 10"
-    
+      restart_command "#{puma[:restart_command]} && sleep 2"
+
       case deploy[:scm][:scm_type].to_s
       when 'git'
         scm_provider :git
@@ -161,7 +161,7 @@ define :puma_deploy do
             deploy[:database][:host].present?
           end
         end.run_action(:create)
-        
+
         run_callback_from_file("#{release_path}/deploy/before_migrate.rb")
       end
     end
