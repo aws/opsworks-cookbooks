@@ -22,7 +22,8 @@
             v.total,
             v.comprador    AS 'buyer_id',
             v.vendedor     AS 'seller_id',
-            GROUP_CONCAT(concat(vi.autor, '-----author-----'), vi.titulo SEPARATOR '----line----') as items
+
+            GROUP_CONCAT(vi.autor, '#-#', vi.titulo, '#-#', coalesce(location_in_store,' '), '#-#', coalesce(category, ' '), '#-#', vi.ano, '#-#', vi.descr SEPARATOR '----line----') as items
           FROM venda_items vi
           JOIN vendas v ON vi.order_id = v.order_id
           JOIN vendas_detalhes vd ON v.order_id = vd.order_id
@@ -42,7 +43,7 @@
              v.total,
              v.comprador    AS 'buyer_id',
              v.vendedor     AS 'seller_id',
-             GROUP_CONCAT(concat(vi.autor, '-----author-----'), vi.titulo SEPARATOR '----line----') as 'items'
+            GROUP_CONCAT(vi.autor, '#-#', vi.titulo, '#-#', coalesce(location_in_store,' '), '#-#', coalesce(category, ' '), '#-#', vi.ano, '#-#', vi.descr SEPARATOR '----line----') as items
            FROM venda_items vi
            JOIN vendas v ON vi.order_id = v.order_id
            JOIN vendas_detalhes vd ON v.order_id = vd.order_id
