@@ -19,6 +19,7 @@
             SELECT
               md5(concat(b.id, '|', p.id, '|', s.id)) as id,
               b.is_moderated,
+              b.moderation_type,
               b.moderate_action_at,
               b.id book_id,
               b.title,
@@ -71,6 +72,7 @@
             SELECT
               md5(concat(b.id, '|', p.id, '|', s.id)) as id,
               b.is_moderated,
+              b.moderation_type,
               b.moderate_action_at,
               b.id::text book_id,
               b.title,
