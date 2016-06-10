@@ -12,7 +12,11 @@
         query="
          SELECT
             vd.log AS 'sold_at',
-            IF(v.status = 1 AND atrasado = 1, 4, v.status) AS status,
+            (CASE
+             WHEN (v.status = 1 AND atrasado = 1) THEN 4
+             WHEN (v.status = 3 AND v.fenvio = 'local') THEN 5
+             ELSE v.status
+            END) AS status,
             v.order_id,
             vd.dest_nome   AS 'buyer_name',
             vd.dest_cidade AS 'delivery_city',
@@ -23,7 +27,9 @@
             v.comprador    AS 'buyer_id',
             v.vendedor     AS 'seller_id',
 
-            GROUP_CONCAT(vi.autor, '#-#', vi.titulo, '#-#', coalesce(location_in_store,' '), '#-#', coalesce(category, ' '), '#-#', vi.ano, '#-#', vi.descr SEPARATOR '----line----') as items
+            GROUP_CONCAT(vi.autor, '#-#', vi.titulo, '#-#', vi.editora, '#-#', coalesce(vi.book_type,'0'), '#-#',
+                         vi.idioma, '#-#', coalesce(location_in_store,' '), '#-#', coalesce(category, ' '),'#-#',
+                         vi.ano, '#-#', coalesce(vi.descr, ' ') SEPARATOR '----line----') as items
           FROM venda_items vi
           JOIN vendas v ON vi.order_id = v.order_id
           JOIN vendas_detalhes vd ON v.order_id = vd.order_id
@@ -33,7 +39,11 @@
         deltaImportQuery="
           SELECT
              vd.log AS 'sold_at',
-             IF(v.status = 1 AND atrasado = 1, 4, v.status) AS status,
+             (CASE
+              WHEN (v.status = 1 AND atrasado = 1) THEN 4
+              WHEN (v.status = 3 AND v.fenvio = 'local') THEN 5
+              ELSE v.status
+             END) AS status,
              v.order_id,
              vd.dest_nome   AS 'buyer_name',
              vd.dest_cidade AS 'delivery_city',
@@ -43,7 +53,10 @@
              v.total,
              v.comprador    AS 'buyer_id',
              v.vendedor     AS 'seller_id',
-            GROUP_CONCAT(vi.autor, '#-#', vi.titulo, '#-#', coalesce(location_in_store,' '), '#-#', coalesce(category, ' '), '#-#', vi.ano, '#-#', vi.descr SEPARATOR '----line----') as items
+
+             GROUP_CONCAT(vi.autor, '#-#', vi.titulo, '#-#', vi.editora, '#-#', coalesce(vi.book_type,'0'), '#-#',
+                          vi.idioma, '#-#', coalesce(location_in_store,' '), '#-#', coalesce(category, ' '),'#-#',
+                          vi.ano, '#-#', coalesce(vi.descr, ' ') SEPARATOR '----line----') as items
            FROM venda_items vi
            JOIN vendas v ON vi.order_id = v.order_id
            JOIN vendas_detalhes vd ON v.order_id = vd.order_id
