@@ -37,20 +37,6 @@ node[:deploy].each do |application, deploy|
     command "mkdir -p #{deploy[:deploy_to]}/shared/app/views/shared/"
   end
 
-  template "#{deploy[:deploy_to]}/shared/app/views/shared/_rollbar.js.erb" do
-    source 'hurricane/_rollbar.js.erb'
-    mode '0660'
-    owner deploy[:user]
-    group deploy[:group]
-    variables(
-        :hurricane_settings => node[:hurricane_settings],
-        :hurricane_env => deploy[:env]
-    )
-    only_if do
-      File.exists?("#{deploy[:deploy_to]}/shared/app/views/shared")
-    end
-  end
-
   current_path = deploy[:current_path]
 
   execute "restart Server" do
