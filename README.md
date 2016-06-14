@@ -8,6 +8,9 @@ To get started with AWS OpsWorks cookbooks for all versions of Chef see the [coo
 If you want to override any template (like the Rails database.yml or the Apache
 vhost definition), this is the place to look for the originals.
 
+Do not reuse built-in cookbook names for custom or community cookbooks. Custom
+cookbooks that have the same name as built-in cookbooks might fail.
+
 Chef version 12
 ------------------------------------
 
