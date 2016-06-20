@@ -123,6 +123,8 @@
    <field name="synopsis" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="cluster_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="bookshelf" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="bookshelf_id" type="string" indexed="false" stored="true" required="false" multiValued="false" />
+   <field name="language_id" type="string" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="is_moderated" type="boolean" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="moderation_type" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="moderate_action_at" type="date" indexed="true" stored="true" required="false" multiValued="false" />

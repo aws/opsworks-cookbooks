@@ -54,7 +54,9 @@
               (CASE WHEN s.is_new is not null and s.is_new = 'f' THEN 1 ELSE 0 END) used,
               s.quantity,
               s.created_at sku_created_at,
-              bs.name bookshelf
+              bs.name bookshelf,
+              b.bookshelf_id bookshelf_id,
+              b.language_id language_id
             FROM books b
             LEFT JOIN publications p ON (p.book_id = b.id and p.deleted_at is null)
             LEFT JOIN max_covers c ON p.id = c.publication_id
