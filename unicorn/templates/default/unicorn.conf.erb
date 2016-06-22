@@ -54,7 +54,7 @@ after_fork do |server, worker|
   end
 
   if defined?(EvMain::EvSuper)
-    config = Rails.application.config.database_configuration["evmain_#{Rails.env}".to_sym]
+    config = Rails.application.config.database_configuration["evmain_#{Rails.env}"]
     EvMain::EvSuper.establish_connection(config)
   end
 
