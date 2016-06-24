@@ -17,10 +17,10 @@ node[:deploy].each do |application, deploy|
 
   Chef::Log.info("Rails Db Setup...")
 
-  execute 'bin/rake db:drop db:create db:migrate agreement:create_all' do
+  execute 'bin/rake db:drop db:create db:migrate' do
     cwd current_path
     user 'deploy'
-    command 'bin/rake db:drop db:create db:migrate agreement:create_all'
+    command 'bin/rake db:drop db:create db:migrate'
     environment 'RAILS_ENV' => rails_env
   end
 
