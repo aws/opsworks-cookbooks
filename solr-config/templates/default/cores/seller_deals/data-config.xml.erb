@@ -17,6 +17,12 @@
              WHEN (v.status = 3 AND v.fenvio = 'local') THEN 5
              ELSE v.status
             END) AS status,
+            (CASE
+             WHEN (v.fpagamento = 'paypal') THEN v.fpagamento
+             WHEN (v.fpagamento = 'moip_cc') THEN v.fpagamento
+             WHEN (v.fpagamento = 'moip_boleto') THEN v.fpagamento
+             ELSE 'deposit'
+            END) AS payment_method,
             v.order_id,
             vd.dest_nome   AS 'buyer_name',
             vd.dest_cidade AS 'delivery_city',
@@ -29,7 +35,7 @@
 
             GROUP_CONCAT(vi.autor, '#-#', vi.titulo, '#-#', coalesce(vi.editora,''), '#-#', coalesce(vi.book_type,'0'), '#-#',
                          coalesce(vi.idioma, ''), '#-#', coalesce(location_in_store,' '), '#-#', coalesce(category, ' '),'#-#',
-                         coalesce(vi.ano,''), '#-#', coalesce(vi.descr, ' ') SEPARATOR '----line----') as items
+                         coalesce(vi.ano,''), '#-#', coalesce(vi.descr, ' '), '#-#', coalesce(vi.rec_id, '') SEPARATOR '----line----') as items
           FROM venda_items vi
           JOIN vendas v ON vi.order_id = v.order_id
           JOIN vendas_detalhes vd ON v.order_id = vd.order_id
@@ -44,6 +50,12 @@
               WHEN (v.status = 3 AND v.fenvio = 'local') THEN 5
               ELSE v.status
              END) AS status,
+             (CASE
+              WHEN (v.fpagamento = 'paypal') THEN v.fpagamento
+              WHEN (v.fpagamento = 'moip_cc') THEN v.fpagamento
+              WHEN (v.fpagamento = 'moip_boleto') THEN v.fpagamento
+              ELSE 'deposit'
+             END) AS payment_method,
              v.order_id,
              vd.dest_nome   AS 'buyer_name',
              vd.dest_cidade AS 'delivery_city',
@@ -56,7 +68,7 @@
 
              GROUP_CONCAT(vi.autor, '#-#', vi.titulo, '#-#', coalesce(vi.editora,''), '#-#', coalesce(vi.book_type,'0'), '#-#',
                           coalesce(vi.idioma, ''), '#-#', coalesce(location_in_store,' '), '#-#', coalesce(category, ' '),'#-#',
-                          coalesce(vi.ano,''), '#-#', coalesce(vi.descr, ' ') SEPARATOR '----line----') as items
+                          coalesce(vi.ano,''), '#-#', coalesce(vi.descr, ' '), '#-#', coalesce(vi.rec_id, '') SEPARATOR '----line----') as items
            FROM venda_items vi
            JOIN vendas v ON vi.order_id = v.order_id
            JOIN vendas_detalhes vd ON v.order_id = vd.order_id
@@ -73,6 +85,7 @@
 
       <field name="sold_at" column="sold_at" />
       <field name="status" column="status" />
+      <field name="payment_method" column="payment_method" />
       <field name="order_id" column="order_id" />
       <field name="buyer_name" column="buyer_name" />
       <field name="delivery_city" column="delivery_city" />
