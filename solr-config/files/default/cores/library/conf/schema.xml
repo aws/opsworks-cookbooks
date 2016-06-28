@@ -124,6 +124,7 @@
    <field name="cluster_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="bookshelf" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="bookshelf_id" type="string" indexed="false" stored="true" required="false" multiValued="false" />
+   <field name="language" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="language_id" type="string" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="is_moderated" type="boolean" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="moderation_type" type="string" indexed="true" stored="true" required="false" multiValued="false" />
@@ -145,6 +146,7 @@
    <field name="publication_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="publisher" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="publisher_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="format" type="string" indexed="false" stored="true" required="false" multiValued="false" />
 
    <field name="created_at" type="date" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="deleted_at" type="date" indexed="true" stored="true" required="false" multiValued="false" />

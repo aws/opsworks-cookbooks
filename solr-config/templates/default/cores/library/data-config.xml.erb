@@ -34,6 +34,7 @@
               p.edition,
               p.weight,
               p.height,
+              p.format,
               p.width,
               p.depth,
               p.year,
@@ -56,12 +57,14 @@
               s.created_at sku_created_at,
               bs.name bookshelf,
               b.bookshelf_id bookshelf_id,
-              b.language_id language_id
+              b.language_id language_id,
+              l.name as language
             FROM books b
             LEFT JOIN publications p ON (p.book_id = b.id and p.deleted_at is null)
             LEFT JOIN max_covers c ON p.id = c.publication_id
             LEFT JOIN publishers pbrs ON pbrs.id = p.publisher_id
             LEFT JOIN bookshelves bs ON bs.id = b.bookshelf_id
+            LEFT JOIN languages l ON l.id = b.language_id
             LEFT JOIN skus s ON (s.publication_id = p.id and s.deleted_at is null and s.importing != 'true')
             WHERE b.deleted_at is null
             "
