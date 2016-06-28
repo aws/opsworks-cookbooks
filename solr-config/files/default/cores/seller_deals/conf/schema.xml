@@ -111,6 +111,7 @@
    -->
    <field name="sold_at" type="date" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="status" type="int" indexed="true" stored="true" required="true" multiValued="false" />
+   <field name="payment_method" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="order_id" type="int" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="buyer_name" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="delivery_city" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
