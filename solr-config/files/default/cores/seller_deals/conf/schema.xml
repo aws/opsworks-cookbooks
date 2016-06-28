@@ -185,6 +185,7 @@
    <copyField source="items" dest="search" />
    <copyField source="order_id" dest="search" />
    <copyField source="buyer_name" dest="search" />
+   <copyField source="payment_method" dest="search" />
    <copyField source="delivery_city" dest="search" />
    <copyField source="delivery_state" dest="search" />
    <copyField source="delivery_zip_code" dest="search" />
