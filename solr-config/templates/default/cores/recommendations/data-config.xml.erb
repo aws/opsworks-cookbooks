@@ -14,7 +14,8 @@
         select vi.dna_crc as id, btp.autor as author_t, btp.titulo as title_t, e.url as shelf_t,
         c.capa as cover_s, 
         group_concat(v.comprador) as buyers,
-        group_concat(concat(date_format(v.log, '%Y-%m-%d'),'#', vi.preco)) as extra_data
+        group_concat(concat(date_format(v.log, '%Y-%m-%d'),'#', vi.preco)) as extra_data,
+        sum( if( vd.log > (now() - INTERVAL 30 DAY), 1, 0 ) ) as count_last_30_days_i
         from venda_items vi  
         join vendas_detalhes vd using (order_id) 
         join vendas v using(order_id) 

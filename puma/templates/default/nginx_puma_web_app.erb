@@ -22,8 +22,8 @@ server {
 
   root <%= @application[:absolute_document_root] %>;
 
-  <% if @application[:nginx] && @application[:nginx][:client_max_body_size] %>
-    client_max_body_size <%= @application[:nginx][:client_max_body_size] %>;
+  <% if node[:nginx] && node[:nginx][:client_max_body_size] %>
+    client_max_body_size <%= node[:nginx][:client_max_body_size] %>;
   <% end %>
 
   location / {
@@ -84,8 +84,8 @@ server {
 
   root <%= @application[:absolute_document_root] %>;
 
-  <% if @application[:nginx] && @application[:nginx][:client_max_body_size] %>
-    client_max_body_size <%= @application[:nginx][:client_max_body_size] %>;
+  <% if node[:nginx] && node[:nginx][:client_max_body_size] %>
+    client_max_body_size <%= node[:nginx][:client_max_body_size] %>;
   <% end %>
 
   location / {

@@ -16,7 +16,6 @@ extract_path = "#{node['solr']['dir']}-#{node['solr']['version']}"
 
 remote_file src_filepath do
   source node['solr']['url']
-  action :create_if_missing
 end
 
 bash 'unpack_solr' do
@@ -26,7 +25,6 @@ bash 'unpack_solr' do
     tar xzf #{src_filename} -C #{extract_path} --strip 1
     chown -R #{node['solr']['user']}:#{node['solr']['group']} #{extract_path}
   EOH
-  not_if { ::File.exist?(extract_path) }
 end
 
 directory node['solr']['data_dir'] do

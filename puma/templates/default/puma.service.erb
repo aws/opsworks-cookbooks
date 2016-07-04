@@ -58,7 +58,7 @@ end
 
 def restart_puma
 	if puma_running?
-		run_and_ignore_exitcode_and_print_command "kill -USR2 `cat #{PID_PATH}`"
+		run_and_ignore_exitcode_and_print_command "kill -USR1 `cat #{PID_PATH}`"
 	else
 		start_puma
 	end
