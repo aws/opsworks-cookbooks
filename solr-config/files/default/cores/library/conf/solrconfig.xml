@@ -529,7 +529,7 @@
 
        <str name="sort">score desc</str>
 
-       <str name="bq">sku:[* TO *]^2.0</str>
+       <str name="fq">sku:[* TO *]</str>
 
        <str name="group">on</str>
        <str name="group.field">book_id</str>
