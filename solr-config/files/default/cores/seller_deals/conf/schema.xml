@@ -122,6 +122,7 @@
    <field name="seller_id" type="int" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="items" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="search" type="text_general" indexed="true" stored="true" required="true" multiValued="true" />
+   <field name="payment_method" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
 
    <!-- Dynamic field definitions allow using convention over configuration
        for fields via the specification of patterns to match field names.
@@ -186,6 +187,7 @@
    <copyField source="buyer_name" dest="search" />
    <copyField source="delivery_city" dest="search" />
    <copyField source="delivery_state" dest="search" />
+   <copyField source="payment_method" dest="search" />
    <copyField source="delivery_zip_code" dest="search" />
 
 

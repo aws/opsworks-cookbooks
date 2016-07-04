@@ -17,6 +17,13 @@
              WHEN (v.status = 3 AND v.fenvio = 'local') THEN 5
              ELSE v.status
             END) AS status,
+            (CASE
+              WHEN (v.fpagamento = 'paypal' AND v.payment_type IS NULL) THEN v.fpagamento
+              WHEN (v.fpagamento = 'paypal' AND v.payment_type = 'plus') THEN 'paypal_cc'
+              WHEN (v.fpagamento = 'moip_cc') THEN v.fpagamento
+              WHEN (v.fpagamento = 'moip_boleto') THEN v.fpagamento
+              ELSE 'deposit'
+            END) AS payment_method,
             v.order_id,
             vd.dest_nome   AS 'buyer_name',
             vd.dest_cidade AS 'delivery_city',
@@ -46,6 +53,13 @@
               WHEN (v.status = 3 AND v.fenvio = 'local') THEN 5
               ELSE v.status
              END) AS status,
+             (CASE
+               WHEN (v.fpagamento = 'paypal' AND v.payment_type IS NULL) THEN v.fpagamento
+               WHEN (v.fpagamento = 'paypal' AND v.payment_type = 'plus') THEN 'paypal_cc'
+               WHEN (v.fpagamento = 'moip_cc') THEN v.fpagamento
+               WHEN (v.fpagamento = 'moip_boleto') THEN v.fpagamento
+               ELSE 'deposit'
+             END) AS payment_method,
              v.order_id,
              vd.dest_nome   AS 'buyer_name',
              vd.dest_cidade AS 'delivery_city',
@@ -77,6 +91,7 @@
 
       <field name="sold_at" column="sold_at" />
       <field name="status" column="status" />
+      <field name="payment_method" column="payment_method" />
       <field name="order_id" column="order_id" />
       <field name="buyer_name" column="buyer_name" />
       <field name="delivery_city" column="delivery_city" />
