@@ -201,6 +201,7 @@
           INNER JOIN
             authors_books ab ON (a.id = ab.author_id)
         "
+
         cacheImpl="SortedMapBackedCache"
         cacheKey="book_id"
         cacheLookup="sku.book_id"
