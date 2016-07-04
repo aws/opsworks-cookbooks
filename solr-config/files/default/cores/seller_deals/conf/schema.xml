@@ -111,7 +111,6 @@
    -->
    <field name="sold_at" type="date" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="status" type="int" indexed="true" stored="true" required="true" multiValued="false" />
-   <field name="payment_method" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="order_id" type="int" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="buyer_name" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="delivery_city" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
@@ -185,7 +184,6 @@
    <copyField source="items" dest="search" />
    <copyField source="order_id" dest="search" />
    <copyField source="buyer_name" dest="search" />
-   <copyField source="payment_method" dest="search" />
    <copyField source="delivery_city" dest="search" />
    <copyField source="delivery_state" dest="search" />
    <copyField source="delivery_zip_code" dest="search" />
