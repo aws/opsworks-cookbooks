@@ -120,6 +120,7 @@
    <field name="total" type="double" indexed="false" stored="true" required="true" multiValued="false" />
    <field name="buyer_id" type="int" indexed="false" stored="true" required="true" multiValued="false" />
    <field name="seller_id" type="int" indexed="true" stored="true" required="true" multiValued="false" />
+   <field name="shipping_value" type="float" indexed="false" stored="true" required="true" multiValued="false" />
    <field name="items" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="search" type="text_general" indexed="true" stored="true" required="true" multiValued="true" />
    <field name="payment_method" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
