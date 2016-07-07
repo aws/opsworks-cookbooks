@@ -596,6 +596,12 @@
        <str name="group">on</str>
        <str name="group.field">publication_id</str>
        <str name="group.sort">year desc</str>
+
+       <str name="facet">on</str>
+       <str name="facet.mincount">1</str>
+       <str name="facet.field">publisher</str>
+       <str name="facet.field">edition</str>
+       <str name="facet.field">year</str>
      </lst>
   </requestHandler>
 
