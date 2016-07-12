@@ -83,9 +83,12 @@ default['rabbitmq']['disabled_virtualhosts'] = []
 
 # users
 default['rabbitmq']['enabled_users'] =
-  [{ :name => 'guest', :password => 'guest', :rights =>
-    [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
-  }]
+    [{ :name => 'guest', :password => 'guest', :rights =>
+        [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
+     },
+     { :name => 'rabbit', :password => "#{node['rabbitmq']['custom_pass']}", :tag => 'administrator', :rights =>
+         [{ :vhost => '/', :conf => '.*', :write => '.*', :read => '.*' }]
+     }]
 
 default['rabbitmq']['disabled_users'] = []
 

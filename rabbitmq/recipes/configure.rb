@@ -94,39 +94,12 @@ end
 Chef::Log.info("Creating and Setting all permissions and groups to the user")
 # Create User -  access the Management Interface
 
-if node['rabbitmq']['users_ev']
-  node.set['rabbitmq']['enabled_users'] =
-    [{ :name => 'guest', :password => 'guest', :rights =>
-      [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
-    },
-    [{ :name => 'guest', :password => 'guest', :rights =>
-      [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
-    },
-    [{ :name => 'guest', :password => 'guest', :rights =>
-      [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
-    },
-    [{ :name => 'guest', :password => 'guest', :rights =>
-      [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
-    },
-    { :name => 'rabbit', :password => 'C*HfF4n!', :tag => 'administrator', :rights =>
-      [{ :vhost => '/', :conf => '.*', :write => '.*', :read => '.*' }]
-    }]
-else
-  node.set['rabbitmq']['enabled_users'] =
-    [{ :name => 'guest', :password => 'guest', :rights =>
-      [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
-    },
-    { :name => 'rabbit', :password => 'C*HfF4n!', :tag => 'administrator', :rights =>
-      [{ :vhost => '/', :conf => '.*', :write => '.*', :read => '.*' }]
-    }]
-end
-
-if node['rabbitmq']['cluster']  
+if node['rabbitmq']['cluster']
   # Layer Name  
   rabbitmq_layer = node['rabbitmq']['opsworks']['layer_name']
   
   # Cluster Name
-  node.set['rabbitmq']['clustering']['cluster_name'] = 'rabbit-ev'
+  node.set['rabbitmq']['clustering']['cluster_name'] = 'rabbit'
 
   begin
     # Instances successfully activated
