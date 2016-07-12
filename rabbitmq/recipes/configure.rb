@@ -101,7 +101,7 @@ if node['rabbitmq']['cluster']
   # Cluster Name
   node.set['rabbitmq']['clustering']['cluster_name'] = 'rabbit'
 
-  node['rabbitmq']['enabled_users'] =
+  node.set['rabbitmq']['enabled_users'] =
       [{ :name => 'guest', :password => 'guest', :rights =>
           [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
        },
