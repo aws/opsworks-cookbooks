@@ -101,6 +101,14 @@ if node['rabbitmq']['cluster']
   # Cluster Name
   node.set['rabbitmq']['clustering']['cluster_name'] = 'rabbit'
 
+  node['rabbitmq']['enabled_users'] =
+      [{ :name => 'guest', :password => 'guest', :rights =>
+          [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
+       },
+       { :name => 'rabbit', :password => "#{node['rabbitmq']['custom_pass']}", :tag => 'administrator', :rights =>
+           [{ :vhost => '/', :conf => '.*', :write => '.*', :read => '.*' }]
+       }]
+
   begin
     # Instances successfully activated
     instances = node[:opsworks][:layers][rabbitmq_layer][:instances]
