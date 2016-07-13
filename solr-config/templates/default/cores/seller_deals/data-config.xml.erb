@@ -19,6 +19,7 @@
             END) AS status,
             (CASE
               WHEN (v.fpagamento = 'paypal' AND v.payment_type IS NULL) THEN v.fpagamento
+              WHEN (v.fpagamento = 'paypal' AND v.payment_type = 'express') THEN v.fpagamento
               WHEN (v.fpagamento = 'paypal' AND v.payment_type = 'plus') THEN 'paypal_cc'
               WHEN (v.fpagamento = 'moip_cc') THEN v.fpagamento
               WHEN (v.fpagamento = 'moip_boleto') THEN v.fpagamento
@@ -55,6 +56,7 @@
              END) AS status,
              (CASE
                WHEN (v.fpagamento = 'paypal' AND v.payment_type IS NULL) THEN v.fpagamento
+               WHEN (v.fpagamento = 'paypal' AND v.payment_type = 'express') THEN v.fpagamento
                WHEN (v.fpagamento = 'paypal' AND v.payment_type = 'plus') THEN 'paypal_cc'
                WHEN (v.fpagamento = 'moip_cc') THEN v.fpagamento
                WHEN (v.fpagamento = 'moip_boleto') THEN v.fpagamento
