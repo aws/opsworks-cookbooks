@@ -41,7 +41,7 @@
                          coalesce(vi.preco, ' '), '#-#', coalesce(vi.estante, ' ') SEPARATOR '----line----') as items
           FROM venda_items vi
           JOIN vendas v ON vi.order_id = v.order_id
-          JOIN vendas_detalhes vd ON v.order_id = vd.order_id
+          LEFT JOIN vendas_detalhes vd ON v.order_id = vd.order_id
           WHERE vd.log > DATE_SUB(NOW(), INTERVAL 6 MONTH)
           GROUP BY order_id"
 
@@ -77,7 +77,7 @@
                           coalesce(vi.preco, ' '), '#-#', coalesce(vi.estante, ' ') SEPARATOR '----line----') as items
            FROM venda_items vi
            JOIN vendas v ON vi.order_id = v.order_id
-           JOIN vendas_detalhes vd ON v.order_id = vd.order_id
+           LEFT JOIN vendas_detalhes vd ON v.order_id = vd.order_id
            WHERE v.order_id = '${dih.delta.order_id}'
            GROUP BY v.order_id
         "
