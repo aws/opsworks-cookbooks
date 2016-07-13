@@ -11,7 +11,7 @@
     <entity name="order" pk="order_id" dataSource="seller_deals"
         query="
          SELECT
-            vd.log AS 'sold_at',
+            v.log AS 'sold_at',
             (CASE
              WHEN (v.status = 1 AND atrasado = 1) THEN 4
              WHEN (v.status = 3 AND v.fenvio = 'local') THEN 5
@@ -48,7 +48,7 @@
 
         deltaImportQuery="
           SELECT
-             vd.log AS 'sold_at',
+             v.log AS 'sold_at',
              (CASE
               WHEN (v.status = 1 AND atrasado = 1) THEN 4
               WHEN (v.status = 3 AND v.fenvio = 'local') THEN 5
