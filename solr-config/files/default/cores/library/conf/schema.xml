@@ -156,6 +156,7 @@
 
    <!-- Sku -->
    <field name="price" type="float" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="uuid" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="seller_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="sku" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="new" type="int" indexed="true" stored="true" required="false" multiValued="false" />
