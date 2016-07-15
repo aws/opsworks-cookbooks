@@ -11,7 +11,7 @@
     <entity name="order" pk="order_id" dataSource="seller_deals"
         query="
          SELECT
-            vd.log AS 'sold_at',
+            v.log AS 'sold_at',
             (CASE
              WHEN (v.status = 1 AND atrasado = 1) THEN 4
              WHEN (v.status = 3 AND v.fenvio = 'local') THEN 5
@@ -19,16 +19,17 @@
             END) AS status,
             (CASE
               WHEN (v.fpagamento = 'paypal' AND v.payment_type IS NULL) THEN v.fpagamento
+              WHEN (v.fpagamento = 'paypal' AND v.payment_type = 'express') THEN v.fpagamento
               WHEN (v.fpagamento = 'paypal' AND v.payment_type = 'plus') THEN 'paypal_cc'
               WHEN (v.fpagamento = 'moip_cc') THEN v.fpagamento
               WHEN (v.fpagamento = 'moip_boleto') THEN v.fpagamento
               ELSE 'deposit'
             END) AS payment_method,
             v.order_id,
-            vd.dest_nome   AS 'buyer_name',
-            vd.dest_cidade AS 'delivery_city',
-            vd.dest_estado AS 'delivery_state',
-            vd.dest_cep    AS 'delivery_zip_code',
+            coalesce(vd.dest_nome, '')   AS 'buyer_name',
+            coalesce(vd.dest_cidade, '') AS 'delivery_city',
+            coalesce(vd.dest_estado, '') AS 'delivery_state',
+            coalesce(vd.dest_cep, '')    AS 'delivery_zip_code',
             v.fenvio       AS 'delivery_method',
             v.total,
             v.comprador    AS 'buyer_id',
@@ -41,13 +42,13 @@
                          coalesce(vi.preco, ' '), '#-#', coalesce(vi.estante, ' ') SEPARATOR '----line----') as items
           FROM venda_items vi
           JOIN vendas v ON vi.order_id = v.order_id
-          JOIN vendas_detalhes vd ON v.order_id = vd.order_id
-          WHERE vd.log > DATE_SUB(NOW(), INTERVAL 6 MONTH)
+          LEFT JOIN vendas_detalhes vd ON v.order_id = vd.order_id
+          WHERE v.log > DATE_SUB(NOW(), INTERVAL 6 MONTH)
           GROUP BY order_id"
 
         deltaImportQuery="
           SELECT
-             vd.log AS 'sold_at',
+             v.log AS 'sold_at',
              (CASE
               WHEN (v.status = 1 AND atrasado = 1) THEN 4
               WHEN (v.status = 3 AND v.fenvio = 'local') THEN 5
@@ -55,16 +56,17 @@
              END) AS status,
              (CASE
                WHEN (v.fpagamento = 'paypal' AND v.payment_type IS NULL) THEN v.fpagamento
+               WHEN (v.fpagamento = 'paypal' AND v.payment_type = 'express') THEN v.fpagamento
                WHEN (v.fpagamento = 'paypal' AND v.payment_type = 'plus') THEN 'paypal_cc'
                WHEN (v.fpagamento = 'moip_cc') THEN v.fpagamento
                WHEN (v.fpagamento = 'moip_boleto') THEN v.fpagamento
                ELSE 'deposit'
              END) AS payment_method,
              v.order_id,
-             vd.dest_nome   AS 'buyer_name',
-             vd.dest_cidade AS 'delivery_city',
-             vd.dest_estado AS 'delivery_state',
-             vd.dest_cep    AS 'delivery_zip_code',
+             coalesce(vd.dest_nome, '')   AS 'buyer_name',
+             coalesce(vd.dest_cidade, '') AS 'delivery_city',
+             coalesce(vd.dest_estado, '') AS 'delivery_state',
+             coalesce(vd.dest_cep, '')    AS 'delivery_zip_code',
              v.fenvio       AS 'delivery_method',
              v.total,
              v.comprador    AS 'buyer_id',
@@ -77,7 +79,7 @@
                           coalesce(vi.preco, ' '), '#-#', coalesce(vi.estante, ' ') SEPARATOR '----line----') as items
            FROM venda_items vi
            JOIN vendas v ON vi.order_id = v.order_id
-           JOIN vendas_detalhes vd ON v.order_id = vd.order_id
+           LEFT JOIN vendas_detalhes vd ON v.order_id = vd.order_id
            WHERE v.order_id = '${dih.delta.order_id}'
            GROUP BY v.order_id
         "
