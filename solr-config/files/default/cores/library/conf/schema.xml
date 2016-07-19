@@ -144,7 +144,8 @@
    <field name="pages" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="book_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="publication_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
-   <field name="publisher" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="publisher" type="text_ngram" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="s_publisher" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="publisher_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="format" type="string" indexed="false" stored="true" required="false" multiValued="false" />
 
@@ -236,6 +237,8 @@
    <copyField source="authors" dest="s_authors"/>
    <copyField source="authors" dest="authors_simple"/>
    <copyField source="authors" dest="text"/>
+
+   <copyField source="publisher" dest="s_publisher"/>
 
 
   <!--
