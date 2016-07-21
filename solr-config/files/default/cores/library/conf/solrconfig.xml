@@ -600,7 +600,7 @@
 
        <str name="facet">on</str>
        <str name="facet.mincount">1</str>
-       <str name="facet.field">publisher</str>
+       <str name="facet.field">s_publisher</str>
        <str name="facet.field">edition</str>
        <str name="facet.field">year</str>
      </lst>
