@@ -130,8 +130,8 @@
    <field name="moderation_type" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="moderate_action_at" type="date" indexed="true" stored="true" required="false" multiValued="false" />
 
-   <field name="unique_sellers_per_book" type="int" indexed="false" stored="true" required="false" multiValued="false" />
-   <field name="sku_count" type="int" indexed="false" stored="true" required="false" multiValued="false" />
+   <field name="unique_sellers_per_book" type="int" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="sku_count" type="int" indexed="true" stored="true" required="false" multiValued="false" />
 
    <!-- Publicacao -->
    <field name="isbn" type="string" indexed="true" stored="true" required="false" multiValued="false" />
@@ -642,4 +642,6 @@
                              refreshInterval: Number of minutes between each rates fetch (default: 1440, min: 60)
    -->
     <fieldType name="currency" class="solr.CurrencyField" precisionStep="8" defaultCurrency="USD" currencyConfig="currency.xml" />
+
+    <similarity class="org.apache.lucene.search.similarities.BM25Similarity" />
 </schema>
