@@ -130,6 +130,9 @@
    <field name="moderation_type" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="moderate_action_at" type="date" indexed="true" stored="true" required="false" multiValued="false" />
 
+   <field name="unique_sellers_per_book" type="int" indexed="false" stored="true" required="false" multiValued="false" />
+   <field name="sku_count" type="int" indexed="false" stored="true" required="false" multiValued="false" />
+
    <!-- Publicacao -->
    <field name="isbn" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="issn" type="string" indexed="true" stored="true" required="false" multiValued="false" />
