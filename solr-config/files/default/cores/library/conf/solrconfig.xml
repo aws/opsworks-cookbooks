@@ -834,6 +834,7 @@
        <str name="fq">{!collapse field=book_id}</str>
        <str name="fq">is_moderated:true</str>
        <str name="fl">score,*</str>
+       <str name="mlt.match.include.in_similars">true</str>
      </lst>
   </requestHandler>
 
