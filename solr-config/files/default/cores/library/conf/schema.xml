@@ -169,6 +169,7 @@
    <field name="quantity" type="int" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="sku_title" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="sku_authors" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="seller" type="string" indexed="true" stored="true" required="false" multiValued="false" />
 
    <!-- Dynamic field definitions allow using convention over configuration
        for fields via the specification of patterns to match field names.
