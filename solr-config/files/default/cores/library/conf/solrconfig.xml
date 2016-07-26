@@ -490,6 +490,8 @@
        <str name="rows">30</str>
        <str name="fl">authors, title, is_moderated, cover</str>
 
+       <str name="fq">sku:[* TO *]</str>str>
+
        <str name="group">on</str>
        <str name="group.field">book_id</str>
 
