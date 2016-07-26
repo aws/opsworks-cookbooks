@@ -46,13 +46,15 @@
           b.volume,
           b.cluster_id,
           b.language_id AS language_id,
+          b.bookshelf_id AS bookshelf_id,
 
           l.name AS language,
 
-          COUNT(s.id) OVER (PARTITION BY b.id) AS sku_count,
-          us.unique_seller_ids AS unique_sellers_per_book,
+          bs.name AS bookshelf,
 
-          COALESCE(p.cover, c.cover) AS cover,
+          COUNT(s.id) OVER (PARTITION BY b.id) AS sku_count,
+
+          us.unique_seller_ids AS unique_sellers_per_book,
 
           p.id AS publication_id,
           p.isbn,
@@ -66,12 +68,14 @@
           p.depth,
           p.year,
           p.pages,
+          p.publisher_id,
           p.created_at,
           p.updated_at,
           p.deleted_at,
 
+          COALESCE(p.cover, c.cover) AS cover,
+
           pbrs.name AS publisher,
-          pbrs.id AS publisher_id,
 
           s.id AS sku,
           s.seller_id,
@@ -84,8 +88,7 @@
           s.quantity,
           s.created_at AS sku_created_at,
 
-          bs.name AS bookshelf,
-          b.bookshelf_id AS bookshelf_id
+          se.name AS seller
         FROM
           books b
         LEFT JOIN
@@ -93,13 +96,15 @@
         LEFT JOIN
           max_covers c ON (p.id = c.publication_id)
         LEFT JOIN
-          publishers pbrs ON (pbrs.id = p.publisher_id)
+          publishers pbrs ON (pbrs.id = p.publisher_id AND pbrs.deleted_at IS NULL)
         LEFT JOIN
-          bookshelves bs ON (bs.id = b.bookshelf_id)
+          bookshelves bs ON (bs.id = b.bookshelf_id AND bs.deleted_at IS NULL)
         LEFT JOIN
-          languages l ON (l.id = b.language_id)
+          languages l ON (l.id = b.language_id AND l.deleted_at IS NULL)
         LEFT JOIN
           skus s ON (s.publication_id = p.id AND s.deleted_at IS NULL AND s.importing != 'true')
+        LEFT JOIN
+          sellers se ON (s.seller_id = se.id AND se.deleted_at IS NULL)
         LEFT JOIN
           unique_sellers_per_book us ON (us.book_id = b.id)
         WHERE
@@ -143,13 +148,15 @@
           b.volume,
           b.cluster_id,
           b.language_id AS language_id,
+          b.bookshelf_id AS bookshelf_id,
 
           l.name AS language,
 
-          COUNT(s.id) OVER (PARTITION BY b.id) AS sku_count,
-          us.unique_seller_ids AS unique_sellers_per_book,
+          bs.name AS bookshelf,
 
-          COALESCE(p.cover, c.cover) AS cover,
+          COUNT(s.id) OVER (PARTITION BY b.id) AS sku_count,
+
+          us.unique_seller_ids AS unique_sellers_per_book,
 
           p.id AS publication_id,
           p.isbn,
@@ -163,12 +170,14 @@
           p.depth,
           p.year,
           p.pages,
+          p.publisher_id,
           p.created_at,
           p.updated_at,
           p.deleted_at,
 
+          COALESCE(p.cover, c.cover) AS cover,
+
           pbrs.name AS publisher,
-          pbrs.id AS publisher_id,
 
           s.id AS sku,
           s.seller_id,
@@ -181,8 +190,7 @@
           s.quantity,
           s.created_at AS sku_created_at,
 
-          bs.name AS bookshelf,
-          b.bookshelf_id AS bookshelf_id
+          se.name AS seller
         FROM
           books b
         LEFT JOIN
@@ -190,13 +198,15 @@
         LEFT JOIN
           max_covers c ON (p.id = c.publication_id)
         LEFT JOIN
-          publishers pbrs ON (pbrs.id = p.publisher_id)
+          publishers pbrs ON (pbrs.id = p.publisher_id AND pbrs.deleted_at IS NULL)
         LEFT JOIN
-          bookshelves bs ON (bs.id = b.bookshelf_id)
+          bookshelves bs ON (bs.id = b.bookshelf_id AND bs.deleted_at IS NULL)
         LEFT JOIN
-          languages l ON (l.id = b.language_id)
+          languages l ON (l.id = b.language_id AND l.deleted_at IS NULL)
         LEFT JOIN
           skus s ON (s.publication_id = p.id AND s.deleted_at IS NULL AND s.importing != 'true')
+        LEFT JOIN
+          sellers se ON (s.seller_id = se.id AND se.deleted_at IS NULL)
         LEFT JOIN
           unique_sellers_per_book us ON (us.book_id = b.id)
         WHERE
