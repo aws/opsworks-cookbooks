@@ -684,7 +684,7 @@
        <str name="facet.missing">false</str>
        <str name="facet.field">edition</str>
        <str name="facet.field">publisher</str>
-       <str name="facet.field">seller_id</str>
+       <str name="facet.field">seller</str>
        <!-- A ordem do facet.query é importante para a aplicação -->
        <str name="facet.query">price:[* TO 5]</str>
        <str name="facet.query">price:[* TO 12]</str>
@@ -701,7 +701,7 @@
 
        <str name="facet.mincount">1</str>
 
-       <str name="fl">sku, uuid, seller_id, sku_created_at, edition, cover, year, price, publisher, isbn, volume, new, used, year, weight, sku_title, sku_authors</str>
+       <str name="fl">sku, uuid, seller_id, seller, sku_created_at, edition, cover, year, price, publisher, isbn, volume, new, used, year, weight, sku_title, sku_authors</str>
 
        <str name="json.facet">{total_new:"sum(new)", total_used: "sum(used)", unique_sellers: "unique(seller_id)", min_price: "min(price)", max_price: "max(price)"}</str>
 
