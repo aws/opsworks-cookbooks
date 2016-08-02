@@ -44,6 +44,7 @@
           JOIN vendas v ON vi.order_id = v.order_id
           LEFT JOIN vendas_detalhes vd ON v.order_id = vd.order_id
           WHERE v.log > DATE_SUB(NOW(), INTERVAL 6 MONTH)
+          AND v.status != -3
           GROUP BY order_id"
 
         deltaImportQuery="
@@ -81,6 +82,7 @@
            JOIN vendas v ON vi.order_id = v.order_id
            LEFT JOIN vendas_detalhes vd ON v.order_id = vd.order_id
            WHERE v.order_id = '${dih.delta.order_id}'
+           AND v.status != -3
            GROUP BY v.order_id
         "
 
