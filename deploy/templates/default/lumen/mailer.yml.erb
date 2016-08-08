@@ -1,0 +1,12 @@
+default: &default
+  smtp_host: <%= @lumen_settings[:mailer][:smtp_host] %>
+  smtp_port: <%= @lumen_settings[:mailer][:smtp_port] %>
+  domain: <%= @lumen_settings[:mailer][:domain] %>
+  smtp_user_name: <%= @lumen_settings[:mailer][:smtp_user_name] %>
+  smtp_password: <%= @lumen_settings[:mailer][:smtp_password] %>
+
+staging:
+  <<: *default
+
+production:
+  <<: *default  
