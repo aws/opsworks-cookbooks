@@ -56,6 +56,13 @@ node[:deploy].each do |application, deploy|
 
   Chef::Log.info("Precompiling Rails assets with environment #{rails_env}")
 
+  execute 'stop queue' do
+    cwd current_path
+    user 'deploy'
+    command 'kill $(ps aux | grep qc:work | awk \'{print $2}\')'
+    environment 'RAILS_ENV' => rails_env
+  end
+
   execute 'rake assets:precompile' do
     cwd current_path
     user 'deploy'
@@ -72,5 +79,12 @@ node[:deploy].each do |application, deploy|
       File.exists?(deploy[:current_path])
     end
   end
+
+  execute 'start queue' do
+    cwd current_path
+    user 'deploy'
+    command 'nohup bundle exec rake qc:work &'
+    environment 'RAILS_ENV' => rails_env
+  end  
 
 end
