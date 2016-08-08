@@ -59,7 +59,7 @@ node[:deploy].each do |application, deploy|
   execute 'stop queue' do
     cwd current_path
     user 'deploy'
-    command 'kill $(ps aux | grep qc:work | awk \'{print $2}\')'
+    command 'kill $(ps aux | grep qc:work | awk \'{print $2}\') > /dev/null 2>&1'
     environment 'RAILS_ENV' => rails_env
   end
 
