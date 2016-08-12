@@ -2,7 +2,7 @@
   <dataSource type="JdbcDataSource" driver="org.postgresql.Driver"
     name="library"
     url="jdbc:postgresql://localhost/library_development"
-    user="fc"
+    user=""
     batchSize="10000"
     autoReconnect="true"
   />
