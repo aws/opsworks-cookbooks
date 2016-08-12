@@ -49,6 +49,7 @@
           b.bookshelf_id AS bookshelf_id,
 
           l.name AS language,
+          l.code AS language_code,
 
           bs.name AS bookshelf,
 
@@ -69,6 +70,7 @@
           p.year,
           p.pages,
           p.publisher_id,
+          p.details,
           p.created_at,
           p.updated_at,
           p.deleted_at,
@@ -81,11 +83,17 @@
           s.seller_id,
           s.uuid,
           s.price,
+          s.original_price,
+          s.discount,
           s.title AS sku_title,
           s.authors AS sku_authors,
           (CASE WHEN s.is_new IS NOT NULL AND s.is_new = 't' THEN 1 ELSE 0 END) AS new,
           (CASE WHEN s.is_new IS NOT NULL AND s.is_new = 'f' THEN 1 ELSE 0 END) AS used,
           s.quantity,
+          s.id_on_bookstore,
+          s.description,
+          s.topics,
+          s.location_on_bookstore,
           s.created_at AS sku_created_at,
 
           se.name AS seller
@@ -151,6 +159,7 @@
           b.bookshelf_id AS bookshelf_id,
 
           l.name AS language,
+          l.code AS language_code,
 
           bs.name AS bookshelf,
 
@@ -171,6 +180,7 @@
           p.year,
           p.pages,
           p.publisher_id,
+          p.details,
           p.created_at,
           p.updated_at,
           p.deleted_at,
@@ -183,11 +193,17 @@
           s.seller_id,
           s.uuid,
           s.price,
+          s.original_price,
+          s.discount,
           s.title AS sku_title,
           s.authors AS sku_authors,
           (CASE WHEN s.is_new IS NOT NULL AND s.is_new = 't' THEN 1 ELSE 0 END) AS new,
           (CASE WHEN s.is_new IS NOT NULL AND s.is_new = 'f' THEN 1 ELSE 0 END) AS used,
           s.quantity,
+          s.id_on_bookstore,
+          s.description,
+          s.topics,
+          s.location_on_bookstore,
           s.created_at AS sku_created_at,
 
           se.name AS seller

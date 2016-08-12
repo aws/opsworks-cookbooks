@@ -126,6 +126,7 @@
    <field name="bookshelf_id" type="string" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="language" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="language_id" type="string" indexed="false" stored="true" required="false" multiValued="false" />
+   <field name="language_code" type="string" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="is_moderated" type="boolean" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="moderation_type" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="moderate_action_at" type="date" indexed="true" stored="true" required="false" multiValued="false" />
@@ -133,7 +134,7 @@
    <field name="unique_sellers_per_book" type="int" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="sku_count" type="int" indexed="true" stored="true" required="false" multiValued="false" />
 
-   <!-- Publicacao -->
+   <!-- Publication -->
    <field name="isbn" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="issn" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="edition" type="string" indexed="true" stored="true" required="false" multiValued="false" />
@@ -151,6 +152,7 @@
    <field name="s_publisher" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="publisher_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="format" type="string" indexed="false" stored="true" required="false" multiValued="false" />
+   <field name="details" type="string" indexed="false" stored="true" required="false" multiValued="false" />
 
    <field name="created_at" type="date" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="deleted_at" type="date" indexed="true" stored="true" required="false" multiValued="false" />
@@ -160,6 +162,8 @@
 
    <!-- Sku -->
    <field name="price" type="float" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="original_price" type="float" indexed="false" stored="true" required="false" multiValued="false" />
+   <field name="discount" type="float" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="uuid" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="seller_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="sku" type="string" indexed="true" stored="true" required="false" multiValued="false" />
@@ -170,6 +174,10 @@
    <field name="sku_title" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="sku_authors" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="seller" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="id_on_bookstore" type="string" indexed="false" stored="true" required="false" multiValued="false" />
+   <field name="description" type="string" indexed="false" stored="true" required="false" multiValued="false" />
+   <field name="topics" type="string" indexed="false" stored="true" required="false" multiValued="false" />
+   <field name="location_on_bookstore" type="string" indexed="false" stored="true" required="false" multiValued="false" />
 
    <!-- Dynamic field definitions allow using convention over configuration
        for fields via the specification of patterns to match field names.
