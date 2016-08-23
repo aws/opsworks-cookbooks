@@ -173,6 +173,7 @@
    <field name="quantity" type="int" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="sku_title" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="sku_authors" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="sku_volume" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="seller" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="id_on_bookstore" type="string" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="description" type="string" indexed="false" stored="true" required="false" multiValued="false" />
