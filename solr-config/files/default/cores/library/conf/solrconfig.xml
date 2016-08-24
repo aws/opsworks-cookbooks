@@ -663,7 +663,7 @@
        <str name="wt">json</str>
        <str name="indent">true</str>
        <str name="rows">100</str>
-       <str name="fl">sku, book_id, publication_id, authors, title, volume, isbn, issn, barcode, edition, year, publisher, updated_at, deleted_at, seller_id, price, sku_created_at, used, new, quantity</str>
+       <str name="fl">sku, book_id, publication_id, sku_authors, sku_title, sku_volume, sku_language, isbn, issn, barcode, edition, year, publisher, updated_at, deleted_at, seller_id, price, sku_created_at, used, new, quantity</str>
 
        <str name="df">seller_id</str>
      </lst>
@@ -701,7 +701,7 @@
 
        <str name="facet.mincount">1</str>
 
-       <str name="fl">sku, uuid, seller_id, seller, sku_created_at, edition, cover, year, price, publisher, isbn, volume, new, used, year, weight, sku_title, sku_authors</str>
+       <str name="fl">sku, uuid, seller_id, seller, sku_created_at, edition, cover, year, price, publisher, isbn, volume, new, used, year, weight, sku_title, sku_authors, sku_volume, sku_language</str>
 
        <str name="json.facet">{total_new:"sum(new)", total_used: "sum(used)", unique_sellers: "unique(seller_id)", min_price: "min(price)", max_price: "max(price)"}</str>
 
