@@ -39,6 +39,8 @@ include_recipe 'mysql::config'
 
 service 'mysql' do
   action :start
+  retries 3
+  retry_delay 5
 end
 
 if platform?('centos','redhat','fedora','amazon')
