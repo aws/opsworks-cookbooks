@@ -16,12 +16,20 @@ node[:deploy].each do |application, deploy|
   yum_package 'fontconfig-devel'
   yum_package 'libstdc++'
 
-  execute "download & install pdftk" do
+  execute "download phantomjs" do
     command "cd /tmp; wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2;"
-    command "sudo mkdir -p /opt/phantomjs"
-    command "cd /tmp; bzip2 -d phantomjs-1.9.8-linux-x86_64.tar.bz2; sudo tar -xvf phantomjs-1.9.8-linux-x86_64.tar --directory /opt/phantomjs/ --strip-components 1"
-    command 'sudo ln -s /opt/phantomjs/bin/phantomjs /usr/bin/phantomjs'
   end
 
+  execute "create dir phantomjs" do
+    command "sudo mkdir -p /opt/phantomjs"
+  end
+
+  execute "unzip and install phantomjs" do
+    command "cd /tmp; bzip2 -d phantomjs-1.9.8-linux-x86_64.tar.bz2; sudo tar -xvf phantomjs-1.9.8-linux-x86_64.tar --directory /opt/phantomjs/ --strip-components 1"
+  end
+
+  execute "create link" do
+    command 'sudo ln -s /opt/phantomjs/bin/phantomjs /usr/bin/phantomjs'
+  end
 
 end
