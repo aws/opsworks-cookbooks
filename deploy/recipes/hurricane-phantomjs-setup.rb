@@ -25,7 +25,7 @@ node[:deploy].each do |application, deploy|
   end
 
   execute "unzip and install phantomjs" do
-    command "cd /tmp; bzip2 -d phantomjs-1.9.8-linux-x86_64.tar.bz2; sudo tar -xvf phantomjs-1.9.8-linux-x86_64.tar --directory /opt/phantomjs/ --strip-components 1"
+    command "cd /tmp; bzip2 -d phantomjs-2.1.1-linux-x86_64.tar.bz2; sudo tar -xvf phantomjs-2.1.1-linux-x86_64.tar --directory /opt/phantomjs/ --strip-components 1"
   end
 
   execute "create link" do
