@@ -3,6 +3,8 @@ default: &default
   access_key_id: <%= @lumen_settings[:aws][:access_key_id] %>
   secret_access_key: <%= @lumen_settings[:aws][:secret_access_key] %> 
   bucket_name: <%= @lumen_settings[:aws][:bucket_name] %> 
+  bucket_name: <%= @lumen_settings[:aws][:bucket_name] %> 
+  cache_enabled: <%= @lumen_settings[:aws][:cache_enabled] %>
 
 staging:
   <<: *default
