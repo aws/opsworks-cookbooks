@@ -71,7 +71,7 @@ define :opsworks_deploy do
       revision deploy[:scm][:revision]
       migrate deploy[:migrate]
       migration_command deploy[:migrate_command]
-      environment deploy[:environment].to_hash
+      environment deploy[:environment].to_hash.merge({ :ELASTIC_LOAD_BALANCER_URL => node["opsworks"]["stack"]["elb-load-balancers"][0]["dns_name"] })
       purge_before_symlink(deploy[:purge_before_symlink]) unless deploy[:purge_before_symlink].nil?
       create_dirs_before_symlink(deploy[:create_dirs_before_symlink])
       symlink_before_migrate(deploy[:symlink_before_migrate])
