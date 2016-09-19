@@ -1,0 +1,11 @@
+default: &default
+  bucket_region: <%= @lumen_settings[:aws][:bucket_region] %>
+  access_key_id: <%= @lumen_settings[:aws][:access_key_id] %>
+  secret_access_key: <%= @lumen_settings[:aws][:secret_access_key] %> 
+  bucket_name: <%= @lumen_settings[:aws][:bucket_name] %> 
+
+staging:
+  <<: *default
+
+production:
+  <<: *default  
