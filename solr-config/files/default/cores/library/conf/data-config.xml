@@ -23,7 +23,11 @@
         unique_sellers_per_book AS (
           SELECT
             b1.id AS book_id,
-            COUNT(DISTINCT(s1.seller_id)) AS unique_seller_ids
+            COUNT(DISTINCT(s1.seller_id)) AS unique_seller_ids,
+            min(s1.price) AS minimum_price,
+            sum( case when s1.is_new = 't' then 1 else 0 end  ) as new_copies,
+            sum( case when s1.is_new = 'f' then 1 else 0 end  ) as used_copies
+
           FROM
             books b1
           LEFT JOIN
@@ -56,6 +60,9 @@
           COUNT(s.id) OVER (PARTITION BY b.id) AS sku_count,
 
           us.unique_seller_ids AS unique_sellers_per_book,
+          us.minimum_price as minimum_price,
+          us.used_copies,
+          us.new_copies,
 
           p.id AS publication_id,
           p.isbn,
@@ -135,7 +142,10 @@
         unique_sellers_per_book AS (
           SELECT
             b1.id AS book_id,
-            COUNT(DISTINCT(s1.seller_id)) AS unique_seller_ids
+            COUNT(DISTINCT(s1.seller_id)) AS unique_seller_ids,
+            min(s1.price) AS minimum_price,
+            sum( case when s1.is_new = 't' then 1 else 0 end  ) as new_copies,
+            sum( case when s1.is_new = 'f' then 1 else 0 end  ) as used_copies
           FROM
             books b1
           LEFT JOIN
@@ -168,6 +178,9 @@
           COUNT(s.id) OVER (PARTITION BY b.id) AS sku_count,
 
           us.unique_seller_ids AS unique_sellers_per_book,
+          us.minimum_price as minimum_price,
+          us.used_copies,
+          us.new_copies,
 
           p.id AS publication_id,
           p.isbn,
