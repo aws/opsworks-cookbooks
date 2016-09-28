@@ -16,3 +16,7 @@ tmp
 .yardoc
 _yardoc
 doc/
+
+yum/.DS_Store
+
+.project
