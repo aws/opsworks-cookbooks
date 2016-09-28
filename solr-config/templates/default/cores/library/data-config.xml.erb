@@ -20,7 +20,7 @@
           WINDOW wnd AS (PARTITION BY publication_id ORDER BY number_of_uploads DESC)
         ),
 
-        unique_sellers_per_book AS (
+        book_stats AS (
           SELECT
             b1.id AS book_id,
             COUNT(DISTINCT(s1.seller_id)) AS unique_seller_ids,
@@ -59,10 +59,10 @@
 
           COUNT(s.id) OVER (PARTITION BY b.id) AS sku_count,
 
-          us.unique_seller_ids AS unique_sellers_per_book,
-          us.minimum_price as minimum_price,
-          us.used_copies,
-          us.new_copies,
+          bstats.unique_seller_ids AS book_stats,
+          bstats.minimum_price as minimum_price,
+          bstats.used_copies,
+          bstats.new_copies,
 
           p.id AS publication_id,
           p.isbn,
@@ -123,7 +123,7 @@
         LEFT JOIN
           sellers se ON (s.seller_id = se.id AND se.deleted_at IS NULL)
         LEFT JOIN
-          unique_sellers_per_book us ON (us.book_id = b.id)
+          book_stats bstats ON (bstats.book_id = b.id)
         WHERE
           b.deleted_at IS NULL
       "
@@ -139,7 +139,7 @@
           WINDOW wnd AS (PARTITION BY publication_id ORDER BY number_of_uploads DESC)
         ),
 
-        unique_sellers_per_book AS (
+        book_stats AS (
           SELECT
             b1.id AS book_id,
             COUNT(DISTINCT(s1.seller_id)) AS unique_seller_ids,
@@ -177,10 +177,10 @@
 
           COUNT(s.id) OVER (PARTITION BY b.id) AS sku_count,
 
-          us.unique_seller_ids AS unique_sellers_per_book,
-          us.minimum_price as minimum_price,
-          us.used_copies,
-          us.new_copies,
+          bstats.unique_seller_ids AS book_stats,
+          bstats.minimum_price as minimum_price,
+          bstats.used_copies,
+          bstats.new_copies,
 
           p.id AS publication_id,
           p.isbn,
@@ -241,7 +241,7 @@
         LEFT JOIN
           sellers se ON (s.seller_id = se.id AND se.deleted_at IS NULL)
         LEFT JOIN
-          unique_sellers_per_book us ON (us.book_id = b.id)
+          book_stats bstats ON (bstats.book_id = b.id)
         WHERE
           b.id = '${dih.delta.id}'
           AND b.deleted_at IS NULL
