@@ -132,7 +132,11 @@
    <field name="moderate_action_at" type="date" indexed="true" stored="true" required="false" multiValued="false" />
 
    <field name="unique_sellers_per_book" type="int" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="minimum_price" type="float" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="maximum_price" type="float" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="sku_count" type="int" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="new_copies" type="int" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="used_copies" type="int" indexed="true" stored="true" required="false" multiValued="false" />
 
    <!-- Publication -->
    <field name="isbn" type="string" indexed="true" stored="true" required="false" multiValued="false" />
@@ -432,7 +436,7 @@
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
         <filter class="solr.LowerCaseFilterFactory"/>
-        <filter class="solr.EdgeNGramFilterFactory" minGramSize="1" maxGramSize="15"/>
+        <filter class="solr.EdgeNGramFilterFactory" minGramSize="3" maxGramSize="15"/>
         <!-- <filter class="solr.BrazilianStemFilterFactory"/> -->
         <!-- in this example, we will only use synonyms at query time
         <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
