@@ -1,4 +1,7 @@
-package "autofs"
+package "autofs" do
+  retries 3
+  retry_delay 5
+end
 
 service "autofs" do
   if node['platform'] == 'ubuntu'

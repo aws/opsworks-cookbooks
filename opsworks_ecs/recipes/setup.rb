@@ -50,6 +50,9 @@ execute "Install the Amazon ECS agent" do
   only_if do
     ::File.exist?("/usr/bin/docker") && !OpsWorks::ShellOut.shellout("docker ps -a").include?("amazon-ecs-agent")
   end
+
+  retries 1
+  retry_delay 5
 end
 
 ruby_block "Check that the ECS agent is running" do

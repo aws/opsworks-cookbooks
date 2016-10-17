@@ -18,12 +18,9 @@
 #
 
 package 'apache2' do
-  case node[:platform_family]
-  when 'rhel'
-    package_name 'httpd'
-  when 'debian'
-    package_name 'apache2'
-  end
+  package_name value_for_platform_family(:rhel => "httpd", :debian => "apache2")
+  retries 3
+  retry_delay 5
   action :install
 end
 

@@ -12,12 +12,16 @@ package "remove old JVM package #{old_jvm_pkg_to_remove}" do
   package_name old_jvm_pkg_to_remove
   action :nothing
   only_if { node['opsworks_java']['jvm_version'].to_i >= 7 }
+  retries 3
+  retry_delay 5
 end
 
 # install OpenJDK in either case to satisfy package dependencies
 package node['opsworks_java']['jvm_pkg']['name'] do
   action :install
   notifies :remove, "package[remove old JVM package #{old_jvm_pkg_to_remove}]", :immediately
+  retries 3
+  retry_delay 5
 end
 
 bash "update the Java alternatives" do

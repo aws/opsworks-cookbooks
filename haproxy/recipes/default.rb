@@ -16,7 +16,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-package 'haproxy' do
+package "haproxy" do
+  retries 3
+  retry_delay 5
+
   action :install
 end
 

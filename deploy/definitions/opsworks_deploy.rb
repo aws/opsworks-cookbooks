@@ -156,6 +156,13 @@ define :opsworks_deploy do
         run_callback_from_file("#{release_path}/deploy/before_migrate.rb")
       end
     end
+
+    if deploy[:scm][:repository].start_with?(Dir.tmpdir)
+      directory "#{node[:deploy][application][:deploy_to]}/current/.git" do
+        recursive true
+        action :delete
+      end
+    end
   end
 
   ruby_block "change HOME back to /root after source checkout" do

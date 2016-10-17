@@ -17,10 +17,10 @@
 # limitations under the License.
 #
 
-if platform_family?('debian')
-  package 'libapache2-mod-python'
-elsif platform_family?('rhel')
-  package 'mod_python'
+package "apache2 mod python" do
+  package_name value_for_platform_family(:debian => "libapache2-mod-python", :rhel => "mod_python")
+  retries 3
+  retry_delay 5
 end
 
 apache_module 'python'

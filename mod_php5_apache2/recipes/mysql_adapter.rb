@@ -3,4 +3,6 @@ package 'php-mysql' do
     'rhel' => 'php-mysql',
     'debian' => 'php5-mysql'
   )
+  retries 3
+  retry_delay 5
 end

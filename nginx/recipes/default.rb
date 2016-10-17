@@ -18,7 +18,10 @@
 # limitations under the License.
 #
 
-package "nginx"
+package "nginx" do
+  retries 3
+  retry_delay 5
+end
 
 directory node[:nginx][:dir] do
   owner 'root'

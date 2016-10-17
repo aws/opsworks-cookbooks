@@ -87,7 +87,7 @@ module S3FileLib
   end
 
   def self.do_request(method, url, bucket, path, aws_access_key_id, aws_secret_access_key, token, region)
-    url = "https://#{bucket}.s3.amazonaws.com" if url.nil?
+    url = build_endpoint_url(bucket, region) if url.nil?
 
     with_region_detect(region) do |real_region|
       client.reset_before_execution_procs
@@ -99,6 +99,20 @@ module S3FileLib
         end
       end
       client::Request.execute(:method => method, :url => "#{url}#{path}", :raw_response => true)
+    end
+  end
+
+  def self.build_endpoint_url(bucket, region)
+    endpoint = if region && region != "us-east-1"
+                 "s3-#{region}.amazonaws.com"
+               else
+                 "s3.amazonaws.com"
+               end
+
+    if bucket =~ /^[a-z0-9][a-z0-9-]+[a-z0-9]$/
+      "https://#{bucket}.#{endpoint}"
+    else
+      "https://#{endpoint}/#{bucket}"
     end
   end
 
@@ -122,7 +136,8 @@ module S3FileLib
     for attempts in 0..retries
       begin
         response = do_request("GET", url, bucket, path, aws_access_key_id, aws_secret_access_key, token, region)
-        break
+        return response
+        # break
       rescue client::MovedPermanently, client::Found, client::TemporaryRedirect => e
         uri = URI.parse(e.response.header['location'])
         path = uri.path
@@ -139,10 +154,9 @@ module S3FileLib
           Chef::Log.fatal(error)
           raise e
         end
+        raise e
       end
     end
-
-    return response
   end
 
   def self.aes256_decrypt(key, file)
@@ -201,6 +215,8 @@ module S3FileLib
   def self.client
     require 'rest-client'
     RestClient.proxy = ENV['http_proxy']
+    RestClient.proxy = ENV['https_proxy']
+    RestClient.proxy = ENV['no_proxy']
     RestClient
   end
 end

@@ -21,10 +21,14 @@ case node[:platform_family]
 when 'debian'
   package 'libapache2-mod-php5' do
     action :install
+    retries 3
+    retry_delay 5
   end
 when 'rhel'
   package 'php' do
     action :install
+    retries 3
+    retry_delay 5
     notifies :run, "execute[generate-module-list]", :immediately
     not_if 'which php'
   end

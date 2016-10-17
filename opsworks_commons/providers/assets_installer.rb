@@ -73,9 +73,12 @@ def local_asset
   asset_basedir = "#{download_basedir}/#{@new_resource.asset}"
   ::FileUtils.mkdir_p asset_basedir
 
-  local_asset_path = `#{downloader_script} -r #{@new_resource.max_fetch_retries} -u #{asset_url} -d "#{asset_basedir}"`.chomp
+  cmd = Mixlib::ShellOut.new("#{downloader_script} -r #{@new_resource.max_fetch_retries} -u #{asset_url} -d '#{asset_basedir}'")
+  cmd.run_command
+  local_asset_path = cmd.stdout.chomp
+  STDERR.puts cmd.stderr
 
-  if $?.success? &&
+  if !cmd.error? &&
      ::File.file?(local_asset_path) &&
      ::File.fnmatch("#{asset_basedir}.*", ::File.dirname(local_asset_path))
 
@@ -85,7 +88,14 @@ def local_asset
     ::FileUtils.rm_rf(Dir["#{asset_basedir}.*"], :verbose => true) rescue Chef::Log.error "Couldn't cleanup downloaded assets for #{@new_resource.name}."
   elsif @new_resource.ignore_failure
     Chef::Log.error "Failed to download asset #{asset_name} for #{@new_resource.name} with url #{asset_url}."
-  elsif !@new_resource.ignore_failure
-    raise Chef::Exceptions::ResourceNotFound, "Failed to download asset #{@new_resource.asset} for #{@new_resource.name} with url #{asset_url}."
+  else
+    msg = ["Failed to download asset #{@new_resource.asset} for #{@new_resource.name} with url #{asset_url}."]
+
+    if cmd.stderr.include?("403 Forbidden")
+      msg << "The asset is probably not available for your operating system (#{node[:platform]} #{node[:platform_version]})."
+      msg << "Please have a look what versions are supported for this operating system at:"
+      msg << "http://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-os-linux.html"
+    end
+    fail Chef::Exceptions::ResourceNotFound, msg.join("\n")
   end
 end

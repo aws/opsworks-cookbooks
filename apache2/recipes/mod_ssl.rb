@@ -21,6 +21,8 @@ if platform_family?('rhel')
   package 'mod_ssl' do
     action :install
     notifies :run, "execute[generate-module-list]", :immediately
+    retries 3
+    retry_delay 5
   end
 
   file "#{node[:apache][:dir]}/conf.d/ssl.conf" do

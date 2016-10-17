@@ -16,6 +16,11 @@ node[:ebs][:devices].each do |device, options|
     mode "0755"
   end
 
+  if options[:mount_point].nil? || options[:mount_point].empty?
+    log "skip mounting volume #{device} because no mount_point specified"
+    next
+  end
+
   mount options[:mount_point] do
     action [:mount, :enable]
     fstype options[:fstype]

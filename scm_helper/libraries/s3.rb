@@ -4,36 +4,39 @@ module OpsWorks
   module SCM
     module S3
       def self.parse_uri(uri)
-        uri = URI.parse(uri)
-        uri_path_components = uri.path.split("/").reject{|p| p.empty?}
-        virtual_host_match = uri.host.match(/\A(.+)\.s3(?:-(?:ap|eu|sa|us)-.+-\d)?\.amazonaws\.com/i)
+        #                base_uri                |         remote_path
+        #----------------------------------------+------------------------------
+        # scheme, userinfo, host, port, registry | path, opaque, query, fragment
+
+        components = URI.split(uri)
+        base_uri = URI::HTTP.new(*(components.take(5) + [nil] * 4))
+        remote_path = URI::HTTP.new(*([nil] * 5 + components.drop(5)))
+
+        virtual_host_match = base_uri.host.match(/\A(.+)\.s3(?:[-.](?:ap|eu|sa|us)-(?:.+-)\d|-external-1)?\.amazonaws\.com/i)
+
         if virtual_host_match
           # virtual-hosted-style: http://bucket.s3.amazonaws.com or http://bucket.s3-aws-region.amazonaws.com
           bucket = virtual_host_match[1]
-          remote_path = uri_path_components.join("/")
         else
           # path-style: http://s3.amazonaws.com/bucket or http://s3-aws-region.amazonaws.com/bucket
-          bucket = uri_path_components[0]
-          remote_path = uri_path_components[1..-1].join("/")
+          uri_path_components = remote_path.path.split("/").reject(&:empty?)
+          bucket = uri_path_components.shift # cut first element
+          base_uri.path = "/#{bucket}" # append bucket to base_uri
+          remote_path.path = uri_path_components.join("/") # delete bucket from remote_path
         end
 
-        [bucket, remote_path]
+        # remote_path don't allow a "/" at the beginning
+        # base_url don't allow a "/" at the end
+        [bucket, remote_path.to_s.to_s.sub(%r{^/}, ""), base_uri.to_s.chomp("/")]
       end
 
       def prepare_s3_checkouts(scm_options)
-        template "/root/.s3curl" do
-          cookbook "scm_helper"
-          source "s3curl.erb"
-          mode '0600'
-          variables(:access_key => scm_options[:user], :secret_key => scm_options[:password])
-        end
-
         tmpdir = Dir.mktmpdir('opsworks')
         directory tmpdir do
           mode 0755
         end
 
-        s3_bucket, s3_key = OpsWorks::SCM::S3.parse_uri(scm_options[:repository])
+        s3_bucket, s3_key, base_url = OpsWorks::SCM::S3.parse_uri(scm_options[:repository])
 
         s3_file "#{tmpdir}/archive" do
           bucket s3_bucket
@@ -43,9 +46,7 @@ module OpsWorks
           owner "root"
           group "root"
           mode "0600"
-          # per default it's host-style addressing
-          # but older versions of rest-client doesn't support host-style addressing with `_` in bucket name
-          s3_url "https://s3.amazonaws.com/#{s3_bucket}" if s3_bucket.include?("_")
+          s3_url base_url
           action :create
         end
 
