@@ -133,7 +133,6 @@
 
    <field name="unique_sellers_per_book" type="int" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="minimum_price" type="float" indexed="true" stored="true" required="false" multiValued="false" />
-   <field name="maximum_price" type="float" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="sku_count" type="int" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="new_copies" type="int" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="used_copies" type="int" indexed="true" stored="true" required="false" multiValued="false" />
