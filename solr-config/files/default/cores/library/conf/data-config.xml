@@ -36,18 +36,6 @@
             skus s1 ON (p1.id = s1.publication_id)
           GROUP BY
             b1.id
-        ),
-
-        aggregated_conservation_states AS (
-          SELECT
-            STRING_AGG(cs.state, ', ') AS conservation_states,
-            css.sku_id
-          FROM
-            conservation_states cs
-          INNER JOIN
-            conservation_states_skus css ON (cs.id = css.conservation_state_id)
-          GROUP BY
-            css.sku_id
         )
 
         SELECT
@@ -102,7 +90,6 @@
           s.id AS sku,
           s.seller_id,
           s.uuid,
-          s.rec_id,
           s.price,
           s.original_price,
           s.discount,
@@ -118,8 +105,6 @@
           s.topics,
           s.location_on_bookstore,
           s.created_at AS sku_created_at,
-
-          acs.conservation_states,
 
           se.name AS seller
         FROM
@@ -139,9 +124,7 @@
         LEFT JOIN
           sellers se ON (s.seller_id = se.id AND se.deleted_at IS NULL)
         LEFT JOIN
-          book_stats bstats ON (b.id = bstats.book_id)
-        LEFT JOIN
-          aggregated_conservation_states acs ON (s.id = acs.sku_id)
+          book_stats bstats ON (bstats.book_id = b.id)
         WHERE
           b.deleted_at IS NULL
       "
@@ -237,7 +220,6 @@
           s.id AS sku,
           s.seller_id,
           s.uuid,
-          s.rec_id,
           s.price,
           s.original_price,
           s.discount,

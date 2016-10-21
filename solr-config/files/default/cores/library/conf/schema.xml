@@ -169,7 +169,6 @@
    <field name="original_price" type="float" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="discount" type="float" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="uuid" type="string" indexed="true" stored="true" required="false" multiValued="false" />
-   <field name="rec_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="seller_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="sku" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="new" type="int" indexed="true" stored="true" required="false" multiValued="false" />
@@ -185,7 +184,6 @@
    <field name="description" type="string" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="topics" type="string" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="location_on_bookstore" type="string" indexed="false" stored="true" required="false" multiValued="false" />
-   <field name="conservation_states" type="string" indexed="false" stored="true" required="false" multiValued="false" />
 
    <!-- Dynamic field definitions allow using convention over configuration
        for fields via the specification of patterns to match field names.
