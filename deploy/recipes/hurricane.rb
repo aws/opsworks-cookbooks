@@ -41,7 +41,7 @@ node[:deploy].each do |application, deploy|
 
   execute "restart Server" do
     cwd deploy[:current_path]
-    command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:rails_stack][:restart_command]}"
+    command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:rails_stack][:stop_command]} && #{node[:opsworks][:rails_stack][:start_command]}"
     action :run
 
     only_if do

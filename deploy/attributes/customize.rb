@@ -10,3 +10,5 @@
 #
 #normal[:opsworks][:deploy_user][:shell] = '/bin/zsh'
 #normal[:opsworks][:deploy_user][:user] = 'deploy'
+normal[:opsworks][:rails_stack][:start_command] = "../../shared/scripts/unicorn start"
+normal[:opsworks][:rails_stack][:stop_command] = "../../shared/scripts/unicorn stop"
