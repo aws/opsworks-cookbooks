@@ -353,10 +353,6 @@
             conservation_states_skus css ON (cs.id = css.conservation_state_id)
         "
 
-        cacheImpl="SortedMapBackedCache"
-        cacheKey="sku_id"
-        cacheLookup="sku.sku_id"
-
         deltaQuery="
           SELECT
             state AS conservation_state_name,
