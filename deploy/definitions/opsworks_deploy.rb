@@ -79,6 +79,10 @@ define :opsworks_deploy do
       action deploy[:action]
 
       if deploy[:application_type] == 'rails' && node[:opsworks][:instance][:layers].include?('rails-app')
+        log 'restart Server' do
+          message 'restart Server opsworks deploy'
+          level :info
+        end
         restart_command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:rails_stack][:restart_command]}"
       end
 

@@ -40,6 +40,10 @@ node[:deploy].each do |application, deploy|
   current_path = deploy[:current_path]
 
   execute "restart Server" do
+    log 'restart Server' do
+      message 'restart Server Hurricane Script'
+      level :info
+    end
     cwd deploy[:current_path]
     command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:rails_stack][:restart_command!]}"
     action :run
