@@ -1,3 +1,5 @@
+Chef::Log.level = :debug
+
 define :opsworks_deploy do
   application = params[:app]
   deploy = params[:deploy_data]
@@ -79,10 +81,7 @@ define :opsworks_deploy do
       action deploy[:action]
 
       if deploy[:application_type] == 'rails' && node[:opsworks][:instance][:layers].include?('rails-app')
-        log 'restart Server' do
-          message 'restart Server opsworks deploy'
-          level :info
-        end
+        Chef::Log.debug('Restarting Rails Server From Opsworks Deploy')
         restart_command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:rails_stack][:restart_command]}"
       end
 
