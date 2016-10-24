@@ -6,6 +6,8 @@ require 'digest/md5'
 ROOT_PATH="<%= @deploy[:deploy_to] %>"
 APP_NAME="<%= @application %>"
 PID_PATH="<%= @deploy[:deploy_to] %>/shared/pids/unicorn.pid"
+OLD_PID_PATH="<%= @deploy[:deploy_to] %>/shared/pids/unicorn.pid.oldbin"
+
 
 def run_and_print_command(command)
   puts command
@@ -18,12 +20,21 @@ def run_and_ignore_exitcode_and_print_command(command)
 end
 
 def unicorn_running?
-  if File.exists?(PID_PATH) && (pid = File.read(PID_PATH).chomp) && system("ps aux | grep #{pid} | grep -v grep > /dev/null")
-    pid
-  else
-    false
-  end
+	if File.exists?(PID_PATH) && (pid = File.read(PID_PATH).chomp) && system("ps aux | grep #{pid} | grep -v grep > /dev/null")
+		pid
+	else
+		false
+	end
 end
+
+def unicorn_old_running?
+	if File.exists?(OLD_PID_PATH) && (pid = File.read(OLD_PID_PATH).chomp) && system("ps aux | grep #{pid} | grep -v grep > /dev/null")
+		pid
+	else
+		false
+	end
+end
+
 
 def different_gemfile?
   if File.exists?("#{ROOT_PATH}/current/Gemfile")
@@ -56,12 +67,29 @@ def stop_unicorn
   end
 end
 
+def stop_old_unicorn
+	if pid=unicorn_old_running?
+		puts "Found Running Unicorn With Old Bin #{pid}"
+		if run_and_ignore_exitcode_and_print_command "kill -QUIT #{pid}"
+			`rm #{OLD_PID_PATH}`
+		end
+	else
+		puts "You can't stop unicorn, because it's not running"
+	end
+end
+
 def restart_unicorn
 	if unicorn_running?
 		run_and_ignore_exitcode_and_print_command "kill -USR2 `cat #{PID_PATH}`"
 	else
 		start_unicorn
 	end
+end
+
+def restart_unicorn!
+	stop_unicorn
+	stop_old_unicorn
+	start_unicorn
 end
 
 def clean_restart
@@ -97,6 +125,8 @@ when "stop"
   stop_unicorn
 when "status"
   status_unicorn
+when "restart!"
+	restart_unicorn!
 when "restart"
   restart_unicorn
 when "clean-restart"
