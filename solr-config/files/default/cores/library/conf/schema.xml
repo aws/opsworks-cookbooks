@@ -184,7 +184,7 @@
    <field name="description" type="string" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="topics" type="string" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="location_on_bookstore" type="string" indexed="false" stored="true" required="false" multiValued="false" />
-   <field name="conservation_states" type="string" indexed="false" stored="true" required="false" multiValued="false" />
+   <field name="conservation_states" type="string" indexed="false" stored="true" required="false" multiValued="true" />
 
    <!-- Dynamic field definitions allow using convention over configuration
        for fields via the specification of patterns to match field names.

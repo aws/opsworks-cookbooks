@@ -311,7 +311,7 @@
     >
       <entity name="author" pk="book_id" dataSource="library"
         query="
-          SElECT
+          SELECT
             full_name AS author_name,
             ab.book_id AS book_id
           FROM
@@ -341,6 +341,40 @@
       >
         <field name="authors" column="author_name"/>
         <field name="BOOK_ID" column="book_id"/>
+      </entity>
+      <entity name="conservation_state" pk="sku_id" dataSource="library"
+        query="
+          SELECT
+            state AS conservation_state_name,
+            css.sku_id
+          FROM
+            conservation_states cs
+          INNER JOIN
+            conservation_states_skus css ON (cs.id = css.conservation_state_id)
+        "
+
+        cacheImpl="SortedMapBackedCache"
+        cacheKey="sku_id"
+        cacheLookup="sku.sku_id"
+
+        deltaQuery="
+          SELECT
+            state AS conservation_state_name,
+            css.sku_id
+          FROM
+            conservation_states cs
+          INNER JOIN
+            conservation_states_skus css ON (cs.id = css.conservation_state_id)
+          WHERE
+            cs.updated_at &gt; '${dih.last_index_time}'
+        "
+
+        parentDeltaQuery="
+          SELECT '${conservation_state.sku_id}' AS id
+        "
+      >
+        <field name="conservation_states" column="conservation_state_name"/>
+        <field name="SKU_ID" column="sku_id"/>
       </entity>
     </entity>
   </document>
