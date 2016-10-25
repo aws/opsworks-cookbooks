@@ -326,7 +326,7 @@
 
         deltaQuery="
           SELECT
-            ab.book_id::text
+            ab.book_id
           FROM
             authors a
           INNER JOIN
@@ -342,21 +342,24 @@
         <field name="authors" column="author_name"/>
         <field name="BOOK_ID" column="book_id"/>
       </entity>
-      <entity name="conservation_state" pk="sku_id" dataSource="library"
+      <entity name="conservation_state" pk="sku" dataSource="library"
         query="
           SELECT
-            state AS conservation_state_name,
-            css.sku_id
+            cs.state AS conservation_state_name,
+            css.sku_id AS sku
           FROM
             conservation_states cs
           INNER JOIN
             conservation_states_skus css ON (cs.id = css.conservation_state_id)
         "
 
+        cacheImpl="SortedMapBackedCache"
+        cacheKey="sku"
+        cacheLookup="sku.sku"
+
         deltaQuery="
           SELECT
-            state AS conservation_state_name,
-            css.sku_id
+            css.sku_id AS sku
           FROM
             conservation_states cs
           INNER JOIN
@@ -366,11 +369,11 @@
         "
 
         parentDeltaQuery="
-          SELECT '${conservation_state.sku_id}' AS id
+          SELECT '${conservation_state.sku}' AS id
         "
       >
         <field name="conservation_states" column="conservation_state_name"/>
-        <field name="SKU_ID" column="sku_id"/>
+        <field name="SKU" column="sku"/>
       </entity>
     </entity>
   </document>
