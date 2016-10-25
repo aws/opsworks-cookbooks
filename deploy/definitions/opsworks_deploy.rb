@@ -80,10 +80,10 @@ define :opsworks_deploy do
       symlinks(deploy[:symlinks]) unless deploy[:symlinks].nil?
       action deploy[:action]
 
-      if deploy[:application_type] == 'rails' && node[:opsworks][:instance][:layers].include?('rails-app')
-        Chef::Log.debug('Restarting Rails Server From Opsworks Deploy')
-        restart_command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:rails_stack][:restart_command]}"
-      end
+      # if deploy[:application_type] == 'rails' && node[:opsworks][:instance][:layers].include?('rails-app')
+      #   Chef::Log.debug('Restarting Rails Server From Opsworks Deploy')
+      #   restart_command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:rails_stack][:restart_command]}"
+      # end
 
       case deploy[:scm][:scm_type].to_s
       when 'git'

@@ -37,7 +37,8 @@ node[:deploy].each do |application, deploy|
     command "mkdir -p #{deploy[:deploy_to]}/shared/app/views/shared/"
   end
 
-  current_path = deploy[:current_path]
+  Chef::Log.debug('Restarting Rails Server From Opsworks Deploy')
+  restart_command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:rails_stack][:restart_command]}"
 
   # execute "restart Server" do
   #   Chef::Log.debug('Restarting Rails Server From Hurricane Script')
