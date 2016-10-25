@@ -39,15 +39,15 @@ node[:deploy].each do |application, deploy|
 
   current_path = deploy[:current_path]
 
-  execute "restart Server" do
-    Chef::Log.debug('Restarting Rails Server From Hurricane Script')
-    cwd deploy[:current_path]
-    command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:rails_stack][:restart_command]}"
-    action :run
-
-    only_if do
-      File.exists?(deploy[:current_path])
-    end
-  end
+  # execute "restart Server" do
+  #   Chef::Log.debug('Restarting Rails Server From Hurricane Script')
+  #   cwd deploy[:current_path]
+  #   command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:rails_stack][:restart_command]}"
+  #   action :run
+  #
+  #   only_if do
+  #     File.exists?(deploy[:current_path])
+  #   end
+  # end
 
 end
