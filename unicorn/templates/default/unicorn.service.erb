@@ -25,13 +25,6 @@ def unicorn_running?
   end
 end
 
-
-
-
-
-old_pid = "<%= @deploy[:deploy_to]%>/shared/pids/unicorn.pid.oldbin"
-if File.exists?(old_pid) && server.pid != old_pid
-
 def different_gemfile?
   if File.exists?("#{ROOT_PATH}/current/Gemfile")
     dir = Dir["#{ROOT_PATH}/releases/*"]
