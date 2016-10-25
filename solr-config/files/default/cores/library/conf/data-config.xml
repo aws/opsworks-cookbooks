@@ -326,7 +326,7 @@
 
         deltaQuery="
           SELECT
-            ab.book_id::text
+            ab.book_id
           FROM
             authors a
           INNER JOIN
@@ -345,17 +345,20 @@
       <entity name="conservation_state" pk="sku_id" dataSource="library"
         query="
           SELECT
-            state AS conservation_state_name,
-            css.sku_id
+            cs.state AS conservation_state_name,
+            css.sku_id AS sku_id
           FROM
             conservation_states cs
           INNER JOIN
             conservation_states_skus css ON (cs.id = css.conservation_state_id)
         "
 
+        cacheImpl="SortedMapBackedCache"
+        cacheKey="sku_id"
+        cacheLookup="sku.sku_id"
+
         deltaQuery="
           SELECT
-            state AS conservation_state_name,
             css.sku_id
           FROM
             conservation_states cs
