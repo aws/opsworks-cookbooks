@@ -85,7 +85,7 @@
 
           pbrs.name AS publisher,
 
-          s.id AS sku,
+          s.id::text AS sku,
           s.seller_id,
           s.uuid,
           s.rec_id,
@@ -346,7 +346,7 @@
         query="
           SELECT
             cs.state AS conservation_state_name,
-            css.sku_id AS sku
+            css.sku_id::text AS sku
           FROM
             conservation_states cs
           INNER JOIN
@@ -373,7 +373,7 @@
         "
       >
         <field name="conservation_states" column="conservation_state_name"/>
-        <field name="SKU" column="sku"/>
+        <field name="sku" column="sku"/>
       </entity>
     </entity>
   </document>
