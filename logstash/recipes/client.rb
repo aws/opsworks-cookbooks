@@ -9,6 +9,10 @@ execute 'add_elasticsearch_gpg_key' do
   command 'wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -'
 end
 
+execute 'run_apt_key_update' do
+  command 'apt-key update'
+end
+
 include_recipe 'apt'
 
 package 'filebeat'
