@@ -5,6 +5,10 @@ file '/etc/apt/sources.list.d/beats.list' do
   group 'root'
 end
 
+execute 'add_elasticsearch_gpg_key' do
+  command 'wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -'
+end
+
 include_recipe 'apt'
 
 package 'filebeat'
