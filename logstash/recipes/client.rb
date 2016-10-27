@@ -23,3 +23,8 @@ template '/etc/filebeat/filebeat.yml' do
   group "root"
   mode 0644
 end
+
+service "filebeat" do
+  supports :status => true, :reload => true, :restart => true
+  action [:enable,:start]
+end
