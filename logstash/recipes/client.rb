@@ -17,7 +17,7 @@ include_recipe 'apt'
 
 package 'filebeat'
 
-template '/etc/filebeat/filebeat.yml'
+template '/etc/filebeat/filebeat.yml' do
   source "filebeat.yml.erb"
   owner "root"
   group "root"
