@@ -335,6 +335,8 @@
             conservation_states cs
           INNER JOIN
             conservation_states_skus css ON (cs.id = css.conservation_state_id)
+          WHERE
+            cs.conservation_type = 'conservacao'
         "
 
         cacheImpl="SortedMapBackedCache"
@@ -349,7 +351,8 @@
           INNER JOIN
             conservation_states_skus css ON (cs.id = css.conservation_state_id)
           WHERE
-            cs.updated_at &gt; '${dih.last_index_time}'
+            cs.conservation_type = 'conservacao'
+            AND cs.updated_at &gt; '${dih.last_index_time}'
         "
 
         parentDeltaQuery="
@@ -357,6 +360,42 @@
         "
       >
         <field name="conservation_states" column="conservation_state_name"/>
+        <field name="sku" column="sku"/>
+      </entity>
+      <entity name="differential" pk="sku" dataSource="library"
+        query="
+          SELECT
+            cs.state AS conservation_state_name,
+            css.sku_id::text AS sku
+          FROM
+            conservation_states cs
+          INNER JOIN
+            conservation_states_skus css ON (cs.id = css.conservation_state_id)
+          WHERE
+            cs.conservation_type = 'diferencial'
+        "
+
+        cacheImpl="SortedMapBackedCache"
+        cacheKey="sku"
+        cacheLookup="sku.sku"
+
+        deltaQuery="
+          SELECT
+            css.sku_id AS sku
+          FROM
+            conservation_states cs
+          INNER JOIN
+            conservation_states_skus css ON (cs.id = css.conservation_state_id)
+          WHERE
+            cs.conservation_type = 'diferencial'
+            AND cs.updated_at &gt; '${dih.last_index_time}'
+        "
+
+        parentDeltaQuery="
+          SELECT '${conservation_state.sku}' AS id
+        "
+      >
+        <field name="differentials" column="conservation_state_name"/>
         <field name="sku" column="sku"/>
       </entity>
     </entity>
