@@ -5,9 +5,7 @@ file '/etc/apt/sources.list.d/beats.list' do
   group 'root'
 end
 
-apt_update if node['platform_family'] == 'debian' do
-  action :update
-end
+include_recipe 'apt'
 
 package 'filebeat'
 
