@@ -2,11 +2,7 @@ filebeat:
   prospectors:
     -
       paths:
-<% node[:deploy].each do |application, deploy| %>
-<%   if deploy[:application_type] == 'rails' %>
-        - <%= deploy[:deploy_to] =%>/shared/log/<%= deploy[:rails_env] =%>.log
-<%   end %>
-<% end %>
+        - <%= @log_path =%>
       input_type: log
   registry_file: /var/lib/filebeat/registry
 output:

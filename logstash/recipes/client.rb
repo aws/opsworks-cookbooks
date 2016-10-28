@@ -17,11 +17,16 @@ include_recipe 'apt'
 
 package 'filebeat'
 
-template '/etc/filebeat/filebeat.yml' do
-  source "filebeat.yml.erb"
-  owner "root"
-  group "root"
-  mode 0644
+node[:deploy].each do |application, deploy|
+  if deploy[:application_type] == 'rails'
+    template '/etc/filebeat/filebeat.yml' do
+      source "filebeat.yml.erb"
+      owner "root"
+      group "root"
+      mode 0644
+      variables(:log_path => deploy[:deploy_to] + '/shared/log/' + deploy[:rails_env] + '.log')
+    end
+  end
 end
 
 service "filebeat" do
