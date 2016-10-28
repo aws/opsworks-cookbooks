@@ -686,19 +686,18 @@
        <str name="facet.field">s_publisher</str>
        <str name="facet.field">seller</str>
        <str name="facet.field">new</str>
+
        <!-- A ordem do facet.query é importante para a aplicação -->
        <str name="facet.query">price:[* TO 5]</str>
-       <str name="facet.query">price:[* TO 12]</str>
-       <str name="facet.query">price:[* TO 30]</str>
-       <str name="facet.query">price:[* TO 100]</str>
+       <str name="facet.query">price:[5 TO 12]</str>
+       <str name="facet.query">price:[12 TO 30]</str>
+       <str name="facet.query">price:[30 TO 100]</str>
        <str name="facet.query">price:[100 TO *]</str>
+
        <str name="facet.query">year:[2010 TO *]</str>
        <str name="facet.query">year:[2000 TO *]</str>
        <str name="facet.query">year:[1990 TO *]</str>
        <str name="facet.query">year:[* TO 1990]</str>
-       <str name="facet.query">sku_created_at:[* TO NOW-7DAY]</str>
-       <str name="facet.query">sku_created_at:[* TO NOW-14DAY]</str>
-       <str name="facet.query">sku_created_at:[* TO NOW-30DAY]</str>
 
        <str name="facet.mincount">1</str>
 
