@@ -2,7 +2,7 @@ filebeat:
   prospectors:
     -
       paths:
-        - <%= @log_path =%> 
+        - <%= @log_path =%>
       input_type: log
   registry_file: /var/lib/filebeat/registry
 output:

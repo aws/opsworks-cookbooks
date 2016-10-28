@@ -24,7 +24,7 @@ node[:deploy].each do |application, deploy|
       owner "root"
       group "root"
       mode 0644
-      variables(:log_path => deploy[:deploy_to] + '/shared/log/' + deploy[:rails_env] + '.log')
+      variables(:log_path => deploy[:deploy_to] + '/shared/log/' + deploy[:rails_env] + '.log\n')
     end
   end
 end
