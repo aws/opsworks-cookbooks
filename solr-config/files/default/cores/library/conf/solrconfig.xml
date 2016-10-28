@@ -702,7 +702,7 @@
 
        <str name="facet.mincount">1</str>
 
-       <str name="fl">sku, uuid, seller_id, seller, sku_created_at, edition, cover, year, price, publisher, isbn, volume, new, used, year, weight, sku_title, sku_authors, sku_volume, sku_language</str>
+       <str name="fl">sku, uuid, rec_id, seller_id, seller, sku_created_at, edition, cover, year, price, publisher, isbn, volume, new, used, year, weight, sku_title, sku_authors, sku_volume, sku_language, description, conservation_states, differentials</str>
 
        <str name="json.facet">{total_new:"sum(new)", total_used: "sum(used)", unique_sellers: "unique(seller_id)", min_price: "min(price)", max_price: "max(price)"}</str>
 

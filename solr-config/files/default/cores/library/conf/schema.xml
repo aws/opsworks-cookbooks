@@ -184,10 +184,8 @@
    <field name="description" type="string" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="topics" type="string" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="location_on_bookstore" type="string" indexed="false" stored="true" required="false" multiValued="false" />
-<<<<<<< HEAD
-=======
    <field name="conservation_states" type="string" indexed="false" stored="true" required="false" multiValued="true" />
->>>>>>> 17f467d91d34d1ad9fd4b5c06fde90815881af3e
+   <field name="differentials" type="string" indexed="false" stored="true" required="false" multiValued="true" />
 
    <!-- Dynamic field definitions allow using convention over configuration
        for fields via the specification of patterns to match field names.

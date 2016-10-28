@@ -43,7 +43,7 @@
           b.is_moderated,
           b.moderation_type,
           b.moderate_action_at,
-          b.id AS book_id,
+          b.id::text AS book_id,
           b.title,
           b.synopsis,
           MD5(b.synopsis) AS md5_synopsis,
@@ -87,7 +87,7 @@
 
           pbrs.name AS publisher,
 
-          s.id AS sku,
+          s.id::text AS sku,
           s.seller_id,
           s.uuid,
           s.price,
@@ -155,18 +155,6 @@
             skus s1 ON (p1.id = s1.publication_id)
           GROUP BY
             b1.id
-        ),
-
-        aggregated_conservation_states AS (
-          SELECT
-            STRING_AGG(cs.state, ', ') AS conservation_states,
-            css.sku_id
-          FROM
-            conservation_states cs
-          INNER JOIN
-            conservation_states_skus css ON (cs.id = css.conservation_state_id)
-          GROUP BY
-            css.sku_id
         )
 
         SELECT
@@ -174,7 +162,7 @@
           b.is_moderated,
           b.moderation_type,
           b.moderate_action_at,
-          b.id AS book_id,
+          b.id::text AS book_id,
           b.title,
           b.synopsis,
           MD5(b.synopsis) AS md5_synopsis,
@@ -217,7 +205,7 @@
 
           pbrs.name AS publisher,
 
-          s.id AS sku,
+          s.id::text AS sku,
           s.seller_id,
           s.uuid,
           s.price,
@@ -235,8 +223,6 @@
           s.topics,
           s.location_on_bookstore,
           s.created_at AS sku_created_at,
-
-          acs.conservation_states,
 
           se.name AS seller
         FROM
@@ -257,8 +243,6 @@
           sellers se ON (s.seller_id = se.id AND se.deleted_at IS NULL)
         LEFT JOIN
           book_stats bstats ON (b.id = bstats.book_id)
-        LEFT JOIN
-          aggregated_conservation_states acs ON (s.id = acs.sku_id)
         WHERE
           b.id = '${dih.delta.id}'
           AND b.deleted_at IS NULL
@@ -313,7 +297,7 @@
         query="
           SELECT
             full_name AS author_name,
-            ab.book_id AS book_id
+            ab.book_id::text AS book_id
           FROM
             authors a
           INNER JOIN
@@ -326,7 +310,7 @@
 
         deltaQuery="
           SELECT
-            ab.book_id::text
+            ab.book_id
           FROM
             authors a
           INNER JOIN
@@ -340,37 +324,79 @@
         "
       >
         <field name="authors" column="author_name"/>
-        <field name="BOOK_ID" column="book_id"/>
+        <field name="book_id" column="book_id"/>
       </entity>
-      <entity name="conservation_state" pk="sku_id" dataSource="library"
+      <entity name="conservation_state" pk="sku" dataSource="library"
         query="
           SELECT
-            state AS conservation_state_name,
-            css.sku_id
-          FROM
-            conservation_states cs
-          INNER JOIN
-            conservation_states_skus css ON (cs.id = css.conservation_state_id)
-        "
-
-        deltaQuery="
-          SELECT
-            state AS conservation_state_name,
-            css.sku_id
+            cs.state AS conservation_state_name,
+            css.sku_id::text AS sku
           FROM
             conservation_states cs
           INNER JOIN
             conservation_states_skus css ON (cs.id = css.conservation_state_id)
           WHERE
-            cs.updated_at &gt; '${dih.last_index_time}'
+            cs.conservation_type = 'conservacao'
+        "
+
+        cacheImpl="SortedMapBackedCache"
+        cacheKey="sku"
+        cacheLookup="sku.sku"
+
+        deltaQuery="
+          SELECT
+            css.sku_id AS sku
+          FROM
+            conservation_states cs
+          INNER JOIN
+            conservation_states_skus css ON (cs.id = css.conservation_state_id)
+          WHERE
+            cs.conservation_type = 'conservacao'
+            AND cs.updated_at &gt; '${dih.last_index_time}'
         "
 
         parentDeltaQuery="
-          SELECT '${conservation_state.sku_id}' AS id
+          SELECT '${conservation_state.sku}' AS id
         "
       >
         <field name="conservation_states" column="conservation_state_name"/>
-        <field name="SKU_ID" column="sku_id"/>
+        <field name="sku" column="sku"/>
+      </entity>
+      <entity name="differential" pk="sku" dataSource="library"
+        query="
+          SELECT
+            cs.state AS conservation_state_name,
+            css.sku_id::text AS sku
+          FROM
+            conservation_states cs
+          INNER JOIN
+            conservation_states_skus css ON (cs.id = css.conservation_state_id)
+          WHERE
+            cs.conservation_type = 'diferencial'
+        "
+
+        cacheImpl="SortedMapBackedCache"
+        cacheKey="sku"
+        cacheLookup="sku.sku"
+
+        deltaQuery="
+          SELECT
+            css.sku_id AS sku
+          FROM
+            conservation_states cs
+          INNER JOIN
+            conservation_states_skus css ON (cs.id = css.conservation_state_id)
+          WHERE
+            cs.conservation_type = 'diferencial'
+            AND cs.updated_at &gt; '${dih.last_index_time}'
+        "
+
+        parentDeltaQuery="
+          SELECT '${conservation_state.sku}' AS id
+        "
+      >
+        <field name="differentials" column="conservation_state_name"/>
+        <field name="sku" column="sku"/>
       </entity>
     </entity>
   </document>
