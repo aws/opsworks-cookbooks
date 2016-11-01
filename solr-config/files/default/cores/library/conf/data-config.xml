@@ -225,7 +225,7 @@
           s.location_on_bookstore,
           s.created_at AS sku_created_at,
 
-          se.name AS seller
+          se.name AS seller,
           se.city AS city
         FROM
           books b
