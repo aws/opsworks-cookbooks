@@ -181,6 +181,11 @@
    <field name="sku_language" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="seller" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="city" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="uf" type="string" indexed="false" stored="true" multiValued="false" />
+   <field name="seller_positive_quals" type="int" indexed="false" stored="true" required="false" multiValued="false" />
+   <field name="seller_total_quals" type="int" indexed="false" stored="true" required="false" multiValued="false" />
+   <field name="seller_qual_rating" type="float" indexed="false" stored="true" required="false" multiValued="false" />
+   <field name="seller_books_sold" type="int" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="id_on_bookstore" type="string" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="description" type="string" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="topics" type="string" indexed="false" stored="true" required="false" multiValued="false" />
