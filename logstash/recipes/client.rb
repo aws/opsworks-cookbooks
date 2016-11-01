@@ -13,7 +13,9 @@ execute 'run_apt_key_update' do
   command 'apt-key update'
 end
 
-include_recipe 'apt'
+execute 'run_apt_get_update' do
+  command 'apt-get update'
+end
 
 package 'filebeat'
 
