@@ -85,7 +85,7 @@ node[:deploy].each do |application, deploy|
   execute 'stop queue' do
     cwd current_path
     user 'deploy'
-    command 'kill $(ps aux | grep qc:work | awk \'{print $2}\')'
+    command 'pkill -f qc:work'
     ignore_failure true
     environment 'RAILS_ENV' => rails_env
   end
