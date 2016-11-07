@@ -8,7 +8,7 @@ node[:deploy].each do |application, deploy|
   execute "god start notification service" do
     user deploy[:user]
     cwd deploy[:current_path]
-    command "god -c #{god_notification_file}"
+    command "bundle exec god -c #{god_notification_file}"
     action :run
     only_if do
       system('god status notification')
@@ -57,7 +57,7 @@ node[:deploy].each do |application, deploy|
   execute "restart god notification service" do
     user deploy[:user]
     cwd deploy[:current_path]
-    command "god restart notification"
+    command "bundle exec god restart notification"
     action :run
   end
 
