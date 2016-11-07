@@ -11,7 +11,7 @@ node[:deploy].each do |application, deploy|
     command "bundle exec god -c #{god_notification_file}"
     action :run
     only_if do
-      system('god status notification')
+      system('bundle exec god status notification')
     end
   end
 
