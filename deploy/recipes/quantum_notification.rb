@@ -6,6 +6,7 @@ node[:deploy].each do |application, deploy|
   god_notification_file = File.join(deploy[:current_path],'notification.god')
 
   execute "god start notification service" do
+    Chef::Log.debug("executing => 'bundle exec god -c #{god_notification_file}' from #{deploy[:current_path]}")
     user deploy[:user]
     cwd deploy[:current_path]
     command "bundle exec god -c #{god_notification_file}"
