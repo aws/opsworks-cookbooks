@@ -3,6 +3,18 @@ Chef::Log.level = :debug
 
 node[:deploy].each do |application, deploy|
 
+  god_notification_file = File.join(deploy[:current_path],'notification.god')
+
+  execute "god start notification service" do
+    user deploy[:user]
+    cwd deploy[:current_path]
+    command "god -c #{god_notification_file}"
+    action :run
+    only_if do
+      system('god status notification')
+    end
+  end
+
   template "#{deploy[:deploy_to]}/shared/config/shoryuken.yml" do
     source 'quantum_notification/shoryuken.yml.erb'
     mode '0660'
@@ -42,10 +54,10 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-  execute "restart" do
+  execute "restart god notification service" do
     user deploy[:user]
-    cwd "#{deploy[:deploy_to]}/current"
-    command "bundle exec rake restart"
+    cwd deploy[:current_path]
+    command "god restart notification"
     action :run
   end
 
