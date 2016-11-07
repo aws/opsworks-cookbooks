@@ -10,9 +10,6 @@ node[:deploy].each do |application, deploy|
     cwd deploy[:current_path]
     command "bundle exec god -c #{god_notification_file}"
     action :run
-    only_if do
-      system('bundle exec god status notification')
-    end
   end
 
   template "#{deploy[:deploy_to]}/shared/config/shoryuken.yml" do
