@@ -48,7 +48,7 @@ node[:deploy].each do |application, deploy|
     Chef::Log.debug("executing => 'bundle exec god -c #{god_notification_file}' from #{deploy[:current_path]}")
     user deploy[:user]
     cwd deploy[:current_path]
-    command "bundle exec god -c #{god_notification_file} -D > god.log"
+    command "bundle exec god -c #{god_notification_file}"
     action :run
     #not_if 'bundle exec god status notification', :cwd => deploy[:current_path], :user => deploy[:user]
   end
