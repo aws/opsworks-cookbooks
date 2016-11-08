@@ -5,15 +5,6 @@ node[:deploy].each do |application, deploy|
 
   god_notification_file = File.join(deploy[:current_path],'notification.god')
 
-  execute "god start notification service" do
-    Chef::Log.debug("executing => 'bundle exec god -c #{god_notification_file}' from #{deploy[:current_path]}")
-    user deploy[:user]
-    cwd deploy[:current_path]
-    command "bundle exec god -c #{god_notification_file}"
-    action :run
-    #not_if 'bundle exec god status notification', :cwd => deploy[:current_path], :user => deploy[:user]
-  end
-
   template "#{deploy[:deploy_to]}/shared/config/shoryuken.yml" do
     source 'quantum_notification/shoryuken.yml.erb'
     mode '0660'
@@ -51,6 +42,15 @@ node[:deploy].each do |application, deploy|
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
     end
+  end
+
+  execute "god start notification service" do
+    Chef::Log.debug("executing => 'bundle exec god -c #{god_notification_file}' from #{deploy[:current_path]}")
+    user deploy[:user]
+    cwd deploy[:current_path]
+    command "bundle exec god -c #{god_notification_file} "
+    action :run
+    #not_if 'bundle exec god status notification', :cwd => deploy[:current_path], :user => deploy[:user]
   end
 
   execute "restart god notification service" do
