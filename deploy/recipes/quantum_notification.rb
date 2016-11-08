@@ -48,9 +48,9 @@ node[:deploy].each do |application, deploy|
     user deploy[:user]
     group deploy[:group]
     cwd deploy[:current_path]
-    command "bundle exec god -c #{god_notification_file} -D > god.log"
+    command "bundle exec god -c #{god_notification_file}"
     action :run
-    #not_if 'bundle exec god status notification', :cwd => deploy[:current_path], :user => deploy[:user], :group => deploy[:group]
+    not_if 'bundle exec god status notification', :cwd => deploy[:current_path], :user => deploy[:user], :group => deploy[:group]
   end
 
   execute "restart god notification service" do
