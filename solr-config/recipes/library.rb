@@ -38,7 +38,11 @@ node[:deploy].each do |app_name, deploy|
 
   template "/etc/cron.d/solr_library_delta_import" do
     owner 'root'
-    variables({ :cron_delta_import => node['library'][env]['cron_delta_import'] })
+    variables({
+      :cron_delta_import => node['library'][env]['cron_delta_import'],
+      :cron_full_import  => node['library'][env]['cron_full_import'],
+      :cron_delta_delete  => node['library'][env]['cron_delta_delete']
+    })
     mode '0755'
     source 'solr_library_delta_import_cron.sh.erb'
   end
