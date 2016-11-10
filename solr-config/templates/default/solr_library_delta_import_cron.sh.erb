@@ -1,1 +1,2 @@
 <%= @cron_delta_import %> root curl --data "command=full-import&clean=false&wt=json&indent=true&verbose=false" http://localhost:8983/solr/library/dataimport >/dev/null 2>&1 
+<%= @cron_full_import %> root curl --data "command=full-import&clean=true&wt=json&indent=true&verbose=false" http://localhost:8983/solr/library/dataimport >/dev/null 2>&1 
