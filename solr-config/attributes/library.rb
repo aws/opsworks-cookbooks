@@ -5,7 +5,6 @@ default['library']['staging']['database_url'] = "library-sg.c6orwgo57rj2.us-east
 default['library']['staging']['database_name'] = "library_staging"
 default['library']['staging']['database_user'] = "librarysg"
 default['library']['staging']['database_password'] = "library-sg"
-default['library']['staging']['cron_delta_import'] = '*/5 * * * *'
 default['library']['staging']['cron_full_import'] = '0 2 * * *'
 default['library']['staging']['cron_delta_import'] = '0,5,10,15,20,25,30,35,40,45,50,55 * * * *'
 default['library']['staging']['cron_delta_delete'] = '2,7,12,17,22,27,32,37,42,47,52,57 * * * *'
@@ -17,7 +16,7 @@ default['library']['production']['database_url'] = "library.c6orwgo57rj2.us-east
 default['library']['production']['database_name'] = "library_production"
 default['library']['production']['database_user'] = "libraryprod"
 default['library']['production']['database_password'] = "password"
-default['library']['production']['cron_delta_import'] = '*/45 * * * *'
+default['library']['production']['cron_full_import'] = '0 2 * * *'
 default['library']['production']['cron_delta_import'] = '0,5,10,15,20,25,30,35,40,45,50,55 * * * *'
 default['library']['production']['cron_delta_delete'] = '2,7,12,17,22,27,32,37,42,47,52,57 * * * *'
 
