@@ -106,7 +106,13 @@
           s.location_on_bookstore,
           s.created_at AS sku_created_at,
 
-          se.name AS seller
+          se.name AS seller,
+          se.city AS city,
+          se.uf AS uf,
+          se.positive_quals AS seller_positive_quals,
+          se.total_quals AS seller_total_quals,
+          se.qual_rating AS seller_qual_rating,
+          se.sold_books AS seller_books_sold
         FROM
             books b
           LEFT JOIN
