@@ -137,8 +137,7 @@
 
           AND (
             '${dataimporter.request.clean}' != 'false'
-            OR
-            s.updated_at &gt; '${dih.last_index_time}'
+            OR s.updated_at &gt; '${dih.last_index_time}'
             OR p.updated_at &gt; '${dih.last_index_time}'
             OR b.updated_at &gt; '${dih.last_index_time}'
           )
