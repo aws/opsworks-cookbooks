@@ -16,7 +16,6 @@ stdout_path "<%= @deploy[:deploy_to]%>/shared/log/unicorn.stdout.log"
 <% @environment.each do |key, value| %>
 ENV['<%= key %>'] = "<%= value %>"
 <% end %>
-ENV['ELASTIC_LOAD_BALANCER_URL'] = "<%=  node["opsworks"]["stack"]["elb-load-balancers"][0]["dns_name"] %>"
 
 preload_app <%= node[:unicorn][:preload_app] %>
 GC.copy_on_write_friendly = true if GC.respond_to?(:copy_on_write_friendly=)
