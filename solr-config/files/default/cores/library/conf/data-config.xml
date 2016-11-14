@@ -133,11 +133,12 @@
             book_stats bstats ON (b.id = bstats.book_id)
         WHERE
           b.deleted_at IS NULL
+          AND s.visible = true
 
           AND (
             '${dataimporter.request.clean}' != 'false'
-            OR 
-            s.updated_at &gt; '${dih.last_index_time}'
+
+            OR s.updated_at &gt; '${dih.last_index_time}'
             OR p.updated_at &gt; '${dih.last_index_time}'
             OR b.updated_at &gt; '${dih.last_index_time}'
           )
@@ -157,6 +158,7 @@
           s.deleted_at &gt; '${dih.last_index_time}'
           OR p.deleted_at &gt; '${dih.last_index_time}'
           OR b.deleted_at &gt; '${dih.last_index_time}'
+          OR s.visible = false
       "
     >
       <entity name="author" pk="book_id" dataSource="library"
