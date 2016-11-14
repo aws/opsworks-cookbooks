@@ -43,7 +43,6 @@
   <% @environment.each do |key, value| %>
   SetEnv "<%= key %>" "<%= value %>"
   <% end %>
-  SetEnv "ELASTIC_LOAD_BALANCER_URL" "<%=  node["opsworks"]["stack"]["elb-load-balancers"][0]["dns_name"] %>"
 
   RewriteEngine On
   <% if node[:apache][:version] == '2.2' -%>
