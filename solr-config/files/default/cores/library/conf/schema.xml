@@ -119,7 +119,6 @@
    <field name="s_authors" type="string" indexed="true" stored="true" required="false" multiValued="true" />
    <field name="title" type="text_ngram" indexed="true" stored="true" required="false" multiValued="false" termVectors="true" />
    <field name="title_simple" type="text_general" indexed="true" stored="true" required="false" multiValued="false" termVectors="true" />
-   <field name="s_title" type="string" indexed="true" stored="true" required="false" multiValued="true" />
    <field name="volume" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="synopsis" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="cluster_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
