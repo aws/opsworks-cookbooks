@@ -111,6 +111,7 @@
    -->
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="text" type="text_spell" indexed="true" stored="true" required="false" multiValued="true" />
+   <field name="timestamp" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
 
    <!-- Book -->
    <field name="author" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
@@ -192,6 +193,9 @@
    <field name="location_on_bookstore" type="string" indexed="false" stored="true" required="false" multiValued="false" />
    <field name="conservation_states" type="string" indexed="false" stored="true" required="false" multiValued="true" />
    <field name="differentials" type="string" indexed="false" stored="true" required="false" multiValued="true" />
+   <field name="sku_weight" type="float" indexed="false" stored="true" required="false" multiValued="false" />
+   <field name="shipping" type="float" indexed="false" stored="true" required="false" multiValued="false" />
+   <field name="price_with_shipping" type="float" indexed="true" stored="true" required="false" multiValued="false" />
 
    <!-- Dynamic field definitions allow using convention over configuration
        for fields via the specification of patterns to match field names.
