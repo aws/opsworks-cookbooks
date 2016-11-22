@@ -530,7 +530,7 @@
        <str name="wt">json</str>
        <str name="indent">true</str>
        <str name="rows">30</str>
-       <str name="fl">book_id, authors, title, volume, cover, minimum_price, new_copies, used_copies</str>
+       <str name="fl">s_title, s_authors, book_id, authors, title, volume, cover, minimum_price, new_copies, used_copies</str>
 
        <str name="sort">score desc</str>
 
