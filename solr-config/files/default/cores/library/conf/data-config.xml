@@ -141,9 +141,9 @@
           AND (
             '${dataimporter.request.clean}' != 'false'
 
-            OR s.updated_at &gt; '${dih.last_index_time}'
-            OR p.updated_at &gt; '${dih.last_index_time}'
-            OR b.updated_at &gt; '${dih.last_index_time}'
+            OR s.updated_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
+            OR p.updated_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
+            OR b.updated_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
           )
 
       "
@@ -158,9 +158,9 @@
         LEFT JOIN
           skus s ON (s.publication_id = p.id)
         WHERE
-          s.deleted_at &gt; '${dih.last_index_time}'
-          OR p.deleted_at &gt; '${dih.last_index_time}'
-          OR b.deleted_at &gt; '${dih.last_index_time}'
+          s.deleted_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
+          OR p.deleted_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
+          OR b.deleted_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
           OR s.visible = false
       "
     >
