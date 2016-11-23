@@ -37,7 +37,7 @@ when "2.2"
   if _platform == "amazon" && _platform_version < "2015.03"
     default[:ruby][:patch_version] = '3'
   else
-    default[:ruby][:patch_version] = '5'
+    default[:ruby][:patch_version] = "6"
   end
   default[:ruby][:pkgrelease]    = '1'
 
