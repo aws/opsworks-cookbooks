@@ -161,7 +161,7 @@
           s.deleted_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
           OR p.deleted_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
           OR b.deleted_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
-          OR s.visible = false
+          OR (s.visible = false AND s.updated_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes'))
       "
     >
       <entity name="author" pk="book_id" dataSource="library"
