@@ -117,9 +117,10 @@
    <field name="author" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="authors" type="text_ngram" indexed="true" stored="true" required="false" multiValued="true" termVectors="true" />
    <field name="authors_simple" type="text_general" indexed="true" stored="true" required="false" multiValued="true" termVectors="true" />
-   <field name="s_authors" type="string" indexed="true" stored="true" required="false" multiValued="true" />
+   <field name="s_authors" type="text_to_phrase" indexed="true" stored="true" required="false" multiValued="true" />
    <field name="title" type="text_ngram" indexed="true" stored="true" required="false" multiValued="false" termVectors="true" />
    <field name="title_simple" type="text_general" indexed="true" stored="true" required="false" multiValued="false" termVectors="true" />
+   <field name="s_title" type="text_to_phrase" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="volume" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="synopsis" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="cluster_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
@@ -257,7 +258,7 @@
 
    <copyField source="title" dest="text"/>
    <copyField source="title" dest="title_simple"/>
-   <copyField source="title" dest="title_s"/>
+   <copyField source="title" dest="s_title"/>
    <copyField source="isbn" dest="text"/>
    <copyField source="issn" dest="text"/>
 
@@ -429,6 +430,19 @@
         <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
         <filter class="solr.LowerCaseFilterFactory"/>
         <!-- <filter class="solr.BrazilianStemFilterFactory"/> -->
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="text_to_phrase" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
       </analyzer>
     </fieldType>
 
