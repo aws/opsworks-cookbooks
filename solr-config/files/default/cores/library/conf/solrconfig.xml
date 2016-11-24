@@ -560,6 +560,9 @@
        <!-- <str name="facet.pivot">{!stats=sku_stats}book_id</str> -->
        <!-- <str name="facet.pivot">{!stats=sku_stats}authors</str> -->
 
+       <str name="spellcheck">true</str>
+       <str name="spellcheck.collate">true</str>
+
        <!-- Optional, must match spell checker's name as defined above, defaults to "default" -->
        <str name="spellcheck.dictionary">default</str>
        <!-- omp = Only More Popular -->

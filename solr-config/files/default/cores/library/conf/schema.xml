@@ -269,6 +269,7 @@
    <copyField source="barcode" dest="publication_search_field"/>
 
    <copyField source="authors" dest="authors_to_phrase"/>
+   <copyField source="authors" dest="s_authors"/>
    <copyField source="authors" dest="authors_simple"/>
    <copyField source="authors" dest="text"/>
 
