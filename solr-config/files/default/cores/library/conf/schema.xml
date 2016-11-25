@@ -110,16 +110,16 @@
      tokens
    -->
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
-   <field name="text" type="text_spell" indexed="true" stored="true" required="false" multiValued="true" />
+   <field name="text" type="text_general" indexed="true" stored="true" required="false" multiValued="true" />
    <field name="timestamp" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
 
    <!-- Book -->
    <field name="author" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
-   <field name="authors" type="text_ngram" indexed="true" stored="true" required="false" multiValued="true" termVectors="true" />
+   <field name="authors" type="text_general" indexed="true" stored="true" required="false" multiValued="true" termVectors="true" />
    <field name="authors_simple" type="text_general" indexed="true" stored="true" required="false" multiValued="true" termVectors="true" />
    <field name="s_authors" type="string" indexed="true" stored="true" required="false" multiValued="true" />
    <field name="authors_to_phrase" type="text_to_phrase" indexed="true" stored="true" required="false" multiValued="true" />
-   <field name="title" type="text_ngram" indexed="true" stored="true" required="false" multiValued="false" termVectors="true" />
+   <field name="title" type="text_general" indexed="true" stored="true" required="false" multiValued="false" termVectors="true" />
    <field name="title_simple" type="text_general" indexed="true" stored="true" required="false" multiValued="false" termVectors="true" />
    <field name="title_to_phrase" type="text_to_phrase" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="volume" type="string" indexed="true" stored="true" required="false" multiValued="false" />
