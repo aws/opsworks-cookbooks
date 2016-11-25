@@ -18,10 +18,10 @@ default['library']['production']['database_user'] = "libraryprod"
 default['library']['production']['database_password'] = "password"
 default['library']['production']['cron_full_import'] = '0 2 * * *'
 default['library']['production']['cron_delta_import'] = '0,5,10,15,20,25,30,35,40,45,50,55 * * * *'
-default['library']['production']['cron_delta_delete'] = '2,7,12,17,22,27,32,37,42,47,52,57 * * * *'
+default['library']['production']['cron_delta_delete'] = '4,9,14,19,24,29,34,39,44,49,54,59 * * * *'
 
 
 default[:logrotate][:rotate] = 2
 default[:logrotate][:dateformat] = false # set to '-%Y%m%d' to have date formatted logs
-  
+
 
