@@ -84,6 +84,9 @@
           p.deleted_at,
 
           COALESCE(p.cover, c.cover) AS cover,
+          s.cover AS sku_cover,
+          p.cover AS publication_cover,
+          c.cover AS most_uploaded_cover,
 
           pbrs.name AS publisher,
 

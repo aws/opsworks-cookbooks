@@ -146,6 +146,9 @@
    <field name="barcode" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="year" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="cover" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="sku_cover" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="publication_cover" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="most_uploaded_cover" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="weight" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="height" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="depth" type="string" indexed="true" stored="true" required="false" multiValued="false" />
