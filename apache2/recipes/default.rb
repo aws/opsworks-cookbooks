@@ -239,6 +239,7 @@ include_recipe 'apache2::logrotate'
 include_recipe 'apache2::prefork'
 include_recipe 'apache2::unixd'
 include_recipe 'apache2::mod_access_compat'
+include_recipe 'apache2::mod_socache_shmcb'
 
 bash 'logdir_existence_and_restart_apache2' do
   action :run
