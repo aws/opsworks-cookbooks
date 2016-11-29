@@ -38,21 +38,15 @@ when 'debian'
   ]
 when 'rhel'
   packages = [
-    "php-xml",
-    "php-common",
-    "php-xmlrpc",
-    "php-gd",
-    "php-cli",
-    "php-pear-Auth-SASL",
-    "php-mcrypt",
-    "php-pecl-memcache",
-    "php-pear",
-    "php-pear-XML-Parser",
-    "php-pear-DB",
-    "php-pear-HTML-Common",
-    "php",
-    "php-devel",
-    "php-pear-Mail-Mime"
+    "php70",
+    "php70-xml",
+    "php70-common",
+    "php70-xmlrpc",
+    "php70-gd",
+    "php70-cli",
+    "php70-mcrypt",
+    "php7-pear",
+    "php70-devel",
   ]
 end
 

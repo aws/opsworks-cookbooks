@@ -18,7 +18,7 @@
 #
 
 package 'apache2' do
-  package_name value_for_platform_family(:rhel => "httpd", :debian => "apache2")
+  package_name value_for_platform_family(:rhel => "httpd24", :debian => "apache2")
   retries 3
   retry_delay 5
   action :install
@@ -236,6 +236,9 @@ include_recipe 'apache2::mod_log_config' if platform_family?('rhel')
 include_recipe 'apache2::mod_ssl'
 include_recipe 'apache2::mod_expires'
 include_recipe 'apache2::logrotate'
+include_recipe 'apache2::prefork'
+include_recipe 'apache2::unixd'
+include_recipe 'apache2::mod_access_compat'
 
 bash 'logdir_existence_and_restart_apache2' do
   action :run

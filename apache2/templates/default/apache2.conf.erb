@@ -11,7 +11,7 @@ ServerRoot "<%= node[:apache][:dir] %>"
 <% if node[:platform] == "debian" || node[:platform] == "ubuntu" -%>
 LockFile /var/lock/apache2/accept.lock
 <% else %>
-LockFile logs/accept.lock
+Mutex file default
 <% end -%>
 
 #

@@ -45,7 +45,7 @@ when 'rhel'
   if rhel7?
     default[:apache][:version]       = "2.4"
   else
-    default[:apache][:version]       = "2.2"
+    default[:apache][:version]       = "2.4"
   end
   default[:apache][:conf_available_dir]  = "#{node[:apache][:dir]}/conf.d"
   default[:apache][:conf_enabled_dir]    = "#{node[:apache][:dir]}/conf.d"

@@ -15,7 +15,7 @@ describe_recipe 'apache2::mod_ssl' do
 
   it 'dependencies installed and clean configuration on rhel platform family' do
     if node[:platform_family] == 'rhel'
-      package('mod_ssl').must_be_installed
+      package('mod24_ssl').must_be_installed
       file("#{node[:apache][:dir]}/conf.d/ssl.conf").wont_exist
     end
   end
