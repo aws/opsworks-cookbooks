@@ -24,9 +24,11 @@ package 'apache2' do
   action :install
 end
 
-#Remove Default Apache Auto Index Config File. 
-file '/etc/httpd/conf.d/autoindex.conf' do
-  action :delete
+#Remove Default Apache Auto Index and User Directory Config Files.
+['autoindex.conf','userdir.conf'].each do |conffile| 
+  file "/etc/httpd/conf.d/#{conffile}" do
+    action :delete
+  end
 end
 
 include_recipe 'apache2::service'
