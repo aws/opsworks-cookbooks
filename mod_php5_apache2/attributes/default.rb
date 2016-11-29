@@ -47,6 +47,7 @@ when 'rhel'
     "php70-mcrypt",
     "php7-pear",
     "php70-devel",
+    "php70-mbstring"
   ]
 end
 
