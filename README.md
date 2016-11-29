@@ -1,6 +1,11 @@
 opsworks-cookbooks
 ==================
 
+**This repo is modified from the original version**
+* It has been tested on Amazon Linux 2016.09
+* It upgrades PHP to 7.0
+* It upgrades Apache to 2.4
+
 **This repo contains cookbooks used by AWS OpsWorks for Chef versions 11.10, 11.4 and 0.9.**
 
 To get started with AWS OpsWorks cookbooks for all versions of Chef see the [cookbook documentation](https://docs.aws.amazon.com/opsworks/latest/userguide/workingcookbook.html).
