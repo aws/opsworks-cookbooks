@@ -553,6 +553,7 @@
        <str name="group">on</str>
        <str name="group.field">book_id</str>
        <str name="group.sort">timestamp desc</str>
+       <str name="group.facet">true</str>
 
        <str name="facet">on</str>
        <str name="facet.missing">false</str>
