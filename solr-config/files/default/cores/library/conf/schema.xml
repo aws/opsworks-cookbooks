@@ -118,10 +118,8 @@
    <field name="authors" type="text_general" indexed="true" stored="true" required="false" multiValued="true" termVectors="true" />
    <field name="authors_simple" type="text_general" indexed="true" stored="true" required="false" multiValued="true" termVectors="true" />
    <field name="s_authors" type="string" indexed="true" stored="true" required="false" multiValued="true" />
-   <field name="authors_to_phrase" type="text_to_phrase" indexed="true" stored="true" required="false" multiValued="true" />
    <field name="title" type="text_general" indexed="true" stored="true" required="false" multiValued="false" termVectors="true" />
    <field name="title_simple" type="text_general" indexed="true" stored="true" required="false" multiValued="false" termVectors="true" />
-   <field name="title_to_phrase" type="text_to_phrase" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="volume" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="synopsis" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="cluster_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
@@ -158,7 +156,7 @@
    <field name="pages" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="book_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="publication_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
-   <field name="publisher" type="text_ngram" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="publisher" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="s_publisher" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="publisher_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="format" type="string" indexed="false" stored="true" required="false" multiValued="false" />
@@ -261,23 +259,22 @@
         or to add multiple fields to the same field for easier/faster searching.  -->
 
    <copyField source="title" dest="text"/>
-   <copyField source="title" dest="title_simple"/>
-   <copyField source="title" dest="title_to_phrase"/>
+   <copyField source="authors" dest="text"/>
+   <copyField source="volume" dest="text"/>
    <copyField source="isbn" dest="text"/>
    <copyField source="issn" dest="text"/>
+
+   <copyField source="title" dest="title_simple"/>
+
+   <copyField source="authors" dest="authors_simple"/>
+   <copyField source="authors" dest="s_authors"/>
+
+   <copyField source="publisher" dest="s_publisher"/>
 
    <!-- Para a busca por publicacao via ISBN, ISSN, Codigo de Barras -->
    <copyField source="isbn" dest="publication_search_field"/>
    <copyField source="issn" dest="publication_search_field"/>
    <copyField source="barcode" dest="publication_search_field"/>
-
-   <copyField source="authors" dest="authors_to_phrase"/>
-   <copyField source="authors" dest="s_authors"/>
-   <copyField source="authors" dest="authors_simple"/>
-   <copyField source="authors" dest="text"/>
-
-   <copyField source="publisher" dest="s_publisher"/>
-
 
   <!--
    <copyField source="body" dest="text"/>
@@ -435,29 +432,6 @@
         <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
         <filter class="solr.LowerCaseFilterFactory"/>
         <!-- <filter class="solr.BrazilianStemFilterFactory"/> -->
-      </analyzer>
-    </fieldType>
-
-    <fieldType name="text_to_phrase" class="solr.TextField" positionIncrementGap="100">
-      <analyzer type="index">
-        <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
-        <tokenizer class="solr.StandardTokenizerFactory"/>
-        <filter class="solr.LowerCaseFilterFactory"/>
-      </analyzer>
-      <analyzer type="query">
-        <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
-        <tokenizer class="solr.StandardTokenizerFactory"/>
-        <filter class="solr.LowerCaseFilterFactory"/>
-      </analyzer>
-    </fieldType>
-
-    <fieldType name="text_spell" class="solr.TextField" positionIncrementGap="100">
-      <analyzer type="index">
-        <tokenizer class="solr.StandardTokenizerFactory"/>
-        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
-        <!-- in this example, we will only use synonyms at query time
-        <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
-        -->
       </analyzer>
     </fieldType>
 
