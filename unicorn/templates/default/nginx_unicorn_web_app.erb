@@ -54,6 +54,10 @@ server {
     }
   }
 
+  location /status {
+    return 200 'check';
+  }
+
   location /nginx_status {
     stub_status on;
     access_log off;
