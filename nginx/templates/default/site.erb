@@ -6,6 +6,11 @@ server {
   location / {
     root   <%= @application[:absolute_document_root] %>;
     index  index.html index.htm index.php;
+    <% unless node[:redirect_to_https].nil? %>
+    if ($http_x_forwarded_proto != "https") {
+      rewrite ^(.*)$ <%= node[:redirect_to_https] %> permanent;
+    }
+    <% end %>
   }
   
   # Block all svn access
