@@ -556,7 +556,6 @@
        <str name="group.facet">true</str>
 
        <str name="facet">on</str>
-       <str name="facet.method">enum</str>
        <str name="facet.missing">false</str>
        <str name="facet.field">s_authors</str>
        <str name="facet.field">bookshelf</str>
