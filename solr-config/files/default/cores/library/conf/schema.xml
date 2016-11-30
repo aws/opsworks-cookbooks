@@ -266,8 +266,8 @@
 
    <copyField source="title" dest="title_simple"/>
 
-   <copyField source="authors" dest="s_authors"/>
    <copyField source="authors" dest="authors_simple"/>
+   <copyField source="authors" dest="s_authors"/>
 
    <copyField source="publisher" dest="s_publisher"/>
 
