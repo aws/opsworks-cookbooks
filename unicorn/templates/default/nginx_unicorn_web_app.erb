@@ -5,6 +5,9 @@ upstream unicorn_<%= @application[:domains].first %> {
 server {
   listen 80;
   server_name <%= @application[:domains].join(" ") %> <%= node[:hostname] %>;
+  
+  # Needed for docusign callback
+  client_max_body_size 50M;
 
   <% if @application[:log_format] %>
     <% @application[:log_format].each do |log_format_name| %>
@@ -24,6 +27,11 @@ server {
 
   location / {
     try_files $uri/index.html $uri/index.htm @unicorn;
+    <% unless node[:redirect_to_https].nil? %>
+    if ($http_x_forwarded_proto != "https") {
+      rewrite ^(.*)$ <%= node[:redirect_to_https] %> permanent;
+    }
+    <% end %>    
   }
 
   location @unicorn {
