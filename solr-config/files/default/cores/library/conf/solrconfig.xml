@@ -262,7 +262,7 @@
                and old cache.
       -->
     <filterCache class="solr.FastLRUCache"
-                 size="512"
+                 size="2048"
                  initialSize="512"
                  autowarmCount="0"/>
 
@@ -275,7 +275,7 @@
                       to occupy
      -->
     <queryResultCache class="solr.LRUCache"
-                     size="512"
+                     size="2048"
                      initialSize="512"
                      autowarmCount="0"/>
 
@@ -286,7 +286,7 @@
          this cache will not be autowarmed.
       -->
     <documentCache class="solr.LRUCache"
-                   size="512"
+                   size="2048"
                    initialSize="512"
                    autowarmCount="0"/>
 
@@ -297,6 +297,18 @@
       initialSize="0"
       autowarmCount="10"
       regenerator="solr.NoOpRegenerator" />
+
+    <!-- Field Value Cache
+
+         Cache used to hold field values that are quickly accessible
+         by document id.  The fieldValueCache is created by default
+         even if not configured here.
+     <fieldValueCache class="solr.FastLRUCache"
+                      size="2048"
+                      initialSize="1024"
+                      autowarmCount="1024"
+                      showItems="32" />
+      -->
 
     <!-- Lazy Field Loading
 
@@ -523,6 +535,7 @@
      <lst name="defaults">
        <str name="defType">edismax</str>
        <str name="qf">title authors volume^0.7 publisher^0.1 synopsis^0.1</str>
+       <str name="mm">2&lt;60%</str>
        <str name="boost">sum(if(is_moderated,1,0.5),pow(unique_sellers_per_book,0.3),pow(sku_count,0.1))</str>
 
        <str name="echoParams">explicit</str>
