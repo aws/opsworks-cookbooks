@@ -184,6 +184,7 @@
    <field name="sku_volume" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="sku_language" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="seller" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="free_shipping_package_price" type="float" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="city" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="uf" type="string" indexed="false" stored="true" multiValued="false" />
    <field name="seller_positive_quals" type="int" indexed="false" stored="true" required="false" multiValued="false" />
