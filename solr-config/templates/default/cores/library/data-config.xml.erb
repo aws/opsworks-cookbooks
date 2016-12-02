@@ -115,6 +115,7 @@
           se.name AS seller,
           se.city AS city,
           se.uf AS uf,
+          se.free_shipping_package_price,
           se.positive_quals AS seller_positive_quals,
           se.total_quals AS seller_total_quals,
           se.qual_rating AS seller_qual_rating,
@@ -147,6 +148,7 @@
             OR s.updated_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
             OR p.updated_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
             OR b.updated_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
+            OR se.updated_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
           )
 
       "
