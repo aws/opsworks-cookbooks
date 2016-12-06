@@ -3,7 +3,8 @@ module OpsWorks
     require 'rubygems/version'
 
     def ensure_only_gem_version(name, ensured_version)
-      versions = `#{node[:dependencies][:gem_binary]} list #{name}`
+      gem_list_output = `#{node[:dependencies][:gem_binary]} list #{name}`
+      name, versions = gem_list_output.split(/\s/, 2)
       versions = versions.scan(/(\d[a-zA-Z0-9\.]*)/).flatten.compact
       for version in versions
         next if version == ensured_version
