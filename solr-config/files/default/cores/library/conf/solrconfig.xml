@@ -717,7 +717,7 @@
        <str name="facet.query">year:[1990 TO *]</str>
        <str name="facet.query">year:[* TO 1990]</str>
 
-       <str name="facet.query">free_shipping_package_price:[0 TO 0]</str>
+       <str name="facet.query">shipping:[0 TO 0]</str>
 
        <str name="facet.mincount">1</str>
 

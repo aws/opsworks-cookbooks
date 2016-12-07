@@ -198,7 +198,7 @@
    <field name="conservation_states" type="string" indexed="false" stored="true" required="false" multiValued="true" />
    <field name="differentials" type="string" indexed="false" stored="true" required="false" multiValued="true" />
    <field name="sku_weight" type="float" indexed="false" stored="true" required="false" multiValued="false" />
-   <field name="shipping" type="float" indexed="false" stored="true" required="false" multiValued="false" />
+   <field name="shipping" type="float" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="price_with_shipping" type="float" indexed="true" stored="true" required="false" multiValued="false" />
 
    <!-- Dynamic field definitions allow using convention over configuration
