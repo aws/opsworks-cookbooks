@@ -109,8 +109,8 @@
           s.location_on_bookstore,
           s.created_at AS sku_created_at,
           s.weight as sku_weight,
-          s.shipping as shipping,
-          (COALESCE(s.shipping,0) + COALESCE(s.price,0)) as price_with_shipping,
+          (CASE WHEN s.price &gt;= se.free_shipping_package_price THEN 0 ELSE s.shipping END) as shipping,
+          (COALESCE((CASE WHEN s.price &gt;= se.free_shipping_package_price THEN 0 ELSE s.shipping END),0) + COALESCE(s.price,0)) as price_with_shipping,
 
           se.name AS seller,
           se.city AS city,
