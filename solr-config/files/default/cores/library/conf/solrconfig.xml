@@ -713,9 +713,11 @@
        <str name="facet.query">price:[100 TO *]</str>
 
        <str name="facet.query">year:[2010 TO *]</str>
-       <str name="facet.query">year:[2000 TO *]</str>
-       <str name="facet.query">year:[1990 TO *]</str>
-       <str name="facet.query">year:[* TO 1990]</str>
+       <str name="facet.query">year:[2000 TO 2010]</str>
+       <str name="facet.query">year:[1990 TO 2000]</str>
+       <str name="facet.query">year:[1980 TO 1990]</str>
+       <str name="facet.query">year:[1970 TO 1980]</str>
+       <str name="facet.query">year:[* TO 1970]</str>
 
        <str name="facet.query">shipping:[0 TO 0]</str>
 
