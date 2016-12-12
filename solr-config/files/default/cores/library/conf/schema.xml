@@ -113,15 +113,21 @@
    <field name="text" type="text_general" indexed="true" stored="true" required="false" multiValued="true" />
    <field name="timestamp" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
 
-   <!-- Book -->
-   <field name="author" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
+   <!-- Those fields are used in qf of requestHandler /search
+        make sure they all have the same type to avoid minimumMatch bug
+        As specified in https://issues.apache.org/jira/browse/SOLR-3085
+   -->
    <field name="authors" type="text_general" indexed="true" stored="true" required="false" multiValued="true" termVectors="true" />
+   <field name="title" type="text_general" indexed="true" stored="true" required="false" multiValued="false" termVectors="true" />
+   <field name="volume" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="publisher" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="synopsis" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
+
+   <field name="author" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
+   <!-- Book -->
    <field name="authors_simple" type="text_general" indexed="true" stored="true" required="false" multiValued="true" termVectors="true" />
    <field name="s_authors" type="string" indexed="true" stored="true" required="false" multiValued="true" />
-   <field name="title" type="text_general" indexed="true" stored="true" required="false" multiValued="false" termVectors="true" />
    <field name="title_simple" type="text_general" indexed="true" stored="true" required="false" multiValued="false" termVectors="true" />
-   <field name="volume" type="string" indexed="true" stored="true" required="false" multiValued="false" />
-   <field name="synopsis" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="cluster_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="bookshelf" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="bookshelf_id" type="string" indexed="false" stored="true" required="false" multiValued="false" />
@@ -156,7 +162,6 @@
    <field name="pages" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="book_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="publication_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
-   <field name="publisher" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="s_publisher" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="publisher_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="format" type="string" indexed="false" stored="true" required="false" multiValued="false" />
@@ -201,6 +206,7 @@
    <field name="shipping" type="float" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="price_with_shipping" type="float" indexed="true" stored="true" required="false" multiValued="false" />
 
+   <field name="text_for_spellcheck" type="text_spellcheck" indexed="true" stored="true" required="false" multiValued="true" />
    <!-- Dynamic field definitions allow using convention over configuration
        for fields via the specification of patterns to match field names.
        EXAMPLE:  name="*_i" will match any field ending in _i (like myid_i, z_i)
@@ -277,9 +283,10 @@
    <copyField source="issn" dest="publication_search_field"/>
    <copyField source="barcode" dest="publication_search_field"/>
 
-  <!--
-   <copyField source="body" dest="text"/>
-  -->
+   <!-- Para spellcheck -->
+   <copyField source="title" dest="text_for_spellcheck"/>
+   <copyField source="authors" dest="text_for_spellcheck"/>
+   
 
     <!-- field type definitions. The "name" attribute is
        just a label to be used by field definitions.  The "class"
@@ -408,6 +415,13 @@
     <fieldType name="text_ws" class="solr.TextField" positionIncrementGap="100">
       <analyzer>
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="text_spellcheck" class="solr.TextField" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
       </analyzer>
     </fieldType>
 

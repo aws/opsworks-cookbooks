@@ -717,7 +717,7 @@
        <str name="facet.query">year:[1990 TO 2000]</str>
        <str name="facet.query">year:[1980 TO 1990]</str>
        <str name="facet.query">year:[1970 TO 1980]</str>
-       <str name="facet.query">year:[* TO 1970]</str>
+       <str name="facet.query">year:[1 TO 1970]</str>
 
        <str name="facet.query">shipping:[0 TO 0]</str>
 
@@ -888,7 +888,7 @@
           Load tokens from the following field for spell checking,
           analyzer for the field's type as defined in schema.xml are used
       -->
-      <str name="field">text</str>
+      <str name="field">text_for_spellcheck</str>
       <!-- Optional, by default use in-memory index (RAMDirectory) -->
       <str name="spellcheckIndexDir">./spellchecker</str>
       <!-- Set the accuracy (float) to be used for the suggestions. Default is Float.MIN_VALUE -->
