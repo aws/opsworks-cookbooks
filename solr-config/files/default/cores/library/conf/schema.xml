@@ -256,12 +256,12 @@
         unknown fields indexed and/or stored by default -->
    <!--dynamicField name="*" type="ignored" multiValued="true" /-->
 
- <!-- Field to use to determine and enforce document uniqueness.
-      Unless this field is marked with required="false", it will be a required field
+   <!-- Field to use to determine and enforce document uniqueness.
+        Unless this field is marked with required="false", it will be a required field
    -->
- <uniqueKey>id</uniqueKey>
+   <uniqueKey>id</uniqueKey>
 
-  <!-- copyField commands copy one field to another at the time a document
+   <!-- copyField commands copy one field to another at the time a document
         is added to the index.  It's used either to index the same field differently,
         or to add multiple fields to the same field for easier/faster searching.  -->
 
@@ -425,19 +425,11 @@
       </analyzer>
     </fieldType>
 
-    <!-- A general text field that has reasonable, generic
-         cross-language defaults: it tokenizes with StandardTokenizer,
-	 removes stop words from case-insensitive "stopwords.txt"
-	 (empty by default), and down cases.  At query time only, it
-	 also applies synonyms. -->
     <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
         <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
-        <!-- in this example, we will only use synonyms at query time
-        <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
-        -->
         <filter class="solr.LowerCaseFilterFactory"/>
       </analyzer>
       <analyzer type="query">
@@ -446,9 +438,32 @@
         <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
         <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
         <filter class="solr.LowerCaseFilterFactory"/>
-        <!-- <filter class="solr.BrazilianStemFilterFactory"/> -->
       </analyzer>
     </fieldType>
+
+    <!-- To use on pf of edismax, improving phrase matches
+         A good explanaition can be found here:
+         http://stackoverflow.com/questions/8582531/what-is-the-difference-between-a-phrase-query-and-using-a-shingle-filter
+       -->
+    <fieldType name="phrase_field" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.ShingleFilterFactory" minShingleSize="2" maxShingleSize="10"/>
+      </analyzer>
+      <analyzer type="query">
+        <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldType>
+
+    <field name="title_phrase" type="phrase_field" indexed="true" stored="true" required="false" multiValued="false" />
+    <field name="authors_phrase" type="phrase_field" indexed="true" stored="true" required="false" multiValued="true" />
+
+    <copyField source="title" dest="title_phrase"/>
+    <copyField source="authors" dest="authors_phrase"/>
 
     <fieldType name="text_ngram" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
