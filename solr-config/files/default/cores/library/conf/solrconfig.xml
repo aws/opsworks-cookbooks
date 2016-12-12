@@ -536,8 +536,8 @@
      <lst name="defaults">
        <str name="defType">edismax</str>
        <str name="qf">title authors volume^0.7 publisher^0.1 synopsis^0.1</str>
-       <!-- <str name="pf">title_phrase authors_phrase</str> -->
-       <str name="mm">1&lt;1 2&lt;2 3&lt;67%</str>
+       <str name="pf">title_phrase authors_phrase</str>
+       <str name="mm">2&lt;2 3&lt;67%</str>
        <str name="boost">sum(if(is_moderated,1,0.5),pow(unique_sellers_per_book,0.3),pow(sku_count,0.1))</str>
 
        <str name="echoParams">explicit</str>
