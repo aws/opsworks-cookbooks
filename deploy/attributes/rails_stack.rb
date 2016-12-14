@@ -26,6 +26,11 @@ when "nginx_unicorn"
   default[:opsworks][:rails_stack][:needs_reload] = true
   default[:opsworks][:rails_stack][:service] = 'unicorn'
   default[:opsworks][:rails_stack][:restart_command] = '../../shared/scripts/unicorn clean-restart'
+when "nginx_puma"
+  default[:opsworks][:rails_stack][:recipe] = "puma::rails"
+  default[:opsworks][:rails_stack][:needs_reload] = true
+  default[:opsworks][:rails_stack][:service] = 'puma'
+  default[:opsworks][:rails_stack][:restart_command] = '../../shared/scripts/puma clean-restart'
 else
   raise "Unknown stack: #{node[:opsworks][:rails_stack][:name].inspect}"
 end
