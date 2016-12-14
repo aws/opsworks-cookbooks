@@ -34,6 +34,10 @@
             publications p1 ON (b1.id = p1.book_id)
           LEFT JOIN
             skus s1 ON (p1.id = s1.publication_id)
+          WHERE
+            b1.deleted_at IS NULL
+            AND p1.deleted_at IS NULL
+            AND s1.deleted_at IS NULL
           GROUP BY
             b1.id
         )
