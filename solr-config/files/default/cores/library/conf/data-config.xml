@@ -145,6 +145,7 @@
             book_stats bstats ON (b.id = bstats.book_id)
         WHERE
           b.deleted_at IS NULL
+
           AND (
             '${dataimporter.request.clean}' != 'false'
             OR s.updated_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
