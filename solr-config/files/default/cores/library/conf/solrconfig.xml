@@ -720,7 +720,7 @@
        <str name="facet.query">year:[1990 TO 2000]</str>
        <str name="facet.query">year:[1980 TO 1990]</str>
        <str name="facet.query">year:[1970 TO 1980]</str>
-       <str name="facet.query">year:[* TO 1970]</str>
+       <str name="facet.query">year:[1 TO 1970]</str>
 
        <str name="facet.query">shipping:[0 TO 0]</str>
 
