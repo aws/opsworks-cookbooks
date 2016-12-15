@@ -138,7 +138,6 @@
               AND s.deleted_at IS NULL
               AND s.importing != 'true'
               AND s.visible = true
-              AND s.price > 0
             )
           LEFT JOIN
             sellers se ON (s.seller_id = se.id AND se.deleted_at IS NULL)
