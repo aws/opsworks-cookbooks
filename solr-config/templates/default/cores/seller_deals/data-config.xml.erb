@@ -90,7 +90,7 @@
           SELECT v.order_id
           FROM vendas v
           WHERE 
-            DATE_ADD(v.updated_at, INTERVAL 3 HOUR) &gt; '${dih.last_index_time}'
+            DATE_ADD(v.updated_at, INTERVAL 7 HOUR) &gt; '${dih.last_index_time}'
           AND 
             v.status != -4
         "
