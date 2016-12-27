@@ -194,12 +194,13 @@ define :opsworks_deploy do
     variables( :log_dirs => ["#{deploy[:deploy_to]}/shared/log" ] )
   end
 
-  template '/etc/cron.hourly/logrotate' do
+  cookbook_file '/etc/cron.hourly/logrotate' do
     backup false
-    source 'logrotate_cron.erb'
+    source 'logrotate_cron'
     cookbook 'deploy'
     owner 'root'
     group 'root'
     mode 0755
+    action :create_if_missing
   end
 end
