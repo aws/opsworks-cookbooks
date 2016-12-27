@@ -1,4 +1,4 @@
-<% @log_dirs.each do |dir| %><%= dir %>/*.log <% end %> /var/log/resque/* {
+<% @log_dirs.each do |dir| %><%= dir %>/*.log <% end %><% @log_files.each do |path| %><%= path %> <% end %> {
         <% if node[:logrotate][:frequency] -%>
         <%= node[:logrotate][:frequency] %>
         <% else -%>
