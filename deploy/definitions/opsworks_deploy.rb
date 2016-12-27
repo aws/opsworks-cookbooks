@@ -191,7 +191,10 @@ define :opsworks_deploy do
     owner "root"
     group "root"
     mode 0644
-    variables( :log_dirs => ["#{deploy[:deploy_to]}/shared/log" ] )
+    variables(
+      :log_dirs => ["#{deploy[:deploy_to]}/shared/log"],
+      :log_files => node[:deploy][application][:log_files]
+    )
   end
 
   cookbook_file '/etc/cron.hourly/logrotate' do
