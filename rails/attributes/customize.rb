@@ -10,5 +10,5 @@
 #
 #normal[:rails][:version] = "2.3.18"
 
-node[:logrotate][:size] = "10M"
-node[:logrotate][:frequency] = "hourly"
+normal[:logrotate][:size] = "10M"
+normal[:logrotate][:frequency] = "hourly"
