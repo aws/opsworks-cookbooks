@@ -193,4 +193,10 @@ define :opsworks_deploy do
     mode 0644
     variables( :log_dirs => ["#{deploy[:deploy_to]}/shared/log" ] )
   end
+
+  execute "create log rotate hourly" do
+    command "cp /etc/cron.daily/logrotate /etc/cron.hourly/logrotate"
+    creates "/etc/cron.hourly/logrotate"
+    group "root"
+  end
 end

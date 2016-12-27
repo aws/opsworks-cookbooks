@@ -9,3 +9,6 @@
 # The following shows how to override the Rails version used:
 #
 #normal[:rails][:version] = "2.3.18"
+
+node[:logrotate][:size] = "10M"
+node[:logrotate][:frequency] = "hourly"
