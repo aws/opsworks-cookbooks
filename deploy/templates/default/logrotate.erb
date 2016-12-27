@@ -1,5 +1,9 @@
-<% @log_dirs.each do |dir| %><%= dir %>/*.log <% end %> {
+<% @log_dirs.each do |dir| %><%= dir %>/*.log <% end %> /var/log/resque/* {
+        <% if node[:logrotate][:frequency] -%>
+        <%= node[:logrotate][:frequency] %>
+        <% else -%>
         daily
+        <% end %>
         missingok
         rotate <%= node[:logrotate][:rotate] %>
         compress
@@ -8,6 +12,9 @@
         dateformat <%= node[:logrotate][:dateformat] %>
         <% end -%>
         notifempty
+        <% if node[:logrotate][:size] -%>
+        size <%= node[:logrotate][:size] %>
+        <% end -%>
         copytruncate
         sharedscripts
         <% if node[:platform] == 'ubuntu' && node[:platform_version] == '14.04' -%>
