@@ -12,7 +12,7 @@ describe_recipe 'deploy::php' do
     end
   end
 
-  ['log','config','system','pids','scripts','sockets'].each do |dir_name|
+  ['log','config','pids','scripts','sockets'].each do |dir_name|
     it "creates a directory #{dir_name} in the deployment directory" do
       node[:deploy].each do |application, deploy|
         if deploy[:application_type] == 'php'
