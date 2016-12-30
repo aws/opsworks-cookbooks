@@ -24,3 +24,11 @@ ff02::3 ip6-allhosts
 <% end -%>
 <% end -%>
 <% end -%>
+
+# OpsWorks Custom Layer Hosts
+<% node[:opsworks][:instance][:layers].each do |layer_name| -%>
+    <% next if !node[:opsworks][:layers][layer_name].has_key?(:hosts) -%>
+    <% node[:opsworks][:layers][layer_name][:hosts].each do |ip, entry| -%>
+        <%= ip %> <%= entry %>
+    <% end -%>
+<% end -%>
