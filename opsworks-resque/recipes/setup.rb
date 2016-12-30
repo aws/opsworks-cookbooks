@@ -28,10 +28,11 @@ node[:deploy].each do |application, deploy|
   end
   
   settings[:workers].each do |queue, quantity|
+    queue_name = queue == '*' ? 'asterisk' : queue
 
     quantity.times do |idx|
       idx = idx + 1 # make index 1-based
-      template "/etc/init/resque-#{application}-#{idx}.conf" do
+      template "/etc/init/resque-#{application}-#{queue_name}-#{idx}.conf" do
         source "resque-n.conf.erb"
         mode '0644'
         variables application: application, rack_env: rack_env, deploy: deploy, queue: queue, instance: idx
