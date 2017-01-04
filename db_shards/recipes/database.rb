@@ -1,7 +1,7 @@
 include_recipe "deploy"
 
 node[:deploy].each do |application, deploy|
-  if node['rails']
+  if node['rails'] && node['rails']['db']
     node['rails']['db'].each do |type, dbs|
       if type == 'slaves'
         template "#{deploy[:deploy_to]}/shared/config/shards.yml" do
@@ -13,6 +13,8 @@ node[:deploy].each do |application, deploy|
         end
       end
     end
+  else
+    puts 'No configuration for slaves'
   end
 
 end
