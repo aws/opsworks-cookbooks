@@ -23,8 +23,11 @@ node[:deploy].each do |application, deploy|
     app application
   end
 
+  puts "rosanes #{node['rails']}"
+
   if node['rails']
     node['rails']['db'].each do |type, dbs|
+      puts "rosanes2 #{type}"
       if type == 'master'
         template "#{deploy[:deploy_to]}/shared/config/database.yml" do
           source 'database.yml.erb'
