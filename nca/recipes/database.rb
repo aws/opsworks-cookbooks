@@ -41,22 +41,4 @@ node[:deploy].each do |application, deploy|
       ( deploy[:database][:host].present? || db_vars.length >= 1 ) && File.directory?("#{deploy[:deploy_to]}/shared/config/")
     end
   end
-
-  puts "rosanes #{node['rails']}"
-
-  if node['rails']
-    node['rails']['db'].each do |type, dbs|
-      puts "rosanes2 #{type}"
-      if type == 'slaves'
-        template "#{deploy[:deploy_to]}/shared/config/shards.yml" do
-          source 'shards.yml.erb'
-          mode "0660"
-          group deploy[:group]
-          owner deploy[:user]
-          variables(dbs: dbs)
-        end
-      end
-    end
-  end
-
 end
