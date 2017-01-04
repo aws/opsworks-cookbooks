@@ -1,0 +1,7 @@
+<% @dbs.each do |name, attributes| %> 
+<%= name %>:
+  <% attributes.each do |attr, value| %>
+  <%= attr %>: "<%= value %>"
+  <% end %>
+<% end %>
+
