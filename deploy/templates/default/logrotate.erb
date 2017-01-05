@@ -6,7 +6,6 @@
         <% end %>
         missingok
         rotate <%= node[:logrotate][:rotate] %>
-        compress
         <% if node[:logrotate][:dateformat] -%>
         dateext
         dateformat <%= node[:logrotate][:dateformat] %>
