@@ -10,3 +10,6 @@
 [submodule "yum"]
 	path = yum
 	url = https://github.com/chef-cookbooks/yum.git
+[submodule "build-essential"]
+	path = build-essential
+	url = https://github.com/chef-cookbooks/build-essential.git
