@@ -4,3 +4,9 @@
 [submodule "python"]
 	path = python
 	url = https://github.com/poise/python.git
+[submodule "apt"]
+	path = apt
+	url = https://github.com/chef-cookbooks/apt.git
+[submodule "yum"]
+	path = yum
+	url = https://github.com/chef-cookbooks/yum.git
