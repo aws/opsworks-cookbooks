@@ -9,3 +9,7 @@
 # The following shows how to override OpsWorks default TCP keepalive timeout:
 #
 #normal[:opsworks_initial_setup][:sysctl]['net.ipv4.tcp_keepalive_time'] = 2048
+
+normal['opsworks_initial_setup']['swapfile_instancetypes'] = [ 't1.micro', 't2.micro','t2.small' ]
+normal['opsworks_initial_setup']['swapfile_name'] = '/var/swapfile'
+normal['opsworks_initial_setup']['swapfile_size_mb'] = 2048
