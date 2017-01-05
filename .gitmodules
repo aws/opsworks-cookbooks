@@ -1,3 +1,6 @@
 [submodule "newrelic"]
 	path = newrelic
 	url = https://github.com/djoos-cookbooks/newrelic.git
+[submodule "python"]
+	path = python
+	url = https://github.com/poise/python.git
