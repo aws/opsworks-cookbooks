@@ -1,0 +1,3 @@
+[submodule "newrelic"]
+	path = newrelic
+	url = https://github.com/djoos-cookbooks/newrelic.git
