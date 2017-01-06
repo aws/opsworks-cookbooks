@@ -35,7 +35,7 @@ node[:deploy].each do |application, deploy|
       template "/etc/init/resque-#{application}-#{queue_name}-#{idx}.conf" do
         source "resque-n.conf.erb"
         mode '0644'
-        variables application: application, rack_env: rack_env, deploy: deploy, queue: queue, instance: idx
+        variables application: application, rack_env: rack_env, deploy: deploy, queue: queue, queue_name: queue_name, instance: idx
       end
     end
   end
