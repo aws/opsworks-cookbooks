@@ -151,7 +151,7 @@ define :opsworks_deploy do
         end
 
         # run user provided callback file
-        run_callback_from_file("#{release_path}/deploy/before_migrate.rb")
+        run_callback_from_file("#{node[:deploy][application][:deploy_to]}/shared/deploy/before_migrate.rb")
       end
     end
   end
