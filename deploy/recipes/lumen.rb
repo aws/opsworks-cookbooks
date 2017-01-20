@@ -27,7 +27,7 @@ node[:deploy].each do |application, deploy|
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
     end
-  end  
+  end
 
   template "#{deploy[:deploy_to]}/shared/config/aws.yml" do
     source 'lumen/aws.yml.erb'
@@ -48,6 +48,19 @@ node[:deploy].each do |application, deploy|
 
   template "#{deploy[:deploy_to]}/shared/config/initializers/rollbar.rb" do
     source 'lumen/rollbar.rb.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+        :lumen_settings => node[:lumen_settings]
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config/initializers")
+    end
+  end
+
+  template "#{deploy[:deploy_to]}/shared/config/initializers/docusign_rest.rb" do
+    source 'lumen/docusign_rest.rb.erb'
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
