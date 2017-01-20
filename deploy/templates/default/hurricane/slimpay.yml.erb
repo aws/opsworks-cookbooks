@@ -1,0 +1,11 @@
+default: &default
+  url: <%= @hurricane_settings[:slimpay][:url] %>
+  app_id: <%= @hurricane_settings[:slimpay][:app_id] %>
+  app_secret: <%= @hurricane_settings[:slimpay][:app_secret] %>
+  creditor_reference: <%= @hurricane_settings[:slimpay][:creditor_reference] %>
+
+<%= @env %>:
+  <<: *default
+
+test:
+  <<: *default
