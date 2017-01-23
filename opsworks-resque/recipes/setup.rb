@@ -20,6 +20,10 @@ node[:deploy].each do |application, deploy|
   settings = node[:resque][application]
   # configure rails_env in case of non-rails app
   rack_env = deploy[:rails_env] || settings[:rack_env] || settings[:rails_env]
+
+  execute 'remove queues' do
+    command 'rm /etc/init/resque-*'
+  end
   
   template "/etc/init/resque-#{application}-scheduler.conf" do
     source "resque-scheduler.conf.erb"
