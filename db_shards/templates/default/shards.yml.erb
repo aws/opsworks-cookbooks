@@ -2,8 +2,8 @@ octopus:
   replicated: true
   fully_replicated: false
   environments:
-    - production
-  production:
+    - production_disabled
+  production_disabled:
     <% @dbs.each do |name, attributes| %>
     <%= name %>:
       <% attributes.each do |attr, value| %>
