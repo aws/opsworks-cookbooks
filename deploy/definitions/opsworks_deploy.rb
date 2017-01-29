@@ -5,9 +5,13 @@ define :opsworks_deploy do
   directory "#{deploy[:deploy_to]}" do
     group deploy[:group]
     owner deploy[:user]
-    mode "0775"
+    mode "0770"
     action :create
     recursive true
+  end
+
+  directory "#{deploy[:deploy_to]}/releases" do
+    mode "0770"
   end
 
   if deploy[:scm]
