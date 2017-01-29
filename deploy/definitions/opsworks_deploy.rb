@@ -69,9 +69,9 @@ define :opsworks_deploy do
       user deploy[:user]
       group deploy[:group]
       revision deploy[:scm][:revision]
+      environment deploy[:environment].to_hash
       migrate deploy[:migrate]
       migration_command deploy[:migrate_command]
-      environment deploy[:environment].to_hash
       purge_before_symlink(deploy[:purge_before_symlink]) unless deploy[:purge_before_symlink].nil?
       create_dirs_before_symlink(deploy[:create_dirs_before_symlink])
       symlink_before_migrate(deploy[:symlink_before_migrate])
