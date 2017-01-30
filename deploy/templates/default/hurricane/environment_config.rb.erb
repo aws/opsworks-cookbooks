@@ -68,18 +68,18 @@ Rails.application.configure do
   <% if @hurricane_settings[:cache].present? %>
     <% case @hurricane_settings[:cache][:adapter] %>
       <% when 'redis' %>
-        config.cache_store = :redis_store, {
-            host: "<%= @hurricane_settings[:cache][:host] %>",
-            port: <%= @hurricane_settings[:cache][:port] %>,
-            db: <%= @hurricane_settings[:cache][:db] %>,
-            namespace: "<%= @hurricane_settings[:cache][:namespace] %>",
-            expires_in: <%= @hurricane_settings[:cache][:expires_in] %>
-        }
+  config.cache_store = :redis_store, {
+      host: "<%= @hurricane_settings[:cache][:options][:host] %>",
+      port: <%= @hurricane_settings[:cache][:options][:port] %>,
+      db: <%= @hurricane_settings[:cache][:options][:db] %>,
+      namespace: "<%= @hurricane_settings[:cache][:options][:namespace] %>",
+      expires_in: <%= @hurricane_settings[:cache][:options][:expires_in] %>
+  }
       <% when 'memory' %>
-        config.cache_store = :memory_store, {
-            namespace: "<%= @hurricane_settings[:cache][:namespace] %>",
-            expires_in: <%= @hurricane_settings[:cache][:expires_in] %>
-        }
+  config.cache_store = :memory_store, {
+      namespace: "<%= @hurricane_settings[:cache][:options][:namespace] %>",
+      expires_in: <%= @hurricane_settings[:cache][:options][:expires_in] %>
+  }
     <% end %>
   <% end %>
 

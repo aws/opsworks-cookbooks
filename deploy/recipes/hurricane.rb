@@ -43,7 +43,7 @@ node[:deploy].each do |application, deploy|
   end
 
   template "#{deploy[:deploy_to]}/shared/config/environments/#{deploy[:env]}.rb" do
-    source "hurricane/environment.rb.erb"
+    source "hurricane/environment_config.rb.erb"
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
