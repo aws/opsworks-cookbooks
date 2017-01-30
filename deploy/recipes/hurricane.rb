@@ -37,6 +37,26 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+
+  execute "create environments directory in shared/config" do
+    command "mkdir -p #{deploy[:deploy_to]}/shared/config/environments/"
+  end
+
+  template "#{deploy[:deploy_to]}/shared/config/environments/#{deploy[:env]}.rb" do
+    source "hurricane/environment.rb.erb"
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+        :hurricane_settings => node[:hurricane_settings]
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config/environments")
+    end
+  end
+
+
+
   execute "create initializiers directory in shared/config" do
     command "mkdir -p #{deploy[:deploy_to]}/shared/config/initializers/"
   end
