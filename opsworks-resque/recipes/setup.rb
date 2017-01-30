@@ -14,7 +14,8 @@ node[:deploy].each do |application, deploy|
   execute 'remove queues' do
     # a conf do resque ej obrigatoria, logo ele so existe se ela existir
     resque_conf = "/etc/init/resque-#{application}.conf"
-    command 'rm /etc/init/resque-*' only_if { File.exists?(resque_conf) }
+    only_if { File.exists?(resque_conf) }
+    command 'rm /etc/init/resque-*'
   end
 
   template "/etc/init/resque-#{application}.conf" do
