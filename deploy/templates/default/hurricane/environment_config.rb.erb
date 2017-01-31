@@ -68,11 +68,7 @@ Rails.application.configure do
   <% if @hurricane_settings[:cache].present? %>
     <% case @hurricane_settings[:cache][:adapter] %>
       <% when 'redis' %>
-  config.cache_store = :redis_store, {
-      host: "<%= @hurricane_settings[:cache][:options][:host] %>",
-      port: <%= @hurricane_settings[:cache][:options][:port] %>,
-      db: <%= @hurricane_settings[:cache][:options][:db] %>,
-      namespace: "<%= @hurricane_settings[:cache][:options][:namespace] %>",
+  config.cache_store = :redis_store, <%= @hurricane_settings[:cache][:url] %>, {
       expires_in: <%= @hurricane_settings[:cache][:options][:expires_in] %>
   }
       <% when 'memory' %>
