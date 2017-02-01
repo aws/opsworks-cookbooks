@@ -37,6 +37,7 @@ server {
   <% unless node[:redirect_to_https_skip].nil? %>
   location <%= node[:redirect_to_https_skip] %> {
     try_files $uri/index.html $uri/index.htm @unicorn;
+  }
   <% end %>
 
   location @unicorn {
