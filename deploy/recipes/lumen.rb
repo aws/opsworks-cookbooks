@@ -40,7 +40,27 @@ node[:deploy].each do |application, deploy|
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
     end
-  end   
+  end
+
+  execute "create environments directory in shared/config" do
+    command "mkdir -p #{deploy[:deploy_to]}/shared/config/environments/"
+  end
+
+  template "#{deploy[:deploy_to]}/shared/config/environments/#{deploy[:env]}.rb" do
+    source 'lumen/environment_config.rb.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+        :lumen_settings => node[:lumen_settings]
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config/environments")
+    end
+  end
+
+
+
 
   execute "create initializiers directory in shared/config" do
     command "mkdir -p #{deploy[:deploy_to]}/shared/config/initializers/"
