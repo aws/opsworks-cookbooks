@@ -6,14 +6,6 @@ server {
   listen 80;
   server_name <%= @application[:domains].join(" ") %> <%= node[:hostname] %>;
 
-
-  <% unless node[:redirect_to_https].nil? %>
-  # Request is not coming from ELB
-  if ($http_x_forwarded_proto != "https") {
-    rewrite ^(.*)$ <%= node[:redirect_to_https] %> permanent;
-  }
-  <% end %>
-
   # Needed for docusign callback
   client_max_body_size 50M;
 
@@ -35,7 +27,17 @@ server {
 
   location / {
     try_files $uri/index.html $uri/index.htm @unicorn;
+    <% unless node[:redirect_to_https].nil? %>
+    if ($http_x_forwarded_proto != "https") {
+      rewrite ^(.*)$ <%= node[:redirect_to_https] %> permanent;
+    }
+    <% end %>
   }
+
+  <% unless node[:redirect_to_https_skip].nil? %>
+  location <%= node[:redirect_to_https_skip] %> {
+    try_files $uri/index.html $uri/index.htm @unicorn;
+  <% end %>
 
   location @unicorn {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
