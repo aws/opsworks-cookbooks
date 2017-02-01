@@ -81,7 +81,7 @@ Rails.application.configure do
   config.hurricane_api = { host: '<%= @lumen_settings[:hurricane_api][:host] %>',  port: <%= @lumen_settings[:hurricane_api][:port] %>, class_name: :hurricane_http_client}
 
   # Docusign Callback Url
-  config.lumen_url = <%= @lumen_settings[:docusign][:callback_url] %>
+  config.lumen_url = '<%= @lumen_settings[:docusign][:callback_url] %>'
 
   config.mailer = Rails.application.config_for(:mailer)
   config.aws = Rails.application.config_for(:aws)
