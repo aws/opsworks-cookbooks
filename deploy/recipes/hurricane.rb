@@ -3,13 +3,6 @@ Chef::Log.level = :debug
 
 node[:deploy].each do |application, deploy|
   
-  execute "updating crontab" do
-    user deploy[:user]
-    cwd "#{deploy[:deploy_to]}/current"
-    command "bundle exec whenever -w -s environment=#{deploy[:env]}"
-    action :run
-  end
-
   template "#{deploy[:deploy_to]}/shared/config/secrets.yml" do
     source 'hurricane/secrets.yml.erb'
     mode '0660'
