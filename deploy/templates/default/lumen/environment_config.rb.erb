@@ -86,4 +86,13 @@ Rails.application.configure do
   config.mailer = Rails.application.config_for(:mailer)
   config.aws = Rails.application.config_for(:aws)
 
+  # ActiveJob Configuration
+  <% case @lumen_settings[:active_job][:adapter] %>
+    <% when 'inline' %>
+  config.active_job.queue_adapter = :inline
+    <% when 'resque' %>
+  config.active_job.queue_adapter = :resque
+  <% end %>
+
+
 end

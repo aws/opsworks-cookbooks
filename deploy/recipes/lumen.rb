@@ -3,6 +3,23 @@ Chef::Log.level = :debug
 
 node[:deploy].each do |application, deploy|
 
+
+  active_job_with_resque = (node[:lumen_settings][:active_job].present? && node[:lumen_settings][:active_job][:adapter] == 'resque')
+
+  template "#{deploy[:deploy_to]}/shared/config/resque.yml" do
+    source 'lumen/resque.yml.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+        :lumen_settings => node[:lumen_settings],
+        :lumen_env => deploy[:env]
+    )
+    only_if do
+      active_job_with_resque && File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
+
   template "#{deploy[:deploy_to]}/shared/config/secrets.yml" do
     source 'lumen/secrets.yml.erb'
     mode '0660'
@@ -58,9 +75,6 @@ node[:deploy].each do |application, deploy|
       File.exists?("#{deploy[:deploy_to]}/shared/config/environments")
     end
   end
-
-
-
 
   execute "create initializiers directory in shared/config" do
     command "mkdir -p #{deploy[:deploy_to]}/shared/config/initializers/"
