@@ -127,15 +127,32 @@ node[:deploy].each do |application, deploy|
   rails_env = deploy[:rails_env]
   current_path = deploy[:current_path]
 
-  Chef::Log.info("Precompiling Rails assets with environment #{rails_env}")
+  if active_job_with_resque
 
-  execute 'stop queue' do
-    cwd current_path
-    user 'deploy'
-    command 'pkill -f qc:work'
-    ignore_failure true
-    environment 'RAILS_ENV' => rails_env
+    execute 'stop_resque' do
+      Chef::Log.info("Stopping Resque....")
+      cwd current_path
+      user 'deploy'
+      command 'bundle exec rake resque:stop'
+      environment 'RAILS_ENV' => rails_env
+      ignore_failure true
+      notifies :run, 'execute[start_resque]', :immediately
+    end
+
+    execute 'start_resque' do
+      Chef::Log.info("Starting Resque....")
+      cwd current_path
+      user 'deploy'
+      command 'nohup bundle exec rake resque:work &'
+      environment 'RAILS_ENV' => rails_env
+      ignore_failure false
+      action :nothing
+    end
+
   end
+
+
+  Chef::Log.info("Precompiling Rails assets with environment #{rails_env}")
 
   execute 'rake assets:precompile' do
     cwd current_path
@@ -153,12 +170,5 @@ node[:deploy].each do |application, deploy|
       File.exists?(deploy[:current_path])
     end
   end
-
-  execute 'start queue' do
-    cwd current_path
-    user 'deploy'
-    command 'nohup bundle exec rake qc:work &'
-    environment 'RAILS_ENV' => rails_env
-  end  
 
 end
