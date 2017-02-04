@@ -8,8 +8,13 @@ node[:deploy].each do |application, deploy|
 
   active_job_with_resque = (node[:lumen_settings][:active_job].present? && node[:lumen_settings][:active_job][:adapter] == 'resque')
 
+  execute "create routes directory in shared/config" do
+    command "mkdir -p #{deploy[:deploy_to]}/shared/config/routes/"
+  end
+
+
   template "#{deploy[:deploy_to]}/shared/config/resque.yml" do
-    source 'lumen/resque.yml.erb'
+    source 'lumen/config/resque.yml.erb'
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
@@ -22,8 +27,19 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  template "#{deploy[:deploy_to]}/shared/config/routes/resque_server.erb" do
+    source 'lumen/config/routes/resque_server.rb.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(:lumen_settings => node[:lumen_settings])
+    only_if do
+      active_job_with_resque && File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
+
   template "#{deploy[:deploy_to]}/shared/config/secrets.yml" do
-    source 'lumen/secrets.yml.erb'
+    source 'lumen/config/secrets.yml.erb'
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
@@ -34,7 +50,7 @@ node[:deploy].each do |application, deploy|
   end
 
   template "#{deploy[:deploy_to]}/shared/config/database.yml" do
-    source 'lumen/database.yml.erb'
+    source 'lumen/config/database.yml.erb'
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
@@ -45,7 +61,7 @@ node[:deploy].each do |application, deploy|
   end
 
   template "#{deploy[:deploy_to]}/shared/config/mailer.yml" do
-    source 'lumen/mailer.yml.erb'
+    source 'lumen/config/mailer.yml.erb'
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
@@ -56,7 +72,7 @@ node[:deploy].each do |application, deploy|
   end
 
   template "#{deploy[:deploy_to]}/shared/config/aws.yml" do
-    source 'lumen/aws.yml.erb'
+    source 'lumen/config/aws.yml.erb'
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
@@ -71,7 +87,7 @@ node[:deploy].each do |application, deploy|
   end
 
   template "#{deploy[:deploy_to]}/shared/config/environments/#{rails_env}.rb" do
-    source 'lumen/environment_config.rb.erb'
+    source 'lumen/config/environments/environment_config.rb.erb'
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
@@ -86,7 +102,7 @@ node[:deploy].each do |application, deploy|
   end
 
   template "#{deploy[:deploy_to]}/shared/config/initializers/rollbar.rb" do
-    source 'lumen/rollbar.rb.erb'
+    source 'lumen/config/initializers/rollbar.rb.erb'
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
@@ -97,7 +113,7 @@ node[:deploy].each do |application, deploy|
   end
 
   template "#{deploy[:deploy_to]}/shared/config/initializers/docusign_rest.rb" do
-    source 'lumen/docusign_rest.rb.erb'
+    source 'lumen/config/initializers/docusign_rest.rb.erb'
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
