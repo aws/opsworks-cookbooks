@@ -1,0 +1,11 @@
+<%= @lumen_env %>:
+  adapter: sqlite3
+  pool: 5
+  timeout: 5000
+  database: db/<%= @lumen_env %>.sqlite3
+
+test:
+  adapter: sqlite3
+  pool: 5
+  timeout: 5000
+  database: db/test.sqlite3

@@ -27,9 +27,18 @@ node[:deploy].each do |application, deploy|
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
-    variables(
-        :lumen_settings => node[:lumen_settings]
-    )
+    variables(:lumen_settings => node[:lumen_settings])
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
+
+  template "#{deploy[:deploy_to]}/shared/config/database.yml" do
+    source 'lumen/database.yml.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(:lumen_env => rails_env)
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
     end
@@ -40,9 +49,7 @@ node[:deploy].each do |application, deploy|
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
-    variables(
-        :lumen_settings => node[:lumen_settings]
-    )
+    variables(:lumen_settings => node[:lumen_settings])
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
     end
@@ -53,9 +60,7 @@ node[:deploy].each do |application, deploy|
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
-    variables(
-        :lumen_settings => node[:lumen_settings]
-    )
+    variables(:lumen_settings => node[:lumen_settings])
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
     end
@@ -70,9 +75,7 @@ node[:deploy].each do |application, deploy|
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
-    variables(
-        :lumen_settings => node[:lumen_settings]
-    )
+    variables(:lumen_settings => node[:lumen_settings])
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config/environments")
     end
@@ -87,9 +90,7 @@ node[:deploy].each do |application, deploy|
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
-    variables(
-        :lumen_settings => node[:lumen_settings]
-    )
+    variables(:lumen_settings => node[:lumen_settings])
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config/initializers")
     end
@@ -100,9 +101,7 @@ node[:deploy].each do |application, deploy|
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
-    variables(
-        :lumen_settings => node[:lumen_settings]
-    )
+    variables(:lumen_settings => node[:lumen_settings])
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config/initializers")
     end
