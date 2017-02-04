@@ -65,7 +65,7 @@ node[:deploy].each do |application, deploy|
     command "mkdir -p #{deploy[:deploy_to]}/shared/config/environments/"
   end
 
-  template "#{deploy[:deploy_to]}/shared/config/environments/#{deploy[:env]}.rb" do
+  template "#{deploy[:deploy_to]}/shared/config/environments/#{rails_env}.rb" do
     source 'lumen/environment_config.rb.erb'
     mode '0660'
     owner deploy[:user]

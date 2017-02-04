@@ -2,7 +2,11 @@ include_recipe 'deploy'
 Chef::Log.level = :debug
 
 node[:deploy].each do |application, deploy|
-  
+
+  rails_env = deploy[:rails_env]
+  current_path = deploy[:current_path]
+
+
   template "#{deploy[:deploy_to]}/shared/config/secrets.yml" do
     source 'hurricane/secrets.yml.erb'
     mode '0660'
@@ -23,7 +27,7 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     variables(
         :hurricane_settings => node[:hurricane_settings],
-        :env => deploy[:env]
+        :env => rails_env
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
@@ -35,7 +39,7 @@ node[:deploy].each do |application, deploy|
     command "mkdir -p #{deploy[:deploy_to]}/shared/config/environments/"
   end
 
-  template "#{deploy[:deploy_to]}/shared/config/environments/#{deploy[:env]}.rb" do
+  template "#{deploy[:deploy_to]}/shared/config/environments/#{rails_env}.rb" do
     source "hurricane/environment_config.rb.erb"
     mode '0660'
     owner deploy[:user]
