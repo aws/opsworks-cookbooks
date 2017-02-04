@@ -131,9 +131,9 @@ if active_job_with_resque
       Chef::Log.info("Stopping Resque....")
       cwd current_path
       user 'deploy'
-      command 'bin/rake resque:stop'
+      command 'bin/bundle exec rake resque:stop'
       environment 'RAILS_ENV' => rails_env
-      ignore_failure false
+      ignore_failure true
       notifies :run, 'execute[start_resque]', :immediately
     end
 
@@ -141,7 +141,7 @@ if active_job_with_resque
       Chef::Log.info("Starting Resque....")
       cwd current_path
       user deploy[:user]
-      command 'nohup bin/rake resque:work &'
+      command 'nohup bundle exec rake resque:work &'
       environment 'RAILS_ENV' => rails_env
       ignore_failure false
       action :nothing
