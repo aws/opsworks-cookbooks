@@ -3,6 +3,8 @@ Chef::Log.level = :debug
 
 node[:deploy].each do |application, deploy|
 
+  rails_env = deploy[:rails_env]
+  current_path = deploy[:current_path]
 
   active_job_with_resque = (node[:lumen_settings][:active_job].present? && node[:lumen_settings][:active_job][:adapter] == 'resque')
 
@@ -13,7 +15,7 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     variables(
         :lumen_settings => node[:lumen_settings],
-        :lumen_env => deploy[:env]
+        :lumen_env => rails_env
     )
     only_if do
       active_job_with_resque && File.exists?("#{deploy[:deploy_to]}/shared/config")
@@ -117,23 +119,20 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     variables(
         :lumen_settings => node[:lumen_settings],
-        :lumen_env => deploy[:env]
+        :lumen_env => rails_env
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/app/views/shared")
     end
   end
 
-  rails_env = deploy[:rails_env]
-  current_path = deploy[:current_path]
-
-  if active_job_with_resque
+if active_job_with_resque
 
     execute 'stop_resque' do
       Chef::Log.info("Stopping Resque....")
       cwd current_path
       user 'deploy'
-      command 'bundle exec rake resque:stop'
+      command 'bin/bundle exec rake resque:stop'
       environment 'RAILS_ENV' => rails_env
       ignore_failure true
       notifies :run, 'execute[start_resque]', :immediately
@@ -142,8 +141,8 @@ node[:deploy].each do |application, deploy|
     execute 'start_resque' do
       Chef::Log.info("Starting Resque....")
       cwd current_path
-      user 'deploy'
-      command 'nohup bundle exec rake resque:work &'
+      user deploy[:user]
+      command 'nohup bin/bundle exec rake resque:work &'
       environment 'RAILS_ENV' => rails_env
       ignore_failure false
       action :nothing
@@ -156,7 +155,7 @@ node[:deploy].each do |application, deploy|
 
   execute 'rake assets:precompile' do
     cwd current_path
-    user 'deploy'
+    user deploy[:user]
     command 'bundle exec rake assets:precompile'
     environment 'RAILS_ENV' => rails_env
   end
