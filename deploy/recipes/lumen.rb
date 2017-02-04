@@ -27,7 +27,7 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-  template "#{deploy[:deploy_to]}/shared/config/routes/resque_server.erb" do
+  template "#{deploy[:deploy_to]}/shared/config/routes/resque_server.rb" do
     source 'lumen/config/routes/resque_server.rb.erb'
     mode '0660'
     owner deploy[:user]
