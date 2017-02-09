@@ -1,8 +1,9 @@
 #!upstart
 description "Resque scheduler"
-respawn
-start on starting resque-<%= @application %>
-stop on stopping resque-<%= @application %>
+
+start on runlevel [2345]
+
+stop on runlevel [016]
 
 env RACK_ENV=<%= @rack_env %>
 env TERM_CHILD=1
