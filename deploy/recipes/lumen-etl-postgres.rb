@@ -4,7 +4,7 @@ Chef::Log.level = :debug
 node[:deploy].each do |application, deploy|
 
   template "/etc/yum.repos.d/pgdg-96-ami201503.repo" do
-    source 'lumen-etl/pgdg-96-ami201503.repo'
+    source 'lumen_etl/pgdg-96-ami201503.repo'
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
