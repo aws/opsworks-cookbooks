@@ -12,6 +12,7 @@ node[:deploy].each do |application, deploy|
     end
 
     yum_package 'postgresql96'
+    yum_package 'postgresql96-devel'
   end
 
 
