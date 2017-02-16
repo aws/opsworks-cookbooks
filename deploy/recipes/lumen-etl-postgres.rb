@@ -10,8 +10,10 @@ node[:deploy].each do |application, deploy|
       owner deploy[:user]
       group deploy[:group]
     end
+
+    yum_package 'postgresql96'
   end
 
-  yum_package 'postgresql96'
+
 
 end
