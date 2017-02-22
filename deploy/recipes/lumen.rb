@@ -12,10 +12,12 @@ node[:deploy].each do |application, deploy|
     command "mkdir -p #{deploy[:deploy_to]}/shared/config/routes/"
   end
 
-  execute "create routes directory in shared/db" do
-    command "mkdir -p #{deploy[:deploy_to]}/shared/db/"
+  directory "#{deploy[:deploy_to]}/shared/db" do
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    action :create
   end
-
 
   template "#{deploy[:deploy_to]}/shared/config/resque.yml" do
     source 'lumen/config/resque.yml.erb'
