@@ -12,6 +12,10 @@ node[:deploy].each do |application, deploy|
     command "mkdir -p #{deploy[:deploy_to]}/shared/config/routes/"
   end
 
+  execute "create routes directory in shared/db" do
+    command "mkdir -p #{deploy[:deploy_to]}/shared/db/"
+  end
+
 
   template "#{deploy[:deploy_to]}/shared/config/resque.yml" do
     source 'lumen/config/resque.yml.erb'
@@ -54,7 +58,7 @@ node[:deploy].each do |application, deploy|
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
-    variables(:lumen_env => rails_env)
+    variables(lumen_env: rails_env, db_url: File.join(deploy[:deploy_to], 'shared', 'db', "#{rails_env}.sqlite3"))
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
     end

@@ -2,7 +2,7 @@
   adapter: sqlite3
   pool: 5
   timeout: 5000
-  database: db/<%= @lumen_env %>.sqlite3
+  database: <%= @db_url %>
 
 test:
   adapter: sqlite3
