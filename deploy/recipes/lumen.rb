@@ -13,7 +13,7 @@ node[:deploy].each do |application, deploy|
   end
 
   directory "#{deploy[:deploy_to]}/shared/db" do
-    mode '0660'
+    mode '0770'
     owner deploy[:user]
     group deploy[:group]
     action :create
