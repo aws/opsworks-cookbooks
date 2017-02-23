@@ -8,8 +8,20 @@ node[:deploy].each do |application, deploy|
 
   active_job_with_resque = (node[:lumen_settings][:active_job].present? && node[:lumen_settings][:active_job][:adapter] == 'resque')
 
-  execute "create routes directory in shared/config" do
-    command "mkdir -p #{deploy[:deploy_to]}/shared/config/routes/"
+  directory "#{deploy[:deploy_to]}/shared/config" do
+    mode '0770'
+    owner deploy[:user]
+    group deploy[:group]
+    action :create
+    recursive true
+  end
+
+  directory "#{deploy[:deploy_to]}/shared/app" do
+    mode '0770'
+    owner deploy[:user]
+    group deploy[:group]
+    action :create
+    recursive true
   end
 
   directory "#{deploy[:deploy_to]}/shared/db" do
@@ -17,6 +29,39 @@ node[:deploy].each do |application, deploy|
     owner deploy[:user]
     group deploy[:group]
     action :create
+    recursive true
+  end
+
+  directory "#{deploy[:deploy_to]}/shared/config/routes" do
+    mode '0770'
+    owner deploy[:user]
+    group deploy[:group]
+    action :create
+    recursive true
+  end
+
+  directory "#{deploy[:deploy_to]}/shared/config/environments" do
+    mode '0770'
+    owner deploy[:user]
+    group deploy[:group]
+    action :create
+    recursive true
+  end
+
+  directory "#{deploy[:deploy_to]}/shared/config/initializers" do
+    mode '0770'
+    owner deploy[:user]
+    group deploy[:group]
+    action :create
+    recursive true
+  end
+
+  directory "#{deploy[:deploy_to]}/shared/app/views/shared" do
+    mode '0770'
+    owner deploy[:user]
+    group deploy[:group]
+    action :create
+    recursive true
   end
 
   template "#{deploy[:deploy_to]}/shared/config/resque.yml" do
@@ -88,9 +133,8 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-  execute "create environments directory in shared/config" do
-    command "mkdir -p #{deploy[:deploy_to]}/shared/config/environments/"
-  end
+
+
 
   template "#{deploy[:deploy_to]}/shared/config/environments/#{rails_env}.rb" do
     source 'lumen/config/environments/environment_config.rb.erb'
@@ -101,10 +145,6 @@ node[:deploy].each do |application, deploy|
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config/environments")
     end
-  end
-
-  execute "create initializiers directory in shared/config" do
-    command "mkdir -p #{deploy[:deploy_to]}/shared/config/initializers/"
   end
 
   template "#{deploy[:deploy_to]}/shared/config/initializers/rollbar.rb" do
@@ -129,11 +169,7 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-  execute "create initializiers directory in app/views/shared" do
-    command "mkdir -p #{deploy[:deploy_to]}/shared/app/views/shared/"
-  end
-
-  template "#{deploy[:deploy_to]}/shared/app/views/shared/_rollbar.js.erb" do
+template "#{deploy[:deploy_to]}/shared/app/views/shared/_rollbar.js.erb" do
     source 'lumen/_rollbar.js.erb'
     mode '0660'
     owner deploy[:user]
