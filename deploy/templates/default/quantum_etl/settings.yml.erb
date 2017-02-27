@@ -23,3 +23,6 @@ default: &default
     user: <%= @etl_settings[:quantum][:username] %>
     password: <%= @etl_settings[:quantum][:password] %>
     dbname: <%= @etl_settings[:quantum][:database] %>
+
+  hurricane:
+    export_quantum_url: <%= @etl_settings[:hurricane][:export_quantum_url] %>
