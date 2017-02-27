@@ -78,6 +78,20 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  template "#{deploy[:deploy_to]}/shared/config/docraptor.yml" do
+    source 'lumen/config/docraptor.yml.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+        :lumen_settings => node[:lumen_settings],
+        :lumen_env => rails_env
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
+
   template "#{deploy[:deploy_to]}/shared/config/routes/resque_server.rb" do
     source 'lumen/config/routes/resque_server.rb.erb'
     mode '0660'
