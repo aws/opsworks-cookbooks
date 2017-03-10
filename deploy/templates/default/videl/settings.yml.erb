@@ -4,7 +4,11 @@ default: &default
 
 <%= @videl_env %>:
   <<: *default
-  policy_info_url: <%= @videl_settings[:hurricane][:host] %>
+  end_points:
+    - url: <%= @videl_settings[:hurricane][:host] %>
+      origin: 'H'
+    - url: <%= @videl_settings[:hurricane_api][:host] %>
+      origin: 'G'
   rollbar:
     token: <%= @videl_settings[:rollbar][:token] %>
     enabled: <%= @videl_settings[:rollbar][:enabled] %>
