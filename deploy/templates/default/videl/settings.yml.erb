@@ -5,10 +5,10 @@ default: &default
 <%= @videl_env %>:
   <<: *default
   end_points:
-    - url: <%= @videl_settings[:hurricane][:host] %>
-      origin: 'H'
-    - url: <%= @videl_settings[:hurricane_api][:host] %>
-      origin: 'G'
+    <% @videl_settings[:hurricane].each do |end_point| %>
+    - url: <%= end_point[:url] %>
+      origin: <%= end_point[:origin] %>
+    <% end %>
   rollbar:
     token: <%= @videl_settings[:rollbar][:token] %>
     enabled: <%= @videl_settings[:rollbar][:enabled] %>
