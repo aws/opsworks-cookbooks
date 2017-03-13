@@ -2,5 +2,5 @@
 input="/etc/truncate_logfiles.conf"
 while IFS='' read -r  line 
 do
-	echo "truncate -c -s 0 $line" > /tmp/debug_rotate.tmp
+	echo "truncate -c -s 0 $line" >> /tmp/debug_rotate.tmp
 done < "$input"
