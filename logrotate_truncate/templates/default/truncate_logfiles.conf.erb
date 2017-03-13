@@ -1,4 +1,8 @@
-/srv/www/<%= @app_name %>/shared/log/*
+<% 
+ @apps.each do |app| 
+%> 
+/srv/www/<%= app["name"] %>/shared/log/*
+<% end %>
 /var/log/btmp
 /var/log/*.log*
 /var/log/apache2/*

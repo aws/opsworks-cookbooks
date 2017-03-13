@@ -4,12 +4,12 @@
 #
 # Copyright:: 2017, The Authors, All Rights Reserved.
 
-app_bag = node["opsworks"]["applications"][0]["name"]
+app_list = node["opsworks"]["applications"]
 
 template '/etc/truncate_logfiles.conf' do
 	source 'truncate_logfiles.conf.erb'
 	variables({
-		app_name: app_bag
+		apps: app_list
 	})
 end
 
