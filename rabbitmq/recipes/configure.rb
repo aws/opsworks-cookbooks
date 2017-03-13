@@ -137,7 +137,7 @@ service node['rabbitmq']['service_name'] do
 end
 
 node.set['rabbitmq']['policies']['ha-all']['pattern'] = ''
-node.set['rabbitmq']['policies']['ha-all']['params'] = { 'ha-mode' => 'all' }
+node.set['rabbitmq']['policies']['ha-all']['params'] = { 'ha-mode' => 'all', 'dead-letter-exchange' => 'dead_letter_exchange' }
 node.set['rabbitmq']['policies']['ha-all']['priority'] = 0
 
 # # Setting Policies
