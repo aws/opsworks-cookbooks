@@ -4,7 +4,7 @@
 #
 # Copyright:: 2017, The Authors, All Rights Reserved.
 
-app_bag = search(:aws_opsworks_app).first
+app_bag = search("aws_opsworks_app").first
 
 template '/etc/truncate_logfiles.conf' do
 	source 'truncate_logfiles.conf.erb'
