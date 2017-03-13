@@ -15,7 +15,7 @@ template '/etc/truncate_logfiles.conf' do
 	})
 end
 
-template '/etc/truncate_logfile.sh' do
+template '/usr/bin/truncate_logfile.sh' do
 	source 'truncate_logfile.sh.erb'
 	owner 'root'
 	group 'root'
