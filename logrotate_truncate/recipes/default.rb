@@ -4,12 +4,12 @@
 #
 # Copyright:: 2017, The Authors, All Rights Reserved.
 
-app_bag = search("aws_opsworks_app").first
+app_bag = node["opsworks"]["applications"]["0"]["name"]
 
 template '/etc/truncate_logfiles.conf' do
 	source 'truncate_logfiles.conf.erb'
 	variables({
-		app: app_bag
+		app_name: app_bag
 	})
 end
 
