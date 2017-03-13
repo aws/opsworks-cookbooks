@@ -3,6 +3,12 @@
 %> 
 /srv/www/<%= app["name"] %>/shared/log/*
 <% end %>
+
+<%
+ @logpaths.each do |p|
+%>
+<%= p %>
+<% end %>
 /var/log/btmp
 /var/log/*.log*
 /var/log/apache2/*

@@ -5,11 +5,13 @@
 # Copyright:: 2017, The Authors, All Rights Reserved.
 
 app_list = node["opsworks"]["applications"]
+path_list = node["logtruncate"]["paths"]
 
 template '/etc/truncate_logfiles.conf' do
 	source 'truncate_logfiles.conf.erb'
 	variables({
-		apps: app_list
+		apps: app_list,
+		logpaths: path_list
 	})
 end
 
