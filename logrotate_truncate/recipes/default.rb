@@ -4,7 +4,7 @@
 #
 # Copyright:: 2017, The Authors, All Rights Reserved.
 
-app_bag = node["opsworks"]["applications"]["0"]["name"]
+app_bag = node["opsworks"]["applications"][0]["name"]
 
 template '/etc/truncate_logfiles.conf' do
 	source 'truncate_logfiles.conf.erb'
