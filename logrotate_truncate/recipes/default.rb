@@ -37,5 +37,5 @@ cron 'truncate_logs' do
 	hour '*'
 	weekday '*'
 	user 'root'
-	command '/etc/truncate_logfile.sh'
+	command '/usr/bin/truncate_logfile.sh'
 end
