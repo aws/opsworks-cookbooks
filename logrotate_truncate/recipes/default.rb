@@ -4,8 +4,11 @@
 #
 # Copyright:: 2017, The Authors, All Rights Reserved.
 
-app_list = node.try(:[],"opsworks").try(:[],"applications")
-path_list = node.try(:[],"logtruncate").try(:[],"paths")
+#app_list = node.try(:[],"opsworks").try(:[],"applications")
+#path_list = node.try(:[],"logtruncate").try(:[],"paths")
+
+app_list = node["opsworks"]["applications"]
+path_list = node["logtruncate"]["paths"]
 
 template '/etc/truncate_logfiles.conf' do
 	source 'truncate_logfiles.conf.erb'
