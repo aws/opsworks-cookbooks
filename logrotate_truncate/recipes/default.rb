@@ -16,6 +16,12 @@ else
 	path_list = node["logtruncate"]["paths"]
 end
 
+if node["logtruncate"].nil? || node["logtruncate"]["custom_cron"].nil? then
+	custom_cron = {"minute"=>"*/10","hour"=>"*","weekday"=>"*"}
+else
+        custom_cron = node["logtruncate"]["custom_cron"]
+end
+
 template '/etc/truncate_logfiles.conf' do
 	source 'truncate_logfiles.conf.erb'
 	variables({
@@ -33,9 +39,9 @@ end
 
 cron 'truncate_logs' do
 	action :create
-	minute '*/10'
-	hour '*'
-	weekday '*'
+	minute custom_cron["minute"] 
+	hour custom_cron["hour"]
+	weekday custom_cron["weekday"]
 	user 'root'
 	command '/usr/bin/truncate_logfile.sh'
 end
