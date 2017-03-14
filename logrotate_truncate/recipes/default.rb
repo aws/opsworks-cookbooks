@@ -4,11 +4,17 @@
 #
 # Copyright:: 2017, The Authors, All Rights Reserved.
 
-#app_list = node.try(:[],"opsworks").try(:[],"applications")
-#path_list = node.try(:[],"logtruncate").try(:[],"paths")
+if node["opsworks"].nil? || node["opsworks"]["applications"].nil? then
+	app_list = []
+else
+	app_list = node["opsworks"]["applications"]
+end
 
-app_list = node["opsworks"]["applications"]
-path_list = node["logtruncate"]["paths"]
+if node["logtruncate"].nil? || node["logtruncate"]["paths"].nil? then
+	path_list = []
+else
+	path_list = node["logtruncate"]["paths"]
+end
 
 template '/etc/truncate_logfiles.conf' do
 	source 'truncate_logfiles.conf.erb'
