@@ -1,4 +1,3 @@
-
 node[:deploy].each do |application, deploy|
 
   deploy = node[:deploy][application]
@@ -43,10 +42,25 @@ node[:deploy].each do |application, deploy|
               :log_stream_name => "unicorn-out",
               :datetime_format => "%b %d %H:%M:%S"
              } 
+	
+  customlogs = node[:cloudwatch_custom_logs]
+
+  if customlogs.nil? then
+    customlogs = {}
+  end
+
+  template '/tmp/cwlogs.cfg' do
+    cookbook  'awslogs'
+    source    'cwlogs.cfg.erb'
+    owner     'root'
+    group     'root'
+    mode      0644
+    variables({logfiles: logfiles, customlogs:customlogs})
+
 end
 
-Chef::Log.info("Rasing the config file")
-template "/tmp/cwlogs.cfg" do
+  Chef::Log.info("Rasing the config file")
+  template "/tmp/cwlogs.cfg" do
   cookbook "awslogs"
   source "cwlogs.cfg.erb"
   owner "root"
@@ -54,4 +68,6 @@ template "/tmp/cwlogs.cfg" do
   mode 0644
   variables(:srvlog => node[:srvlog] )
 end
-Chef::Log.info("Config file successfully created")
+
+  Chef::Log.info("Config file successfully created")
+end

@@ -43,3 +43,16 @@ log_stream_name = <%= log[:log_stream_name] %>
 initial_position = <%= log[:initial_position] %>
 log_group_name = <%= log[:log_group_name] %>
 <% end %>
+
+<% @customlogs.each do |clog| %>
+[<%= clog[:logfile] %>]
+<% if  clog[:datetime_format] -%>
+datetime_format = <%= clog[:datetime_format] %>
+<% end -%>
+file = <%= clog[:logfile] %>
+buffer_duration = <%= clog[:buffer_duration] %>
+log_stream_name = <%= clog[:log_stream_name] %>
+initial_position = <%= clog[:initial_position] %>
+log_group_name = <%= clog[:log_group_name] %>
+<% end %>
+
