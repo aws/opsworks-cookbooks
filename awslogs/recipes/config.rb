@@ -56,7 +56,7 @@ node[:deploy].each do |application, deploy|
   owner "root"
   group "root"
   mode 0644
-  variables(:srvlog => node[:srvlog], customlogs:cloudwatch_custom_logs)
+  variables(:srvlog => node[:srvlog], cloudwatch_custom_logs:customlogs)
 end
 
   Chef::Log.info("Config file successfully created")
