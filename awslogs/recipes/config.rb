@@ -46,7 +46,7 @@ node[:deploy].each do |application, deploy|
   customlogs = node[:cloudwatch_custom_logs]
 
   if customlogs.nil? then
-    customlogs = {}
+    customlogs =[] 
   end
 
   Chef::Log.info("Rasing the config file")
@@ -56,7 +56,7 @@ node[:deploy].each do |application, deploy|
   owner "root"
   group "root"
   mode 0644
-  variables(:srvlog => node[:srvlog], :customlogs => node[:cloudwatch_custom_logs])
+  variables(:srvlog => node[:srvlog], :customlogs => customlogs)
 end
 
   Chef::Log.info("Config file successfully created")
