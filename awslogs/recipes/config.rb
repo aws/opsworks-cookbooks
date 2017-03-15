@@ -49,16 +49,6 @@ node[:deploy].each do |application, deploy|
     customlogs = {}
   end
 
-  template '/tmp/cwlogs.cfg' do
-    cookbook  'awslogs'
-    source    'cwlogs.cfg.erb'
-    owner     'root'
-    group     'root'
-    mode      0644
-    variables({logfiles: logfiles, customlogs:customlogs})
-
-end
-
   Chef::Log.info("Rasing the config file")
   template "/tmp/cwlogs.cfg" do
   cookbook "awslogs"
@@ -66,7 +56,7 @@ end
   owner "root"
   group "root"
   mode 0644
-  variables(:srvlog => node[:srvlog] )
+  variables(:srvlog => node[:srvlog], customlogs:customlogs)
 end
 
   Chef::Log.info("Config file successfully created")
