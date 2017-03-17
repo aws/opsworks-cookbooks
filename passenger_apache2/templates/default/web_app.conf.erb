@@ -7,6 +7,11 @@
   ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>
   <% end -%>
 
+  <Location "/.well-known/">
+    Require all granted
+    ProxyPass "http://10.0.0.176:9292/.well-known/"
+  </Location>
+
   <% if @params[:mounted_at] -%>
   DocumentRoot /var/www
   <%= passenger_handler -%>BaseURI <%= @params[:mounted_at] %>
