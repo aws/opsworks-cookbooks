@@ -81,15 +81,6 @@ default['rabbitmq']['tcp_listen_keepalive'] = true
 default['rabbitmq']['virtualhosts'] = []
 default['rabbitmq']['disabled_virtualhosts'] = []
 
-# users
-default['rabbitmq']['enabled_users'] =
-    [{ :name => 'guest', :password => 'guest', :rights =>
-        [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
-     },
-     { :name => 'rabbit', :password => "#{node['rabbitmq']['custom_pass']}", :tag => 'administrator', :rights =>
-         [{ :vhost => '/', :conf => '.*', :write => '.*', :read => '.*' }]
-     }]
-
 default['rabbitmq']['disabled_users'] = []
 
 # plugins
@@ -118,6 +109,21 @@ default['rabbitmq']['disabled_policies'] = []
 
 # default custom pass
 default['rabbitmq']['custom_pass'] = "rabbit"
+default['rabbitmq']['admin_username'] = "rabbit"
+
+# DLX config
+default['rabbitmq']['dead_letter_exchange_name'] = "dead_letter_exchange"
+default['rabbitmq']['dead_letter_queue_name'] = "dead_letter_queue"
+
+# users
+default['rabbitmq']['enabled_users'] =
+    [{ :name => 'guest', :password => 'guest', :rights =>
+        [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
+     },
+     { :name => "#{node['rabbitmq']['admin_username']}", :password => "#{node['rabbitmq']['custom_pass']}", :tag => 'administrator', :rights =>
+         [{ :vhost => '/', :conf => '.*', :write => '.*', :read => '.*' }]
+     }]
+
 
 # conf
 default['rabbitmq']['conf'] = {}

@@ -105,7 +105,7 @@ if node['rabbitmq']['cluster']
       [{ :name => 'guest', :password => 'guest', :rights =>
           [{ :vhost => nil, :conf => '.*', :write => '.*', :read => '.*' }]
        },
-       { :name => 'rabbit', :password => "#{node['rabbitmq']['custom_pass']}", :tag => 'administrator', :rights =>
+       { :name => "#{node['rabbitmq']['admin_username']}", :password => "#{node['rabbitmq']['custom_pass']}", :tag => 'administrator', :rights =>
            [{ :vhost => '/', :conf => '.*', :write => '.*', :read => '.*' }]
        }]
 
@@ -161,9 +161,9 @@ def exchange_exists?(name, credentials)
   end
 end
 
-queue_name = "dead_letter_queue"
-exchange_name = "dead_letter_exchange"
-credentials = "-u rabbit -p #{node['rabbitmq']['custom_pass']}"
+queue_name = node["rabbitmq"]["dead_letter_queue_name"]
+exchange_name = node["rabbitmq"]["dead_letter_exchange_name"]
+credentials = "-u #{node["rabbitmq"]["admin_username"]} -p #{node['rabbitmq']['custom_pass']}"
 Chef::Log.info("Credentials created: #{credentials}")
 
 node.set['rabbitmq']['policies']['ha-all']['pattern'] = ''
