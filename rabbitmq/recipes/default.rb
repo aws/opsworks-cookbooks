@@ -210,6 +210,13 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
     action :nothing
 end
 
+template "/usr/local/bin/rabbitmqadmin" do
+  source 'rabbitmqadmin.erb'
+  owner 'root'
+  group 'root'
+  mode 0755
+end
+
 end
 service node['rabbitmq']['service_name'] do
     action [:enable, :start]

@@ -109,12 +109,15 @@ end
 # heartbeat
 default['rabbitmq']['heartbeat'] = 80
 
-# Example HA policies
+# HA policies
 default['rabbitmq']['policies']['ha-all']['pattern'] = '^(?!amq\\.).*'
 default['rabbitmq']['policies']['ha-all']['params'] = { 'ha-mode' => 'all', 'dead-letter-exchange' => 'dead_letter_exchange'  }
 default['rabbitmq']['policies']['ha-all']['priority'] = 0
 
 default['rabbitmq']['disabled_policies'] = []
+
+# default custom pass
+default['rabbitmq']['custom_pass'] = "rabbit"
 
 # conf
 default['rabbitmq']['conf'] = {}
