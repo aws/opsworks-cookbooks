@@ -17,7 +17,4 @@ describe 'rabbitmq::policy_management' do
     expect(chef_run).to set_rabbitmq_policy('ha-all')
   end
 
-  it 'sets a rabbitmq policy ha-two' do
-    expect(chef_run).to set_rabbitmq_policy('ha-two')
-  end
 end
