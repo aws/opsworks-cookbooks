@@ -184,7 +184,7 @@ define :opsworks_deploy do
     end
   end
 
-  template "/etc/logrotate.d/opsworks_app_#{application}" do
+  template "/etc/logrotate.d/log-files" do
     backup false
     source "logrotate.erb"
     cookbook 'deploy'
