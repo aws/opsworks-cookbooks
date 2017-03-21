@@ -9,7 +9,7 @@
 
   <Location "/.well-known/">
     Require all granted
-    ProxyPass "http://10.0.0.176:9292/.well-known/"
+    ProxyPass "http://<%= @environment['CERTMANAGER_HOST'] %>/.well-known/"
   </Location>
 
   <% if @params[:mounted_at] -%>
