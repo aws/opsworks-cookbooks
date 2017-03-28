@@ -8,6 +8,8 @@ node[:deploy].each do |application, deploy|
 
   active_job_with_resque = (node[:lumen_settings][:active_job].present? && node[:lumen_settings][:active_job][:adapter] == 'resque')
 
+  yum_package 'nodejs'
+
   directory "#{deploy[:deploy_to]}/shared/config" do
     mode '0770'
     owner deploy[:user]
