@@ -14,7 +14,7 @@ server {
   access_log <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>.access.log;
   <%end %>
 
-  keepalive_timeout 5;
+  keepalive_timeout <%= node[:nginx][:keepalive_timeout] %>;
 
   root <%= @application[:absolute_document_root] %>;
 
