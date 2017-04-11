@@ -1,6 +1,6 @@
 package 'php-pgsql' do
   package_name value_for_platform_family(
-    'rhel' => 'php-pgsql',
+    'rhel' => 'php70-pgsql',
     'debian' => 'php5-pgsql'
   )
   retries 3

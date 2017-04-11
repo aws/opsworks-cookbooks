@@ -45,8 +45,8 @@ when 'rhel'
   end
 end
 
-apache_module 'php5' do
+apache_module 'php7' do
   if platform_family?('rhel')
-    filename 'libphp5.so'
+    filename 'libphp-7.0.so'
   end
 end
