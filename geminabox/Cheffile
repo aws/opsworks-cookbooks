@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+#^syntax detection
+
+site 'https://supermarket.getchef.com/api/v1'
+
+cookbook 'geminabox', :path => '.'
+cookbook 'ssl_certificate'
