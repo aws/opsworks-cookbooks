@@ -235,6 +235,8 @@ include_recipe 'apache2::mod_setenvif'
 include_recipe 'apache2::mod_log_config' if platform_family?('rhel')
 include_recipe 'apache2::mod_ssl'
 include_recipe 'apache2::mod_expires'
+include_recipe 'apache2::mod_proxy'
+include_recipe 'apache2::mod_proxy_http'
 include_recipe 'apache2::logrotate'
 
 bash 'logdir_existence_and_restart_apache2' do
