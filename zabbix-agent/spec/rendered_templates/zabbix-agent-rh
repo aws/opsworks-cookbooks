@@ -1,0 +1,116 @@
+#! /bin/sh
+
+# Do not edit
+# Created by chef zabbix-agent::service
+
+#
+# zabbix-agent service script
+#
+# chkconfig: 345 70 45
+# description: The Zabbix agent (daemon)
+# processname: zabbix-agent
+#
+
+### BEGIN INIT INFO
+# Provides: zabbix-agent
+# Required-Start: $local_fs $remote_fs
+# Required-Stop: $local_fs $remote_fs
+# Default-Start: 2 3 4 5
+# Default-Stop: S 0 1 6
+# Short-Description: Zabbix agent daemon
+# Description: Controls the Zabbix agent daemon
+### END INIT INFO
+
+# Define LSB functions.
+. /lib/lsb/init-functions
+
+NAME=zabbix_agentd
+PATH=/bin:/usr/bin:/sbin:/usr/sbin:/opt/zabbix/sbin:/opt/zabbix/bin
+DAEMON=/opt/zabbix/sbin/${NAME}
+DESC="Zabbix agent daemon"
+DIR=/var/run/zabbix
+PID=
+LOCK=/var/lock/subsys/$NAME
+USER=zabbix
+GROUP=zabbix
+
+# Exit if the package is not installed
+if [ ! -x "$DAEMON" ]; then
+{
+  echo "Couldn't find $DAEMON"
+  exit 99
+}
+fi
+
+[ -d "$DIR" ] || mkdir "$DIR"
+chown -R $USER:$GROUP "$DIR"
+
+start()
+{
+  start_daemon -p $PID -u $USER $DAEMON -c /etc/zabbix/zabbix_agentd.conf
+  RETVAL=$?
+  [ $RETVAL -eq 0 ] && touch $LOCK
+  return $RETVAL
+}
+
+stop()
+{
+  killproc -p $PID
+  RETVAL="$?"
+  [ $RETVAL -eq 0 ] && rm -f $PID $LOCK
+  return "$RETVAL"
+}
+
+case "$1" in
+  start)
+    start
+    if [ "$?" -gt 0 ];
+    then
+      log_failure_msg "$NAME did not start"
+    else 
+      log_success_msg "$NAME started"
+    fi
+    ;;
+  stop)
+    stop
+    if [ "$?" -gt 0 ];
+    then
+      log_failure_msg "$NAME did not stop"
+    else 
+      log_success_msg "$NAME stopped"
+    fi
+    ;;
+  restart)
+    stop
+    if [ "$?" -gt 0 ];
+    then
+      log_failure_msg "$NAME did not stop"
+    else
+      sleep 5
+      start
+      if [ "$?" -gt 0 ];
+      then
+        log_failure_msg "$NAME did not start"
+      else 
+        log_success_msg "$NAME restarted"
+      fi
+    fi
+    ;;
+  status)
+    PID_NUM=$(pidofproc -p $PID)
+    if [ "$?" -gt 0 ];
+    then
+      log_failure_msg "$NAME is not running"
+      exit 1
+    else 
+      log_success_msg "$NAME is running ($PID_NUM)"
+      exit 0
+    fi
+    ;;
+  *)
+    echo "Usage: $NAME {start|stop|restart|status}" >&2
+    exit 3
+    ;;
+esac
+
+exit 0

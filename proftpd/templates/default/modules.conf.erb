@@ -1,0 +1,93 @@
+#
+# This file is used to manage DSO modules and features.
+#
+
+# This is the directory where DSO modules reside
+ModulePath /usr/lib/proftpd
+
+# Allow only user root to load and unload modules, but allow everyone
+# to see which modules have been loaded
+ModuleControlsACLs insmod,rmmod allow user root
+ModuleControlsACLs lsmod allow user *
+
+<% if @node[:proftpd][:modules].include?('ctrls_admin') %>
+LoadModule mod_ctrls_admin.c
+<% end %>
+
+<% if (@node[:proftpd][:sql] == "on") %>
+# Install proftpd-mod-mysql or proftpd-mod-pgsql to use this frontend module
+LoadModule mod_sql.c
+
+# 'SQLBackend mysql' or 'SQLBackend postgres' directives are required 
+# to have SQL authorization working. You can also comment out the
+# unused module here, in alternative.
+  <% if @node[:proftpd][:modules].include?('sql_mysql') %>
+# Install proftpd-mod-mysql to use this
+LoadModule mod_sql_mysql.c
+  <% end %>
+  <% if @node[:proftpd][:modules].include?('sql_postgres') %>
+# Install proftpd-mod-pgsql to use this
+LoadModule mod_sql_postgres.c
+  <% end %>
+<% end %>
+
+<% if @node[:proftpd][:modules].include?('radius') %>
+LoadModule mod_radius.c
+<% end %>
+
+<% quotatab = @node[:proftpd][:modules].select { |m| m =~ /quotatab_./ } %>
+<% unless (quotatab.empty?) %>
+LoadModule mod_quotatab.c
+  <% if @node[:proftpd][:modules].include?('quotatab_file') %>
+LoadModule mod_quotatab_file.c
+  <% end %>
+  <% if @node[:proftpd][:modules].include?('ldap') %>
+LoadModule mod_quotatab_ldap.c
+  <% end %>
+  <% unless (@node[:proftpd][:modules].empty?) %>
+LoadModule mod_quotatab_sql.c
+  <% end %>
+  <% if @node[:proftpd][:modules].include?('radius') %>
+LoadModule mod_quotatab_radius.c
+  <% end %>
+<% end %>
+
+<% if @node[:proftpd][:modules].include?('tls') %>
+LoadModule mod_tls.c
+<% end %>
+<% if @node[:proftpd][:modules].include?('ldap') %>
+# Install proftpd-mod-ldap to use this
+LoadModule mod_ldap.c
+<% end %>
+<% if @node[:proftpd][:modules].include?('rewrite') %>
+LoadModule mod_rewrite.c
+<% end %>
+<% if @node[:proftpd][:modules].include?('ban') %>
+LoadModule mod_ban.c
+<% end %>
+<% if @node[:proftpd][:modules].include?('load') %>
+LoadModule mod_load.c
+<% end %>
+<% if @node[:proftpd][:modules].include?('dynmasq') %>
+LoadModule mod_dynmasq.c
+<% end %>
+
+<% if @node[:proftpd][:modules].include?('wrap') %>
+LoadModule mod_wrap.c
+<% end %>
+
+<% wrap2 = @node[:proftpd][:modules].select { |m| m =~ /wrap2_./ } %>
+<% unless (wrap2.empty?) %>
+LoadModule mod_wrap2.c
+  <% if @node[:proftpd][:modules].include?('wrap2_file') %>
+LoadModule mod_wrap2_file.c
+  <% end %>
+  <% if (@node[:proftpd][:sql] == "on") %>
+LoadModule mod_wrap2_sql.c
+  <% end %>
+<% end %>
+
+<% if @node[:proftpd][:modules].include?('ifsession') %>
+# keep this module the last one
+LoadModule mod_ifsession.c
+<% end %>

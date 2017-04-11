@@ -1,0 +1,17 @@
+<%= @log_dirs %>/*.log  {
+        daily
+        missingok
+        rotate <%= node[:logrotate][:rotate] %>
+        compress
+        delaycompress
+        <% if node[:logrotate][:dateformat] -%>
+        dateext
+        dateformat <%= node[:logrotate][:dateformat] %>
+        <% end -%>
+        notifempty
+        copytruncate
+        sharedscripts        
+        postrotate
+                <% @bin_dir -%>/solr restart
+        endscript
+}

@@ -1,0 +1,87 @@
+I, [2015-03-09T15:26:19.370686 #59376]  INFO -- Kitchen: -----> Starting Kitchen (v1.2.1)
+E, [2015-03-09T15:26:19.371117 #59376] ERROR -- Kitchen: ------Exception-------
+E, [2015-03-09T15:26:19.371178 #59376] ERROR -- Kitchen: Class: Kitchen::UserError
+E, [2015-03-09T15:26:19.371216 #59376] ERROR -- Kitchen: Message: Kitchen YAML file /Users/aaronb/Planet/hw/hw-cookbooks/runit/files/default/.kitchen.yml does not exist.
+E, [2015-03-09T15:26:19.371258 #59376] ERROR -- Kitchen: ------Backtrace-------
+E, [2015-03-09T15:26:19.371284 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/loader/yaml.rb:74:in `read'
+E, [2015-03-09T15:26:19.371338 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/config.rb:78:in `data'
+E, [2015-03-09T15:26:19.371362 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/config.rb:66:in `suites'
+E, [2015-03-09T15:26:19.371379 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/config.rb:90:in `filter_instances'
+E, [2015-03-09T15:26:19.371394 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/config.rb:72:in `build_instances'
+E, [2015-03-09T15:26:19.371409 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/config.rb:52:in `instances'
+E, [2015-03-09T15:26:19.371428 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/command.rb:64:in `get_filtered_instances'
+E, [2015-03-09T15:26:19.371452 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/command.rb:85:in `parse_subcommand'
+E, [2015-03-09T15:26:19.371484 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/command/action.rb:37:in `block in call'
+E, [2015-03-09T15:26:19.371500 #59376] ERROR -- Kitchen: /usr/local/rvm/rubies/ruby-2.1.2/lib/ruby/2.1.0/benchmark.rb:279:in `measure'
+E, [2015-03-09T15:26:19.371514 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/command/action.rb:36:in `call'
+E, [2015-03-09T15:26:19.371529 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/cli.rb:47:in `perform'
+E, [2015-03-09T15:26:19.371543 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/cli.rb:118:in `block (2 levels) in <class:CLI>'
+E, [2015-03-09T15:26:19.371557 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/thor-0.18.1/lib/thor/command.rb:27:in `run'
+E, [2015-03-09T15:26:19.371571 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/thor-0.18.1/lib/thor/invocation.rb:120:in `invoke_command'
+E, [2015-03-09T15:26:19.371584 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/cli.rb:233:in `invoke_task'
+E, [2015-03-09T15:26:19.371601 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/thor-0.18.1/lib/thor.rb:363:in `dispatch'
+E, [2015-03-09T15:26:19.371615 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/thor-0.18.1/lib/thor/base.rb:439:in `start'
+E, [2015-03-09T15:26:19.371629 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/bin/kitchen:13:in `block in <top (required)>'
+E, [2015-03-09T15:26:19.371643 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/errors.rb:81:in `with_friendly_errors'
+E, [2015-03-09T15:26:19.371657 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/bin/kitchen:13:in `<top (required)>'
+E, [2015-03-09T15:26:19.371671 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/bin/kitchen:23:in `load'
+E, [2015-03-09T15:26:19.371685 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/bin/kitchen:23:in `<main>'
+E, [2015-03-09T15:26:19.371699 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/bin/ruby_executable_hooks:15:in `eval'
+E, [2015-03-09T15:26:19.371713 #59376] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/bin/ruby_executable_hooks:15:in `<main>'
+E, [2015-03-09T15:26:19.371738 #59376] ERROR -- Kitchen: ----------------------
+E, [2015-03-09T15:30:57.463151 #59636] ERROR -- Kitchen: ------Exception-------
+E, [2015-03-09T15:30:57.463234 #59636] ERROR -- Kitchen: Class: Kitchen::UserError
+E, [2015-03-09T15:30:57.463257 #59636] ERROR -- Kitchen: Message: Kitchen YAML file /Users/aaronb/Planet/hw/hw-cookbooks/runit/files/default/.kitchen.yml does not exist.
+E, [2015-03-09T15:30:57.463274 #59636] ERROR -- Kitchen: ------Backtrace-------
+E, [2015-03-09T15:30:57.463289 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/loader/yaml.rb:74:in `read'
+E, [2015-03-09T15:30:57.463334 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/config.rb:78:in `data'
+E, [2015-03-09T15:30:57.463350 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/config.rb:66:in `suites'
+E, [2015-03-09T15:30:57.463364 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/config.rb:90:in `filter_instances'
+E, [2015-03-09T15:30:57.463378 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/config.rb:72:in `build_instances'
+E, [2015-03-09T15:30:57.463392 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/config.rb:52:in `instances'
+E, [2015-03-09T15:30:57.463406 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/command.rb:64:in `get_filtered_instances'
+E, [2015-03-09T15:30:57.463420 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/command.rb:85:in `parse_subcommand'
+E, [2015-03-09T15:30:57.463435 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/command/login.rb:31:in `call'
+E, [2015-03-09T15:30:57.463448 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/cli.rb:47:in `perform'
+E, [2015-03-09T15:30:57.463462 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/cli.rb:161:in `login'
+E, [2015-03-09T15:30:57.463476 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/thor-0.18.1/lib/thor/command.rb:27:in `run'
+E, [2015-03-09T15:30:57.463491 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/thor-0.18.1/lib/thor/invocation.rb:120:in `invoke_command'
+E, [2015-03-09T15:30:57.463505 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/cli.rb:233:in `invoke_task'
+E, [2015-03-09T15:30:57.463519 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/thor-0.18.1/lib/thor.rb:363:in `dispatch'
+E, [2015-03-09T15:30:57.463543 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/thor-0.18.1/lib/thor/base.rb:439:in `start'
+E, [2015-03-09T15:30:57.463568 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/bin/kitchen:13:in `block in <top (required)>'
+E, [2015-03-09T15:30:57.463590 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/errors.rb:81:in `with_friendly_errors'
+E, [2015-03-09T15:30:57.463606 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/bin/kitchen:13:in `<top (required)>'
+E, [2015-03-09T15:30:57.463620 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/bin/kitchen:23:in `load'
+E, [2015-03-09T15:30:57.463634 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/bin/kitchen:23:in `<main>'
+E, [2015-03-09T15:30:57.463647 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/bin/ruby_executable_hooks:15:in `eval'
+E, [2015-03-09T15:30:57.463702 #59636] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/bin/ruby_executable_hooks:15:in `<main>'
+E, [2015-03-09T15:30:57.463718 #59636] ERROR -- Kitchen: ----------------------
+E, [2015-03-09T15:42:23.094973 #60543] ERROR -- Kitchen: ------Exception-------
+E, [2015-03-09T15:42:23.097105 #60543] ERROR -- Kitchen: Class: Kitchen::UserError
+E, [2015-03-09T15:42:23.097656 #60543] ERROR -- Kitchen: Message: Kitchen YAML file /Users/aaronb/Planet/hw/hw-cookbooks/runit/files/default/.kitchen.yml does not exist.
+E, [2015-03-09T15:42:23.097749 #60543] ERROR -- Kitchen: ------Backtrace-------
+E, [2015-03-09T15:42:23.097829 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/loader/yaml.rb:74:in `read'
+E, [2015-03-09T15:42:23.097857 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/config.rb:78:in `data'
+E, [2015-03-09T15:42:23.097880 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/config.rb:66:in `suites'
+E, [2015-03-09T15:42:23.097904 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/config.rb:90:in `filter_instances'
+E, [2015-03-09T15:42:23.097926 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/config.rb:72:in `build_instances'
+E, [2015-03-09T15:42:23.097957 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/config.rb:52:in `instances'
+E, [2015-03-09T15:42:23.097979 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/command.rb:64:in `get_filtered_instances'
+E, [2015-03-09T15:42:23.098055 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/command.rb:85:in `parse_subcommand'
+E, [2015-03-09T15:42:23.098118 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/command/login.rb:31:in `call'
+E, [2015-03-09T15:42:23.098150 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/cli.rb:47:in `perform'
+E, [2015-03-09T15:42:23.098170 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/cli.rb:161:in `login'
+E, [2015-03-09T15:42:23.098188 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/thor-0.18.1/lib/thor/command.rb:27:in `run'
+E, [2015-03-09T15:42:23.098205 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/thor-0.18.1/lib/thor/invocation.rb:120:in `invoke_command'
+E, [2015-03-09T15:42:23.098223 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/cli.rb:233:in `invoke_task'
+E, [2015-03-09T15:42:23.098239 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/thor-0.18.1/lib/thor.rb:363:in `dispatch'
+E, [2015-03-09T15:42:23.098256 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/thor-0.18.1/lib/thor/base.rb:439:in `start'
+E, [2015-03-09T15:42:23.098273 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/bin/kitchen:13:in `block in <top (required)>'
+E, [2015-03-09T15:42:23.098294 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/lib/kitchen/errors.rb:81:in `with_friendly_errors'
+E, [2015-03-09T15:42:23.098311 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/gems/test-kitchen-1.2.1/bin/kitchen:13:in `<top (required)>'
+E, [2015-03-09T15:42:23.098328 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/bin/kitchen:23:in `load'
+E, [2015-03-09T15:42:23.098344 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/bin/kitchen:23:in `<main>'
+E, [2015-03-09T15:42:23.098404 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/bin/ruby_executable_hooks:15:in `eval'
+E, [2015-03-09T15:42:23.098422 #60543] ERROR -- Kitchen: /usr/local/rvm/gems/ruby-2.1.2/bin/ruby_executable_hooks:15:in `<main>'
+E, [2015-03-09T15:42:23.098439 #60543] ERROR -- Kitchen: ----------------------

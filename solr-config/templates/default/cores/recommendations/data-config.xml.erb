@@ -1,0 +1,33 @@
+<dataConfig>
+  <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver"
+      url="jdbc:mysql://<%= @db_url %>/<%= @db_name %>"
+      user="<%= @db_user %>"
+      password="<%= @db_password %>" 
+      autoReconnect="true"
+      name="recommendations"
+    />
+
+
+  <document>
+    <entity name="order" pk="order_id" dataSource="recommendations" transformer="RegexTransformer"
+        query="
+        select vi.dna_crc as id, btp.autor as author_t, btp.titulo as title_t, e.url as shelf_t,
+        c.capa as cover_s, 
+        group_concat(v.comprador) as buyers,
+        group_concat(concat(date_format(v.log, '%Y-%m-%d'),'#', vi.preco)) as extra_data
+        from venda_items vi  
+        join vendas_detalhes vd using (order_id) 
+        join vendas v using(order_id) 
+        join booktree_pais btp on btp.dna_crc = vi.dna_crc  
+        join estantes e on e.id=btp.estante_id 
+        left join capas c on c.dna_crc = vi.dna_crc
+        where v.status > 0 
+        and vi.dna_crc is not null 
+        and vd.log >= '2013-11-01' group by vi.dna_crc">
+
+      <field column="buyers_txt" splitBy="," sourceColName="buyers" />
+      <field column="price_and_date_ss" splitBy="," sourceColName="extra_data" />
+    </entity>
+
+  </document>
+</dataConfig>

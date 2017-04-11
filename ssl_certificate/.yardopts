@@ -1,0 +1,6 @@
+--markup markdown
+--no-private
+--exclude spec
+'*/**/*.rb'
+-
+*.md

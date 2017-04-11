@@ -1,0 +1,47 @@
+{
+  "name": "solr",
+  "description": "Installs the solr search engine.",
+  "long_description": "See README.md",
+  "maintainer": "David Radcliffe",
+  "maintainer_email": "radcliffe.david@gmail.com",
+  "license": "MIT",
+  "platforms": {
+    "amazon": ">= 0.0.0",
+    "centos": ">= 0.0.0",
+    "debian": ">= 0.0.0",
+    "redhat": ">= 0.0.0",
+    "scientific": ">= 0.0.0",
+    "ubuntu": ">= 0.0.0"
+  },
+  "dependencies": {
+    "apt": ">= 0.0.0",
+    "java": ">= 0.0.0"
+  },
+  "recommendations": {
+
+  },
+  "suggestions": {
+
+  },
+  "conflicting": {
+
+  },
+  "providing": {
+
+  },
+  "replacing": {
+
+  },
+  "attributes": {
+
+  },
+  "groupings": {
+
+  },
+  "recipes": {
+
+  },
+  "version": "0.4.0",
+  "source_url": "",
+  "issues_url": ""
+}

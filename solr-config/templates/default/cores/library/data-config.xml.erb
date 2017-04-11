@@ -1,0 +1,168 @@
+<dataConfig>
+  <dataSource type="JdbcDataSource" driver="org.postgresql.Driver"
+    name="library"
+    url="jdbc:postgresql://<%= @db_url %>:5432/<%= @db_name %>"
+    user="<%= @db_user %>"
+    password="<%= @db_password %>"
+    autoReconnect="true"
+  />
+
+  <document>
+
+    <entity name="sku" pk="id" dataSource="library"
+      query="
+            WITH max_covers AS (
+              SELECT DISTINCT ON (publication_id) c.publication_id, first_value(c.cover) OVER wnd as cover , first_value(c.number_of_uploads) OVER wnd as number_of_uploads
+              FROM covers c
+              WINDOW wnd AS (PARTITION BY publication_id ORDER BY number_of_uploads DESC)
+            )
+            SELECT
+              md5(concat(b.id, '|', p.id, '|', s.id)) as id,
+              b.is_moderated,
+              b.moderation_type,
+              b.moderate_action_at,
+              b.id book_id,
+              b.title,
+              b.synopsis,
+              md5(synopsis) md5_synopsis,
+              b.volume,
+              b.cluster_id,
+              p.id as publication_id,
+              p.isbn,
+              p.issn,
+              p.barcode,
+              p.edition,
+              p.weight,
+              p.height,
+              p.width,
+              p.depth,
+              p.year,
+              p.pages,
+              pbrs.name publisher,
+              pbrs.id publisher_id,
+              p.created_at,
+              p.updated_at,
+              p.deleted_at,
+              COALESCE(p.cover, c.cover) as cover,
+              p.isbn,
+              p.issn,
+              p.barcode,
+              s.id as sku,
+              s.seller_id as seller_id,
+              s.price,
+              (CASE WHEN s.is_new is not null and s.is_new = 't' THEN 1 ELSE 0 END) new,
+              (CASE WHEN s.is_new is not null and s.is_new = 'f' THEN 1 ELSE 0 END) used,
+              s.quantity,
+              s.created_at sku_created_at,
+              bs.name bookshelf
+            FROM books b
+            LEFT JOIN publications p ON (p.book_id = b.id and p.deleted_at is null)
+            LEFT JOIN max_covers c ON p.id = c.publication_id
+            LEFT JOIN publishers pbrs ON pbrs.id = p.publisher_id
+            LEFT JOIN bookshelves bs ON bs.id = b.bookshelf_id
+            LEFT JOIN skus s ON (s.publication_id = p.id and s.deleted_at is null and s.importing != 'true')
+            WHERE b.deleted_at is null
+            "
+            deltaImportQuery="
+            WITH max_covers AS (
+              SELECT DISTINCT ON (publication_id) c.publication_id, first_value(c.cover) OVER wnd as cover , first_value(c.number_of_uploads) OVER wnd as number_of_uploads
+              FROM covers c
+              WINDOW wnd AS (PARTITION BY publication_id ORDER BY number_of_uploads DESC)
+            )
+            SELECT
+              md5(concat(b.id, '|', p.id, '|', s.id)) as id,
+              b.is_moderated,
+              b.moderation_type,
+              b.moderate_action_at,
+              b.id::text book_id,
+              b.title,
+              b.synopsis,
+              md5(synopsis) md5_synopsis,
+              b.volume,
+              b.cluster_id,
+              p.id as publication_id,
+              p.isbn,
+              p.issn,
+              p.barcode,
+              p.edition,
+              p.weight,
+              p.height,
+              p.width,
+              p.depth,
+              p.year,
+              p.pages,
+              pbrs.name publisher,
+              pbrs.id publisher_id,
+              p.created_at,
+              p.updated_at,
+              p.deleted_at,
+              c.cover,
+              p.isbn,
+              p.issn,
+              p.barcode,
+              s.id as sku,
+              s.seller_id as seller_id,
+              s.price,
+              (CASE WHEN s.is_new is not null and s.is_new = 't' THEN 1 ELSE 0 END) new,
+              (CASE WHEN s.is_new is not null and s.is_new = 'f' THEN 1 ELSE 0 END) used,
+              s.quantity,
+              s.created_at sku_created_at,
+              bs.name bookshelf
+            FROM books b
+            LEFT JOIN publications p ON p.book_id = b.id
+            LEFT JOIN max_covers c ON p.id = c.publication_id
+            LEFT JOIN publishers pbrs ON pbrs.id = p.publisher_id
+            LEFT JOIN bookshelves bs ON bs.id = b.bookshelf_id
+            LEFT JOIN skus s ON s.publication_id = p.id
+            WHERE b.id='${dih.delta.id}' and
+                  b.deleted_at is null and
+                  p.deleted_at is null and
+                  s.deleted_at is null and
+                  s.importing != 'true'"
+     deltaQuery="SELECT b.id as id
+            FROM books b
+            LEFT JOIN publications p ON p.book_id = b.id
+            LEFT JOIN publishers pbrs ON pbrs.id = p.publisher_id
+            LEFT JOIN bookshelves bs ON bs.id = b.bookshelf_id
+            LEFT JOIN skus s ON s.publication_id = p.id
+            WHERE s.updated_at &gt; '${dih.last_index_time}' or
+                  p.updated_at &gt; '${dih.last_index_time}' or
+                  pbrs.updated_at &gt; '${dih.last_index_time}' or
+                  b.updated_at &gt; '${dih.last_index_time}' or
+                  bs.updated_at &gt; '${dih.last_index_time}'
+            "
+      deletedPkQuery="
+            SELECT md5(concat(b.id, '|', p.id, '|', s.id)) as id,
+            FROM books b
+            LEFT JOIN publications p ON p.book_id = b.id
+            LEFT JOIN publishers pbrs ON pbrs.id = p.publisher_id
+            LEFT JOIN bookshelves bs ON bs.id = b.bookshelf_id
+            LEFT JOIN skus s ON s.publication_id = p.id
+            WHERE s.deleted_at &gt; '${dih.last_index_time}' or
+                  p.deleted_at &gt; '${dih.last_index_time}' or
+                  pbrs.deleted_at &gt; '${dih.last_index_time}' or
+                  b.deleted_at &gt; '${dih.last_index_time}' or
+                  bs.deleted_at &gt; '${dih.last_index_time}'
+            "
+      >
+
+        <entity name="author" pk="book_id" dataSource="library"
+          query="SElECT
+                    full_name AS author_name,
+                    ab.book_id AS book_id
+                 FROM authors a
+                 JOIN authors_books ab ON a.id = ab.author_id
+          "
+          cacheImpl="SortedMapBackedCache"
+          cacheKey="book_id"
+          cacheLookup="sku.book_id"
+          deltaQuery="select ab.book_id::text from authors a
+          join authors_books ab on a.id = ab.author_id where a.updated_at &gt; '${dih.last_index_time}'"
+          parentDeltaQuery="select '${author.book_id}' as id"
+        >
+          <field name="authors" column="author_name"/>
+          <field name="BOOK_ID" column="book_id"/>
+        </entity>
+    </entity>
+  </document>
+</dataConfig>

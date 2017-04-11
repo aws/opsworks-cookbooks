@@ -1,0 +1,56 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          solr
+# Required-Start:
+# Required-Stop:
+# Default-Start:     3 5
+# Default-Stop:      0 1 2 6
+# Short-Description: init script for solr search
+# Description:       init script for solr search
+### END INIT INFO
+
+# source function library
+. /etc/rc.d/init.d/functions
+
+PIDFILE=<%= @pid_file %>
+
+LOG_FILE=<%= @log_file %>
+
+NAME="Solr"
+
+DESC="start/stop Solr Server"
+
+start() {
+    if [ -f $PIDFILE ]; then
+        PID=`cat $PIDFILE`
+        echo $NAME already running: $PID
+    else
+        action "Starting ${NAME}: " daemon --pidfile $PIDFILE /var/lib/solr.start
+    fi
+}
+
+stop() {
+  action "Stopping ${NAME}: " killproc -p $PIDFILE
+}
+
+case $1 in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        stop
+        sleep 2
+        start
+        ;;
+    status)
+        status -p $PIDFILE solr
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|status}"
+        exit 3
+        ;;
+esac

@@ -1,4 +1,5 @@
 *.gem
+dataimport.properties
 *.rbc
 .config
 .bundle/install.log
@@ -20,3 +21,7 @@ _yardoc
 doc/
 /Gemfile.lock
 build
+*.swp
+
+.DS_Store
+deploy/.DS_Store
