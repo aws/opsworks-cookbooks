@@ -1,21 +1,10 @@
 [general]
-state_file = <%= @state_file %>
+state_file = <%= @state_file_dir %>/agent-state
 
-<% @cloudwatchlogs.each do |log_group_name, log_streams| %>
-<% log_streams.each do |log| %>
-<% if log["file"] == "AGENT"
-  log_path = node["cloudwatchlogs"]["AGENT_LOGS"]
-elsif log["file"] == "CHEF"
-  log_path = node["cloudwatchlogs"]["CHEF_LOGS"]
-else
-  log_path = log["file"]
-end %>
-[<%= log_group_name %> <%= log_path %>]
-datetime_format = [%Y-%m-%d %H:%M:%S]
-log_group_name = <%= log_group_name %>
-log_stream_name = <%= @hostname %> - <%= log_path %>
-initial_position = start_of_file
-file = <%= log_path %>
-
+<% @log_streams.each do |log_stream| %>
+[<%= log_stream[:log_group_name] %> <%= log_stream[:file] %>]
+<% log_stream.each do |key, value| %>
+<% next if value.nil? %>
+<%= key %> = <%= value %>
 <% end %>
 <% end %>

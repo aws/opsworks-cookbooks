@@ -31,13 +31,6 @@ module OpsWorks
       end
 
       def prepare_s3_checkouts(scm_options)
-        template "/root/.s3curl" do
-          cookbook "scm_helper"
-          source "s3curl.erb"
-          mode '0600'
-          variables(:access_key => scm_options[:user], :secret_key => scm_options[:password])
-        end
-
         tmpdir = Dir.mktmpdir('opsworks')
         directory tmpdir do
           mode 0755
