@@ -1,0 +1,80 @@
+<VirtualHost *:<%= @params[:port] ? @params[:port] : '443' %>>
+  ServerAdmin <%= node['apache']['contact'] %>
+<% if @params[:server_name].kind_of? String -%>
+  ServerName <%= @params[:server_name] %>
+<% end -%>
+<% if @params[:server_aliases].kind_of? Array -%>
+  ServerAlias <% @params[:server_aliases].each do |a| %><%= a %> <% end %>
+<% end -%>
+  DocumentRoot <%= @params[:docroot] %>
+  RewriteEngine On
+
+  <Directory <%= @params[:docroot] %>>
+    Options <%= [@params[:directory_options] || 'FollowSymLinks' ].flatten.join ' ' %>
+    AllowOverride <%= [@params[:allow_override] || 'None' ].flatten.join ' ' %>
+    <% if node['apache']['version'].to_f >= 2.4 -%>
+    Require all granted
+    <% else -%>
+    Order allow,deny
+    Allow from all
+    <% end -%>
+  </Directory>
+
+  <Directory />
+    Options FollowSymLinks
+    <% if node['apache']['version'].to_f >= 2.4 -%>
+    Require all denied
+    <% else -%>
+    Allow from none
+    <% end -%>
+  </Directory>
+
+  <Location /server-status>
+    SetHandler server-status
+
+    <% if node['apache']['version'].to_f >= 2.4 -%>
+    <RequireAny>
+      Require ip 127.0.0.1
+      Require ip ::1
+    </RequireAny>
+    <% else -%>
+    Order Deny,Allow
+    Deny from all
+    Allow from 127.0.0.1
+    <% end -%>
+  </Location>
+
+  LogLevel info
+  ErrorLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-error.log
+  CustomLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-access.log combined
+
+  <% if @params[:directory_index] -%>
+  DirectoryIndex <%= [@params[:directory_index]].flatten.join ' ' %>
+  <% end -%>
+
+  <% if node['apache']['version'].to_f >= 2.4 -%>
+  LogLevel info rewrite:trace1
+  <% else -%>
+  LogLevel info
+  RewriteLog <%= node['apache']['log_dir'] %>/<%= @application_name %>-rewrite.log
+  RewriteLogLevel 0
+  <% end -%>
+
+  # Canonical host, <%= @params[:server_name] %>
+  RewriteCond %{HTTP_HOST} !^<%= @params[:server_name] %> [NC]
+  RewriteCond %{HTTP_HOST} !^$
+  RewriteRule ^/(.*)$ http://<%= @params[:server_name] %>/$1 [L,R=301]
+
+  RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
+  RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+  RewriteRule ^.*$ /system/maintenance.html [L]
+
+  <%= render 'apache.erb', cookbook: 'ssl_certificate', variables: @params.merge(node: node) %>
+
+  <% if @params[:extra_directives].kind_of?(Hash)
+       @params[:extra_directives].each do |name, value|
+  -%>
+  <%=    name.to_s %> <%= value.to_s %>
+  <%   end
+     end -%>
+</VirtualHost>

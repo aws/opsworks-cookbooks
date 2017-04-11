@@ -1,0 +1,33 @@
+server {
+  server_name <%= @server_name %>;
+  listen 443 <%= Chef::VersionConstraint.new('< 0.8.21').include?(node['nginx']['version'][/\d+\.\d+\.\d+/]) ? 'default' : '' %>;
+
+  # Path to the root of your installation
+  root <%= @docroot %>;
+
+  access_log <%= node['nginx']['log_dir'] %>/<%= @name %>-access.log combined;
+  error_log  <%= node['nginx']['log_dir'] %>/<%= @name %>-error.log;
+
+  index index.html;
+  error_page 403 = /core/templates/403.html;
+  error_page 404 = /core/templates/404.html;
+
+  location = /robots.txt {
+    allow all;
+    log_not_found off;
+    access_log off;
+  }
+
+  location ~ ^/(data|config|\.ht|db_structure\.xml|README) {
+    deny all;
+  }
+
+  # Optional: set long EXPIRES header on static assets
+  location ~* ^.+\.(jpg|jpeg|gif|bmp|ico|png|css|js|swf)$ {
+    expires 30d;
+    # Optional: Don't log access to assets
+    access_log off;
+  }
+
+  <%= render 'nginx.erb', cookbook: 'ssl_certificate' %>
+}

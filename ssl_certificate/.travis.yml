@@ -1,0 +1,15 @@
+rvm:
+  - 1.9.3
+  - 2.0.0
+  - 2.1
+sudo: false
+env:
+  - CHEF_VERSION="~> 11.0"
+  - CHEF_VERSION="~> 12.0"
+matrix:
+  exclude:
+    - rvm: 1.9.3
+      env: CHEF_VERSION="~> 12.0"
+bundler_args: --without doc integration integration_cloud guard
+script:
+  - bundle exec rake travis:ci

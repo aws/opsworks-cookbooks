@@ -1,0 +1,6 @@
+#!/bin/bash
+<% @data.each do |key,value| %>
+    export <%= key %>=<%= value %>
+<% end %>
+
+cd <%= @target %> && bundle exec rake;

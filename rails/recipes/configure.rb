@@ -41,8 +41,8 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     owner deploy[:user]
     variables(
-      :memcached => deploy[:memcached] || {},
-      :environment => deploy[:rails_env]
+        :memcached => deploy[:memcached] || {},
+        :environment => deploy[:rails_env]
     )
 
     notifies :run, "execute[restart Rails app #{application}]"

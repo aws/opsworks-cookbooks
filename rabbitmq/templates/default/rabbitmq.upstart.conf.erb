@@ -1,0 +1,25 @@
+description "Start rabbitmq on startup"
+start on started networking
+limit nofile <%= @max_file_descriptors %> <%= @max_file_descriptors %>
+
+respawn
+respawn limit 5 60
+
+env HOME=""
+env RABBITMQ_PID_FILE="/var/run/rabbitmq/pid"
+
+pre-start script
+    PID_DIR=`dirname ${RABBITMQ_PID_FILE}`
+
+    if [ ! -d ${PID_DIR} ];
+    then
+        mkdir -p ${PID_DIR}
+        chown -R rabbitmq:rabbitmq ${PID_DIR}
+        chmod 755 ${PID_DIR}
+    fi
+end script
+
+exec /usr/sbin/rabbitmq-server > /var/log/rabbitmq/startup_log \
+                              2> /var/log/rabbitmq/startup_err
+
+post-start exec /usr/sbin/rabbitmqctl wait $RABBITMQ_PID_FILE >/dev/null 2>&1
