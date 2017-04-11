@@ -1,0 +1,75 @@
+<dataConfig>
+  <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver"
+    url="jdbc:mysql://72.3.141.228:3306/estantevirtual"
+    password="I3b9TFgCWh"
+    autoReconnect="true"
+    user="solr-sellerdeals"
+    name="seller_deals_ds"
+  />
+
+  <document>
+    <entity name="order" pk="order_id" dataSource="seller_deals_ds"
+        query="
+         SELECT
+            vd.log AS 'sold_at',
+            IF(v.status = 1 AND atrasado = 1, 4, v.status) AS 'status',
+            v.order_id,
+            vd.dest_nome   AS 'buyer_name',
+            vd.dest_cidade AS 'delivery_city',
+            vd.dest_estado AS 'delivery_state',
+            vd.dest_cep    AS 'delivery_zip_code',
+            v.fenvio       AS 'delivery_method',
+            v.total,
+            v.comprador    AS 'buyer_id',
+            v.vendedor     AS 'seller_id',
+            GROUP_CONCAT(concat(vi.autor, '-----author-----'), vi.titulo SEPARATOR '----line----') as items
+          FROM venda_items vi
+          JOIN vendas v ON vi.order_id = v.order_id
+          JOIN vendas_detalhes vd ON v.order_id = vd.order_id
+          WHERE vd.log > DATE_SUB(NOW(), INTERVAL 6 MONTH)
+          GROUP BY order_id"
+
+        deltaImportQuery="
+          SELECT
+             vd.log AS 'sold_at',
+             IF(v.status = 1 AND atrasado = 1, 4, v.status) AS 'status',
+             v.order_id,
+             vd.dest_nome   AS 'buyer_name',
+             vd.dest_cidade AS 'delivery_city',
+             vd.dest_estado AS 'delivery_state',
+             vd.dest_cep    AS 'delivery_zip_code',
+             v.fenvio       AS 'delivery_method',
+             v.total,
+             v.comprador    AS 'buyer_id',
+             v.vendedor     AS 'seller_id',
+             GROUP_CONCAT(concat(vi.autor, '-----author-----'), vi.titulo SEPARATOR '----line----') as 'items'
+           FROM venda_items vi
+           JOIN vendas v ON vi.order_id = v.order_id
+           JOIN vendas_detalhes vd ON v.order_id = vd.order_id
+           WHERE v.order_id = '${dih.delta.order_id}'
+           OR v.updated_at &gt; '${dih.last_index_time}'
+           GROUP BY v.order_id
+        "
+
+        deltaQuery="
+          SELECT v.order_id
+          FROM vendas v
+          WHERE v.log &gt; '${dih.last_index_time}'
+        "
+      >
+
+      <field name="sold_at" column="sold_at" />
+      <field name="status" column="status" />
+      <field name="order_id" column="order_id" />
+      <field name="buyer_name" column="buyer_name" />
+      <field name="delivery_city" column="delivery_city" />
+      <field name="delivery_state" column="delivery_state" />
+      <field name="delivery_zip_code" column="delivery_zip_code" />
+      <field name="delivery_method" column="delivery_method" />
+      <field name="total" column="total" />
+      <field name="buyer_id" column="buyer_id" />
+      <field name="seller_id" column="seller_id" />
+      <field name="items" column="items" />
+    </entity>
+  </document>
+</dataConfig>

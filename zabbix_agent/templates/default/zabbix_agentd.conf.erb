@@ -1,0 +1,7 @@
+# Do not edit
+# Created by chef zabbix-agent::configure
+<% @config.each do |name, value| %>
+<%   unless value == nil %>
+<%=    name %>=<%= value %>
+<%   end %>
+<% end %>
