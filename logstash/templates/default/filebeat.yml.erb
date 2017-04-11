@@ -1,0 +1,14 @@
+filebeat:
+  prospectors:
+    -
+      paths:
+        - /srv/www/checkout/shared/log/production.log
+      input_type: log
+  registry_file: /var/lib/filebeat/registry
+output:
+  logstash:
+    hosts: <%= node['logstash']['beats_hosts'] =%>
+
+logging:
+  files:
+    rotateeverybytes: 10485760 # = 10MB

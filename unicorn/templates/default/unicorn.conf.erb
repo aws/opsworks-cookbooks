@@ -30,7 +30,7 @@ before_fork do |server, worker|
   # the following is highly recomended for Rails + "preload_app true"
   # as there's no need for the master process to hold a connection
   if defined?(ActiveRecord::Base)
-    ActiveRecord::Base.connection.disconnect!
+    ActiveRecord::Base.clear_all_connections!
   end
 
   # Before forking, kill the master process that belongs to the .oldbin PID.
@@ -48,7 +48,14 @@ end
 after_fork do |server, worker|
   # the following is *required* for Rails + "preload_app true",
   if defined?(ActiveRecord::Base)
-    ActiveRecord::Base.establish_connection
+    # Ensure its using the default configuration
+    config = Rails.application.config.database_configuration[Rails.env]
+    ActiveRecord::Base.establish_connection(config)
+  end
+
+  if defined?(EvMain::EvSuper)
+    config = Rails.application.config.database_configuration["evmain_#{Rails.env}"]
+    EvMain::EvSuper.establish_connection(config)
   end
 
   # if preload_app is true, then you may also want to check and

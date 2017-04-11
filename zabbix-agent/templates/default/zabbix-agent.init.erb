@@ -1,0 +1,91 @@
+#!/bin/sh
+
+# Do not edit
+# Created by chef zabbix-agent::service
+
+### BEGIN INIT INFO
+# Provides:          zabbix-agent
+# Required-Start:    $remote_fs $network
+# Required-Stop:     $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start zabbix-agent at boot time
+# Description:       Zabbix agent.
+### END INIT INFO
+#! /bin/sh
+#
+# Zabbix agent start/stop script.
+#
+# Written by Alexei Vladishev <alexei.vladishev@zabbix.com>.
+# Add status support by Ovea Inc.
+
+NAME=zabbix_agentd
+PATH=/bin:/usr/bin:/sbin:/usr/sbin:<%= node['zabbix']['install_dir'] %>/sbin:<%= node['zabbix']['install_dir'] %>/bin
+DAEMON=<%= node['zabbix']['install_dir'] %>/sbin/${NAME}
+DESC="Zabbix agent daemon"
+DIR=<%= node['zabbix']['run_dir'] %>
+PID=<%= node['zabbix']['agent']['pid_file'] %>
+USER=<%= node['zabbix']['agent']['user'] %>
+GROUP=<%= node['zabbix']['agent']['group'] %>
+
+test -f $DAEMON || exit 0
+
+[ -d "$DIR" ] || mkdir "$DIR"
+chown -R $USER:$GROUP "$DIR"
+
+set -e
+
+case "$1" in
+  start)
+	echo "Starting $DESC: $NAME"
+	start-stop-daemon --oknodo --start --pidfile $PID \
+		--user $USER \
+		--exec $DAEMON -- -c <%= node['zabbix']['agent']['config_file'] %>
+	;;
+
+  stop)
+	echo "Stopping $DESC: $NAME"
+	start-stop-daemon --oknodo --stop  --pidfile $PID \
+		--exec $DAEMON
+	;;
+  restart|force-reload)
+	#
+	#	If the "reload" option is implemented, move the "force-reload"
+	#	option to the "reload" entry above. If not, "force-reload" is
+	#	just the same as "restart".
+	#
+#	echo -n "Restarting $DESC: zabbix_agent"
+	$0 stop
+	sleep 5
+	$0 start
+#	start-stop-daemon --stop --quiet --pidfile \
+#		$PID --user zabbix --exec $DAEMON
+#	sleep 1
+#	start-stop-daemon --start --quiet --pidfile \
+#		$PID --user zabbix --exec $DAEMON
+#	echo "$NAME."
+	;;
+  status)
+                if [ -f "$PID" ]; then
+                        echo "$NAME is running (pid $PID)."  
+                        PIDVALID=$(ps --pid `cat $PID` -o pid=)               
+                        if [ $PIDVALID ]; then
+                            exit 0
+                        else
+                          echo "pid file exist but $NAME is NOT running."   
+                        fi   
+                else
+                        echo "$NAME is NOT running."
+                        exit 1
+                fi
+        ;;
+
+  *)
+	N=/etc/init.d/$NAME
+	# echo "Usage: $N {start|stop|restart|force-reload}" >&2
+	echo "Usage: $N {start|stop|restart|force-reload}" >&2
+	exit 1
+	;;
+esac
+
+exit 0

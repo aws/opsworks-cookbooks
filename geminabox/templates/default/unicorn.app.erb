@@ -1,0 +1,19 @@
+# Automated chef configuration file
+worker_processes <%= @workers %>
+working_directory "<%= @base_path %>"
+listen "<%= @socket %>"
+timeout <%= @timeout %>
+pid "<%= File.join(@base_path, 'unicorn.pid') %>"
+preload_app true
+
+if(GC.respond_to?(:copy_on_write_friendly=))
+  GC.copy_on_write_friendly = <%= @cow_friendly %>
+end
+
+after_fork do |one,two|
+  if(Process.euid == 0)
+    require 'fileutils'
+    worker.user('<%= @www_user %>', '<%= @www_user %>')
+    FileUtils.chown('<%= @www_user %>', '<%= @www_user %>', '<%= @socket %>')
+  end
+end

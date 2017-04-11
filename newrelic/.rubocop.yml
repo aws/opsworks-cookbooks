@@ -1,0 +1,23 @@
+AlignParameters:
+  Enabled: false
+
+Encoding:
+  Enabled: false
+
+LineLength:
+  Max: 265
+
+HashSyntax:
+  EnforcedStyle: hash_rockets
+
+RedundantBegin:
+  Enabled: false
+
+UselessAssignment:
+  Enabled: false
+
+MethodLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
