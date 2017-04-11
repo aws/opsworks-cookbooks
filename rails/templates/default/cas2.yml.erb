@@ -1,0 +1,57 @@
+defaults: &defaults
+  login_ticket:
+    lifetime: 600
+  ticket_granting_ticket:
+    lifetime: 86400
+    lifetime_long_term: 864000
+  service_ticket:
+    lifetime_unconsumed: 300
+    lifetime_consumed: 86400
+  proxy_ticket:
+    lifetime_unconsumed: 300
+    lifetime_consumed: 86400
+  frontend:
+    sso_name: "Monaco"
+    footer_text: "Estante Virtual - Single Sign On - Server"
+<% if @database["staging"] -%>
+staging:
+  <<: *defaults
+  authenticators:
+    ev_user_database:
+      authenticator: "ActiveRecord"
+      options:
+        connection:
+          adapter: "postgresql"
+          host: <%= @database["staging"]["host"].to_s.inspect %>
+          username: <%= @database["staging"]["username"].to_s.inspect %>
+          password: <%= @database["staging"]["password"].to_s.inspect %>
+          database: <%= @database["staging"]["database"].to_s.inspect %>
+        table: "users"
+        username_column: "username"
+        password_column: "password_digest"
+        extra_attributes:
+          id: "id"
+          name: "name"
+          external_user_id: "external_user_id"
+<% end -%>
+<% if @database["production"] -%>
+production:
+  <<: *defaults
+  authenticators:
+    ev_user_database:
+      authenticator: "ActiveRecord"
+      options:
+        connection:
+          adapter: "postgresql"
+          host: <%= @database["production"]["host"].to_s.inspect %>
+          username: <%= @database["production"]["username"].to_s.inspect %>
+          password: <%= @database["production"]["password"].to_s.inspect %>
+          database: <%= @database["production"]["database"].to_s.inspect %>
+        table: "users"
+        username_column: "username"
+        password_column: "password_digest"
+        extra_attributes:
+          id: "id"
+          name: "name"
+          external_user_id: "external_user_id"
+<% end -%>

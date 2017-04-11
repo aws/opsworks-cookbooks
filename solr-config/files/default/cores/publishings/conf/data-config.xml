@@ -1,0 +1,18 @@
+<dataConfig>
+  <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver" 
+    url="jdbc:mysql://ev-slave.internal.ev:3306/estantevirtual"
+    password="i0AguTv1OF"
+    autoReconnect="true"
+    user="solr-publishing"/>
+    <document>
+      <entity name="publishing" query="select dna_crc, autor, titulo, dna_nvends_ativos from booktree_20151021.booktree_radicais where remarcado=0 and dna_nvends_ativos > 1">
+
+        <field column="dna_crc" name="id" />
+        <field column="autor" name="autor_t" />
+        <field column="titulo" name="titulo_t" />
+        <field column="dna_nvends_ativos" name="quantidade_i" />
+
+      </entity>
+    </document>
+</dataConfig>
+

@@ -1,0 +1,56 @@
+<% if @database[:host] -%>
+  <% ([@environment]).uniq.each do |env| -%>
+<%= env %>:
+  adapter: <%= @database[:adapter].to_s.inspect %>
+  database: <%= @database[:database].to_s.inspect %>
+  encoding: <%= (@database[:encoding] || 'utf8').to_s.inspect %>
+  host: <%= (@database[:host] || 'localhost').to_s.inspect %>
+  username: <%= @database[:username].to_s.inspect %>
+  password: <%= @database[:password].to_s.inspect %>
+  reconnect: <%= @database[:reconnect] ? 'true' : 'false' %>
+  <% if @database[:pool] -%>
+  pool: <%= @database[:pool].to_i.inspect %>
+  <% end -%>
+  <% if @database[:port] -%>
+  port: <%= @database[:port].to_i.inspect %>
+  <% end -%>
+  <% if @database[:reaping_frequency] -%>
+  reaping_frequency: <%= @database[:reaping_frequency].to_i.inspect %>
+  <% end -%>
+  <% end -%>
+<% end %>
+<% @dbs.each do |k, v| -%>
+<%= k %>:
+  adapter: <%= (v["adapter"] || 'mysql2').to_s.inspect %>
+  database: <%= v["database"].to_s.inspect %>
+  <% if v["encoding"] -%>
+  encoding: <%= (v["encoding"] || 'utf8').to_s.inspect %>
+  <% end -%>
+  <% if v["host"] -%>
+  host: <%= (v["host"] || 'localhost').to_s.inspect %>
+  <% end -%>
+  <% if v["username"] -%>
+  username: <%= v["username"].to_s.inspect %>
+  <% end -%>
+  <% if v["password"] -%>
+  password: <%= v["password"].to_s.inspect %>
+  <% end -%>
+  <% if v["reconnect"] -%>
+  reconnect: <%= v["reconnect"] ? 'true' : 'false' %>
+  <% end -%>
+  <% if v["pool"] -%>
+  pool: <%= v["pool"].to_i.inspect %>
+  <% end -%>
+  <% if v["reaping_frequency"] -%>
+  reaping_frequency: <%= v["reaping_frequency"].to_i.inspect %>
+  <% end -%>
+  <% if v["timeout"] -%>
+  timeout: <%= v["timeout"].to_i.inspect %>
+  <% end -%>
+  <% if v["port"] -%>
+  port: <%= v["port"].to_i.inspect %>
+  <% end -%>
+  <% if v["sslca"] -%>
+  sslca: '<%= @folder %>/shared/keys/ca.pem'
+  <% end %>
+<% end -%>

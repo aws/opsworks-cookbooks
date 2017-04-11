@@ -1,0 +1,21 @@
+#  Logging level
+solr.log=logs
+# log4j.rootLogger=INFO, file, CONSOLE
+log4j.rootLogger=OFF
+
+log4j.logger.package.class=OFF
+
+#- size rotation with log cleanup.
+log4j.appender.file=org.apache.log4j.RollingFileAppender
+log4j.appender.file.MaxFileSize=4MB
+log4j.appender.file.MaxBackupIndex=1
+
+log4j.logger.org.apache.solr.core.SolrCore=OFF
+log4j.logger.org.apache.solr.update.processor.LogUpdateProcessorFactory=OFF
+log4j.logger.org.apache.solr.search.SolrIndexSearcher=OFF
+
+log4j.logger.org.apache.zookeeper=OFF
+log4j.logger.org.apache.hadoop=OFF
+
+# set to INFO to enable infostream log messages
+log4j.logger.org.apache.solr.update.LoggingInfoStream=OFF

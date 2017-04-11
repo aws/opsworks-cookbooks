@@ -1,0 +1,62 @@
+---
+driver:
+  name: <%= ENV['KI_DRIVER'] || 'vagrant' %>
+
+driver_config:
+  require_chef_omnibus: true
+
+platforms:
+- name: ubuntu-10.04
+- name: ubuntu-12.04
+- name: ubuntu-14.04
+- name: centos-6.6
+- name: centos-7.0
+- name: debian-6.0.10
+- name: debian-7.8
+# planned for future tested support
+#- name: freebsd-9.3
+#- name: freebsd-10.1
+#- name: fedora-20
+#- name: fedora-21
+#- name: opensuse-13.1
+- name: windows-2012r2
+  driver_config:
+    communicator: winrm
+    box_url: https://wrock.blob.core.windows.net/vhds/vbox2012r2.box
+    customize:
+      usbehci: "off"
+
+provisioner:
+    name: chef_zero
+
+suites:
+- name: default
+  excludes: windows-2012r2
+  run_list:
+    - "recipe[zabbix-agent]"
+  attributes:
+- name: default_win
+  includes: windows-2012r2
+  run_list:
+    - "recipe[zabbix-agent]"
+  attributes:
+    zabbix:
+      agent:
+        user: vagrant
+- name: source
+  excludes: windows-2012r2
+  run_list:
+    - "recipe[zabbix-agent]"
+  attributes:
+    zabbix:
+      agent:
+        install_method: "source"
+- name: prebuild
+  excludes: windows-2012r2
+  run_list:
+    - "recipe[zabbix-agent]"
+  attributes:
+    zabbix:
+      agent:
+        install_method: "prebuild"
+        version: "2.4.1" # latest prebuild version although deb/rpm packages are at 2.4.4

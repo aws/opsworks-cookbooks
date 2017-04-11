@@ -1,0 +1,115 @@
+<dataConfig>
+  <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver"
+    url="jdbc:mysql://<%= @db_url %>:3306/<%= @db_name %>"
+    password="<%= @db_password %>"
+    autoReconnect="true"
+    user="<%= @db_user %>"
+    name="seller_deals"
+  />
+
+  <document>
+    <entity name="order" pk="order_id" dataSource="seller_deals"
+        query="
+         SELECT
+            v.log AS 'sold_at',
+            (CASE
+             WHEN (v.status = 1 AND atrasado = 1) THEN 4
+             WHEN (v.status = 3 AND v.fenvio = 'local') THEN 5
+             ELSE v.status
+            END) AS status,
+            (CASE
+              WHEN (v.fpagamento = 'paypal' AND v.payment_type IS NULL) THEN v.fpagamento
+              WHEN (v.fpagamento = 'paypal' AND v.payment_type = 'express') THEN v.fpagamento
+              WHEN (v.fpagamento = 'paypal' AND v.payment_type = 'plus') THEN 'paypal_cc'
+              WHEN (v.fpagamento = 'moip_cc') THEN v.fpagamento
+              WHEN (v.fpagamento = 'moip_boleto') THEN v.fpagamento
+              ELSE 'deposit'
+            END) AS payment_method,
+            v.order_id,
+            coalesce(vd.dest_nome, '')   AS 'buyer_name',
+            coalesce(vd.dest_cidade, '') AS 'delivery_city',
+            coalesce(vd.dest_estado, '') AS 'delivery_state',
+            coalesce(vd.dest_cep, '')    AS 'delivery_zip_code',
+            v.fenvio       AS 'delivery_method',
+            v.total,
+            v.comprador    AS 'buyer_id',
+            v.vendedor     AS 'seller_id',
+            v.frete        AS 'shipping_value',
+
+            GROUP_CONCAT(vi.autor, '#-#', vi.titulo, '#-#', coalesce(vi.editora,''), '#-#', coalesce(vi.book_type,'0'), '#-#',
+                         coalesce(vi.idioma, ''), '#-#', coalesce(location_in_store,' '), '#-#', coalesce(category, ' '),'#-#',
+                         coalesce(vi.ano,''), '#-#', coalesce(vi.descr, ' '), '#-#', coalesce(vi.rec_id, ''), '#-#',
+                         coalesce(vi.preco, ' '), '#-#', coalesce(vi.estante, ' ') SEPARATOR '----line----') as items
+          FROM venda_items vi
+          JOIN vendas v ON vi.order_id = v.order_id
+          LEFT JOIN vendas_detalhes vd ON v.order_id = vd.order_id
+          WHERE v.log > DATE_SUB(NOW(), INTERVAL 6 MONTH)
+          AND v.status != -4
+          GROUP BY order_id"
+
+        deltaImportQuery="
+          SELECT
+             v.log AS 'sold_at',
+             (CASE
+              WHEN (v.status = 1 AND atrasado = 1) THEN 4
+              WHEN (v.status = 3 AND v.fenvio = 'local') THEN 5
+              ELSE v.status
+             END) AS status,
+             (CASE
+               WHEN (v.fpagamento = 'paypal' AND v.payment_type IS NULL) THEN v.fpagamento
+               WHEN (v.fpagamento = 'paypal' AND v.payment_type = 'express') THEN v.fpagamento
+               WHEN (v.fpagamento = 'paypal' AND v.payment_type = 'plus') THEN 'paypal_cc'
+               WHEN (v.fpagamento = 'moip_cc') THEN v.fpagamento
+               WHEN (v.fpagamento = 'moip_boleto') THEN v.fpagamento
+               ELSE 'deposit'
+             END) AS payment_method,
+             v.order_id,
+             coalesce(vd.dest_nome, '')   AS 'buyer_name',
+             coalesce(vd.dest_cidade, '') AS 'delivery_city',
+             coalesce(vd.dest_estado, '') AS 'delivery_state',
+             coalesce(vd.dest_cep, '')    AS 'delivery_zip_code',
+             v.fenvio       AS 'delivery_method',
+             v.total,
+             v.comprador    AS 'buyer_id',
+             v.vendedor     AS 'seller_id',
+             v.frete        AS 'shipping_value',
+
+             GROUP_CONCAT(vi.autor, '#-#', vi.titulo, '#-#', coalesce(vi.editora,''), '#-#', coalesce(vi.book_type,'0'), '#-#',
+                          coalesce(vi.idioma, ''), '#-#', coalesce(location_in_store,' '), '#-#', coalesce(category, ' '),'#-#',
+                          coalesce(vi.ano,''), '#-#', coalesce(vi.descr, ' '), '#-#', coalesce(vi.rec_id, ''), '#-#',
+                          coalesce(vi.preco, ' '), '#-#', coalesce(vi.estante, ' ') SEPARATOR '----line----') as items
+           FROM venda_items vi
+           JOIN vendas v ON vi.order_id = v.order_id
+           LEFT JOIN vendas_detalhes vd ON v.order_id = vd.order_id
+           WHERE v.order_id = '${dih.delta.order_id}'
+           AND v.status != -4
+           GROUP BY v.order_id
+        "
+
+        deltaQuery="
+          SELECT v.order_id
+          FROM vendas v
+          WHERE 
+            DATE_ADD(v.updated_at, INTERVAL 3 HOUR) &gt; '${dih.last_index_time}'
+          AND 
+            v.status != -4
+        "
+      >
+
+      <field name="sold_at" column="sold_at" />
+      <field name="status" column="status" />
+      <field name="payment_method" column="payment_method" />
+      <field name="shipping_value" column="shipping_value" />
+      <field name="order_id" column="order_id" />
+      <field name="buyer_name" column="buyer_name" />
+      <field name="delivery_city" column="delivery_city" />
+      <field name="delivery_state" column="delivery_state" />
+      <field name="delivery_zip_code" column="delivery_zip_code" />
+      <field name="delivery_method" column="delivery_method" />
+      <field name="total" column="total" />
+      <field name="buyer_id" column="buyer_id" />
+      <field name="seller_id" column="seller_id" />
+      <field name="items" column="items" />
+    </entity>
+  </document>
+</dataConfig>

@@ -1,0 +1,6 @@
+#!upstart
+description "Resque workers"
+
+start on runlevel [2345]
+
+stop on runlevel [016]
