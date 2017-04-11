@@ -1,0 +1,37 @@
+<%
+self.class.send(:include, Chef::SslCertificateCookbook::ServiceHelpers)
+@ssl_config = ssl_config_for_service('apache')
+-%>
+# ----------------- #
+  # SSL Configuration #
+  # ----------------- #
+
+  SSLEngine on
+
+  SSLCertificateFile <%= @ssl_cert %>
+  SSLCertificateKeyFile <%= @ssl_key %>
+  <% if @ssl_chain.is_a?(String) -%>
+  SSLCertificateChainFile <%= @ssl_chain %>
+  <% end -%>
+
+  <% if @ssl_config[:description].is_a?(String) -%>
+  # <%= @ssl_config[:description] %>
+  <% end -%>
+  <% if @ssl_config[:protocols].is_a?(String) -%>
+  SSLProtocol <%= @ssl_config[:protocols] %>
+  <% end -%>
+  <% if @ssl_config[:cipher_suite].is_a?(String) -%>
+  SSLCipherSuite <%= @ssl_config[:cipher_suite] %>
+  <% end -%>
+  SSLHonorCipherOrder on
+
+  <% if @ssl_config[:use_hsts] -%>
+  # Enable this if your want HSTS (recommended)
+  Header add Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+  <% end -%>
+  BrowserMatch "MSIE [2-6]" \
+    nokeepalive ssl-unclean-shutdown \
+    downgrade-1.0 force-response-1.0
+  # MSIE 7 and newer should be able to use keepalive
+  BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown

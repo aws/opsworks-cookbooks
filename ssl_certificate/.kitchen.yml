@@ -1,0 +1,74 @@
+---
+driver:
+  name: vagrant
+  vm_hostname: 'ssl-certificate.local'
+  network:
+  - ["forwarded_port", {guest: 443, host: 4443, auto_correct: true}]
+
+provisioner:
+  name: chef_solo
+
+platforms:
+- name: centos-5.11
+- name: centos-6.6
+- name: debian-7.7
+  run_list: [ "recipe[apt]" ]
+- name: fedora-19
+- name: fedora-20
+- name: freebsd-10.0
+- name: ubuntu-10.04
+  run_list: [ "recipe[apt]" ]
+- name: ubuntu-12.04
+  run_list: [ "recipe[apt]" ]
+- name: ubuntu-14.04
+  run_list: [ "recipe[apt]" ]
+- name: ubuntu-14.10
+  run_list: [ "recipe[apt]" ]
+
+suites:
+- name: default
+  excludes:
+  # apache2::mod_ssl not compatible
+  - centos-5.11
+  - freebsd-10.0
+  data_bags_path: "test/data_bags"
+  encrypted_data_bag_secret_key_path: "test/encrypted_data_bag_secret"
+  run_list:
+  - recipe[ssl_certificate_test::default]
+- name: subject_alternate_names
+  data_bags_path: "test/data_bags"
+  encrypted_data_bag_secret_key_path: "test/encrypted_data_bag_secret"
+  run_list:
+  - recipe[ssl_certificate_test::subject_alternate_names]
+- name: intermediate_chain
+  excludes:
+  # apache2::mod_ssl not compatible
+  - centos-5.11
+  - freebsd-10.0
+  data_bags_path: "test/data_bags"
+  encrypted_data_bag_secret_key_path: "test/encrypted_data_bag_secret"
+  run_list:
+  - recipe[ssl_certificate_test::intermediate_chain]
+- name: with_ca
+  excludes:
+  # apache2::mod_ssl not compatible
+  - centos-5.11
+  - freebsd-10.0
+  # TLS 1.2 not supported (modern compatibility)
+  - ubuntu-1004
+  - ubuntu-1204
+  data_bags_path: "test/data_bags"
+  encrypted_data_bag_secret_key_path: "test/encrypted_data_bag_secret"
+  run_list:
+  - recipe[ssl_certificate_test::self_signed_with_ca_certificate]
+- name: nginx
+  excludes:
+  # no TLSv1.1 support
+  - centos-5.11
+  - ubuntu-10.04
+  # nginx cookbook not compatible
+  - freebsd-10.0 # https://github.com/miketheman/nginx/issues/274
+  data_bags_path: "test/data_bags"
+  encrypted_data_bag_secret_key_path: "test/encrypted_data_bag_secret"
+  run_list:
+  - recipe[ssl_certificate_test::nginx]

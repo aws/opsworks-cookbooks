@@ -1,0 +1,13 @@
+<dataConfig>
+  <dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver"
+    url="jdbc:mysql://104.239.155.212/estantevirtual"
+    password="RCifH0slt7"
+    autoReconnect="true"
+    user="solr"/>
+  <document>
+    <entity name="search" query="SELECT u.cidade, c.rec_id as rec_id, c.user_id as user_id, c.autor, c.titulo, c.idioma, c.editora, c.descr, c.capa, c.tipo, c.estado estado_livro, c.capa, c.peso, c.peso_est, c.preco, DATEDIFF(NOW(), c.data_reg) reg_dias_atras, c.data_reg, u.estado, LTRIM_JUNK(lower(u.cidade), 1, 1, 1) cidade, c.estante, c.ano, u.nomeabrev vendedor, u.username, u.ativo usuario_ativo, c.ativo catalogo_ativo, bc.idioma titulo_idioma, cdna.preco_externo preco_externo, cdna.capa_dna capa_dna, br.dna_crc, br.dna_nvends_ativos, cdna.dna_crc FROM catalogo c INNER JOIN usuarios u ON (u.user_id = c.user_id) LEFT JOIN catalogo_dna_nova2 cdna ON ( c.rec_id = cdna.rec_id ) LEFT JOIN booktree_20150525.booktree_radicais br on (cdna.dna_crc = br.radical_crc ) LEFT JOIN booktree_20150525.booktree_crawl bc on (br.radical_id = bc.radical_id ) WHERE c.ativo IN (1,11) AND u.ativo IN (1,11) AND br.dna_nvends_ativos > 0"
+      deltaImportQuery="SELECT  u.cidade, c.rec_id, c.user_id, c.autor, c.titulo, c.idioma, c.editora, c.descr, c.capa, c.tipo, c.estado estado_livro, c.capa, c.peso, c.peso_est, c.preco, DATEDIFF(NOW(), c.data_reg) reg_dias_atras, c.data_reg, u.estado, LTRIM_JUNK(lower(u.cidade), 1, 1, 1) cidade, c.estante, c.ano, u.nomeabrev, u.username, u.ativo usuario_ativo, c.ativo catalogo_ativo, bc.idioma titulo_idioma, cdna.preco_externo preco_externo, cdna.capa_dna capa_dna,br.dna_crc, br.dna_nvends_ativos FROM catalogo c INNER JOIN usuarios u ON (u.user_id = c.user_id) LEFT JOIN catalogo_dna_nova2 cdna ON ( c.rec_id = cdna.rec_id ) LEFT JOIN booktree_20150525.booktree_radicais br on (cdna.dna_crc = br.radical_crc ) LEFT JOIN booktree_20150525.booktree_crawl bc on (br.radical_id = bc.radical_id ) WHERE c.ativo IN (1,11) AND u.ativo IN (1,11) AND ( c.data_reg &gt; '${dih.last_index_time}' or c.data_alt &gt; '${dih.last_index_time}' )"
+      deltaQuery="select c.rec_id FROM catalogo c INNER JOIN usuarios u ON (u.user_id = c.user_id) LEFT JOIN catalogo_dna_nova2 cdna ON ( c.rec_id = cdna.rec_id ) LEFT JOIN booktree_20150525.booktree_radicais br on (cdna.dna_crc = br.radical_crc ) LEFT JOIN booktree_20150525.booktree_crawl bc on (br.radical_id = bc.radical_id ) WHERE c.ativo IN (1,11) AND u.ativo IN (1,11) AND ( c.data_reg &gt; '${dih.last_index_time}' or c.data_alt &gt; '${dih.last_index_time}' ) AND br.dna_nvends_ativos > 0">
+    </entity>
+  </document>
+</dataConfig>

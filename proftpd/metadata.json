@@ -1,0 +1,105 @@
+{
+  "name": "proftpd",
+  "description": "Installs/Configures proftpd",
+  "long_description": "",
+  "maintainer": "Calogero Lo Leggio",
+  "maintainer_email": "kalos@nerdrug.org",
+  "license": "Apache 2.0",
+  "platforms": {
+    "ubuntu": [
+
+    ],
+    "debian": [
+
+    ]
+  },
+  "dependencies": {
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+    "proftpd/dir": {
+      "display_name": "proftpd directory",
+      "description": "Location of proftpd configuration files",
+      "default": "/etc/proftpd",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string",
+      "required": "optional",
+      "recipes": [
+
+      ]
+    },
+    "proftpd/dir_extra_conf": {
+      "display_name": "proftpd extra conf directory",
+      "description": "Sublocation of proftpd extra configuration files",
+      "default": "conf.d",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string",
+      "required": "optional",
+      "recipes": [
+
+      ]
+    },
+    "proftpd/modules": {
+      "display_name": "proftpd modules",
+      "description": "proftpd supported modules",
+      "type": "array",
+      "default": [
+        "ctrls",
+        "ctrls_admin",
+        "ban",
+        "load",
+        "dynmasq",
+        "ifsession",
+        "quotatab_file",
+        "wrap",
+        "wrap2",
+        "wrap2_file",
+        "rewrite",
+        "tls",
+        "sql_mysql"
+      ],
+      "choice": [
+
+      ],
+      "calculated": false,
+      "required": "optional",
+      "recipes": [
+
+      ]
+    },
+    "proftpd/nat": {
+      "display_name": "toggle nat",
+      "description": "insert IP of natted server",
+      "default": "off",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string",
+      "required": "optional",
+      "recipes": [
+
+      ]
+    }
+  },
+  "groupings": {
+  },
+  "recipes": {
+  },
+  "version": "0.2.0"
+}
