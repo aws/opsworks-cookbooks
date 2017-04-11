@@ -1,0 +1,29 @@
+{
+  "name": "control_groups",
+  "description": "Provides and configures cgroups",
+  "long_description": "Control Groups\n==============\n\nManage control groups (cgroups) via chef!\n\nExample usage:\n--------------\n\n```ruby\ncontrol_groups_entry 'lackresources' do\n  memory('memory.limit_in_bytes' => '1M')\n  cpu('cpu.shares' => 1)\nend\n\ncontrol_groups_rule 'someuser' do\n  controllers [:cpu, :memory]\n  destination 'lackresources'\nend\n```\n\nThis will restrict all processes created by `someuser` into\nthe `lackresources` control group.\n\nRepository:\n-----------\n\n* Repository: https://github.com/hw-cookbooks/control_groups\n* IRC: Freenode @ #heavywater\n",
+  "maintainer": "Heavy Water",
+  "maintainer_email": "support@hw-ops.com",
+  "license": "Apache 2.0",
+  "platforms": {
+  },
+  "dependencies": {
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+  },
+  "version": "0.1.6"
+}

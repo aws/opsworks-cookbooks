@@ -1,0 +1,239 @@
+<dataConfig>
+  <dataSource type="JdbcDataSource" driver="org.postgresql.Driver"
+    name="library"
+    url="jdbc:postgresql://<%= @db_url %>:5432/<%= @db_name %>"
+    user="<%= @db_user %>"
+    password="<%= @db_password %>"
+    autoReconnect="true"
+  />
+
+  <document>
+    <entity name="sku" pk="id" dataSource="library"
+      query="
+        WITH max_covers AS (
+          SELECT
+            DISTINCT ON (publication_id) c.publication_id,
+            first_value(c.cover) OVER wnd AS cover,
+            first_value(c.number_of_uploads) OVER wnd AS number_of_uploads
+          FROM
+            covers c
+          WINDOW wnd AS (PARTITION BY publication_id ORDER BY number_of_uploads DESC)
+        ),
+
+        book_stats AS (
+          SELECT
+            b1.id AS book_id,
+            COUNT(DISTINCT(s1.seller_id)) AS unique_seller_ids,
+            min(s1.price) AS minimum_price,
+            max(s1.price) AS maximum_price,
+            sum( case when s1.is_new = 't' then 1 else 0 end  ) as new_copies,
+            sum( case when s1.is_new = 'f' then 1 else 0 end  ) as used_copies
+          FROM
+            books b1
+          LEFT JOIN
+            publications p1 ON (b1.id = p1.book_id)
+          LEFT JOIN
+            skus s1 ON (p1.id = s1.publication_id)
+          WHERE
+            b1.deleted_at IS NULL
+            AND p1.deleted_at IS NULL
+            AND s1.deleted_at IS NULL
+          GROUP BY
+            b1.id
+        )
+
+        SELECT
+          MD5(CONCAT(b.id, '|', p.id, '|', s.id)) AS id,
+          b.is_moderated,
+          b.moderation_type,
+          b.moderate_action_at,
+          b.id::text AS book_id,
+          b.title,
+          b.synopsis,
+          MD5(b.synopsis) AS md5_synopsis,
+          b.volume,
+          b.cluster_id,
+          b.language_id AS language_id,
+          b.bookshelf_id AS bookshelf_id,
+
+          l.name AS language,
+          l.code AS language_code,
+
+          bs.name AS bookshelf,
+
+          COUNT(s.id) OVER (PARTITION BY b.id) AS sku_count,
+
+          bstats.unique_seller_ids AS book_stats,
+          bstats.minimum_price as minimum_price,
+          bstats.maximum_price as maximum_price,
+          bstats.used_copies,
+          bstats.new_copies,
+
+          p.id AS publication_id,
+          p.isbn,
+          p.issn,
+          p.barcode,
+          p.edition,
+          p.weight,
+          p.height,
+          p.format,
+          p.width,
+          p.depth,
+          p.year,
+          p.pages,
+          p.publisher_id,
+          p.details,
+          p.created_at,
+          p.updated_at,
+          p.deleted_at,
+
+          COALESCE(p.cover, c.cover) AS cover,
+          s.cover AS sku_cover,
+          p.cover AS publication_cover,
+          c.cover AS most_uploaded_cover,
+
+          pbrs.name AS publisher,
+
+          s.id::text AS sku,
+          s.seller_id,
+          s.uuid,
+          s.price,
+          s.original_price,
+          s.discount,
+          s.title AS sku_title,
+          s.authors AS sku_authors,
+          s.volume AS sku_volume,
+          s.language AS sku_language,
+          (CASE WHEN s.is_new IS NOT NULL AND s.is_new = 't' THEN 1 ELSE 0 END) AS new,
+          (CASE WHEN s.is_new IS NOT NULL AND s.is_new = 'f' THEN 1 ELSE 0 END) AS used,
+          s.quantity,
+          s.id_on_bookstore,
+          s.description,
+          s.topics,
+          s.location_on_bookstore,
+          s.created_at AS sku_created_at,
+          s.weight as sku_weight,
+          (CASE WHEN s.price &gt;= se.free_shipping_package_price THEN 0 ELSE s.shipping END) as shipping,
+          (COALESCE((CASE WHEN s.price &gt;= se.free_shipping_package_price THEN 0 ELSE s.shipping END),0) + COALESCE(s.price,0)) as price_with_shipping,
+
+          se.name AS seller,
+          se.city AS city,
+          se.uf AS uf,
+          se.free_shipping_package_price,
+          se.positive_quals AS seller_positive_quals,
+          se.total_quals AS seller_total_quals,
+          se.qual_rating AS seller_qual_rating,
+          se.sold_books AS seller_books_sold
+        FROM
+            books b
+          LEFT JOIN
+            publications p ON (p.book_id = b.id AND p.deleted_at IS NULL)
+          LEFT JOIN
+            max_covers c ON (p.id = c.publication_id)
+          LEFT JOIN
+            publishers pbrs ON (pbrs.id = p.publisher_id AND pbrs.deleted_at IS NULL)
+          LEFT JOIN
+            bookshelves bs ON (bs.id = b.bookshelf_id AND bs.deleted_at IS NULL)
+          LEFT JOIN
+            languages l ON (l.id = b.language_id AND l.deleted_at IS NULL)
+          LEFT JOIN
+            skus s ON (
+              s.publication_id = p.id
+              AND s.deleted_at IS NULL
+              AND s.importing != 'true'
+              AND s.visible = true
+            )
+          LEFT JOIN
+            sellers se ON (s.seller_id = se.id AND se.deleted_at IS NULL)
+          LEFT JOIN
+            book_stats bstats ON (b.id = bstats.book_id)
+        WHERE
+          b.deleted_at IS NULL
+
+          AND (
+            '${dataimporter.request.clean}' != 'false'
+            OR s.updated_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
+            OR p.updated_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
+            OR b.updated_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
+            OR se.updated_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
+          )
+
+      "
+
+      deletedPkQuery="
+        SELECT
+          MD5(CONCAT(b.id, '|', p.id, '|', s.id)) AS id
+        FROM
+          books b
+        LEFT JOIN
+          publications p ON (p.book_id = b.id)
+        LEFT JOIN
+          skus s ON (s.publication_id = p.id)
+        WHERE
+          s.deleted_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
+          OR p.deleted_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
+          OR b.deleted_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes')
+          OR (s.visible = false AND s.updated_at &gt; (CURRENT_TIMESTAMP - INTERVAL '20 minutes'))
+      "
+    >
+      <entity name="author" pk="book_id" dataSource="library"
+        query="
+          SELECT
+            full_name AS author_name,
+            ab.book_id::text AS book_id
+          FROM
+            authors a
+          INNER JOIN
+            authors_books ab ON (a.id = ab.author_id)
+        "
+
+        cacheImpl="SortedMapBackedCache"
+        cacheKey="book_id"
+        cacheLookup="sku.book_id"
+      >
+        <field name="authors" column="author_name"/>
+        <field name="book_id" column="book_id"/>
+      </entity>
+      <entity name="conservation_state" pk="sku" dataSource="library"
+        query="
+          SELECT
+            cs.state AS conservation_state_name,
+            css.sku_id::text AS sku
+          FROM
+            conservation_states cs
+          INNER JOIN
+            conservation_states_skus css ON (cs.id = css.conservation_state_id)
+          WHERE
+            cs.conservation_type = 'conservacao'
+        "
+
+        cacheImpl="SortedMapBackedCache"
+        cacheKey="sku"
+        cacheLookup="sku.sku"
+      >
+        <field name="conservation_states" column="conservation_state_name"/>
+        <field name="sku" column="sku"/>
+      </entity>
+      <entity name="differential" pk="sku" dataSource="library"
+        query="
+          SELECT
+            cs.state AS conservation_state_name,
+            css.sku_id::text AS sku
+          FROM
+            conservation_states cs
+          INNER JOIN
+            conservation_states_skus css ON (cs.id = css.conservation_state_id)
+          WHERE
+            cs.conservation_type = 'diferencial'
+        "
+
+        cacheImpl="SortedMapBackedCache"
+        cacheKey="sku"
+        cacheLookup="sku.sku"
+      >
+        <field name="differentials" column="conservation_state_name"/>
+        <field name="sku" column="sku"/>
+      </entity>
+    </entity>
+  </document>
+</dataConfig>

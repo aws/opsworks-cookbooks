@@ -1,0 +1,19 @@
+language: ruby
+
+rvm:
+  - 2.0.0
+  - 2.1.0
+
+before_script:
+  - bundle exec berks install
+
+script:
+  - bundle exec rake travis
+
+branches:
+  only:
+    - master
+
+notifications:
+  email:
+    - dev@escapestudios.com

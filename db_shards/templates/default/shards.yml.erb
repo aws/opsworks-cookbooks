@@ -1,0 +1,12 @@
+octopus:
+  replicated: true
+  fully_replicated: false
+  environments:
+    - production_disabled
+  production_disabled:
+    <% @dbs.each do |name, attributes| %>
+    <%= name %>:
+      <% attributes.each do |attr, value| %>
+      <%= attr %>: "<%= value %>"
+      <% end %>
+    <% end %>

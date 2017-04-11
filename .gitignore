@@ -1,4 +1,5 @@
 *.gem
+dataimport.properties
 *.rbc
 .config
 .bundle/install.log
@@ -20,3 +21,19 @@ _yardoc
 doc/
 /Gemfile.lock
 build
+*.swp
+*.swo
+*.swn
+
+.DS_Store
+deploy/.DS_Store
+
+solr-config/files/default/cores/library/data/*
+solr-config/files/default/cores/nca/data/
+solr-config/files/default/cores/praga/data/
+solr-config/files/default/cores/recommendations/data/
+solr-config/files/default/cores/search/data/
+solr-config/files/default/cores/seller_deals/data/
+solr-config/files/default/cores/similar_candidates/data/
+solr-config/files/default/cores/similar_moderation/data/
+

@@ -1,0 +1,24 @@
+# Delivery Prototype for Local Phases Execution
+#
+# The purpose of this file is to prototype a new way to execute
+# phases locally on your workstation. The delivery-cli will read
+# this file and execute the command(s) that are configured for
+# each phase. You can customize them by just modifying the phase
+# key on this file.
+#
+# By default these phases are configured for Cookbook Workflow only
+#
+# As this is still a prototype we are not modifying the current
+# config.json file and it will continue working as usual.
+
+[local_phases]
+unit = "rspec spec/"
+lint = "cookstyle"
+# Foodcritic expects an `issues_url` and `source_url` in the metadata.rb
+# We turn this off by default because only cookbooks uploaded to the
+# Supermarket will have these added.
+syntax = "foodcritic . --exclude spec -f any -t \"~FC064\" -t \"~FC065\""
+provision = "chef exec kitchen create"
+deploy = "chef exec kitchen converge"
+smoke = "chef exec kitchen verify"
+cleanup = "chef exec kitchen destroy"

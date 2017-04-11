@@ -1,0 +1,96 @@
+# Includes DSO modules
+Include /etc/proftpd/modules.conf
+
+<%-
+modules = @node[:proftpd][:modules]
+# dirty hack, because "modules.delete_if { |m| m =~ /._./ }" modify @node[:proftpd][:modules] !
+mods = []
+modules.each {|m| mods << m.split('_')[0] }
+mods.uniq!
+mods << 'ctrls_admin' if @node[:proftpd][:modules].include?('ctrls_admin')
+unless mods.empty?
+-%>
+# Includes configurations of enabled modules
+# (if module_name.conf.local exist, it's used in configuration file)
+  <% mods.each do |m| %>
+    <% m_path = "#{@node[:proftpd][:dir]}/#{@node[:proftpd][:dir_extra_conf]}/#{m}.conf" %>
+Include <%= "#{m_path}" %><% if File.exist?("#{m_path}.local") %>.local<% end %>
+  <% end %>
+<% end %>
+
+ServerType                standalone
+UseIPv6                   on
+Port                      <%= node[:proftpd][:port] %>
+DefaultAddress            <%= node[:proftpd][:default_address] %>
+
+<% if @node[:proftpd][:nat] != "off" %>
+# In some cases you have to specify passive ports range to by-pass
+# firewall limitations. Ephemeral ports can be used for that, but
+# feel free to use a more narrow range.
+#PassivePorts              49152 65534
+PassivePorts              60000 65534
+
+# If your host was NATted, this option is useful in order to
+# allow passive tranfers to work. You have to use your public
+# address and opening the passive ports used on your firewall as well.
+MasqueradeAddress         <%= @node[:proftpd][:nat] %>
+<% end %>
+
+ServerName                <%= @node[:proftpd][:server_name] %>
+ServerAdmin               <%= @node[:proftpd][:email_admin] %>
+ServerIdent               off
+
+User                      <%= @node[:proftpd][:user] %>
+Group                     <%= @node[:proftpd][:group] %>
+
+## - Tuning
+MaxInstances              <%= @node[:proftpd][:max_instances] %>
+MaxClientsPerHost         <%= @node[:proftpd][:max_clients_per_host] %>
+TimeoutNoTransfer         <%= @node[:proftpd][:timeout_no_transfer] %>
+TimeoutStalled            <%= @node[:proftpd][:timeout_stalled] %>
+TimeoutIdle               <%= @node[:proftpd][:timeout_idle] %>
+
+MultilineRFC2228          <%= @node[:proftpd][:rfc2228] %>
+UseReverseDNS             <%= @node[:proftpd][:reverse_dns] %>
+
+# Be warned: use of this directive impacts CPU average load!
+# Uncomment this if you like to see progress and transfer rate with ftpwho
+# in downloads. That is not needed for uploads rates.
+UseSendFile               <%= @node[:proftpd][:sendfile] %>
+
+# If set on you can experience a longer connection delay in many cases.
+IdentLookups              <%= @node[:proftpd][:ident_lookups] %>
+
+## - LOG
+SystemLog                 <%= @node[:proftpd][:system_log] %>
+TransferLog               <%= @node[:proftpd][:transfer_log] %>
+
+## - Welcome
+#DisplayLogin              /etc/proftpd/welcome.msg
+#DisplayChdir              .message true
+# no info for non logged user
+DeferWelcome              <%= @node[:proftpd][:defer_welcome] %>
+
+## - MISC
+AllowOverwrite            <%= @node[:proftpd][:allow_overwrite] %>
+
+# Umask 022 is a good standard umask to prevent new files and dirs
+# (second parm) from being group and world writable.
+Umask                     <%= @node[:proftpd][:umask] %>
+
+ListOptions               <%= @node[:proftpd][:list_options] %>
+DenyFilter                \*.*/
+
+ShowSymlinks              <%= @node[:proftpd][:show_symlinks] %>
+
+## - AUTH
+RequireValidShell         <%= @node[:proftpd][:require_valid_shell] %>
+
+# chroot
+DefaultRoot               <%= @node[:proftpd][:default_root] %>
+
+DirFakeUser               on <%= @node[:proftpd][:dir_fakeuser] %>
+DirFakeGroup              on <%= @node[:proftpd][:dir_fakegroup] %>
+
+
+<%= "Include #{@node[:proftpd][:dir]}/proftpd.conf.local" if File.exist?("#{@node[:proftpd][:dir]}/proftpd.conf.local") %>

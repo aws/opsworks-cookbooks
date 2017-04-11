@@ -1,0 +1,13 @@
+#!upstart
+description "Resque scheduler"
+
+start on runlevel [2345]
+
+stop on runlevel [016]
+
+env RACK_ENV=<%= @rack_env %>
+env TERM_CHILD=1
+
+chdir <%= @deploy[:deploy_to] %>/current
+
+exec sudo -u deploy -E -- bundle exec rake environment resque:scheduler >> /var/log/resque/<%= @application %>-scheduler.log 2>&1

@@ -1,0 +1,29 @@
+Bluepill.application("geminabox") do |app|
+  app.process("geminabox_unicorn") do |process|
+    process.pid_file = '<%= @pid %>'
+    process.working_dir = '<%= @working_directory %>'
+    process.start_command = '<%= @bin_dir %>/red_unicorn -x <%= @exec %> -c <%= @config %> -p <%= @pid %> start'
+    process.stop_command = '<%= @bin_dir %>/red_unicorn -x <%= @exec %> -c <%= @config %> -p <%= @pid %> stop'
+    process.restart_command = '<%= @bin_dir %>/red_unicorn -x <%= @exec %> -c <%= @config %> -p <%= @pid %> restart'
+    process.uid = '<%= @process_user %>'
+    process.gid = '<%= @process_group %>'
+    process.start_grace_time 30.seconds
+    process.stop_grace_time 30.seconds
+    process.restart_grace_time 60.seconds
+    process.monitor_children do |child_process|
+      child_process.stop_command 'kill -QUIT {{PID}}'
+      child_process.checks(:mem_usage,
+        :every => 30.seconds,
+        :below => <%= @maxmemory.to_i %>.megabytes,
+        :times => [3,4],
+        :fires => :stop
+      )
+      child_process.checks(:cpu_usage,
+        :every => 30.seconds,
+        :below => <%= @maxcpu.to_i %>,
+        :times => [3,4],
+        :fires => :stop
+      )
+    end
+  end
+end
