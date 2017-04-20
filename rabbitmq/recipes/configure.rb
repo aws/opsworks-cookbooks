@@ -171,38 +171,38 @@ node.set['rabbitmq']['policies']['ha-all']['params'] = { 'ha-mode' => 'all', 'de
 node.set['rabbitmq']['policies']['ha-all']['priority'] = 0
 
 
-Chef::Log.info("Dead Letter Exchange and Queue declaration begin")
-
-if not queue_exists?(queue_name, credentials)
-  execute "create_dead_letter_queue" do
-    command "rabbitmqadmin #{credentials} declare queue name=#{queue_name} durable=true"
-    Chef::Log.info("Declared queue name=#{queue_name}")
-  end
-end
-
-if not exchange_exists?(exchange_name,credentials)
-
-  execute 'create_dead_letter_exchange' do
-    command "rabbitmqadmin #{credentials} declare exchange name=#{exchange_name} type=fanout"
-    Chef::Log.info("Declared exchange name=#{exchange_name}")
-  end
-
-  execute "create_dead_letter_bindings" do
-    command "rabbitmqadmin #{credentials} declare binding source=#{exchange_name} destination_type=queue destination=#{queue_name}"
-    Chef::Log.info("Declared the binding between source=#{exchange_name} and destination=#{queue_name}")
-  end
-
-  # We need to 'initialize' the exchange in order to make DLX to work
-  execute "send_an_initialization_message_to_DLX" do
-    Chef::Log.info("Sending initialization message to the exchange")
-    command "rabbitmqadmin #{credentials} publish exchange=#{exchange_name} payload='initialization_message' routing_key='/test/'"
-  end
-
-  execute "get_the_initialization_message" do
-    command "rabbitmqadmin #{credentials} get queue=#{queue_name} requeue=false"
-    Chef::Log.info("Got initialization message from the DLX queue=#{queue_name}")
-  end
-end
-
-Chef::Log.info("SUCCESS. Dead Letter Exchange and Queue declaration ended")
+# Chef::Log.info("Dead Letter Exchange and Queue declaration begin")
+#
+# if not queue_exists?(queue_name, credentials)
+#   execute "create_dead_letter_queue" do
+#     command "rabbitmqadmin #{credentials} declare queue name=#{queue_name} durable=true"
+#     Chef::Log.info("Declared queue name=#{queue_name}")
+#   end
+# end
+#
+# if not exchange_exists?(exchange_name,credentials)
+#
+#   execute 'create_dead_letter_exchange' do
+#     command "rabbitmqadmin #{credentials} declare exchange name=#{exchange_name} type=fanout"
+#     Chef::Log.info("Declared exchange name=#{exchange_name}")
+#   end
+#
+#   execute "create_dead_letter_bindings" do
+#     command "rabbitmqadmin #{credentials} declare binding source=#{exchange_name} destination_type=queue destination=#{queue_name}"
+#     Chef::Log.info("Declared the binding between source=#{exchange_name} and destination=#{queue_name}")
+#   end
+#
+#   # We need to 'initialize' the exchange in order to make DLX to work
+#   execute "send_an_initialization_message_to_DLX" do
+#     Chef::Log.info("Sending initialization message to the exchange")
+#     command "rabbitmqadmin #{credentials} publish exchange=#{exchange_name} payload='initialization_message' routing_key='/test/'"
+#   end
+#
+#   execute "get_the_initialization_message" do
+#     command "rabbitmqadmin #{credentials} get queue=#{queue_name} requeue=false"
+#     Chef::Log.info("Got initialization message from the DLX queue=#{queue_name}")
+#   end
+# end
+#
+# Chef::Log.info("SUCCESS. Dead Letter Exchange and Queue declaration ended")
 
