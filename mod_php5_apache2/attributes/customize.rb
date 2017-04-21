@@ -17,3 +17,23 @@
 #                                         'php-pear-Auth-SASL',
 #                                         'php-mysql',
 #                                         'php-mcrypt' ]
+
+normal[:mod_php5_apache2][:packages] = [
+    "php-xml",
+    "php-common",
+    "php-xmlrpc",
+    "php-devel",
+    "php-gd",
+    "php-cli",
+    "php-pear-Auth-SASL",
+    "php-mcrypt",
+    "php-pecl-memcached",
+    "php-pear",
+    "php-pear-XML-Parser",
+    "php-pear-DB",
+    "php-pear-HTML-Common",
+    "php",
+    "php-devel",
+    "php-pear-Mail",
+    "php-pear-Mail-Mime"
+  ]
