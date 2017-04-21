@@ -3,6 +3,8 @@ Chef::Log.level = :debug
 
 node[:deploy].each do |application, deploy|
 
+  yum_package 'nodejs'
+
   template "#{deploy[:deploy_to]}/shared/config/aws.yml" do
     source 'quantum/aws.yml.erb'
     mode '0660'
