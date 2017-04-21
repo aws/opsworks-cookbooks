@@ -18,4 +18,14 @@ node[:deploy].each do |application, deploy|
     owner deploy[:user]
     group deploy[:group]
   end
+
+  execute "update yum cache" do
+    Chef::Log.debug("newrelic::update yum cache")
+    command "yum -q makecache -y --disablerepo='*' --enablerepo='newrelic-infra'"
+  end
+
+  package 'newrelic-infra' do
+    action :install
+  end
+
 end
