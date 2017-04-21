@@ -7,8 +7,7 @@ node[:deploy].each do |application, deploy|
     owner deploy[:user]
     group deploy[:group]
     variables(
-      :license_key => node[:newrelic][:license],
-      :environment => node[:deploy][:environment]
+      :license_key => node[:newrelic][:license]
     )
   end
 
