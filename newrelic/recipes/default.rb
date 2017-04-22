@@ -4,8 +4,8 @@ node[:deploy].each do |application, deploy|
     cookbook 'newrelic'
     source 'newrelic-infra.yml.erb'
     mode '0660'
-    owner deploy[:user]
-    group deploy[:group]
+    owner 'root'
+    group 'root'
     variables(
       :license_key => node[:newrelic][:license],
       :environment => node[:newrelic][:environment]
@@ -16,8 +16,8 @@ node[:deploy].each do |application, deploy|
     cookbook 'newrelic'
     source 'newrelic-infra.repo.erb'
     mode '0660'
-    owner deploy[:user]
-    group deploy[:group]
+    owner 'root'
+    group 'root'
   end
 
   execute "update yum cache" do
