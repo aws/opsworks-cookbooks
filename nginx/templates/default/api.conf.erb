@@ -1,0 +1,26 @@
+server {
+	listen   80;
+	server_name  _;
+
+	location ~* ^/(login|logout|info) {
+		proxy_pass http://oauth-service;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	}
+
+	location /v1/employees {
+		proxy_pass http://employee-service;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		add_header 'Access-Control-Allow-Origin' *;
+	}
+
+	location /v1/search {
+		proxy_pass http://elastic-search;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	}
+}
