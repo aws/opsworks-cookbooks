@@ -1,7 +1,7 @@
-<% node['services'].each do |key, value| -%>
+<% node['services'].each do |serviceName, service| -%>
 
-upstream <%= key %> {
-	server <%= value.socket %>;
+upstream <%= serviceName %> {
+	server <%= service.socket %>;
 }
 
 <% end %>
