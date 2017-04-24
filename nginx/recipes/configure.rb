@@ -15,6 +15,8 @@ end
 
 include_recipe "nginx::service"
 
+Chef::Log.debug("nginx: restarting nginx")
+
 service "nginx" do
-  action [ :reload ]
+  action :restart
 end
