@@ -1,0 +1,111 @@
+[el5_latest]
+name=Oracle Linux $releasever Latest ($basearch)
+baseurl=http://public-yum.oracle.com/repo/OracleLinux/OL5/latest/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-el5
+gpgcheck=1
+enabled=1
+
+[el5_ga_base]
+name=Oracle Linux $releasever GA installation media copy ($basearch)
+baseurl=http://public-yum.oracle.com/repo/EnterpriseLinux/EL5/0/base/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-el5
+gpgcheck=1
+enabled=0
+
+[el5_u1_base]
+name=Enterprise Linux $releasever Update 1 installation media copy ($basearch)
+baseurl=http://public-yum.oracle.com/repo/EnterpriseLinux/EL5/1/base/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-el5
+gpgcheck=1
+enabled=0
+
+[el5_u2_base]
+name=Enterprise Linux $releasever Update 2 installation media copy ($basearch)
+baseurl=http://public-yum.oracle.com/repo/EnterpriseLinux/EL5/2/base/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-el5
+gpgcheck=1
+enabled=0
+
+[el5_u3_base]
+name=Enterprise Linux $releasever Update 3 installation media copy ($basearch)
+baseurl=http://public-yum.oracle.com/repo/EnterpriseLinux/EL5/3/base/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-el5
+gpgcheck=1
+enabled=0
+
+[el5_u4_base]
+name=Enterprise Linux $releasever Update 4 installation media copy ($basearch)
+baseurl=http://public-yum.oracle.com/repo/EnterpriseLinux/EL5/4/base/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-el5
+gpgcheck=1
+enabled=0
+
+[el5_u5_base]
+name=Enterprise Linux $releasever Update 5 installation media copy ($basearch)
+baseurl=http://public-yum.oracle.com/repo/EnterpriseLinux/EL5/5/base/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-el5
+gpgcheck=1
+enabled=0
+
+[ol5_u5_base]
+name=Oracle Linux $releasever Update 5 installation media copy ($basearch)
+baseurl=http://public-yum.oracle.com/repo/OracleLinux/OL5/5/base/x86_64/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-el5
+gpgcheck=1
+enabled=0
+
+[ol5_u6_base]
+name=Oracle Linux $releasever Update 6 installation media copy ($basearch)
+baseurl=http://public-yum.oracle.com/repo/OracleLinux/OL5/6/base/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-el5
+gpgcheck=1
+enabled=0
+
+[ol5_u7_base]
+name=Oracle Linux $releasever Update 7 installation media copy ($basearch)
+baseurl=http://public-yum.oracle.com/repo/OracleLinux/OL5/7/base/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-el5
+gpgcheck=1
+enabled=0
+
+[ol5_u8_base]
+name=Oracle Linux $releasever Update 8 installation media copy ($basearch)
+baseurl=http://public-yum.oracle.com/repo/OracleLinux/OL5/8/base/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-el5
+gpgcheck=1
+enabled=0
+
+[el5_addons]
+name=Enterprise Linux $releasever Add ons ($basearch)
+baseurl=http://public-yum.oracle.com/repo/EnterpriseLinux/EL5/addons/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-el5
+gpgcheck=1
+enabled=0
+
+[el5_oracle_addons]
+name=Oracle Software addons for Enterprise Linux $releasever ($basearch)
+baseurl=http://public-yum.oracle.com/repo/EnterpriseLinux/EL5/oracle_addons/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-el5
+gpgcheck=1
+enabled=0
+
+[ol5_UEK_latest]
+name=Latest Unbreakable Enterprise Kernel for Oracle Linux $releasever ($basearch)
+baseurl=http://public-yum.oracle.com/repo/OracleLinux/OL5/UEK/latest/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-el5
+gpgcheck=1
+enabled=0
+
+[ol5_UEK_base]
+name=Unbreakable Enterprise Kernel for Oracle Linux $releasever ($basearch)
+baseurl=http://public-yum.oracle.com/repo/OracleLinux/OL5/UEK/base/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-el5
+gpgcheck=1
+enabled=0
+
+[el5_unsupported]
+name=Productivity Applications for Enterprise Linux $releasever ($basearch)
+baseurl=http://public-yum.oracle.com/repo/EnterpriseLinux/EL5/unsupported/$basearch/
+gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-el5
+gpgcheck=1
+enabled=0

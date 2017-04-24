@@ -1,0 +1,12 @@
+default: &default
+  smtp_host: <%= @hurricane_print_settings[:mailer][:smtp_host] %>
+  smtp_port: <%= @hurricane_print_settings[:mailer][:smtp_port] %>
+  domain: <%= @hurricane_print_settings[:mailer][:domain] %>
+  smtp_user_name: <%= @hurricane_print_settings[:mailer][:smtp_user_name] %>
+  smtp_password: <%= @hurricane_print_settings[:mailer][:smtp_password] %>
+
+staging:
+  <<: *default
+
+production:
+  <<: *default  
