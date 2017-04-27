@@ -80,19 +80,6 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-  template "#{deploy[:deploy_to]}/shared/config/docraptor.yml" do
-    source 'lumen/config/docraptor.yml.erb'
-    mode '0660'
-    owner deploy[:user]
-    group deploy[:group]
-    variables(
-        :lumen_settings => node[:lumen_settings],
-        :lumen_env => rails_env
-    )
-    only_if do
-      File.exists?("#{deploy[:deploy_to]}/shared/config")
-    end
-  end
 
   template "#{deploy[:deploy_to]}/shared/config/routes/resque_server.rb" do
     source 'lumen/config/routes/resque_server.rb.erb'
@@ -174,18 +161,8 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-  template "#{deploy[:deploy_to]}/shared/config/initializers/docusign_rest.rb" do
-    source 'lumen/config/initializers/docusign_rest.rb.erb'
-    mode '0660'
-    owner deploy[:user]
-    group deploy[:group]
-    variables(:lumen_settings => node[:lumen_settings])
-    only_if do
-      File.exists?("#{deploy[:deploy_to]}/shared/config/initializers")
-    end
-  end
 
-template "#{deploy[:deploy_to]}/shared/app/views/shared/_rollbar.js.erb" do
+  template "#{deploy[:deploy_to]}/shared/app/views/shared/_rollbar.js.erb" do
     source 'lumen/_rollbar.js.erb'
     mode '0660'
     owner deploy[:user]
