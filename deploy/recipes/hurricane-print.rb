@@ -185,21 +185,7 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-template "#{deploy[:deploy_to]}/shared/app/views/shared/_rollbar.js.erb" do
-    source 'hurricane-print/_rollbar.js.erb'
-    mode '0660'
-    owner deploy[:user]
-    group deploy[:group]
-    variables(
-        :hurricane_print_settings => node[:hurricane_print_settings],
-        :hurricane_print_env => rails_env
-    )
-    only_if do
-      File.exists?("#{deploy[:deploy_to]}/shared/app/views/shared")
-    end
-  end
-
-if active_job_with_resque
+  if active_job_with_resque
 
     execute 'stop_resque' do
       Chef::Log.info("Stopping Resque....")
