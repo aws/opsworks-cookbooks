@@ -6,8 +6,6 @@ node[:deploy].each do |application, deploy|
   rails_env = deploy[:rails_env]
   current_path = deploy[:current_path]
 
-  active_job_with_resque = (node[:lumen_settings][:active_job].present? && node[:lumen_settings][:active_job][:adapter] == 'resque')
-
   yum_package 'nodejs'
 
   directory "#{deploy[:deploy_to]}/shared/config" do
@@ -64,32 +62,6 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     action :create
     recursive true
-  end
-
-  template "#{deploy[:deploy_to]}/shared/config/resque.yml" do
-    source 'lumen/config/resque.yml.erb'
-    mode '0660'
-    owner deploy[:user]
-    group deploy[:group]
-    variables(
-        :lumen_settings => node[:lumen_settings],
-        :lumen_env => rails_env
-    )
-    only_if do
-      active_job_with_resque && File.exists?("#{deploy[:deploy_to]}/shared/config")
-    end
-  end
-
-
-  template "#{deploy[:deploy_to]}/shared/config/routes/resque_server.rb" do
-    source 'lumen/config/routes/resque_server.rb.erb'
-    mode '0660'
-    owner deploy[:user]
-    group deploy[:group]
-    variables(:lumen_settings => node[:lumen_settings])
-    only_if do
-      active_job_with_resque && File.exists?("#{deploy[:deploy_to]}/shared/config")
-    end
   end
 
   template "#{deploy[:deploy_to]}/shared/config/secrets.yml" do
@@ -176,36 +148,12 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-if active_job_with_resque
-
-    execute 'stop_resque' do
-      Chef::Log.info("Stopping Resque....")
-      cwd current_path
-      user 'deploy'
-      command 'bin/bundle exec rake resque:stop'
-      environment 'RAILS_ENV' => rails_env
-      ignore_failure true
-      notifies :run, 'execute[start_resque]', :immediately
-    end
-
-    execute 'start_resque' do
-      Chef::Log.info("Starting Resque....")
-      cwd current_path
-      user deploy[:user]
-      command 'nohup bundle exec rake resque:work &'
-      environment 'RAILS_ENV' => rails_env
-      ignore_failure false
-      action :nothing
-    end
-
-  end
-
-
   Chef::Log.info("Precompiling Rails assets with environment #{rails_env}")
 
   execute 'rake assets:precompile' do
     cwd current_path
     user deploy[:user]
+    docuuser deploy[:user]
     command 'bundle exec rake assets:precompile'
     environment 'RAILS_ENV' => rails_env
   end
