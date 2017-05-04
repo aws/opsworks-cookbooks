@@ -14,12 +14,12 @@ node[:deploy].each do |application, deploy|
 
   execute "install newrelic php rpm" do
     Chef::Log.debug("newrelic::installing newrelic php rpm")
-    command "sudo rpm -Uvh http://yum.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm"
+    command "sudo rpm -Uvhq http://yum.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm"
   end
 
   execute "install newrelic-php5" do
     Chef::Log.debug("newrelic::installing newrelic-php5")
-    command "sudo yum install newrelic-php5"
+    command "sudo yum -y install newrelic-php5"
   end
 
   execute "setup newrelic-php5" do
