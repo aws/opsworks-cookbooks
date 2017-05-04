@@ -25,7 +25,7 @@ node[:deploy].each do |application, deploy|
     command "yum -q makecache -y --disablerepo='*' --enablerepo='newrelic-infra'"
   end
 
-  execute "update yum cache" do
+  execute "install newrelic-infra" do
     Chef::Log.debug("newrelic::installing newrelic-infra")
     command "sudo yum install newrelic-infra -y"
   end
