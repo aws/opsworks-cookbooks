@@ -13,8 +13,9 @@ node[:deploy].each do |application, deploy|
   end
 
   execute "install newrelic php rpm" do
+    only_if "rpm -q newrelic-repo-5-3.noarch"
     Chef::Log.debug("newrelic::installing newrelic php rpm")
-    command "sudo rpm -Uvhq http://yum.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm"
+    command "sudo rpm -Uvh http://yum.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm"
   end
 
   execute "install newrelic-php5" do
