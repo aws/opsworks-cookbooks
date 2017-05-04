@@ -30,7 +30,7 @@ node[:deploy].each do |application, deploy|
     command "sudo NR_INSTALL_SILENT=true newrelic-install install"
   end
 
-  service "php-fpm" do
+  service "httpd" do
     action :restart
   end
 
