@@ -89,7 +89,11 @@ Rails.application.configure do
 
   # Action Mailer Configuration
   config.action_mailer.default_options = { from: '<%= @hurricane_print_settings[:mailer][:from] %>' }
-  config.action_mailer.smtp_settings = <% @hurricane_print_settings[:mailer][:configuration] %>
+  config.action_mailer.smtp_settings = {
+      <% @hurricane_print_settings[:mailer][:configuration].each do |k,v| %>
+      <%= k %>: '<%= v %>',
+      <% end %>
+  }
   config.action_mailer.raise_delivery_errors = true
 
   # ActiveJob Configuration
