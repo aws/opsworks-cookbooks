@@ -5,6 +5,8 @@ default: &default
   bucket_name: <%= @hurricane_print_settings[:aws][:bucket_name] %> 
   bucket_name: <%= @hurricane_print_settings[:aws][:bucket_name] %> 
   cache_enabled: <%= @hurricane_print_settings[:aws][:cache_enabled] %>
+  document_bucket_name: <%= @hurricane_print_settings[:aws][:document_bucket_name] %>
+
 
 staging:
   <<: *default
