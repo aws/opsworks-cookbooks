@@ -2,7 +2,7 @@ default: &default
   configuration:
     from: '<%= @hurricane_print_settings[:mailer][:from] %>'
     <% @hurricane_print_settings[:mailer][:configuration].each do |k,v| %>
-      <%= k %>: '<%= v %>'
+    <%= k %>: '<%= v %>'
     <% end %>
 
 
