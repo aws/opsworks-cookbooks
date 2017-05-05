@@ -1,6 +1,6 @@
 default: &default
+  from: '<%= @hurricane_print_settings[:mailer][:from] %>'
   configuration:
-    from: '<%= @hurricane_print_settings[:mailer][:from] %>'
     <% @hurricane_print_settings[:mailer][:configuration].each do |k,v| %>
     <%= k %>: '<%= v %>'
     <% end %>
