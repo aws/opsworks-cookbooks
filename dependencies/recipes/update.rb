@@ -57,7 +57,7 @@ when 'debian','ubuntu'
   end
 
   if node[:dependencies][:upgrade_debs]
-    execute 'apt-get upgrade -y' do
+    execute 'DEBIAN_FRONTEND=noninteractive apt-get upgrade -y' do
       action :run
     end
   end
