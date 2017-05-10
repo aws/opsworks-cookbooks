@@ -88,6 +88,9 @@ Rails.application.configure do
   config.pdf_tmp_folder = File.join(Rails.root, 'tmp')
 
   # Action Mailer Configuration
+   <% if @hurricane_print_settings[:mailer][:disable_logger] %>
+  config.action_mailer.logger = nil
+  <% end %>
   config.action_mailer.default_options = { from: "Fit2You <<%= @hurricane_print_settings[:mailer][:from] %>>" }
   config.action_mailer.smtp_settings = <%= @hurricane_print_settings[:mailer][:configuration].to_s %>
   config.action_mailer.raise_delivery_errors = true
