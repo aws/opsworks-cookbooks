@@ -14,8 +14,8 @@ node[:deploy].each do |application, deploy|
   template "/etc/cron.daily/tmpwatch" do
     source 'hurricane-print/daily.tmpwatch.erb'
     mode '0755'
-    owner deploy[:user]
-    group deploy[:group]
+    owner 'root'
+    group 'root'
     variables(
         :hurricane_print_settings => node[:hurricane_print_settings],
         :hurricane_print_env => rails_env
