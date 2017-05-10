@@ -1,0 +1,11 @@
+#! /bin/sh
+flags=-maf
+/usr/sbin/tmpwatch "$flags" -x /tmp/.X11-unix -x /tmp/.XIM-unix \
+-x /tmp/.font-unix -x /tmp/.ICE-unix -x /tmp/.Test-unix \
+-X '/tmp/hsperfdata_*' 1d /tmp
+/usr/sbin/tmpwatch "$flags" 3d /var/tmp
+for d in /var/{cache/man,catman}/{cat?,X11R6/cat?,local/cat?}; do
+if [ -d "$d" ]; then
+/usr/sbin/tmpwatch "$flags" -f 3d "$d"
+fi
+done

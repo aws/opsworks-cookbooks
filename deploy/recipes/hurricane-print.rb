@@ -10,6 +10,18 @@ node[:deploy].each do |application, deploy|
 
   yum_package 'nodejs'
 
+
+  template "/etc/cron.daily/tmpwatch" do
+    source 'hurricane-print/daily.tmpwatch.erb'
+    mode '0755'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+        :hurricane_print_settings => node[:hurricane_print_settings],
+        :hurricane_print_env => rails_env
+    )
+  end
+
   directory "#{deploy[:deploy_to]}/shared/config" do
     mode '0770'
     owner deploy[:user]
