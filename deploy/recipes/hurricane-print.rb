@@ -16,10 +16,6 @@ node[:deploy].each do |application, deploy|
     mode '0755'
     owner 'root'
     group 'root'
-    variables(
-        :hurricane_print_settings => node[:hurricane_print_settings],
-        :hurricane_print_env => rails_env
-    )
   end
 
   directory "#{deploy[:deploy_to]}/shared/config" do
