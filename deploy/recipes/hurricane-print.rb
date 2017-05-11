@@ -11,12 +11,12 @@ node[:deploy].each do |application, deploy|
   yum_package 'nodejs'
 
 
-  template "/etc/cron.daily/tmpwatch" do
-    source 'hurricane-print/daily.tmpwatch.erb'
-    mode '0755'
-    owner 'root'
-    group 'root'
-  end
+  # template "/etc/cron.daily/tmpwatch" do
+  #   source 'hurricane-print/daily.tmpwatch.erb'
+  #   mode '0755'
+  #   owner 'root'
+  #   group 'root'
+  # end
 
   directory "#{deploy[:deploy_to]}/shared/config" do
     mode '0770'
