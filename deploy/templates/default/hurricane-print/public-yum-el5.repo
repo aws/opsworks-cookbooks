@@ -3,7 +3,7 @@ name=Oracle Linux $releasever Latest ($basearch)
 baseurl=http://public-yum.oracle.com/repo/OracleLinux/OL5/latest/$basearch/
 gpgkey=http://public-yum.oracle.com/RPM-GPG-KEY-oracle-el5
 gpgcheck=1
-enabled=1
+enabled=0
 
 [el5_ga_base]
 name=Oracle Linux $releasever GA installation media copy ($basearch)

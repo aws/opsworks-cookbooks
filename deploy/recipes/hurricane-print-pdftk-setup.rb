@@ -10,7 +10,9 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
   end
 
+  execute 'yum-config-manager --enable el5_latest'
   yum_package 'libgcj'
+  execute 'yum-config-manager --disable el5_latest'
 
   execute "download & install pdftk" do
     command "cd /tmp; wget https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk-2.02-1.x86_64.rpm;"
