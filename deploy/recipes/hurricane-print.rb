@@ -11,8 +11,8 @@ node[:deploy].each do |application, deploy|
   yum_package 'nodejs'
 
 
-  template "/etc/cron.daily/tmpwatch" do
-    source 'hurricane-print/daily.tmpwatch.erb'
+  template "/etc/cron.hourly/hurricane-print-tmpwatch" do
+    source 'hurricane-print/tmpwatch.erb'
     variables(
         :tmp_dir => File.join(deploy[:deploy_to], 'shared','tmp')
     )
