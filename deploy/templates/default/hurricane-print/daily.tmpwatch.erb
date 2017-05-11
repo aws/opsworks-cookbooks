@@ -4,7 +4,7 @@ flags=-umc
 -x /tmp/.font-unix -x /tmp/.ICE-unix -x /tmp/.Test-unix \
 -X '/tmp/hsperfdata_*' 10d /tmp
 /usr/sbin/tmpwatch "$flags" 30d /var/tmp
-/usr/sbin/tmpwatch "$flags" 30d /tmp
+/usr/sbin/tmpwatch "$flags" 1d <%= @tmp_dir %>
 for d in /var/{cache/man,catman}/{cat?,X11R6/cat?,local/cat?}; do
 if [ -d "$d" ]; then
 /usr/sbin/tmpwatch "$flags" -f 30d "$d"

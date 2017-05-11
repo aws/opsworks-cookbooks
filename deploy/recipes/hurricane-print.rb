@@ -13,6 +13,9 @@ node[:deploy].each do |application, deploy|
 
   template "/etc/cron.daily/tmpwatch" do
     source 'hurricane-print/daily.tmpwatch.erb'
+    variables(
+        :tmp_dir => File.join(deploy[:deploy_to], 'shared','tmp')
+    )
     mode '0755'
     owner 'root'
     group 'root'
