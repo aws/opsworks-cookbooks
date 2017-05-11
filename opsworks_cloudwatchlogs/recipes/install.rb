@@ -22,10 +22,10 @@ remote_file "/opt/aws/cloudwatch/awslogs-agent-setup.py" do
   retry_delay 5
 end
 
-package "python" do
-  retries 3
-  retry_delay 5
-end
+# package "python" do
+#   retries 3
+#   retry_delay 5
+# end
 
 execute "Install CloudWatch Logs agent" do
   command "/opt/aws/cloudwatch/awslogs-agent-setup.py -n -r '#{node['opsworks']['instance']['region']}' -c '#{node['cloudwatchlogs']['config_file']}'"
