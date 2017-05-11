@@ -85,7 +85,7 @@ Rails.application.configure do
 
   config.mailer = Rails.application.config_for(:mailer)
   config.aws = Rails.application.config_for(:aws)
-  config.pdf_tmp_folder = File.join(Rails.root, 'tmp')
+  config.pdf_tmp_folder = '<%= @pdf_tmp_folder %>'
 
   # Action Mailer Configuration
    <% if @hurricane_print_settings[:mailer][:disable_logger] %>
