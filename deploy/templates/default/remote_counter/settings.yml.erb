@@ -1,0 +1,9 @@
+<%= @remote_counter_env %>:
+  mysql:
+    host: <%= @remote_counter_settings[:mysql][:host] %>
+    username: <%= @remote_counter_settings[:mysql][:username] %>
+    database: <%= @remote_counter_settings[:mysql][:database] %>
+    password: <%= @remote_counter_settings[:mysql][:password] %>
+  rollbar:
+    token: <%= @remote_counter_settings[:rollbar][:token] %>
+    enabled: <%= @remote_counter_settings[:rollbar][:enabled] %>

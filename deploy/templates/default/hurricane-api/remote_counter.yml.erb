@@ -1,0 +1,13 @@
+<%= @env %>:
+  host: <%= @hurricane_api_settings[:remote_counter][:host] %>
+  port: <%= @hurricane_api_settings[:remote_counter][:port] %>
+  path: <%= @hurricane_api_settings[:remote_counter][:path] %>
+  insurance_companies: <%= @hurricane_api_settings[:remote_counter][:insurance_companies] %>
+
+
+test:
+  host: localhost
+  port: 4567
+  path: '/get_counter'
+  insurance_companies:
+    - UCA
