@@ -56,7 +56,7 @@ node[:deploy].each do |application, deploy|
     Chef::Log.info("Start Unicorn ....")
     cwd current_path
     user 'deploy'
-    command "bundle exec unicorn -c #{unicorn_config_path} -D"
+    command "sleep 3000 && bundle exec unicorn -c #{unicorn_config_path} -D"
     environment 'REMOTE_COUNTER_ENV' => remote_counter_env
     ignore_failure false
   end
