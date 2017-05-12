@@ -40,24 +40,24 @@ node[:deploy].each do |application, deploy|
   end
 
   execute 'stop_unicorn' do
-    Chef::Log.info("Stop Unicorn with: cat #{unicorn_pid_path} | xargs kill -QUIT")
+    Chef::Log.info("Stop Unicorn ...")
     cwd current_path
     user 'deploy'
     command "cat #{unicorn_pid_path} | xargs kill -QUIT"
     environment 'REMOTE_COUNTER_ENV' => remote_counter_env
     ignore_failure true
-    notifies :run, 'execute[start_unicorn]', :immediately
+    #notifies :run, 'execute[start_unicorn]', :immediately
   end
 
 
   execute 'start_unicorn' do
-    Chef::Log.info("Start Unicorn with: bundle exec unicorn -c #{unicorn_config_path}")
+    Chef::Log.info("Start Unicorn ....")
     cwd current_path
     user 'deploy'
     command "bundle exec unicorn -c #{unicorn_config_path} -D"
     environment 'REMOTE_COUNTER_ENV' => remote_counter_env
     ignore_failure false
-    action :nothing
+    #action :nothing
   end
 
 
