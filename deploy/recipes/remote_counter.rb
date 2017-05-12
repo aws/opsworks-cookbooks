@@ -46,6 +46,9 @@ node[:deploy].each do |application, deploy|
     command "cat #{unicorn_pid_path} | xargs kill -QUIT"
     environment 'REMOTE_COUNTER_ENV' => remote_counter_env
     ignore_failure true
+    only_if do
+      File.exists?(unicorn_pid_path)
+    end
   end
 
 
