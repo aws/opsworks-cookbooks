@@ -2,7 +2,7 @@
 # note the trailing slash in this example
 
 worker_processes 2
-working_directory <%= @working_dir %>
+working_directory '<%= @working_dir %>'
 
 timeout 30
 
@@ -11,8 +11,8 @@ timeout 30
 listen <%= @remote_counter_settings[:unicorn_port] || 4500 %>
 
 # Set process id path
-pid <%= @pid_dir %>
+pid '<%= @pid_path %>'
 
 # Set log file paths
-stderr_path File.join('<%= @log_dir %>', 'unicorn.stderr.log')
-stdout_path File.join('<%= @log_dir %>', 'unicorn.stdout.log')
+stderr_path '<%= @stderr_path %>'
+stdout_path '<%= @stdout_path %>'
