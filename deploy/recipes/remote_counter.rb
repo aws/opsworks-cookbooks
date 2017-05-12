@@ -46,7 +46,7 @@ node[:deploy].each do |application, deploy|
     command "cat #{unicorn_pid_path} | xargs kill -QUIT"
     environment 'REMOTE_COUNTER_ENV' => remote_counter_env
     ignore_failure true
-    #notifies :run, 'execute[start_unicorn]', :immediately
+    notifies :run, 'execute[start_unicorn]'
   end
 
 
@@ -57,7 +57,7 @@ node[:deploy].each do |application, deploy|
     command "bundle exec unicorn -c #{unicorn_config_path} -D"
     environment 'REMOTE_COUNTER_ENV' => remote_counter_env
     ignore_failure false
-    #action :nothing
+    action :nothing
   end
 
 
