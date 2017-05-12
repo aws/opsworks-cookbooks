@@ -40,7 +40,7 @@ node[:deploy].each do |application, deploy|
   end
 
   execute 'stop_unicorn' do
-    Chef::Log.info("Stop Unicorn....")
+    Chef::Log.info("Stop Unicorn with: cat #{unicorn_pid_path} | xargs kill -QUIT")
     cwd current_path
     user 'deploy'
     command "cat #{unicorn_pid_path} | xargs kill -QUIT"
@@ -51,7 +51,7 @@ node[:deploy].each do |application, deploy|
 
 
   execute 'start_unicorn' do
-    Chef::Log.info("Start Unicorn....")
+    Chef::Log.info("Start Unicorn with: bundle exec unicorn -c #{unicorn_config_path}")
     cwd current_path
     user 'deploy'
     command "bundle exec unicorn -c #{unicorn_config_path} -D"
