@@ -7,9 +7,9 @@ end
 template node["cloudwatchlogs"]["config_file"] do
   source "awslogs.conf.erb"
   variables({
-                :state_file_dir => node["cloudwatchlogs"]["state_file_dir"],
-                :log_streams => node["cloudwatchlogs"]["log_streams"]
-            })
+    :state_file_dir => node["cloudwatchlogs"]["state_file_dir"],
+    :log_streams => node["cloudwatchlogs"]["log_streams"]
+  })
   owner "root"
   group "root"
   mode 0644

@@ -18,60 +18,60 @@ include_attribute 'opsworks_initial_setup::default'
 include_attribute 'opsworks_commons::default'
 
 case node["opsworks"]["ruby_version"]
-  when "2.3"
-    default[:ruby][:major_version] = "2"
-    default[:ruby][:minor_version] = "3"
-    default[:ruby][:patch_version] = "4"
-    default[:ruby][:pkgrelease]    = "1"
+when "2.3"
+  default[:ruby][:major_version] = "2"
+  default[:ruby][:minor_version] = "3"
+  default[:ruby][:patch_version] = "4"
+  default[:ruby][:pkgrelease]    = "1"
 
-    default[:ruby][:full_version] = [node[:ruby][:major_version], node[:ruby][:minor_version]].join(".")
-    default[:ruby][:version] = [node[:ruby][:full_version], node[:ruby][:patch_version]].join(".")
+  default[:ruby][:full_version] = [node[:ruby][:major_version], node[:ruby][:minor_version]].join(".")
+  default[:ruby][:version] = [node[:ruby][:full_version], node[:ruby][:patch_version]].join(".")
 
-  when "2.2"
-    default[:ruby][:major_version] = '2'
-    default[:ruby][:minor_version] = '2'
-    default[:ruby][:patch_version] = "7"
-    default[:ruby][:pkgrelease]    = '1'
+when "2.2"
+  default[:ruby][:major_version] = '2'
+  default[:ruby][:minor_version] = '2'
+  default[:ruby][:patch_version] = "7"
+  default[:ruby][:pkgrelease]    = '1'
 
-    default[:ruby][:full_version] = [node[:ruby][:major_version], node[:ruby][:minor_version]].join(".")
-    default[:ruby][:version] = [node[:ruby][:full_version], node[:ruby][:patch_version]].join(".")
+  default[:ruby][:full_version] = [node[:ruby][:major_version], node[:ruby][:minor_version]].join(".")
+  default[:ruby][:version] = [node[:ruby][:full_version], node[:ruby][:patch_version]].join(".")
 
-  when "2.1"
-    default[:ruby][:major_version] = '2'
-    default[:ruby][:minor_version] = '1'
-    default[:ruby][:patch_version] = '9'
-    default[:ruby][:pkgrelease]    = '1'
+when "2.1"
+  default[:ruby][:major_version] = '2'
+  default[:ruby][:minor_version] = '1'
+  default[:ruby][:patch_version] = '9'
+  default[:ruby][:pkgrelease]    = '1'
 
-    default[:ruby][:full_version] = [node[:ruby][:major_version], node[:ruby][:minor_version]].join(".")
-    default[:ruby][:version] = [node[:ruby][:full_version], node[:ruby][:patch_version]].join(".")
+  default[:ruby][:full_version] = [node[:ruby][:major_version], node[:ruby][:minor_version]].join(".")
+  default[:ruby][:version] = [node[:ruby][:full_version], node[:ruby][:patch_version]].join(".")
 
-  when "2.0.0"
-    default[:ruby][:major_version] = '2'
-    default[:ruby][:minor_version] = '0'
-    default[:ruby][:patch] = 'p648' # this attribute will disappear in favor of the sematic versioning schema
-    default[:ruby][:patch_version] = node[:ruby][:patch]
-    default[:ruby][:pkgrelease] = '1'
+when "2.0.0"
+  default[:ruby][:major_version] = '2'
+  default[:ruby][:minor_version] = '0'
+  default[:ruby][:patch] = 'p648' # this attribute will disappear in favor of the sematic versioning schema
+  default[:ruby][:patch_version] = node[:ruby][:patch]
+  default[:ruby][:pkgrelease] = '1'
 
-    default[:ruby][:full_version] = '2.0.0'
-    default[:ruby][:version] = [node[:ruby][:full_version], node[:ruby][:patch_version]].join("-")
+  default[:ruby][:full_version] = '2.0.0'
+  default[:ruby][:version] = [node[:ruby][:full_version], node[:ruby][:patch_version]].join("-")
 
-  when "1.9.3"
-    default[:ruby][:major_version] = '1'
-    default[:ruby][:minor_version] = '9'
-    default[:ruby][:patch] = 'p551'  # this attribute will disappear in favor of the sematic versioning schema
-    default[:ruby][:patch_version] = node[:ruby][:patch]
-    default[:ruby][:pkgrelease] = '1'
+when "1.9.3"
+  default[:ruby][:major_version] = '1'
+  default[:ruby][:minor_version] = '9'
+  default[:ruby][:patch] = 'p551'  # this attribute will disappear in favor of the sematic versioning schema
+  default[:ruby][:patch_version] = node[:ruby][:patch]
+  default[:ruby][:pkgrelease] = '1'
 
-    default[:ruby][:full_version] = '1.9.3'
-    default[:ruby][:version] = [node[:ruby][:full_version], node[:ruby][:patch_version]].join("-")
+  default[:ruby][:full_version] = '1.9.3'
+  default[:ruby][:version] = [node[:ruby][:full_version], node[:ruby][:patch_version]].join("-")
 
-  else
-    default[:ruby][:major_version] = ''
-    default[:ruby][:full_version] = ''
-    default[:ruby][:patch_version] = ''
-    default[:ruby][:patch] = ''  # this attribute will disappear in favor of the sematic versioning schema
-    default[:ruby][:pkgrelease] = ''
-    default[:ruby][:version] = ''
+else
+  default[:ruby][:major_version] = ''
+  default[:ruby][:full_version] = ''
+  default[:ruby][:patch_version] = ''
+  default[:ruby][:patch] = ''  # this attribute will disappear in favor of the sematic versioning schema
+  default[:ruby][:pkgrelease] = ''
+  default[:ruby][:version] = ''
 end
 
 include_attribute "ruby::customize"

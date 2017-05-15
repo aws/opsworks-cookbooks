@@ -10,4 +10,3 @@
 #
 #normal[:opsworks][:deploy_user][:shell] = '/bin/zsh'
 #normal[:opsworks][:deploy_user][:user] = 'deploy'
-#normal[:opsworks][:rails_stack][:restart_command] = "../../shared/scripts/unicorn restart!"

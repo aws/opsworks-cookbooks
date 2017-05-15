@@ -2,9 +2,9 @@
 state_file = <%= @state_file_dir %>/agent-state
 
 <% @log_streams.each do |log_stream| %>
-    [<%= log_stream[:log_group_name] %> <%= log_stream[:file] %>]
-    <% log_stream.each do |key, value| %>
-        <% next if value.nil? %>
-        <%= key %> = <%= value %>
-    <% end %>
+[<%= log_stream[:log_group_name] %> <%= log_stream[:file] %>]
+<% log_stream.each do |key, value| %>
+<% next if value.nil? %>
+<%= key %> = <%= value %>
+<% end %>
 <% end %>
