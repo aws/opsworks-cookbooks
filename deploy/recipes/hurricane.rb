@@ -72,7 +72,7 @@ node[:deploy].each do |application, deploy|
   end
 
   template "#{deploy[:deploy_to]}/shared/config/remote_counter.yml" do
-    source 'hurricane-api/remote_counter.yml.erb'
+    source 'hurricane/remote_counter.yml.erb'
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
