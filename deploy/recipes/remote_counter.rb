@@ -86,7 +86,7 @@ node[:deploy].each do |application, deploy|
     environment 'REMOTE_COUNTER_ENV' => remote_counter_env
     ignore_failure false
     only_if do
-      unicorn_running?
+      File.exists?(unicorn_pid_path) && (pid = File.read(unicorn_pid_path).chomp) && system("ps aux | grep #{pid} | grep -v grep > /dev/null")
     end
   end
 
@@ -94,22 +94,9 @@ node[:deploy].each do |application, deploy|
     Chef::Log.info("Delete stale PID file....")
     action :delete
     only_if do
-      unicorn_stale_pid_file?
+      File.exists?(unicorn_pid_path) && (pid = File.read(unicorn_pid_path).chomp) && !system("ps aux | grep #{pid} | grep -v grep > /dev/null")
     end
   end
-
-  def unicorn_running?
-    File.exists?(unicorn_pid_path) && (pid = File.read(unicorn_pid_path).chomp) && process_is_running?(pid)
-  end
-
-  def unicorn_stale_pid_file?
-    File.exists?(unicorn_pid_path) && (pid = File.read(unicorn_pid_path).chomp) && !process_is_running?(pid)
-  end
-
-  def process_is_running?(pid)
-    system("ps aux | grep #{pid} | grep -v grep > /dev/null")
-  end
-
 
   execute 'start_unicorn' do
     Chef::Log.info("Start Unicorn ....")
@@ -119,7 +106,7 @@ node[:deploy].each do |application, deploy|
     environment 'REMOTE_COUNTER_ENV' => remote_counter_env
     ignore_failure false
     not_if do
-      unicorn_running?
+      File.exists?(unicorn_pid_path) && (pid = File.read(unicorn_pid_path).chomp) && system("ps aux | grep #{pid} | grep -v grep > /dev/null")
     end
   end
 
