@@ -80,40 +80,33 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-  execute 'restart_unicorn' do
-    Chef::Log.info("Restart Unicorn ...")
-    cwd current_path
-    user 'deploy'
-    command "kill -USR2 `cat #{unicorn_pid_path}`"
-    environment 'REMOTE_COUNTER_ENV' => remote_counter_env
-    ignore_failure false
-    only_if do
-      File.exists?(unicorn_pid_path) && (pid = File.read(unicorn_pid_path).chomp) && system("ps aux | grep #{pid} | grep -v grep > /dev/null")
+  if File.exists?(unicorn_pid_path)
+    pid = File.read(unicorn_pid_path).chomp
+    if system("ps aux | grep #{pid} | grep -v grep > /dev/null")
+
+      execute 'restart_unicorn' do
+        Chef::Log.info("Restart Unicorn ...")
+        cwd current_path
+        user 'deploy'
+        command "kill -USR2 `cat #{unicorn_pid_path}`"
+        environment 'REMOTE_COUNTER_ENV' => remote_counter_env
+        ignore_failure false
+      end
+    else
+      file unicorn_pid_path do
+        action :delete
+      end
+    end
+  else
+    execute 'start_unicorn' do
+      Chef::Log.info("Start Unicorn ....")
+      cwd current_path
+      user 'deploy'
+      command "bundle exec unicorn --env #{remote_counter_env} -c #{unicorn_config_path} -D"
+      environment 'REMOTE_COUNTER_ENV' => remote_counter_env
+      ignore_failure false
     end
   end
-
-  file unicorn_pid_path do
-    Chef::Log.info("Delete stale PID file....")
-    action :delete
-    only_if do
-      File.exists?(unicorn_pid_path) && (pid = File.read(unicorn_pid_path).chomp) && !system("ps aux | grep #{pid} | grep -v grep > /dev/null")
-    end
-  end
-
-  execute 'start_unicorn' do
-    Chef::Log.info("Start Unicorn ....")
-    cwd current_path
-    user 'deploy'
-    command "bundle exec unicorn --env #{remote_counter_env} -c #{unicorn_config_path} -D"
-    environment 'REMOTE_COUNTER_ENV' => remote_counter_env
-    ignore_failure false
-    not_if do
-      File.exists?(unicorn_pid_path) && (pid = File.read(unicorn_pid_path).chomp) && system("ps aux | grep #{pid} | grep -v grep > /dev/null")
-    end
-  end
-
-
-
 
 end
 
