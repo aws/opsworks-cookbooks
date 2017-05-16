@@ -5,6 +5,7 @@ user "deploy"
 working_directory "<%= @working_dir %>"
 
 listen "<%= @sockets_path %>", :backlog => 1024, :tcp_nodelay => true, :tcp_nopush => false, :tries => 5, :delay => 0.5, :accept_filter => "httpready"
+listen 4500
 
 timeout 60
 
@@ -39,11 +40,10 @@ end
 
 after_fork do |server, worker|
 
-end
+  # if preload_app is true, then you may also want to check and
+  # restart any other shared sockets/descriptors such as Memcached,
+  # and Redis.  TokyoCabinet file handles are safe to reuse
+  # between any number of forked children (assuming your kernel
+  # correctly implements pread()/pwrite() system calls)
 
-# if preload_app is true, then you may also want to check and
-# restart any other shared sockets/descriptors such as Memcached,
-# and Redis.  TokyoCabinet file handles are safe to reuse
-# between any number of forked children (assuming your kernel
-# correctly implements pread()/pwrite() system calls)
 end

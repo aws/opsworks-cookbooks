@@ -1,4 +1,6 @@
 include_recipe 'deploy'
+include_recipe 'nginx'
+
 Chef::Log.level = :debug
 
 node[:deploy].each do |application, deploy|
@@ -10,7 +12,7 @@ node[:deploy].each do |application, deploy|
   unicorn_config_dir = File.join(deploy[:deploy_to], 'shared', 'config')
   unicorn_sockets_dir = File.join(deploy[:deploy_to], 'shared', 'sockets')
   unicorn_log_dir = File.join(deploy[:deploy_to], 'shared', 'log')
-  unicorn_config_path = File.join(unicorn_config_dir, 'shared', 'config', 'unicorn.rb')
+  unicorn_config_path = File.join(unicorn_config_dir, 'unicorn.conf')
 
 
   directory unicorn_pid_dir do
