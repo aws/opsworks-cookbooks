@@ -4,6 +4,7 @@
     username: <%= @remote_counter_settings[:mysql][:username] %>
     database: <%= @remote_counter_settings[:mysql][:database] %>
     password: <%= @remote_counter_settings[:mysql][:password] %>
+    reconnect: true
   rollbar:
     token: <%= @remote_counter_settings[:rollbar][:token] %>
     enabled: <%= @remote_counter_settings[:rollbar][:enabled] %>
