@@ -195,16 +195,19 @@ define :opsworks_deploy do
   end
 
   if deploy[:application_type] == 'ruby_unicorn_nginx'
+    case node[:opsworks][:ruby_unicorn_nginx_stack][:name]
 
-    Chef::Log.debug("===========================")
-    Chef::Log.debug("#{node[:opsworks].inspect}")
-    Chef::Log.debug("===========================")
+      when 'nginx_unicorn'
+        unicorn_web_app do
+          application application
+          deploy deploy
+        end
 
-    unicorn_web_app do
-      application application
-      deploy deploy
+      else
+        raise "Unsupport Ruby Unicorn Nginx stack"
     end
   end
+
 
   bash "Enable selinux var_log_t target for application log files" do
     dir_path_log = "#{deploy[:deploy_to]}/shared/log"
