@@ -195,6 +195,11 @@ define :opsworks_deploy do
   end
 
   if deploy[:application_type] == 'ruby_unicorn_nginx'
+
+    Chef::Log.debug("===========================")
+    Chef::Log.debug("#{node[:opsworks].inspect}")
+    Chef::Log.debug("===========================")
+
     unicorn_web_app do
       application application
       deploy deploy
