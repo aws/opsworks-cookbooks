@@ -1,5 +1,4 @@
 include_recipe 'deploy'
-include_recipe 'nginx'
 
 Chef::Log.level = :debug
 
