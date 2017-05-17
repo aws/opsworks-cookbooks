@@ -114,16 +114,16 @@ node[:deploy].each do |application, deploy|
   #   cookbook "nginx"
   # end
 
-  # execute "restart Server" do
-  #   Chef::Log.debug('Restarting Sinatra Server From Remote Counter Script')
-  #   cwd deploy[:current_path]
-  #   command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:ruby_unicorn_nginx][:restart_command]}"
-  #   action :run
-  #
-  #   only_if do
-  #     File.exists?(deploy[:current_path])
-  #   end
-  # end
+  execute "restart Server" do
+    Chef::Log.debug('Restarting Sinatra Server From Remote Counter Script')
+    cwd deploy[:current_path]
+    command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:ruby_unicorn_nginx][:restart_command]}"
+    action :run
+
+    only_if do
+      File.exists?(deploy[:current_path])
+    end
+  end
 
 end
 

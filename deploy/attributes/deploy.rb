@@ -35,11 +35,6 @@ default[:opsworks][:deploy_chef_provider] = 'Timestamped'
 
 valid_deploy_chef_providers = ['Timestamped', 'Revision', 'Branch']
 
-Chef::Log.debug("=========deploy====attributes==============")
-Chef::Log.debug("#{node[:opsworks][:ruby_unicorn_nginx_stack].inspect}")
-Chef::Log.debug("=========deploy====attributes==============")
-
-
 unless valid_deploy_chef_providers.include?(node[:opsworks][:deploy_chef_provider])
   raise "Invalid deploy_chef_provider: #{node[:opsworks][:deploy_chef_provider]}. Valid providers: #{valid_deploy_chef_providers.join(', ')}."
 end
