@@ -117,7 +117,7 @@ node[:deploy].each do |application, deploy|
   execute "restart Server" do
     Chef::Log.debug('Restarting Sinatra Server From Remote Counter Script')
     cwd deploy[:current_path]
-    command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:ruby_stack][:restart_command]}"
+    command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:ruby_web_stack][:restart_command]}"
     action :run
 
     only_if do

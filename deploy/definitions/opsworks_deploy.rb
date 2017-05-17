@@ -194,8 +194,8 @@ define :opsworks_deploy do
     end
   end
 
-  if deploy[:application_type] == 'ruby' && node[:opsworks][:instance][:layers].include?('ruby')
-    case node[:opsworks][:ruby_stack][:name]
+  if deploy[:application_type] == 'ruby_web' && node[:opsworks][:instance][:layers].include?('ruby')
+    case node[:opsworks][:ruby_web_stack][:name]
 
         when 'nginx_unicorn'
         unicorn_web_app do
@@ -204,7 +204,7 @@ define :opsworks_deploy do
         end
 
       else
-        raise "Unsupport Ruby stack"
+        raise "Unsupport Ruby Web stack"
     end
   end
 
