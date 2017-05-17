@@ -108,5 +108,11 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  nginx_web_app application do
+    application deploy
+    template 'application_site.erb'
+    cookbook "nginx"
+  end
+
 end
 
