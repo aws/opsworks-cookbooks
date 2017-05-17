@@ -9,6 +9,8 @@
 # The following shows how to override the gem binary:
 #
 
-default["opsworks"]["ruby_web_stack"] = {} if node["opsworks"].has_key?("instance") &&
-                                              node["opsworks"]["instance"].has_key?("layers") &&
-                                              node["opsworks"]["instance"]["layers"].include?("ruby_web")
+default["opsworks"]["ruby_web_stack"] = {}  if node["opsworks"].has_key?("instance") &&
+                                               node["opsworks"]["instance"].has_key?("layers") &&
+                                               node["opsworks"]["instance"]["layers"].include?("ruby_web")
+
+
