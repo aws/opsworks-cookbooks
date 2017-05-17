@@ -1,5 +1,5 @@
 default[:opsworks][:ruby_web_stack][:name] = "nginx_unicorn"
-#node[:opsworks][:ruby_web_stack] ||= {name: "nginx_unicorn"}
+node[:opsworks][:ruby_web_stack] ||= {name: "nginx_unicorn"}
 case node[:opsworks][:ruby_web_stack][:name]
   when "nginx_unicorn"
     normal[:opsworks][:ruby_web_stack][:recipe] = "unicorn::ruby_web"
