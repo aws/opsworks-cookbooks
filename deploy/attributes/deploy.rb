@@ -41,7 +41,9 @@ case node[:platform]
 when 'debian','ubuntu'
   default[:opsworks][:deploy_user][:group] = 'www-data'
 when 'centos','redhat','fedora','amazon'
-  default[:opsworks][:deploy_user][:group] = node['opsworks']['rails_stack']['name'] == 'nginx_unicorn' ? 'nginx' : 'apache'
+  default[:opsworks][:deploy_user][:group] = (
+  node['opsworks']['rails_stack']['name'] == 'nginx_unicorn' ||
+      node['opsworks']['ruby_web_stack']['name'] == 'nginx_unicorn') ? 'nginx' : 'apache'
 end
 
 default[:opsworks][:rails][:ignore_bundler_groups] = ['test', 'development']
