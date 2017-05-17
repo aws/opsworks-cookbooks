@@ -1,3 +1,4 @@
+default[:opsworks][:ruby_unicorn_nginx_stack][:name] = "unicorn::ruby_unicorn_nginx"
 default[:opsworks][:ruby_unicorn_nginx_stack][:recipe] = "unicorn::ruby_unicorn_nginx"
 default[:opsworks][:ruby_unicorn_nginx_stack][:needs_reload] = true
 default[:opsworks][:ruby_unicorn_nginx_stack][:service] = 'unicorn'

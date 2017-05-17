@@ -31,6 +31,12 @@ default[:opsworks][:deploy_keep_releases] = 5
 default[:opsworks][:deploy_chef_provider] = 'Timestamped'
 
 valid_deploy_chef_providers = ['Timestamped', 'Revision', 'Branch']
+
+Chef::Log.debug("=========deploy====attributes==============")
+Chef::Log.debug("#{node[:opsworks].inspect}")
+Chef::Log.debug("=========deploy====attributes==============")
+
+
 unless valid_deploy_chef_providers.include?(node[:opsworks][:deploy_chef_provider])
   raise "Invalid deploy_chef_provider: #{node[:opsworks][:deploy_chef_provider]}. Valid providers: #{valid_deploy_chef_providers.join(', ')}."
 end
@@ -42,7 +48,7 @@ case node[:platform]
 when 'debian','ubuntu'
   default[:opsworks][:deploy_user][:group] = 'www-data'
 when 'centos','redhat','fedora','amazon'
-  default[:opsworks][:deploy_user][:group] = (node['opsworks']['rails_stack']['name'] == 'nginx_unicorn' || deploy[:application_type] == 'ruby_nginx_unicorn') ? 'nginx' : 'apache'
+  default[:opsworks][:deploy_user][:group] = (node['opsworks']['rails_stack']['name'] == 'nginx_unicorn' || node['opsworks']['ruby_unicorn_nginx_stack']['name'] == 'nginx_unicorn') ? 'nginx' : 'apache'
 end
 
 default[:opsworks][:rails][:ignore_bundler_groups] = ['test', 'development']
