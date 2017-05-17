@@ -9,5 +9,4 @@
 # The following shows how to override the gem binary:
 #
 
-default["opsworks"]["ruby_web_stack"] = {}
 

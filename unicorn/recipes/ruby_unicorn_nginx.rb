@@ -3,8 +3,8 @@ include_recipe "unicorn"
 
 # setup Unicorn service per app
 node[:deploy].each do |application, deploy|
-  if deploy[:application_type] != 'other'
-    Chef::Log.debug("Skipping unicorn::ruby_web application #{application} as it is not an Ruby Web app")
+  if deploy[:application_type] != 'ruby_unicorn_nginx'
+    Chef::Log.debug("Skipping unicorn::ruby_unicorn_nginx application #{application} as it is not an Ruby Web app")
     next
   end
 
@@ -22,7 +22,7 @@ node[:deploy].each do |application, deploy|
     mode '0755'
     owner deploy[:user]
     group deploy[:group]
-    source "unicorn.service.ruby_web.erb"
+    source "unicorn.service.ruby_unicorn_nginx.erb"
     variables(:deploy => deploy, :application => application)
   end
 
