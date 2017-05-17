@@ -8,4 +8,4 @@
 
 # The following shows how to override the gem binary:
 #
-#normal[:dependencies][:gem_binary] = '/my/gem/binary'
+default["opsworks"]["ruby_web_stack"] = {}
