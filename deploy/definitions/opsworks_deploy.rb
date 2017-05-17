@@ -194,6 +194,21 @@ define :opsworks_deploy do
     end
   end
 
+  if deploy[:application_type] == 'ruby_unicorn_nginx'
+    case node[:opsworks][:ruby_unicorn_nginx_stack][:name]
+
+      when 'nginx_unicorn'
+        unicorn_web_app do
+          application application
+          deploy deploy
+        end
+
+      else
+        raise "Unsupport Ruby Unicorn Nginx stack"
+    end
+  end
+
+
   bash "Enable selinux var_log_t target for application log files" do
     dir_path_log = "#{deploy[:deploy_to]}/shared/log"
     context = "var_log_t"

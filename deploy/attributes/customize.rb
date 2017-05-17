@@ -6,7 +6,3 @@
 # put the overrides in YOUR customize.rb file.
 ###
 
-# The following shows how to override the deploy user and shell:
-#
-#normal[:opsworks][:deploy_user][:shell] = '/bin/zsh'
-#normal[:opsworks][:deploy_user][:user] = 'deploy'
