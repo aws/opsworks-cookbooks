@@ -3,7 +3,7 @@ include_recipe "unicorn"
 
 # setup Unicorn service per app
 node[:deploy].each do |application, deploy|
-  if deploy[:application_type] != 'ruby_web'
+  if deploy[:application_type] != 'other'
     Chef::Log.debug("Skipping unicorn::ruby_web application #{application} as it is not an Ruby Web app")
     next
   end

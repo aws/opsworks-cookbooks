@@ -194,7 +194,7 @@ define :opsworks_deploy do
     end
   end
 
-  if deploy[:application_type] == 'ruby_web' && node[:opsworks][:instance][:layers].include?('ruby')
+  if deploy[:application_type] == 'other' && node[:opsworks][:instance][:layers].include?('ruby_web')
     case node[:opsworks][:ruby_web_stack][:name]
 
       when 'nginx_unicorn'
