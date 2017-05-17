@@ -1,3 +1,6 @@
+Chef::Log.level = :debug
+
+
 ###
 # Do not use this file to override the deploy cookbook's default
 # attributes.  Instead, please use the customize.rb attributes file,
@@ -33,7 +36,7 @@ default[:opsworks][:deploy_chef_provider] = 'Timestamped'
 valid_deploy_chef_providers = ['Timestamped', 'Revision', 'Branch']
 
 Chef::Log.debug("=========deploy====attributes==============")
-Chef::Log.debug("#{node[:opsworks].inspect}")
+Chef::Log.debug("#{node[:opsworks][:ruby_unicorn_nginx_stack].inspect}")
 Chef::Log.debug("=========deploy====attributes==============")
 
 
