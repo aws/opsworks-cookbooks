@@ -249,6 +249,12 @@ node[:deploy].each do |application, deploy|
       notifies :restart, "service[monit]"
     end
 
+    execute "restart monit process #{queue_name}" do
+      command "monit restart #{queue_name}"
+    end
+
+
+
   end
 
 
