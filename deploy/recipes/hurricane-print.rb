@@ -209,27 +209,11 @@ node[:deploy].each do |application, deploy|
 
   if active_job_with_resque
 
-    execute 'stop_resque' do
-      Chef::Log.info("Stopping Resque....")
-      cwd current_path
-      user 'deploy'
-      command 'bin/bundle exec rake resque:stop'
-      environment 'RAILS_ENV' => rails_env
-      ignore_failure true
-      notifies :run, 'execute[start_resque]', :immediately
-    end
-
-    execute 'start_resque' do
-      Chef::Log.info("Starting Resque....")
-      cwd current_path
-      user deploy[:user]
-      command 'nohup bundle exec rake resque:work &'
-      environment 'RAILS_ENV' => rails_env
-      ignore_failure false
+    service 'monit' do
       action :nothing
     end
 
-    queue_name = 'hurricane_print_production_queue'
+    queue_name = ['hurricane_print', rails_env, 'queue'].join('_')
     pid_file_name = ['resque_worker', queue_name, '.pid'].join
     log_file_name = ['resque_worker', queue_name, '.log'].join
 
@@ -244,10 +228,11 @@ node[:deploy].each do |application, deploy|
           :log_file => File.join(deploy[:deploy_to], 'shared', 'log', log_file_name),
           :queue_name => queue_name,
           :env => rails_env,
-          :home => deploy[:home]
+          :home => deploy[:home],
+          :user => deploy[:user]
       )
 
-      #notifies :restart, "service[monit]"
+      notifies :restart, "service[monit]"
     end
 
   end
