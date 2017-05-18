@@ -168,6 +168,20 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  template "#{deploy[:deploy_to]}/shared/config/guarantee_email_sender.yml" do
+    source 'hurricane-print/config/guarantee_email_sender.yml.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+        :hurricane_print_settings => node[:hurricane_print_settings],
+        :hurricane_print_env => rails_env
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
+
 
 
 

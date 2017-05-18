@@ -1,0 +1,9 @@
+<%= @hurricane_print_env %>:
+  enabled: <%= @hurricane_print_settings[:email_sender][:enabled] %>
+  insurance_companies:
+    <% @hurricane_print_settings[:email_sender][:insurance_companies].each do |insurance_company,recipients| %>
+      <%= insurance_company %>:
+      <% recipients.each do |recipient| %>
+        - <%= recipient %>
+      <% end %>
+    <% end %>
