@@ -229,6 +229,27 @@ node[:deploy].each do |application, deploy|
       action :nothing
     end
 
+    queue_name = 'hurricane_print_production_queue'
+    pid_file_name = ['resque_worker', queue_name, '.pid'].join
+    log_file_name = ['resque_worker', queue_name, '.log'].join
+
+    template File.join(node[:monit][:conf_dir], 'resque.monitrc') do
+      source 'resque.monitrc.erb'
+      owner 'root'
+      group 'root'
+      mode 0644
+      variables(
+          :pidfile => File.join(deploy[:deploy_to], 'shared', 'pids', pid_file_name),
+          :working_dir => deploy[:current_path],
+          :log_file => File.join(deploy[:deploy_to], 'shared', 'log', log_file_name),
+          :queue_name => queue_name,
+          :env => rails_env,
+          :home => deploy[:home]
+      )
+
+      #notifies :restart, "service[monit]"
+    end
+
   end
 
 
