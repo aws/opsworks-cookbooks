@@ -234,7 +234,7 @@ node[:deploy].each do |application, deploy|
     log_file_name = ['resque_worker', queue_name, '.log'].join
 
     template File.join(node[:monit][:conf_dir], 'resque.monitrc') do
-      source 'resque.monitrc.erb'
+      source 'hurricane-print/resque.monitrc.erb'
       owner 'root'
       group 'root'
       mode 0644
