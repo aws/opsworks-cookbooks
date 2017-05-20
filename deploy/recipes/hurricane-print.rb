@@ -146,17 +146,6 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-  template "#{deploy[:deploy_to]}/shared/config/mailer.yml" do
-    source 'hurricane-print/config/mailer.yml.erb'
-    mode '0660'
-    owner deploy[:user]
-    group deploy[:group]
-    variables(:hurricane_print_settings => node[:hurricane_print_settings])
-    only_if do
-      File.exists?("#{deploy[:deploy_to]}/shared/config")
-    end
-  end
-
   template "#{deploy[:deploy_to]}/shared/config/aws.yml" do
     source 'hurricane-print/config/aws.yml.erb'
     mode '0660'
