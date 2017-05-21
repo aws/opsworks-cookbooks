@@ -151,7 +151,10 @@ node[:deploy].each do |application, deploy|
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
-    variables(:hurricane_print_settings => node[:hurricane_print_settings])
+    variables(
+        :hurricane_print_settings => node[:hurricane_print_settings],
+        :hurricane_print_env => rails_env
+    )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
     end

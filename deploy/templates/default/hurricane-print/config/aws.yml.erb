@@ -1,14 +1,9 @@
-default: &default
-  bucket_region: <%= @hurricane_print_settings[:aws][:bucket_region] %>
-  access_key_id: <%= @hurricane_print_settings[:aws][:access_key_id] %>
-  secret_access_key: <%= @hurricane_print_settings[:aws][:secret_access_key] %> 
-  bucket_name: <%= @hurricane_print_settings[:aws][:bucket_name] %>
+<%= @hurricane_print_env %>:
   cache_enabled: <%= @hurricane_print_settings[:aws][:cache_enabled] %>
-  document_bucket_name: <%= @hurricane_print_settings[:aws][:document_bucket_name] %>
-
-
-staging:
-  <<: *default
-
-production:
-  <<: *default  
+  client:
+    region: <%= @hurricane_print_settings[:aws][:bucket_region] %>
+    access_key_id: <%= @hurricane_print_settings[:aws][:access_key_id] %>
+    secret_access_key: <%= @hurricane_print_settings[:aws][:secret_access_key] %>
+  buckets:
+    documents: <%= @hurricane_print_settings[:aws][:document_bucket_name] %>
+    pdf: <%= @hurricane_print_settings[:aws][:bucket_name] %>
