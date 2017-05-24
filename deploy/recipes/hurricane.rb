@@ -34,6 +34,19 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  template "#{deploy[:deploy_to]}/shared/config/twilio.yml" do
+    source 'hurricane/twilio.yml.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+        :hurricane_settings => node[:hurricane_settings],
+        :env => rails_env
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
 
   execute "create environments directory in shared/config" do
     command "mkdir -p #{deploy[:deploy_to]}/shared/config/environments/"
