@@ -27,7 +27,7 @@ define :opsworks_nodejs do
       :elasticsearch => node[:elasticsearch]
       )
   end
-
+  Chef::Log.debug("monit #{node[:deploy]}")
   template "#{node.default[:monit][:conf_dir]}/node_web_app-#{application}.monitrc" do
     source 'node_web_app.monitrc.erb'
     cookbook 'opsworks_nodejs'
@@ -37,7 +37,6 @@ define :opsworks_nodejs do
     variables(
       :deploy => deploy,
       :application_name => application,
-      :environment_variables => deploy[application][:environment_variables],
       :monitored_script => "#{deploy[:deploy_to]}/current/server.js"
     )
     notifies :restart, "service[monit]", :immediately
