@@ -83,8 +83,6 @@ Rails.application.configure do
   # hurricane_print API
   config.hurricane_print_api = {host: '<%= @hurricane_print_settings[:api][:host] %>', port: <%= @hurricane_print_settings[:api][:port] %>, user: '<%= @hurricane_print_settings[:api][:user] %>', password: '<%= @hurricane_print_settings[:api][:password] %>', auth_token: '<%= @hurricane_print_settings[:api][:auth_token] %>'}
 
-  config.mailer = Rails.application.config_for(:mailer)
-  config.aws = Rails.application.config_for(:aws)
   config.pdf_tmp_folder = '<%= @pdf_tmp_folder %>'
 
   # Action Mailer Configuration
