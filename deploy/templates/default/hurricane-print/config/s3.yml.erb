@@ -1,0 +1,9 @@
+<%= @hurricane_print_env %>:
+  cache_enabled: <%= @hurricane_print_settings[:s3][:cache_enabled] %>
+  client:
+    region: <%= @hurricane_print_settings[:s3][:bucket_region] %>
+    access_key_id: <%= @hurricane_print_settings[:s3][:access_key_id] %>
+    secret_access_key: <%= @hurricane_print_settings[:s3][:secret_access_key] %>
+  buckets:
+    documents: <%= @hurricane_print_settings[:s3][:document_bucket_name] %>
+    pdf: <%= @hurricane_print_settings[:s3][:pdf_bucket_name] %>
