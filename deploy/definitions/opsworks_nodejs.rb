@@ -24,6 +24,7 @@ define :opsworks_nodejs do
       :layers => node[:opsworks][:layers],
       :services => node[:services],
       :models => node[:models],
+      :aws => node[:aws],
       :elasticsearch => node[:elasticsearch]
       )
   end

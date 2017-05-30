@@ -16,6 +16,7 @@ node[:deploy].each do |application, deploy|
       :layers => node[:opsworks][:layers],
       :services => node[:services],
       :models => node[:models],
+      :aws => node[:aws],
       :elasticsearch => node[:elasticsearch]
     )
   end
