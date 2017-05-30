@@ -6,8 +6,8 @@ check host node_web_app_<%= @application_name %> with address 127.0.0.1
   <% else -%>
   if failed port <%= @deploy[:nodejs][:port] %> protocol HTTP
   <% end -%>
-  <% if @environment_variables[:info_url] -%>
-    request <%= @environment_variables[:info_url] %>
+  <% if @deploy[:environment][:info_url] -%>
+    request <%= @deploy[:environment][:info_url] %>
   <% else -%>
     request /
   <% end -%>
