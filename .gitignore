@@ -20,3 +20,4 @@ _yardoc
 doc/
 /Gemfile.lock
 build
+.DS_Store

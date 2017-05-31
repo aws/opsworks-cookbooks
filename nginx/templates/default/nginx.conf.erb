@@ -16,7 +16,7 @@ http {
   log_format <%= name %> <%= format %>;
   <% end %>
 
-  access_log	<%= node[:nginx][:log_dir] %>/access.log;
+  access_log  <%= node[:nginx][:log_dir] %>/access.log;
 
   sendfile on;
   tcp_nopush on;
@@ -42,5 +42,4 @@ http {
   server_names_hash_bucket_size <%= node[:nginx][:server_names_hash_bucket_size] %>;
 
   include <%= node[:nginx][:dir] %>/conf.d/*.conf;
-  include <%= node[:nginx][:dir] %>/sites-enabled/*;
 }
