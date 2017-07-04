@@ -219,14 +219,14 @@ node[:deploy].each do |application, deploy|
       action :nothing
     end
 
+    queue_name = ['hurricane_print', rails_env, 'queue'].join('_')
+    pid_file_name = ['resque_worker', queue_name, '.pid'].join
+    log_file_name = ['resque_worker', queue_name, '.log'].join
+
     execute "restart monit process #{queue_name}" do
       command "monit restart #{queue_name}"
       action :nothing
     end
-
-    queue_name = ['hurricane_print', rails_env, 'queue'].join('_')
-    pid_file_name = ['resque_worker', queue_name, '.pid'].join
-    log_file_name = ['resque_worker', queue_name, '.log'].join
 
     template File.join(node[:monit][:conf_dir], 'resque.monitrc') do
       source 'hurricane-print/resque.monitrc.erb'
