@@ -219,6 +219,11 @@ node[:deploy].each do |application, deploy|
       action :nothing
     end
 
+    execute "restart monit process #{queue_name}" do
+      command "monit restart #{queue_name}"
+      action :nothing
+    end
+
     queue_name = ['hurricane_print', rails_env, 'queue'].join('_')
     pid_file_name = ['resque_worker', queue_name, '.pid'].join
     log_file_name = ['resque_worker', queue_name, '.log'].join
@@ -238,13 +243,8 @@ node[:deploy].each do |application, deploy|
           :user => deploy[:user]
       )
 
-      notifies :restart, "service[monit]"
+      notifies :run, "execute[restart monit process #{queue_name}]", :delayed
     end
-
-    execute "restart monit process #{queue_name}" do
-      command "monit restart #{queue_name}"
-    end
-
 
 
   end
