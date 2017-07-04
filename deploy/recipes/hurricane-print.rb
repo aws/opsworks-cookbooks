@@ -223,6 +223,12 @@ node[:deploy].each do |application, deploy|
     pid_file_name = ['resque_worker', queue_name, '.pid'].join
     log_file_name = ['resque_worker', queue_name, '.log'].join
 
+    execute "restart monit process #{queue_name}" do
+      command "monit reload && monit restart #{queue_name}"
+      action :nothing
+    end
+
+
     template File.join(node[:monit][:conf_dir], 'resque.monitrc') do
       source 'hurricane-print/resque.monitrc.erb'
       owner 'root'
@@ -238,15 +244,8 @@ node[:deploy].each do |application, deploy|
           :user => deploy[:user]
       )
 
-      notifies :restart, "service[monit]"
+      notifies :run, "execute[restart monit process #{queue_name}]", :delayed
     end
-
-    # execute "restart monit process #{queue_name}" do
-    #   command "monit restart #{queue_name}"
-    #   action :nothing
-    # end
-
-
 
   end
 
