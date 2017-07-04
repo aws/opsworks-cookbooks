@@ -238,14 +238,14 @@ node[:deploy].each do |application, deploy|
           :user => deploy[:user]
       )
 
-      notifies :reload, "service[monit]"
+      notifies :restart, "service[monit]"
     end
 
     # execute "restart monit process #{queue_name}" do
     #   command "monit restart #{queue_name}"
     #   action :nothing
     # end
-    #
+
 
 
   end
