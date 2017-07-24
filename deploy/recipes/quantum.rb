@@ -91,6 +91,21 @@ node[:deploy].each do |application, deploy|
   rails_env = deploy[:rails_env]
   current_path = deploy[:current_path]
 
+
+  template "#{deploy[:deploy_to]}/shared/config/environments/#{rails_env}.rb" do
+    source "quantum/environment_config.rb.erb"
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+        :quantum_settings => node[:quantum_settings]
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config/environments")
+    end
+  end
+
+
   Chef::Log.info("Precompiling Rails assets with environment #{rails_env}")
 
   execute 'rake assets:precompile' do
