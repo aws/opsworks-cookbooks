@@ -88,6 +88,14 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  directory "#{deploy[:deploy_to]}/shared/config/environments" do
+    mode '0770'
+    owner deploy[:user]
+    group deploy[:group]
+    action :create
+    recursive true
+  end
+
   rails_env = deploy[:rails_env]
   current_path = deploy[:current_path]
 
