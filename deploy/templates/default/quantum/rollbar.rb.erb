@@ -1,3 +1,7 @@
 Rollbar.configure do |config|
   config.access_token = '<%= @quantum_settings[:rollbar_access_token] %>'
+
+  config.exception_level_filters.merge!({
+    'ActionController::RoutingError' => 'ignore'
+  })  
 end
