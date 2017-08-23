@@ -54,6 +54,20 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  template "#{deploy[:deploy_to]}/shared/config/infocar.yml" do
+    source 'hurricane-api/infocar.yml.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+        :hurricane_api_settings => node[:hurricane_api_settings],
+        :env => rails_env
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
+
   template "#{deploy[:deploy_to]}/shared/config/remote_counter.yml" do
     source 'hurricane-api/remote_counter.yml.erb'
     mode '0660'

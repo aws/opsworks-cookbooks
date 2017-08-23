@@ -1,0 +1,15 @@
+default: &default
+  update_on_import: <%= @hurricane_settings[:infocar][:update_on_import] %>
+  wsdl: '<%= @hurricane_settings[:infocar][:wsdl] %>'
+  user_name: '<%= @hurricane_settings[:infocar][:user_name] %>'
+  password: '<%= @hurricane_settings[:infocar][:password] %>'
+  excluded_brands:
+    <% @hurricane_settings[:infocar][:excluded_brands].each do |brand| %>
+    - '<%= brand %>'
+    <% end %>
+
+<%= @env %>:
+  <<: *default
+
+test:
+  <<: *default
