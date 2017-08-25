@@ -93,7 +93,7 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = <%= @hurricane_print_settings[:mailer][:configuration].to_s %>
   config.action_mailer.raise_delivery_errors = true
 
-  config.action_controller.asset_host = <%= [@hurricane_print_settings[:api][:host], @hurricane_print_settings[:api][:port]].join(':') %>
+  config.action_controller.asset_host = '<%= [@hurricane_print_settings[:api][:host], @hurricane_print_settings[:api][:port]].join(':') %>'
 
   # ActiveJob Configuration
   <% case @hurricane_print_settings[:active_job][:adapter] %>
