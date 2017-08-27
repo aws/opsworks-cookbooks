@@ -1,0 +1,11 @@
+env :PATH, '/usr/local/bin/:/usr/bin/'
+env :CRON_TZ, "Europe/Rome"
+job_type :rake, "cd :path && LUMEN_ETL_ENV=:environment bundle exec rake :task --silent :output"
+
+<% @etl_settings[:schedule].each do |schedule| %>
+
+every <%= schedule[:every] %>, :at => '<%= schedule[:at] %>' do
+  <%= schedule[:cmd] %>
+end
+
+<% end %>
