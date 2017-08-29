@@ -33,12 +33,11 @@ node[:deploy].first(1).each do |application, deploy|
 
     execute 'dump production database' do
       Chef::Log.debug('Dump Production Database')
-      Chef::Log.debug("Current Stack Database: #{deploy[:database].inspect}")
       user deploy[:user]
       environment 'PGPASSWORD' => production_database[:password]
       cwd dump_dir
       dump_cmd = 'pg_dump -h %s --data-only --no-owner --exclude-table-data=schema_migrations -x -U %s %s > %s'
-      command sprintf(dump_cmd, production_database[:password], production_database[:host], production_database[:username], production_database[:database], dump_file)
+      command sprintf(dump_cmd, production_database[:host], production_database[:username], production_database[:database], dump_file)
       action :run
     end
 
