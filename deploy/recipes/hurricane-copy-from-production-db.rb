@@ -1,8 +1,6 @@
 include_recipe 'deploy'
 Chef::Log.level = :debug
 
-dump_dir = "#{deploy[:deploy_to]}/shared/dump"
-dump_file = [dump_dir, 'snapshot_production.sql'].join('/')
 postgres = {
     host: 'hurricane-api-db-production.fit2you.info',
     database: 'hurricane_api_production',
@@ -11,6 +9,9 @@ postgres = {
 }
 
 node[:deploy].each do |application, deploy|
+
+  dump_dir = "#{deploy[:deploy_to]}/shared/dump"
+  dump_file = [dump_dir, 'snapshot_production.sql'].join('/')
 
   if deploy[:rails_env] == 'staging'
 
@@ -29,13 +30,13 @@ node[:deploy].each do |application, deploy|
     end
 
 
-    execute "dump production database" do
+    execute 'dump production database' do
       Chef::Log.debug('Dump Production Database')
       Chef::Log.debug("Current Stack Database: #{deploy[:database].inspect}")
       user deploy[:user]
-      environment "PGPASSWORD" => postgres[:password]
+      environment 'PGPASSWORD' => postgres[:password]
       cwd dump_dir
-      dump_cmd = "pg_dump -h %s --data-only --no-owner --exclude-table-data=schema_migrations -x -U %s %s > %s"
+      dump_cmd = 'pg_dump -h %s --data-only --no-owner --exclude-table-data=schema_migrations -x -U %s %s > %s'
       command sprintf(dump_cmd, postgres[:host], postgres[:username], postgres[:database], dump_file)
       action :run
     end
