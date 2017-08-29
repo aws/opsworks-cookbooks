@@ -3,6 +3,12 @@ Chef::Log.level = :debug
 
 dump_dir = "#{deploy[:deploy_to]}/shared/dump"
 dump_file = [dump_dir, 'snapshot_production.sql'].join('/')
+postgres = {
+    host: 'hurricane-api-db-production.fit2you.info',
+    database: 'hurricane_api_production',
+    user: 'hurricane-api',
+    password: 'dunacato56'
+}
 
 node[:deploy].each do |application, deploy|
 
@@ -29,12 +35,6 @@ node[:deploy].each do |application, deploy|
       user deploy[:user]
       environment "PGPASSWORD" => postgres[:password]
       cwd dump_dir
-      postgres = {
-          host: 'hurricane-api-db-production.fit2you.info',
-          database: 'hurricane_api_production',
-          user: 'hurricane-api',
-          password: 'dunacato56'
-      }
       dump_cmd = "pg_dump -h %s --data-only --no-owner --exclude-table-data=schema_migrations -x -U %s %s > %s"
       command sprintf(dump_cmd, postgres[:host], postgres[:username], postgres[:database], dump_file)
       action :run
