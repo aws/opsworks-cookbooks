@@ -10,27 +10,28 @@ production_database = {
 
 node[:deploy].first(1).each do |application, deploy|
 
-  dump_dir = "#{deploy[:deploy_to]}/shared/dump"
-  dump_file = [dump_dir, 'snapshot_production.sql'].join('/')
-  truncate_tables_sql_file = [dump_dir, 'truncate_table.sql'].join('/')
-  staging_database = deploy[:database]
-
-  sql = <<-SQL
-  do
-  $$
-  declare
-    truncate_tables_query text;
-  begin
-    select 'truncate ' || string_agg(format('%I.%I', schemaname, tablename), ',') || ' RESTART IDENTITY CASCADE'
-      into truncate_tables_query
-    from pg_tables
-    where schemaname in ('public') and tableowner = '#{staging_database[:username]}' and tablename != 'schema_migrations';
-    execute truncate_tables_query;
-  end;
-  $$
-  SQL
-
   if deploy[:rails_env] == 'staging'
+
+
+    dump_dir = "#{deploy[:deploy_to]}/shared/dump"
+    dump_file = [dump_dir, 'snapshot_production.sql'].join('/')
+    truncate_tables_sql_file = [dump_dir, 'truncate_table.sql'].join('/')
+    staging_database = deploy[:database]
+
+    sql = <<-SQL
+    do
+    $$
+    declare
+      truncate_tables_query text;
+    begin
+      select 'truncate ' || string_agg(format('%I.%I', schemaname, tablename), ',') || ' RESTART IDENTITY CASCADE'
+        into truncate_tables_query
+      from pg_tables
+      where schemaname in ('public') and tableowner = '#{staging_database[:username]}' and tablename != 'schema_migrations';
+      execute truncate_tables_query;
+    end;
+    $$
+    SQL
 
     directory dump_dir do
       mode '0770'
