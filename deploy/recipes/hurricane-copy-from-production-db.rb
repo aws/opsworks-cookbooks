@@ -41,16 +41,39 @@ node[:deploy].first(1).each do |application, deploy|
       action :run
     end
 
-    # execute 'copy into staging database' do
-    #   Chef::Log.debug('Copy Into Staging Database')
-    #   Chef::Log.debug("Current Stack Database: #{deploy[:database].inspect}")
-    #   user deploy[:user]
-    #   environment 'PGPASSWORD' => staging_database[:password]
-    #   cwd dump_dir
-    #   dump_cmd = 'psql -h %s -d %s -U %s < %s'
-    #   command sprintf(dump_cmd, staging_database[:host], staging_database[:username], staging_database[:database], dump_file)
-    #   action :run
-    # end
+    execute 'truncate tables' do
+      sql = <<-SQL
+      do
+      $$
+      declare
+        truncate_tables_query text;
+      begin
+        select 'truncate ' || string_agg(format('%I.%I', schemaname, tablename), ',') || ' RESTART IDENTITY CASCADE'
+          into truncate_tables_query
+        from pg_tables
+        where schemaname in ('public') and tableowner = '#{staging_database[:username]}' and tablename != 'schema_migrations';
+        execute truncate_tables_query;
+      end;
+      $$
+      SQL
+      Chef::Log.debug('Truncate Staging Database Tables')
+      user deploy[:user]
+      environment 'PGPASSWORD' => staging_database[:password]
+      cwd dump_dir
+      truncate_cmd = 'psql -h %s -d %s -U %s -c "%s"'
+      command sprintf(truncate_cmd, staging_database[:host], staging_database[:database], staging_database[:username], sql)
+      action :run
+    end
+
+    execute 'copy into staging database' do
+      Chef::Log.debug('Copy Into Staging Database')
+      user deploy[:user]
+      environment 'PGPASSWORD' => staging_database[:password]
+      cwd dump_dir
+      restore_cmd = 'psql -h %s -d %s -U %s < %s'
+      command sprintf(restore_cmd, staging_database[:host], staging_database[:database], staging_database[:username], dump_file)
+      action :run
+    end
   else
     Chef::Log.debug('Recipe available only in staging environment')
   end
