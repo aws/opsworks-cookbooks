@@ -12,7 +12,23 @@ node[:deploy].first(1).each do |application, deploy|
 
   dump_dir = "#{deploy[:deploy_to]}/shared/dump"
   dump_file = [dump_dir, 'snapshot_production.sql'].join('/')
+  truncate_table_file = [dump_dir, 'truncate_table.sql'].join('/')
   staging_database = deploy[:database]
+
+  sql = <<-SQL
+  do
+  $$
+  declare
+    truncate_tables_query text;
+  begin
+    select 'truncate ' || string_agg(format('%I.%I', schemaname, tablename), ',') || ' RESTART IDENTITY CASCADE'
+      into truncate_tables_query
+    from pg_tables
+    where schemaname in ('public') and tableowner = '#{staging_database[:username]}' and tablename != 'schema_migrations';
+    execute truncate_tables_query;
+  end;
+  $$
+  SQL
 
   if deploy[:rails_env] == 'staging'
 
@@ -41,27 +57,20 @@ node[:deploy].first(1).each do |application, deploy|
       action :run
     end
 
+    file truncate_table_file do
+      content sql
+      mode '0755'
+      owner deploy[:user]
+      user deploy[:user]
+    end
+
     execute 'truncate tables' do
-      sql = <<-SQL
-      do
-      $$
-      declare
-        truncate_tables_query text;
-      begin
-        select 'truncate ' || string_agg(format('%I.%I', schemaname, tablename), ',') || ' RESTART IDENTITY CASCADE'
-          into truncate_tables_query
-        from pg_tables
-        where schemaname in ('public') and tableowner = '#{staging_database[:username]}' and tablename != 'schema_migrations';
-        execute truncate_tables_query;
-      end;
-      $$
-      SQL
       Chef::Log.debug('Truncate Staging Database Tables')
       user deploy[:user]
       environment 'PGPASSWORD' => staging_database[:password]
       cwd dump_dir
-      truncate_cmd = 'psql -h %s -d %s -U %s -c "%s"'
-      command sprintf(truncate_cmd, staging_database[:host], staging_database[:database], staging_database[:username], sql)
+      truncate_cmd = 'psql -h %s -d %s -U %s < %s'
+      command sprintf(truncate_cmd, staging_database[:host], staging_database[:database], staging_database[:username], truncate_table_file)
       action :run
     end
 
