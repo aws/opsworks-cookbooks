@@ -4,7 +4,7 @@ Chef::Log.level = :debug
 postgres = {
     host: 'hurricane-api-db-production.fit2you.info',
     database: 'hurricane_api_production',
-    user: 'hurricane-api',
+    username: 'hurricane-api',
     password: 'dunacato56'
 }
 
