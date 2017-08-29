@@ -26,6 +26,9 @@ when "nginx_unicorn"
   normal[:opsworks][:rails_stack][:needs_reload] = true
   normal[:opsworks][:rails_stack][:service] = 'unicorn'
   normal[:opsworks][:rails_stack][:restart_command] = "../../shared/scripts/unicorn restart"
+  normal[:opsworks][:rails_stack][:stop_command] = "../../shared/scripts/unicorn stop"
+  normal[:opsworks][:rails_stack][:start_command] = "../../shared/scripts/unicorn start"
+
 else
   raise "Unknown stack: #{node[:opsworks][:rails_stack][:name].inspect}"
 end
