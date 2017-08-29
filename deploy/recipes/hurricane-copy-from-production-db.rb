@@ -1,7 +1,7 @@
 include_recipe 'deploy'
 Chef::Log.level = :debug
 
-postgres = {
+production_database = {
     host: 'hurricane-api-db-production.fit2you.info',
     database: 'hurricane_api_production',
     username: 'hurricane-api',
@@ -12,6 +12,7 @@ node[:deploy].each do |application, deploy|
 
   dump_dir = "#{deploy[:deploy_to]}/shared/dump"
   dump_file = [dump_dir, 'snapshot_production.sql'].join('/')
+  staging_database = deploy[:database]
 
   if deploy[:rails_env] == 'staging'
 
@@ -34,12 +35,22 @@ node[:deploy].each do |application, deploy|
       Chef::Log.debug('Dump Production Database')
       Chef::Log.debug("Current Stack Database: #{deploy[:database].inspect}")
       user deploy[:user]
-      environment 'PGPASSWORD' => postgres[:password]
       cwd dump_dir
-      dump_cmd = 'pg_dump -h %s --data-only --no-owner --exclude-table-data=schema_migrations -x -U %s %s > %s'
-      command sprintf(dump_cmd, postgres[:host], postgres[:username], postgres[:database], dump_file)
+      dump_cmd = 'PGPASSWORD=%s pg_dump -h %s --data-only --no-owner --exclude-table-data=schema_migrations -x -U %s %s > %s'
+      command sprintf(dump_cmd, production_database[:password], production_database[:host], production_database[:username], production_database[:database], dump_file)
       action :run
     end
+
+    # execute 'copy into staging database' do
+    #   Chef::Log.debug('Copy Into Staging Database')
+    #   Chef::Log.debug("Current Stack Database: #{deploy[:database].inspect}")
+    #   user deploy[:user]
+    #   environment 'PGPASSWORD' => staging_database[:password]
+    #   cwd dump_dir
+    #   dump_cmd = 'psql -h %s -d %s -U %s < %s'
+    #   command sprintf(dump_cmd, staging_database[:host], staging_database[:username], staging_database[:database], dump_file)
+    #   action :run
+    # end
   else
     Chef::Log.debug('Recipe available only in staging environment')
   end
