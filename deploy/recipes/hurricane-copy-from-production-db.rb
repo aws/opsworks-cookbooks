@@ -50,7 +50,7 @@ node[:deploy].first(1).each do |application, deploy|
       action :run
     end
 
-    file truncate_table_file do
+    file truncate_tables_sql_file do
       content sql
       mode '0660'
       owner deploy[:user]
@@ -77,10 +77,12 @@ node[:deploy].first(1).each do |application, deploy|
     end
 
     file dump_file do
+      Chef::Log.debug('Remove Sql Dump')
       action :delete
     end
 
-    file dump_file do
+    file truncate_tables_sql_file do
+      Chef::Log.debug('Remove Sql Truncate File')
       action :delete
     end
 
