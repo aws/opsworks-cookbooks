@@ -12,7 +12,7 @@ node[:deploy].first(1).each do |application, deploy|
 
   dump_dir = "#{deploy[:deploy_to]}/shared/dump"
   dump_file = [dump_dir, 'snapshot_production.sql'].join('/')
-  truncate_table_file = [dump_dir, 'truncate_table.sql'].join('/')
+  truncate_tables_sql_file = [dump_dir, 'truncate_table.sql'].join('/')
   staging_database = deploy[:database]
 
   sql = <<-SQL
@@ -40,13 +40,6 @@ node[:deploy].first(1).each do |application, deploy|
       recursive true
     end
 
-    if File.exist?(dump_file)
-      file dump_file do
-        action :delete
-      end
-    end
-
-
     execute 'dump production database' do
       Chef::Log.debug('Dump Production Database')
       user deploy[:user]
@@ -59,9 +52,8 @@ node[:deploy].first(1).each do |application, deploy|
 
     file truncate_table_file do
       content sql
-      mode '0755'
+      mode '0660'
       owner deploy[:user]
-      user deploy[:user]
     end
 
     execute 'truncate tables' do
@@ -70,7 +62,7 @@ node[:deploy].first(1).each do |application, deploy|
       environment 'PGPASSWORD' => staging_database[:password]
       cwd dump_dir
       truncate_cmd = 'psql -h %s -d %s -U %s < %s'
-      command sprintf(truncate_cmd, staging_database[:host], staging_database[:database], staging_database[:username], truncate_table_file)
+      command sprintf(truncate_cmd, staging_database[:host], staging_database[:database], staging_database[:username], truncate_tables_sql_file)
       action :run
     end
 
@@ -83,6 +75,15 @@ node[:deploy].first(1).each do |application, deploy|
       command sprintf(restore_cmd, staging_database[:host], staging_database[:database], staging_database[:username], dump_file)
       action :run
     end
+
+    file dump_file do
+      action :delete
+    end
+
+    file dump_file do
+      action :delete
+    end
+
   else
     Chef::Log.debug('Recipe available only in staging environment')
   end
