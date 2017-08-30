@@ -92,7 +92,7 @@ node[:deploy].first(1).each do |application, deploy|
       cwd "#{deploy[:deploy_to]}/current"
       user deploy[:user]
       command 'bundle exec rake db:migrate'
-      environment 'RAILS_ENV' => rails_env
+      environment 'RAILS_ENV' => deploy[:rails_env]
     end
 
 
