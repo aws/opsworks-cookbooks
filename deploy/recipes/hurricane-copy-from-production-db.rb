@@ -87,6 +87,15 @@ node[:deploy].first(1).each do |application, deploy|
       action :delete
     end
 
+    execute 'rake db:migrate' do
+      Chef::Log.debug('Execute Rails Db Migrate')
+      cwd "#{deploy[:deploy_to]}/current"
+      user deploy[:user]
+      command 'bundle exec rake db:migrate'
+      environment 'RAILS_ENV' => rails_env
+    end
+
+
   else
     Chef::Log.debug('Recipe available only in staging environment')
   end
