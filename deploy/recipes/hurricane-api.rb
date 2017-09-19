@@ -6,6 +6,31 @@ node[:deploy].each do |application, deploy|
   rails_env = deploy[:rails_env]
   current_path = deploy[:current_path]
 
+  directory "#{deploy[:deploy_to]}/shared/config/initializers" do
+    mode '0770'
+    owner deploy[:user]
+    group deploy[:group]
+    action :create
+    recursive true
+  end
+
+  directory "#{deploy[:deploy_to]}/shared/app/views/shared" do
+    mode '0770'
+    owner deploy[:user]
+    group deploy[:group]
+    action :create
+    recursive true
+  end
+
+  directory "#{deploy[:deploy_to]}/shared/config/environments" do
+    mode '0770'
+    owner deploy[:user]
+    group deploy[:group]
+    action :create
+    recursive true
+  end
+
+
   execute "updating crontab" do
     user deploy[:user]
     cwd "#{deploy[:deploy_to]}/current"
@@ -37,6 +62,17 @@ node[:deploy].each do |application, deploy|
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
+
+  template "#{deploy[:deploy_to]}/shared/config/initializers/docusign_rest.rb" do
+    source 'hurricane-api/docusign_rest.rb.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(:hurricane_api_settings => node[:hurricane_api_settings])
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config/initializers")
     end
   end
 
@@ -82,11 +118,6 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-
-  execute "create environments directory in shared/config" do
-    command "mkdir -p #{deploy[:deploy_to]}/shared/config/environments/"
-  end
-
   template "#{deploy[:deploy_to]}/shared/config/environments/#{rails_env}.rb" do
     source "hurricane-api/environment_config.rb.erb"
     mode '0660'
@@ -98,12 +129,6 @@ node[:deploy].each do |application, deploy|
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config/environments")
     end
-  end
-
-
-
-  execute "create initializiers directory in shared/config" do
-    command "mkdir -p #{deploy[:deploy_to]}/shared/config/initializers/"
   end
 
   template "#{deploy[:deploy_to]}/shared/config/initializers/rollbar.rb" do
@@ -118,11 +143,6 @@ node[:deploy].each do |application, deploy|
       File.exists?("#{deploy[:deploy_to]}/shared/config/initializers")
     end
   end
-
-  execute "create initializiers directory in app/views/shared" do
-    command "mkdir -p #{deploy[:deploy_to]}/shared/app/views/shared/"
-  end
-
 
   execute "restart Server" do
     Chef::Log.debug('Restarting Rails Server From Hurricane Script')
