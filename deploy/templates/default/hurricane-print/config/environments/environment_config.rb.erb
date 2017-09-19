@@ -86,7 +86,7 @@ Rails.application.configure do
   config.pdf_tmp_folder = '<%= @pdf_tmp_folder %>'
 
   # Action Mailer Configuration
-   <% if @hurricane_print_settings[:mailer][:disable_logger] %>
+  <% if @hurricane_print_settings[:mailer][:disable_logger] %>
   config.action_mailer.logger = nil
   <% end %>
   config.action_mailer.default_options = { from: "Fit2You <<%= @hurricane_print_settings[:mailer][:from] %>>" }
