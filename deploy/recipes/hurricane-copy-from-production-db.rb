@@ -1,14 +1,9 @@
 include_recipe 'deploy'
 Chef::Log.level = :debug
 
-production_database = {
-    host: 'hurricane-api-db-production.fit2you.info',
-    database: 'hurricane_api_production',
-    username: 'hurricane_api',
-    password: 'dunacato56'
-}
-
 node[:deploy].first(1).each do |application, deploy|
+
+  production_database = node[:hurricane_api_settings][:production_database]
 
   if deploy[:rails_env] == 'staging'
 
