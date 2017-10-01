@@ -4,7 +4,6 @@ default: &default
 
 <%= @videl_env %>:
   <<: *default
-  senders_config: <%= @senders_config %>
   mail:
     smtp_host: <%= @videl_settings[:mail][:smtp_host] %>
     smtp_port: <%= @videl_settings[:mail][:smtp_port] %>
