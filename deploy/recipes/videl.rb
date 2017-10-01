@@ -31,7 +31,8 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     variables(
       :videl_settings => node[:shared],
-      :videl_env => deploy[:env]
+      :videl_env => deploy[:env],
+      :senders_config => node[:senders_config]
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
