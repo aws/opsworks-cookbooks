@@ -1,0 +1,19 @@
+default: &default
+  digital:
+    <% @hurricane_api_settings[:signature_features][:digital].each do |insurance_company| %>
+    - <%= insurance_company %>
+    <% end %>
+  classic:
+    <% @hurricane_api_settings[:signature_features][:classic].each do |insurance_company| %>
+    - <%= insurance_company %>
+    <% end %>
+  disabled:
+    <% @hurricane_api_settings[:signature_features][:disabled].each do |insurance_company| %>
+    - <%= insurance_company %>
+    <% end %>
+
+<%= @env %>:
+  <<: *default
+
+test:
+  <<: *default
