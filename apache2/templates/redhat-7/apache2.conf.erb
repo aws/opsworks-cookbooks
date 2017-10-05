@@ -227,7 +227,7 @@ LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combine
 LogFormat "%h %l %u %t \"%r\" %>s %O" common
 LogFormat "%{Referer}i -> %U" referer
 LogFormat "%{User-agent}i" agent
-LogFormat "%v %A %a %u %{%Y-%m-%dT%H:%M:%S}t %X %s %>s %B %D cookie \"Referer\" \"%r\" \"User-Agent\" %P" ganglia
+LogFormat "%v %A %a %u %{%Y-%m-%dT%H:%M:%S}t %c %s %>s %B %D \"%{cookie}i\" \"%{Referer}i\" \"%r\" \"%{User-agent}i\" %P" ganglia
 
 ServerName 127.0.0.1
 
