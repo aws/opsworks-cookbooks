@@ -1,0 +1,13 @@
+default: &default
+  enabled: <%= @hurricane_api_settings[:email_checker][:enabled] %>
+  api_key: <%= @hurricane_api_settings[:email_checker][:api_key] %>
+  valid_results:
+    <% @hurricane_api_settings[:email_checker][:valid_results].each do |result| %>
+    - <%= result %>
+    <% end %>
+
+<%= @env %>:
+  <<: *default
+
+test:
+  <<: *default
