@@ -5,3 +5,4 @@ license     "Apache 2.0"
 version     "1.0.0"
 
 recipe "postgresql::client_install", "Installs the Postgresql client"
+recipe "postgresql::rails_client_install", "Installs the Rails Postgresql client"

@@ -11,18 +11,7 @@ node[:deploy].each do |application, deploy|
   when "mysql"
     include_recipe "mysql::client_install"
   when "postgresql"
-    if node[:opsworks_postgresql][:yum_repo_template]
-      repo_file_path = File.join('/etc/yum.repos.d', node[:opsworks_postgresql][:yum_repo_template])
-      unless File.exists?(repo_file_path)
-        template repo_file_path do
-          source node[:opsworks_postgresql][:yum_repo_template]
-          mode '0644'
-          owner deploy[:user]
-          group deploy[:group]
-        end
-      end
-    end
-    include_recipe "opsworks_postgresql::client_install"
+    include_recipe "opsworks_postgresql::rails_client_install"
   end
 
   opsworks_deploy_dir do
