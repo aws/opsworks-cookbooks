@@ -5,8 +5,8 @@ if node[:opsworks_postgresql] && ([:devel_package, :client_package].all? {|s| no
       template repo_file_path do
         source node[:opsworks_postgresql][:yum_repo_template]
         mode '0644'
-        owner 'deploy'
-        group 'deploy'
+        owner 'root'
+        group 'root'
       end
     end
   end
