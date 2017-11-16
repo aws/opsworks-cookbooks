@@ -11,7 +11,7 @@ node[:deploy].each do |application, deploy|
   when "mysql"
     include_recipe "mysql::client_install"
   when "postgresql"
-    include_recipe "opsworks_postgresql::rails_client_install"
+    include_recipe "opsworks_postgresql::client_install"
   end
 
   opsworks_deploy_dir do
