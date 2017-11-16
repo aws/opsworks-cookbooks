@@ -1,6 +1,17 @@
 if node[:opsworks_postgresql] && ([:devel_package, :client_package].all? {|s| node[:opsworks_postgresql].key? s})
   # Only use the default package names if attributes exist and they are
   # defined so we don't break anyone who has overriden this recipe
+  if node[:opsworks_postgresql][:yum_repo_template]
+    repo_file_path = File.join('/etc/yum.repos.d', node[:opsworks_postgresql][:yum_repo_template])
+    unless File.exists?(repo_file_path)
+      template repo_file_path do
+        source node[:opsworks_postgresql][:yum_repo_template]
+        mode '0644'
+        owner deploy[:user]
+        group deploy[:group]
+      end
+    end
+  end
   [node[:opsworks_postgresql][:devel_package], node[:opsworks_postgresql][:client_package]].each do |pkg|
     package pkg do
       action :install

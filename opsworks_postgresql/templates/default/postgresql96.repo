@@ -1,0 +1,5 @@
+[pgdg96]
+name=PostgreSQL 9.6 - Amazon Linux AMI 2015.03 - $basearch
+baseurl=https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6-$basearch
+enabled=1
+gpgcheck=0
