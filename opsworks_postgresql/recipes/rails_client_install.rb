@@ -17,9 +17,10 @@ if node[:opsworks_postgresql] && ([:devel_package, :client_package].all? {|s| no
       retry_delay 5
     end
   end
-  pg_config = %x( which pg_config ).gsub(/\n/,'')
-  link '/usr/bin/pg_config' do
-    to pg_config
+  if node[:opsworks_postgresql][:pg_config]
+    link '/usr/bin/pg_config' do
+      to node[:opsworks_postgresql][:pg_config]
+    end unless File.exists?('/usr/bin/pg_config')
   end
 else
   # old behavior for backwards compatibility
