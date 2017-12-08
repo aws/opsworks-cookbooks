@@ -19,8 +19,8 @@ default[:ebs][:raids] ||= {}
 default[:ebs][:mdadm_chunk_size] = '256'
 default[:ebs][:md_read_ahead] = '65536' # 64k
 
-if BlockDevice.on_kvm?
-  Chef::Log.info("Running on QEMU/KVM: Need to translate device names as KVM allocates them regardless of the given device ID")
+if BlockDevice.on_kvm? || BlockDevice.nvme_used?
+  Chef::Log.info("Running on QEMU/KVM or using NVMe: Need to translate device names as hypervisor allocates them regardless of the given device ID")
   ebs_devices = {}
 
   new_device_names = BlockDevice.translate_device_names(ebs[:devices].keys)
