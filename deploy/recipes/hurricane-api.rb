@@ -170,6 +170,7 @@ node[:deploy].each do |application, deploy|
     cwd "#{deploy[:deploy_to]}/current"
     #command "bundle exec whenever -c #{deploy[:deploy_to]}/current/schedule.rb"
     command "crontab -r"
+    ignore_failure true
     action :run
   end
 
@@ -200,6 +201,8 @@ if node[:hurricane_api_settings][:deploy_whenever] == true
       command "bundle exec whenever -w -s environment=#{rails_env}"
       action :run
     end
+
+    Chef::Log.info("Add whenever crontab... ")
 
   end
 
