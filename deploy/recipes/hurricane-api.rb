@@ -165,11 +165,11 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-
   execute "remove crontab" do
     user deploy[:user]
     cwd "#{deploy[:deploy_to]}/current"
-    command "bundle exec whenever -c #{deploy[:deploy_to]}/current/schedule.rb"
+    #command "bundle exec whenever -c #{deploy[:deploy_to]}/current/schedule.rb"
+    command "crontab -r"
     action :run
   end
 
@@ -177,6 +177,7 @@ node[:deploy].each do |application, deploy|
     Chef::Log.debug('Restarting Rails Server From Hurricane Script')
     cwd deploy[:current_path]
     command "sleep #{deploy[:sleep_before_restart]} && #{node[:opsworks][:rails_stack][:restart_command]}"
+    ignore_failure true
     action :run
 
     only_if do
