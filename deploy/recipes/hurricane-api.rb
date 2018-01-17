@@ -165,15 +165,6 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-  execute "remove crontab" do
-    user deploy[:user]
-    cwd "#{deploy[:deploy_to]}/current"
-    #command "bundle exec whenever -c #{deploy[:deploy_to]}/current/schedule.rb"
-    command "crontab -r"
-    ignore_failure true
-    action :run
-  end
-
   execute "restart Server" do
     Chef::Log.debug('Restarting Rails Server From Hurricane Script')
     cwd deploy[:current_path]
@@ -187,27 +178,4 @@ node[:deploy].each do |application, deploy|
   end
 
 end
-
-if node[:hurricane_api_settings][:deploy_whenever] == true
-
-  node[:deploy].first(1).each do |application, deploy|
-
-    rails_env = deploy[:rails_env]
-    current_path = deploy[:current_path]
-
-    execute "updating crontab" do
-      user deploy[:user]
-      cwd "#{deploy[:deploy_to]}/current"
-      command "bundle exec whenever -w -s environment=#{rails_env}"
-      action :run
-    end
-
-    Chef::Log.info("Add whenever crontab... ")
-
-  end
-
-
-end
-
-
 
