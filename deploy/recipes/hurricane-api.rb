@@ -185,17 +185,24 @@ node[:deploy].each do |application, deploy|
 
 end
 
-node[:deploy].first(1).each do |application, deploy|
+if node[:hurricane_api_settings][:deploy_whenever] == true
 
-  rails_env = deploy[:rails_env]
-  current_path = deploy[:current_path]
+  node[:deploy].first(1).each do |application, deploy|
 
-  execute "updating crontab" do
-    user deploy[:user]
-    cwd "#{deploy[:deploy_to]}/current"
-    command "bundle exec whenever -w -s environment=#{rails_env}"
-    action :run
+    rails_env = deploy[:rails_env]
+    current_path = deploy[:current_path]
+
+    execute "updating crontab" do
+      user deploy[:user]
+      cwd "#{deploy[:deploy_to]}/current"
+      command "bundle exec whenever -w -s environment=#{rails_env}"
+      action :run
+    end
+
   end
 
+
 end
+
+
 
