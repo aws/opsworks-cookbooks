@@ -7,13 +7,6 @@ node[:deploy].each do |application, deploy|
   rails_env = deploy[:rails_env]
   current_path = deploy[:current_path]
 
-  execute "remove crontab" do
-    user deploy[:user]
-    cwd "#{deploy[:deploy_to]}/current"
-    command "crontab -r"
-    action :run
-  end
-
   directory "#{deploy[:deploy_to]}/shared/config/initializers" do
     mode '0770'
     owner deploy[:user]
@@ -170,6 +163,14 @@ node[:deploy].each do |application, deploy|
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config/initializers")
     end
+  end
+
+
+  execute "remove crontab" do
+    user deploy[:user]
+    cwd "#{deploy[:deploy_to]}/current"
+    command "bundle exec whenever -c #{deploy[:deploy_to]}/current/schedule.rb"
+    action :run
   end
 
   execute "restart Server" do
