@@ -2,24 +2,17 @@ include_recipe 'deploy'
 Chef::Log.level = :debug
 
 
-node[:deploy].first(1).each do |application, deploy|
-
-  rails_env = deploy[:rails_env]
-  current_path = deploy[:current_path]
-
-  execute "updating crontab" do
-    user deploy[:user]
-    cwd "#{deploy[:deploy_to]}/current"
-    command "bundle exec whenever -w -s environment=#{rails_env}"
-    action :run
-  end
-
-end
-
 node[:deploy].each do |application, deploy|
 
   rails_env = deploy[:rails_env]
   current_path = deploy[:current_path]
+
+  execute "remove crontab" do
+    user deploy[:user]
+    cwd "#{deploy[:deploy_to]}/current"
+    command "crontab -r"
+    action :run
+  end
 
   directory "#{deploy[:deploy_to]}/shared/config/initializers" do
     mode '0770'
@@ -191,3 +184,18 @@ node[:deploy].each do |application, deploy|
   end
 
 end
+
+node[:deploy].first(1).each do |application, deploy|
+
+  rails_env = deploy[:rails_env]
+  current_path = deploy[:current_path]
+
+  execute "updating crontab" do
+    user deploy[:user]
+    cwd "#{deploy[:deploy_to]}/current"
+    command "bundle exec whenever -w -s environment=#{rails_env}"
+    action :run
+  end
+
+end
+
