@@ -287,8 +287,4 @@ module BlockDevice
   def self.on_kvm?
     File.read("/proc/cpuinfo").match(/QEMU/)
   end
-
-  def self.nvme_used?
-    File.read("/proc/diskstats").match(/nvme/)
-  end
 end
