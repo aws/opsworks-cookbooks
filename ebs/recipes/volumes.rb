@@ -1,5 +1,5 @@
 package "nvme-cli" do
-  only_if { EbsVolume.nvme_based? && !EbsVolume.has_ebs_tooling? && node[:ebs][:devices].size != 0 }
+  only_if { EbsVolumeHelpers.nvme_based? && !EbsVolumeHelpers.has_ebs_tooling? && node[:ebs][:devices].size != 0 }
   retries 2
 end
 
