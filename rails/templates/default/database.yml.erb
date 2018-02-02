@@ -7,6 +7,9 @@
   username: <%= @database[:username].to_s.inspect %>
   password: <%= @database[:password].to_s.inspect %>
   reconnect: <%= @database[:reconnect] ? 'true' : 'false' %>
+  tcp_keepalives_idle: 60
+  tcp_keepalives_interval: 60
+  tcp_keepalives_count: 100
 <% if @database[:adapter].to_s == 'postgis' -%>
   schema_search_path: public
 <% end -%>
