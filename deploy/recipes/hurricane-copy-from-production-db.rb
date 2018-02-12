@@ -72,6 +72,24 @@ node[:deploy].first(1).each do |application, deploy|
       action :run
     end
 
+
+    execute 'update user dealer password' do
+      Chef::Log.debug('Updating user passowrd')
+      user deploy[:user]
+      environment 'PGPASSWORD' => staging_database[:password]
+      update_cmd = "UPDATE users SET encrypted_password = '$2a$10$dnweS3sLpXy2/n2Qhc16yOY9hM7ew46CertcGQW1iW8q02NzBfMs6' WHERE email = 'info@fit2you.it'"
+      command sprintf(
+                  "psql -h %s -d %s -U %s -c '%s'",
+                  staging_database[:host],
+                  staging_database[:database],
+                  staging_database[:username],
+                  update_cmd
+              )
+      action :run
+
+
+    end
+
     file dump_file do
       Chef::Log.debug('Remove Sql Dump')
       action :delete
