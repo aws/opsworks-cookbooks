@@ -22,7 +22,7 @@ node[:deploy].first(1).each do |application, deploy|
       select 'truncate ' || string_agg(format('%I.%I', schemaname, tablename), ',') || ' RESTART IDENTITY CASCADE'
         into truncate_tables_query
       from pg_tables
-      where schemaname in ('public') and tableowner = '#{staging_database[:username]}' and tablename != 'schema_migrations' and tablename != 'users';
+      where schemaname in ('public') and tableowner = '#{staging_database[:username]}' and tablename != 'schema_migrations';
       execute truncate_tables_query;
     end;
     $$
@@ -41,7 +41,7 @@ node[:deploy].first(1).each do |application, deploy|
       user deploy[:user]
       environment 'PGPASSWORD' => production_database[:password]
       cwd dump_dir
-      dump_cmd = 'pg_dump -h %s --data-only --no-owner --exclude-table-data=schema_migrations --exclude-table-data=users -x -U %s %s > %s'
+      dump_cmd = 'pg_dump -h %s --data-only --no-owner --exclude-table-data=schema_migrations -x -U %s %s > %s'
       command sprintf(dump_cmd, production_database[:host], production_database[:username], production_database[:database], dump_file)
       action :run
     end
