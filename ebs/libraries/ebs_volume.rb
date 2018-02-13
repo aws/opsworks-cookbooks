@@ -41,7 +41,7 @@ module EbsVolumeHelpers
       #   cmic    : 0
       map = Hash[cmd.stdout.lines.map { |l| l.split(':', 2).map(&:strip) }]
 
-      raise "Device #{device_name} is not a EBS volume" unless map["mn"] == "Amazon Elastic Block Store"
+      raise "Device #{device_name} is not a EBS volume" unless /Amazon Elastic Block/.match(map["mn"])
 
       map["sn"].gsub(/^vol/, "vol-")
     end
