@@ -88,5 +88,10 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = <%= @hurricane_api_settings[:mailer][:configuration].to_s %>
   config.action_mailer.raise_delivery_errors = true
 
+  config.vcr_settings = {
+      allow_http_connections_when_no_cassette: true,
+      cassette_library_dir: Rails.root.join('vcr')
+  }
+
 
 end
