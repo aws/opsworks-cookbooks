@@ -10,6 +10,14 @@ default: &default
     queue:
       region: '<%= @quantum_settings[:claims][:queue_region] %>'
       url: '<%= @quantum_settings[:claims][:queue_url] %>'
+  hyena:
+    documents_bucket:
+      region: '<%= @quantum_settings[:proposals][:documents_region] %>'
+      name: '<%= @quantum_settings[:proposals][:documents_bucket] %>'
+  gordius:
+    documents_bucket:
+      region: '<%= @quantum_settings[:gordius][:documents_region] %>'
+      name: '<%= @quantum_settings[:gordius][:documents_bucket] %>'
 
 staging:
   <<: *default
