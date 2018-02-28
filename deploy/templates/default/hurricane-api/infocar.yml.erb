@@ -8,6 +8,9 @@ default: &default
     <% @hurricane_api_settings[:infocar][:excluded_brands].each do |brand| %>
     - '<%= brand %>'
     <% end %>
+  phone_number: <% @hurricane_api_settings[:infocar][:phone_number].each do |number| %>
+    - '<%= number %>'
+    <% end %>
 
 <%= @env %>:
   <<: *default
