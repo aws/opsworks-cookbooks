@@ -111,16 +111,27 @@
    -->
    <field name="sold_at" type="date" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="status" type="int" indexed="true" stored="true" required="true" multiValued="false" />
+   <field name="shipping_value" type="float" indexed="false" stored="true" required="true" multiValued="false" />
+   <field name="shipping_tracking" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="shipping_tracking_url" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="order_id" type="int" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="buyer_name" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="buyer_tax_document" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="delivery_name" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="delivery_city" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
-   <field name="delivery_state" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
+   <field name="delivery_state" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="delivery_uf" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="delivery_zip_code" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
+   <field name="delivery_address" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
+   <field name="delivery_street" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="delivery_number" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="delivery_complement" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="delivery_neighborhood" type="text_general" indexed="true" stored="true" required="false" multiValued="false" />
    <field name="delivery_method" type="string" indexed="false" stored="true" required="true" multiValued="false" />
+   <field name="interest" type="double" indexed="false" stored="true" required="true" multiValued="false" />
    <field name="total" type="double" indexed="false" stored="true" required="true" multiValued="false" />
    <field name="buyer_id" type="int" indexed="false" stored="true" required="true" multiValued="false" />
    <field name="seller_id" type="int" indexed="true" stored="true" required="true" multiValued="false" />
-   <field name="shipping_value" type="float" indexed="false" stored="true" required="true" multiValued="false" />
    <field name="items" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="search" type="text_general" indexed="true" stored="true" required="true" multiValued="true" />
    <field name="payment_method" type="text_general" indexed="true" stored="true" required="true" multiValued="false" />

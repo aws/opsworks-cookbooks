@@ -26,23 +26,65 @@
               ELSE 'deposit'
             END) AS payment_method,
             v.order_id,
-            coalesce(vd.dest_nome, '')   AS 'buyer_name',
+            coalesce(vu.nome, '')   AS 'buyer_name',
+            coalesce(vu.cpf_cnpj, '')   AS 'buyer_tax_document',
+            coalesce(vd.dest_nome, '')   AS 'delivery_name',
             coalesce(vd.dest_cidade, '') AS 'delivery_city',
             coalesce(vd.dest_estado, '') AS 'delivery_state',
+            CASE vd.dest_estado
+              WHEN 'Acre' THEN 'AC'
+              WHEN 'Alagoas' THEN 'AL'
+              WHEN 'Amazonas' THEN 'AM'
+              WHEN 'Amapa' THEN 'AP'
+              WHEN 'Bahia' THEN 'BA'
+              WHEN 'Ceara' THEN 'CE'
+              WHEN 'Distrito Federal' THEN 'DF'
+              WHEN 'Espirito Santo' THEN 'ES'
+              WHEN 'Goias' THEN 'GO'
+              WHEN 'Maranhao' THEN 'MA'
+              WHEN 'Minas Gerais' THEN 'MG'
+              WHEN 'Mato Grosso do Sul' THEN 'MS'
+              WHEN 'Mato Grosso' THEN 'MT'
+              WHEN 'Para' THEN 'PA'
+              WHEN 'Paraiba' THEN 'PB'
+              WHEN 'Pernambuco' THEN 'PE'
+              WHEN 'Piaui' THEN 'PI'
+              WHEN 'Parana' THEN 'PR'
+              WHEN 'Rio de Janeiro' THEN 'RJ'
+              WHEN 'Rio Grande do Norte' THEN 'RN'
+              WHEN 'Rondonia' THEN 'RO'
+              WHEN 'Roraima' THEN 'RR'
+              WHEN 'Rio Grande do Sul' THEN 'RS'
+              WHEN 'Santa Catarina' THEN 'SC'
+              WHEN 'Sergipe' THEN 'SE'
+              WHEN 'Sao Paulo' THEN 'SP'
+              WHEN 'Tocantins' THEN 'TO'
+              ELSE 'NULL' END AS delivery_uf,
             coalesce(vd.dest_cep, '')    AS 'delivery_zip_code',
+            coalesce(vd.dest_end, '') AS 'delivery_address',
+            coalesce(vd.dest_logradouro, '') AS 'delivery_street',
+            coalesce(vd.dest_numero, '') AS 'delivery_number',
+            coalesce(vd.dest_complemento, '') AS 'delivery_complement',
+            coalesce(vd.dest_bairro, '') AS 'delivery_neighborhood',
             v.fenvio       AS 'delivery_method',
-            v.total,
+            (v.total + coalesce(vt.juros, 0)) AS total,
+            vt.juros AS interest,
             v.comprador    AS 'buyer_id',
             v.vendedor     AS 'seller_id',
             v.frete        AS 'shipping_value',
+            v.cod_rastreamento AS 'shipping_tracking',
+            v.link_de_rastreio AS 'shipping_tracking_url',
 
             GROUP_CONCAT(vi.autor, '#-#', vi.titulo, '#-#', coalesce(vi.editora,''), '#-#', coalesce(vi.book_type,'0'), '#-#',
                          coalesce(vi.idioma, ''), '#-#', coalesce(location_in_store,' '), '#-#', coalesce(category, ' '),'#-#',
                          coalesce(vi.ano,''), '#-#', coalesce(vi.descr, ' '), '#-#', coalesce(vi.rec_id, ''), '#-#',
-                         coalesce(vi.preco, ' '), '#-#', coalesce(vi.estante, ' ') SEPARATOR '----line----') as items
+                         coalesce(vi.preco, ' '), '#-#', coalesce(vi.estante, ' '), '#-#', coalesce(vi.isbn, ' ')
+                         SEPARATOR '----line----') as items
           FROM venda_items vi
           JOIN vendas v ON vi.order_id = v.order_id
           LEFT JOIN vendas_detalhes vd ON v.order_id = vd.order_id
+          LEFT JOIN vendas_taxas vt ON v.order_id = vt.order_id
+          LEFT JOIN usuarios vu ON vu.user_id = v.comprador
           WHERE v.log > DATE_SUB(NOW(), INTERVAL 6 MONTH)
           AND v.status != -4
           GROUP BY order_id"
@@ -64,23 +106,65 @@
                ELSE 'deposit'
              END) AS payment_method,
              v.order_id,
-             coalesce(vd.dest_nome, '')   AS 'buyer_name',
+             coalesce(vu.nome, '')   AS 'buyer_name',
+             coalesce(vu.cpf_cnpj, '')   AS 'buyer_tax_document',
+             coalesce(vd.dest_nome, '')   AS 'delivery_name',
              coalesce(vd.dest_cidade, '') AS 'delivery_city',
              coalesce(vd.dest_estado, '') AS 'delivery_state',
+             CASE vd.dest_estado
+               WHEN 'Acre' THEN 'AC'
+               WHEN 'Alagoas' THEN 'AL'
+               WHEN 'Amazonas' THEN 'AM'
+               WHEN 'Amapa' THEN 'AP'
+               WHEN 'Bahia' THEN 'BA'
+               WHEN 'Ceara' THEN 'CE'
+               WHEN 'Distrito Federal' THEN 'DF'
+               WHEN 'Espirito Santo' THEN 'ES'
+               WHEN 'Goias' THEN 'GO'
+               WHEN 'Maranhao' THEN 'MA'
+               WHEN 'Minas Gerais' THEN 'MG'
+               WHEN 'Mato Grosso do Sul' THEN 'MS'
+               WHEN 'Mato Grosso' THEN 'MT'
+               WHEN 'Para' THEN 'PA'
+               WHEN 'Paraiba' THEN 'PB'
+               WHEN 'Pernambuco' THEN 'PE'
+               WHEN 'Piaui' THEN 'PI'
+               WHEN 'Parana' THEN 'PR'
+               WHEN 'Rio de Janeiro' THEN 'RJ'
+               WHEN 'Rio Grande do Norte' THEN 'RN'
+               WHEN 'Rondonia' THEN 'RO'
+               WHEN 'Roraima' THEN 'RR'
+               WHEN 'Rio Grande do Sul' THEN 'RS'
+               WHEN 'Santa Catarina' THEN 'SC'
+               WHEN 'Sergipe' THEN 'SE'
+               WHEN 'Sao Paulo' THEN 'SP'
+               WHEN 'Tocantins' THEN 'TO'
+               ELSE 'NULL' END AS delivery_uf,
              coalesce(vd.dest_cep, '')    AS 'delivery_zip_code',
+             coalesce(vd.dest_end, '') AS 'delivery_address',
+             coalesce(vd.dest_logradouro, '') AS 'delivery_street',
+             coalesce(vd.dest_numero, '') AS 'delivery_number',
+             coalesce(vd.dest_complemento, '') AS 'delivery_complement',
+             coalesce(vd.dest_bairro, '') AS 'delivery_neighborhood',
              v.fenvio       AS 'delivery_method',
-             v.total,
+             (v.total + coalesce(vt.juros, 0)) AS total,
+             vt.juros AS interest,
              v.comprador    AS 'buyer_id',
              v.vendedor     AS 'seller_id',
              v.frete        AS 'shipping_value',
+             v.cod_rastreamento AS 'shipping_tracking',
+             v.link_de_rastreio AS 'shipping_tracking_url',
 
              GROUP_CONCAT(vi.autor, '#-#', vi.titulo, '#-#', coalesce(vi.editora,''), '#-#', coalesce(vi.book_type,'0'), '#-#',
                           coalesce(vi.idioma, ''), '#-#', coalesce(location_in_store,' '), '#-#', coalesce(category, ' '),'#-#',
                           coalesce(vi.ano,''), '#-#', coalesce(vi.descr, ' '), '#-#', coalesce(vi.rec_id, ''), '#-#',
-                          coalesce(vi.preco, ' '), '#-#', coalesce(vi.estante, ' ') SEPARATOR '----line----') as items
+                          coalesce(vi.preco, ' '), '#-#', coalesce(vi.estante, ' '), '#-#', coalesce(vi.isbn, ' ')
+                          SEPARATOR '----line----') as items
            FROM venda_items vi
            JOIN vendas v ON vi.order_id = v.order_id
            LEFT JOIN vendas_detalhes vd ON v.order_id = vd.order_id
+           LEFT JOIN vendas_taxas vt ON v.order_id = vt.order_id
+           LEFT JOIN usuarios vu ON vu.user_id = v.comprador
            WHERE v.order_id = '${dih.delta.order_id}'
            AND v.status != -4
            GROUP BY v.order_id
@@ -89,9 +173,9 @@
         deltaQuery="
           SELECT v.order_id
           FROM vendas v
-          WHERE 
+          WHERE
             DATE_ADD(v.updated_at, INTERVAL 7 HOUR) &gt; '${dih.last_index_time}'
-          AND 
+          AND
             v.status != -4
         "
       >
@@ -100,13 +184,24 @@
       <field name="status" column="status" />
       <field name="payment_method" column="payment_method" />
       <field name="shipping_value" column="shipping_value" />
+      <field name="shipping_tracking" column="shipping_tracking" />
+      <field name="shipping_tracking_url" column="shipping_tracking_url" />
       <field name="order_id" column="order_id" />
       <field name="buyer_name" column="buyer_name" />
+      <field name="buyer_tax_document" column="buyer_tax_document" />
+      <field name="delivery_name" column="delivery_name" />
       <field name="delivery_city" column="delivery_city" />
       <field name="delivery_state" column="delivery_state" />
+      <field name="delivery_uf" column="delivery_uf" />
       <field name="delivery_zip_code" column="delivery_zip_code" />
+      <field name="delivery_address" column="delivery_address" />
+      <field name="delivery_street" column="delivery_street" />
+      <field name="delivery_number" column="delivery_number" />
+      <field name="delivery_complement" column="delivery_complement" />
+      <field name="delivery_neighborhood" column="delivery_neighborhood" />
       <field name="delivery_method" column="delivery_method" />
       <field name="total" column="total" />
+      <field name="interest" column="interest" />
       <field name="buyer_id" column="buyer_id" />
       <field name="seller_id" column="seller_id" />
       <field name="items" column="items" />
