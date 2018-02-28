@@ -11,6 +11,7 @@ default: &default
   phone_number: <% @hurricane_api_settings[:infocar][:phone_number].each do |number| %>
     - '<%= number %>'
     <% end %>
+  credit_threshold: '<%= @hurricane_api_settings[:infocar][:credit_threshold] %>'
 
 <%= @env %>:
   <<: *default
