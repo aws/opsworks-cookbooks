@@ -54,9 +54,6 @@ Rails.application.configure do
   # Use a different logger for distributed setups.
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
 
-  # Use a different cache store in production.
-  config.cache_store = :memory_store
-
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.action_controller.asset_host = 'http://assets.example.com'
 
@@ -86,5 +83,27 @@ Rails.application.configure do
   config.mailer = Rails.application.config_for(:mailer)
   config.aws = Rails.application.config_for(:aws)
 
+  # ActiveJob Configuration
+  <% case @lumen_settings[:active_job][:adapter] %>
+  <% when 'inline' %>
+    config.active_job.queue_adapter = :inline
+  <% when 'resque' %>
+    config.active_job.queue_adapter = :resque
+  <% end %>
 
+  <% if @lumen_settings[:cache].present? %>
+    <% case @lumen_settings[:cache][:adapter] %>
+    <% when 'redis' %>
+      config.cache_store = :redis_store, "<%= @lumen_settings[:redis][:cache] %>", {
+        expires_in: <%= @lumen_settings[:cache][:options][:expires_in] %>
+      }
+    <% when 'memory' %>
+      config.cache_store = :memory_store, {
+        namespace: "<%= @lumen_settings[:cache][:options][:namespace] %>",
+        expires_in: <%= @lumen_settings[:cache][:options][:expires_in] %>
+      }
+    <% end %>
+  <% end %>
+
+  config.allow_concurrency = true
 end

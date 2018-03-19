@@ -1,0 +1,4 @@
+<%= @lumen_env %>:
+  resque: '<%= @lumen_settings[:redis][:resque] %>'
+  cache: '<%= @lumen_settings[:redis][:cache] %>'
+  faye: '<%= @lumen_settings[:redis][:faye] %>'

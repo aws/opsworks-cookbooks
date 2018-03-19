@@ -1,0 +1,5 @@
+check process <%= @queue_name %>
+  with pidfile <%= @pidfile %>
+  start program = "/usr/bin/env HOME=<%= @home %> RACK_ENV=<%= @env %> PATH=/usr/local/bin:/usr/local/ruby/bin:/usr/bin:/bin:$PATH /bin/sh -l -c 'cd <%= @working_dir %>; nohup bundle exec rake environment resque:work RAILS_ENV=<%= @env %> QUEUE=<%= @queue_name %> VERBOSE=1 PIDFILE=<%= @pidfile %> >> <%= @log_file %> 2>&1'" as uid <%= @user %>
+  stop program = "/bin/sh -c 'cd <%= @working_dir %> && kill -9 $(cat <%= @pidfile %>) && rm -f <%= @pidfile %>; exit 0;'"
+  group resque_workers

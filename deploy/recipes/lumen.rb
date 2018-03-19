@@ -6,6 +6,8 @@ node[:deploy].each do |application, deploy|
   rails_env = deploy[:rails_env]
   current_path = deploy[:current_path]
 
+  active_job_with_resque = (node[:lumen_settings][:active_job].present? && node[:lumen_settings][:active_job][:adapter] == 'resque')
+
   yum_package 'nodejs'
 
   directory "#{deploy[:deploy_to]}/shared/config" do
@@ -62,6 +64,34 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     action :create
     recursive true
+  end
+
+  template "#{deploy[:deploy_to]}/shared/config/resque.yml" do
+    source 'lumen/config/resque.yml.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+      :lumen_settings => node[:lumen_settings],
+      :lumen_env => rails_env
+    )
+    only_if do
+      active_job_with_resque && File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
+
+  template "#{deploy[:deploy_to]}/shared/config/redis.yml" do
+    source 'lumen/config/redis.yml.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+      :lumen_settings => node[:lumen_settings],
+      :lumen_env => rails_env
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
   end
 
   template "#{deploy[:deploy_to]}/shared/config/secrets.yml" do
@@ -145,6 +175,40 @@ node[:deploy].each do |application, deploy|
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/app/views/shared")
+    end
+  end
+
+  if active_job_with_resque
+    service 'monit' do
+      action :restart
+    end
+
+    queue_name = ['lumen', rails_env, 'queue'].join('_')
+    pid_file_name = ['resque_worker', queue_name, '.pid'].join
+    log_file_name = ['resque_worker', queue_name, '.log'].join
+    monit_resque_rc = File.join(node[:monit][:conf_dir], 'resque.monitrc')
+
+    template monit_resque_rc do
+      source 'lumen/resque.monitrc.erb'
+      owner 'root'
+      group 'root'
+      mode 0644
+      variables(
+        :pidfile => File.join(deploy[:deploy_to], 'shared', 'pids', pid_file_name),
+        :working_dir => deploy[:current_path],
+        :log_file => File.join(deploy[:deploy_to], 'shared', 'log', log_file_name),
+        :queue_name => queue_name,
+        :env => rails_env,
+        :home => deploy[:home],
+        :user => deploy[:user]
+      )
+      notifies :restart, "service[monit]"
+    end
+
+    execute "restart monit process #{queue_name}" do
+      ignore_failure true
+      command "monit restart #{queue_name}"
+      action :run
     end
   end
 
