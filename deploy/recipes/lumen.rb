@@ -94,6 +94,17 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  template "#{deploy[:deploy_to]}/shared/config/routes/resque_server.rb" do
+    source 'lumen/config/routes/resque_server.rb.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(:lumen_settings => node[:lumen_settings])
+    only_if do
+      active_job_with_resque && File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
+
   template "#{deploy[:deploy_to]}/shared/config/secrets.yml" do
     source 'lumen/config/secrets.yml.erb'
     mode '0660'
@@ -149,6 +160,17 @@ node[:deploy].each do |application, deploy|
     variables(:lumen_settings => node[:lumen_settings])
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config/environments")
+    end
+  end
+
+  template "#{deploy[:deploy_to]}/shared/config/application.rb" do
+    source 'lumen/config/application.rb.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(:lumen_settings => node[:lumen_settings])
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config")
     end
   end
 
