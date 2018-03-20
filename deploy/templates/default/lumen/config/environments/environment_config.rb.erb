@@ -104,8 +104,4 @@ Rails.application.configure do
       }
     <% end %>
   <% end %>
-
-  config.allow_concurrency = true
-
-  config.action_mailer.default_url_options = { host: "<%= @lumen_settings[:action_mailer][:default_url_options][:host] %>" }
 end

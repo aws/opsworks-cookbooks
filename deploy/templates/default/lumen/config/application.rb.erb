@@ -37,11 +37,5 @@ module Lumen
     # and follow the adapter's specific installation
     # and deployment instructions.
     #
-    config.middleware.use FayeRails::Middleware, mount: '/faye', timeout: 25, server: 'passenger', engine: {
-        type: Faye::Redis, uri: Rails.application.config_for(:redis).fetch('faye')
-    } do
-      add_extension(Faye::PushOnlyServer.new)
-      add_extension(Faye::CsrfProtection.new)
-    end
   end
 end
