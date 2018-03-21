@@ -1,3 +1,5 @@
 <%= @lumen_env %>:
+  redis_url: '<%= @lumen_settings[:resque][:redis_url] %>'
+  redis_namespace: '<%= @lumen_settings[:resque][:redis_namespace] %>'
   username: '<%= @lumen_settings[:resque][:username] %>'
   password: '<%= @lumen_settings[:resque][:password] %>'

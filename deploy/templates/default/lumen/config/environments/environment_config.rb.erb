@@ -94,7 +94,7 @@ Rails.application.configure do
   <% if @lumen_settings[:cache].present? %>
     <% case @lumen_settings[:cache][:adapter] %>
     <% when 'redis' %>
-      config.cache_store = :redis_store, "<%= @lumen_settings[:redis][:cache] %>", {
+      config.cache_store = :redis_store, "<%= @lumen_settings[:cache][:url] %>", {
         expires_in: <%= @lumen_settings[:cache][:options][:expires_in] %>
       }
     <% when 'memory' %>
