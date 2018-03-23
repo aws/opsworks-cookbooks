@@ -220,6 +220,7 @@ node[:deploy].each do |application, deploy|
         :working_dir => deploy[:current_path],
         :log_file => File.join(deploy[:deploy_to], 'shared', 'log', log_file_name),
         :queue_name => queue_name,
+        :worker_count => node[:lumen_settings][:active_job][:worker_count] || 1,
         :env => rails_env,
         :home => deploy[:home],
         :user => deploy[:user]
