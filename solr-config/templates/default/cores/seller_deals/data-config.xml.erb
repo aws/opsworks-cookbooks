@@ -86,7 +86,7 @@
           LEFT JOIN vendas_taxas vt ON v.order_id = vt.order_id
           LEFT JOIN usuarios vu ON vu.user_id = v.comprador
           WHERE v.log > DATE_SUB(NOW(), INTERVAL 6 MONTH)
-          AND v.status != -4
+          AND v.status not in(-4,-9)
           GROUP BY order_id"
 
         deltaImportQuery="
@@ -166,7 +166,7 @@
            LEFT JOIN vendas_taxas vt ON v.order_id = vt.order_id
            LEFT JOIN usuarios vu ON vu.user_id = v.comprador
            WHERE v.order_id = '${dih.delta.order_id}'
-           AND v.status != -4
+           AND v.status not in(-4,-9)
            GROUP BY v.order_id
         "
 
@@ -176,7 +176,7 @@
           WHERE
             DATE_ADD(v.updated_at, INTERVAL 7 HOUR) &gt; '${dih.last_index_time}'
           AND
-            v.status != -4
+            v.status not in(-4,-9)
         "
       >
 
