@@ -85,6 +85,16 @@ Rails.application.configure do
   config.action_mailer.logger = nil
   <% end %>
   config.action_mailer.default_options = { from: "Fit2You <<%= @hurricane_api_settings[:mailer][:from] %>>" }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: @hurricane_api_settings[:mailer][:configuration][:address],
+    port: @hurricane_api_settings[:mailer][:configuration][:port],
+    domain: @hurricane_api_settings[:mailer][:configuration][:domain],
+    user_name: @hurricane_api_settings[:mailer][:configuration][:user_name],
+    password: @hurricane_api_settings[:mailer][:configuration][:password],
+    authentication: @hurricane_api_settings[:mailer][:configuration][:authentication]
+  }
+
   config.action_mailer.smtp_settings = <%= @hurricane_api_settings[:mailer][:configuration].to_s %>
   config.action_mailer.raise_delivery_errors = true
 
