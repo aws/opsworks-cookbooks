@@ -50,7 +50,7 @@ bash 'logdir_existence_and_restart_apache2' do
     done
   EOF
   action :nothing
-  notifies :restart, resources(:service => 'apache2')
+  # notifies :restart, resources(:service => 'apache2')
   timeout 70
 end
 
@@ -239,9 +239,9 @@ include_recipe 'apache2::mod_proxy'
 include_recipe 'apache2::mod_proxy_http'
 include_recipe 'apache2::logrotate'
 
-bash 'logdir_existence_and_restart_apache2' do
-  action :run
-end
+# bash 'logdir_existence_and_restart_apache2' do
+#   action :run
+# end
 
 file "#{node[:apache][:document_root]}/index.html" do
   action :delete
