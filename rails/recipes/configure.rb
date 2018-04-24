@@ -12,8 +12,6 @@ node[:deploy].each do |application, deploy|
   node.default[:deploy][application][:database][:adapter] = OpsWorks::RailsConfiguration.determine_database_adapter(application, node[:deploy][application], "#{node[:deploy][application][:deploy_to]}/current", :force => node[:force_database_adapter_detection])
   deploy = node[:deploy][application]
 
-  Chef::Log.info("Deploy JSON -> #{deploy}")
-
   case node[:deploy][application][:database][:adapter]
   when /mysql/
     include_recipe "mysql::client_install"
