@@ -95,4 +95,7 @@ Rails.application.configure do
     authentication: "<%= @hurricane_api_settings[:mailer][:configuration][:authentication] %>"
   }
   config.action_mailer.raise_delivery_errors = true
+
+  # Hurrican Print API
+  config.hurricane_print_api = {host: '<%= @hurricane_api_settings[:hurricane_print_api][:host] %>', port: <%= @hurricane_api_settings[:hurricane_print_api][:port] %>, user: '<%= @hurricane_api_settings[:hurricane_print_api][:user] %>', password: '<%= @hurricane_api_settings[:hurricane_print_api][:password] %>'}
 end
