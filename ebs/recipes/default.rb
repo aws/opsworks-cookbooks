@@ -1,3 +1,11 @@
+ruby_block "delete_lines_from_fstab" do
+  block do
+    file = Chef::Util::FileEdit.new("/etc/fstab")
+    file.search_file_delete_line("/dev/nvme")
+    file.write_file
+  end
+end
+
 case node[:platform]
 when 'debian','ubuntu'
   package "xfsprogs" do
