@@ -87,10 +87,11 @@ module S3FileLib
 
   def self.do_request(method, url, bucket, path, aws_access_key_id, aws_secret_access_key, token, region)
     url = build_endpoint_url(bucket, region) if url.nil?
+    url = "#{url}#{path}"
 
     # do not sign requests for public endpoints 
     #
-    return client::Request::execute(:method => method, :url => "#{url}#{path}", :raw_response => true) if is_public_s3_endpoint?(url)
+    return client::Request::execute(:method => method, :url => url, :raw_response => true) if is_public_s3_endpoint?(url)
 
     with_region_detect(region) do |real_region|
       client.reset_before_execution_procs
@@ -101,7 +102,7 @@ module S3FileLib
           SigV4.sign(request, params, real_region, aws_access_key_id, aws_secret_access_key, token)
         end
       end
-      client::Request.execute(:method => method, :url => "#{url}#{path}", :raw_response => true)
+      client::Request.execute(:method => method, :url => url, :raw_response => true)
     end
   end
 
