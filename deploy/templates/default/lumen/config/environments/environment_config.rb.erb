@@ -80,6 +80,8 @@ Rails.application.configure do
   # Hurrican Print API
   config.hurricane_print_api = {host: '<%= @lumen_settings[:api][:host] %>', port: <%= @lumen_settings[:api][:port] %>, user: '<%= @lumen_settings[:api][:user] %>', password: '<%= @lumen_settings[:api][:password] %>'}
 
+  config.grace_login_url = '<%= @lumen_settings[:grace_login_url] %>'
+
   config.mailer = Rails.application.config_for(:mailer)
   config.aws = Rails.application.config_for(:aws)
 
