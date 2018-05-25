@@ -274,11 +274,6 @@ module BlockDevice
       new_devices = ('b'..'z').to_a[0 + skip, devices.size].each_with_index.map { |char, index| [devices[index], "/dev/sd#{char}"] }
       Chef::Log.info("Running on QEMU/KVM: Translated EBS devices #{devices.inspect} to #{new_devices.map { |d| d[1] }.inspect}")
       new_devices
-    elsif nvme_used?
-      Chef::Log.info("Using NVMe devices: Starting at /dev/nvme1n1 skipping #{skip}")
-      new_devices = (0...devices.size).map { |index| [devices[index], "/dev/nvme#{index+skip+1}n1"] }
-      Chef::Log.info("Using NVMe devices: Translated EBS devices #{devices.inspect} to #{new_devices.map { |d| d[1] }.inspect}")
-      new_devices
     else
       devices
     end
