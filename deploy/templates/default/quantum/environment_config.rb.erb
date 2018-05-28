@@ -90,4 +90,7 @@ Rails.application.configure do
   }
     <% end %>
     <% end %>
+
+  # Hurricane api settings
+  config.hurricane_api = { host: '<%= @quantum_settings[:hurricane_api][:host] %>',  port: <%= @quantum_settings[:hurricane_api][:port] %> }
 end
