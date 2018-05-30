@@ -18,7 +18,14 @@ module EbsVolumeHelpers
     if self.has_ebs_tooling?
       cmd = Mixlib::ShellOut.new("/sbin/ebsnvme-id #{device_name}")
       cmd.run_command
-      cmd.error!
+
+      if cmd.error?
+        if cmd.stderr =~ /Not an EBS device/
+          return nil
+        else
+          cmd.error!
+        end
+      end
 
       # example output:
       #   Volume ID: vol-03ad072723a6e3595
@@ -41,7 +48,7 @@ module EbsVolumeHelpers
       #   cmic    : 0
       map = Hash[cmd.stdout.lines.map { |l| l.split(':', 2).map(&:strip) }]
 
-      raise "Device #{device_name} is not a EBS volume" unless /Amazon Elastic Block/.match(map["mn"])
+      return nil unless /Amazon Elastic Block/.match(map["mn"])
 
       map["sn"].gsub(/^vol/, "vol-")
     end
@@ -58,8 +65,13 @@ module EbsVolumeHelpers
     end
     attached_nvme_volumes = Hash[known_nvme_disks.compact.map do |d|
       device_path = "/dev/#{d}"
-      [EbsVolumeHelpers.volume_id(device_path), device_path]
-    end]
+      ebs_volume_id = EbsVolumeHelpers.volume_id(device_path)
+      if ebs_volume_id.nil?
+        nil
+      else
+        [ebs_volume_id, device_path]
+      end
+    end.compact]
 
     device_name = attached_nvme_volumes[volume_id]
     raise "Cannot find device for EBS volume id #{volume_id}, known devices: #{attached_nvme_volumes}" if device_name.nil?
