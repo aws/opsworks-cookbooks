@@ -1,12 +1,11 @@
 <%= @videl_env %>:
   encryption:
-    <% @conf.each do |sender, options| %>
-        <%= sender %>:
-          <% options.each do |key, value| %>
-            <% if value.is_a?(Array) %>
-              <%= sprintf("%s: %s", key, value) %>
-            <% else %>
-              <%= sprintf("%s: '%s'", key, value) %>
+    <% @conf.each do |sender, encryption_configs| %>
+      <%= sender %>:
+        <% encryption_configs.each do |algorithm, algorithm_configs| %>
+          <%= algorithm %>:
+            <% algorithm_configs.each do |key, value| %>
+              <%= sprintf('%s: "%s"', key, value) %>
             <% end %>
-          <% end %>
       <% end %>
+    <% end %>
