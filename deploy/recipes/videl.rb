@@ -44,7 +44,7 @@ node[:deploy].each do |application, deploy|
     owner deploy[:user]
     group deploy[:group]
     variables(
-      :conf => node[:encryption] || [],
+      :conf => node[:encryption] || {},
       :videl_env => deploy[:env]
     )
     only_if do
