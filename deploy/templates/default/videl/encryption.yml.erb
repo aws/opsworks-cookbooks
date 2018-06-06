@@ -1,0 +1,12 @@
+<%= @videl_env %>:
+  encryption:
+    <% @conf.each do |sender, options| %>
+        <%= sender %>:
+          <% options.each do |key, value| %>
+            <% if value.is_a?(Array) %>
+              <%= sprintf("%s: %s", key, value) %>
+            <% else %>
+              <%= sprintf("%s: '%s'", key, value) %>
+            <% end %>
+          <% end %>
+      <% end %>

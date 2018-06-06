@@ -38,6 +38,20 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  template "#{deploy[:deploy_to]}/shared/config/encryption.yml" do
+    source 'videl/encryption.yml.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+      :conf => node[:encryption] || [],
+      :videl_env => deploy[:env]
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
+
 
   node[:senders].each do |name, conf|
     sender_config = JSON.parse(conf.to_hash.to_json)
