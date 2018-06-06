@@ -5,7 +5,7 @@
         <% encryption_configs.each do |algorithm, algorithm_configs| %>
           <%= algorithm %>:
             <% algorithm_configs.each do |key, value| %>
-              <%= sprintf('%s: "%s"', key, value) %>
+              <%= key %>: "<%= value %>"
             <% end %>
       <% end %>
     <% end %>
