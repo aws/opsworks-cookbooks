@@ -82,6 +82,8 @@ Rails.application.configure do
 
   config.grace_login_url = '<%= @lumen_settings[:grace_login_url] %>'
 
+  config.quantum_statistics_uri = '<%= @lumen_settings[:quantum_statistics_uri] %>'
+
   config.mailer = Rails.application.config_for(:mailer)
   config.aws = Rails.application.config_for(:aws)
 
