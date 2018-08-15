@@ -91,6 +91,7 @@ module S3FileLib
 
     # do not sign requests for public endpoints 
     #
+    client.reset_before_execution_procs
     return client::Request::execute(:method => method, :url => url, :raw_response => true) if is_public_s3_endpoint?(url)
 
     with_region_detect(region) do |real_region|
