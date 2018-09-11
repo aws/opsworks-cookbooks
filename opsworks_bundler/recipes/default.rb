@@ -5,7 +5,7 @@ if node[:opsworks_bundler][:manage_package]
     package_name "bundler"
     action :install
     version node[:opsworks_bundler][:version]
-    options(:force => true)
+    options('--force')
   end
 
   # alternative/fallback install of bundler for more robustness
