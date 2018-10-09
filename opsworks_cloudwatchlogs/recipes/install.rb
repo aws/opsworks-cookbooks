@@ -15,6 +15,26 @@ template node["cloudwatchlogs"]["config_file"] do
   mode 0644
 end
 
+# For Amazon Linux we need to look for "Amazon Linux AMI" in order to install CWLogs Agent correctly
+# in order to do this we copy the original contents of /etc/issue to a temporary location and then
+# copy the original contents back post CWLogs Agent installation
+if node[:platform] == "amazon"
+  remote_file "Create copy of issue file" do
+    source "file:///etc/issue"
+    path "/tmp/issue.copy"
+    mode '644'
+    owner 'root'
+    group 'root'
+  end
+
+  file "/etc/issue" do
+    content 'Amazon Linux AMI'
+    mode '644'
+    owner 'root'
+    group 'root'
+  end
+end
+
 remote_file "/opt/aws/cloudwatch/awslogs-agent-setup.py" do
   source "https://aws-cloudwatch.s3.amazonaws.com/downloads/latest/awslogs-agent-setup.py"
   mode 0700
@@ -39,4 +59,15 @@ end
 service "awslogs" do
   supports :status => true, :restart => true
   action [:enable, :start]
+end
+
+# Copy over original /etc/issue contents in the case of Amazon Linux
+if node[:platform] == "amazon"
+  remote_file "Copy back original issue file" do
+    source "file:///tmp/issue.copy"
+    path "/etc/issue"
+    mode '644'
+    owner 'root'
+    group 'root'
+  end
 end
