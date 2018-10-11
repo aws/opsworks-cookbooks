@@ -1,3 +1,16 @@
+def is_amazon_linux_2?
+  os_release = "/etc/os-release"
+  if File.exist?(os_release)
+    os_contents = File.open(os_release).readlines
+    os_name = os_contents.find { |line| line.start_with? "PRETTY_NAME" }.chomp
+    if os_name && os_name.match(/"(.*)"/)[1] == "Amazon Linux 2"
+      return true
+    end
+  end
+
+  false
+end
+
 [node["cloudwatchlogs"]["home_dir"], node["cloudwatchlogs"]["state_file_dir"]].each do |dir|
   directory dir do
     recursive true
@@ -70,17 +83,4 @@ if is_amazon_linux_2?
     owner 'root'
     group 'root'
   end
-end
-
-def is_amazon_linux_2?
-  os_release = "/etc/os-release"
-  if File.exist?(os_release)
-    os_contents = File.open(os_release).readlines
-    os_name = os_contents.find { |line| line.start_with? "PRETTY_NAME" }.chomp
-    if os_name && os_name.match(/"(.*)"/)[1] == "Amazon Linux 2"
-      return true
-    end
-  end
-
-  false
 end
