@@ -18,7 +18,7 @@ end
 # For Amazon Linux we need to look for "Amazon Linux AMI" in order to install CWLogs Agent correctly
 # in order to do this we copy the original contents of /etc/issue to a temporary location and then
 # copy the original contents back post CWLogs Agent installation
-if node[:platform] == "amazon"
+if is_amazon_linux_2?
   remote_file "Create copy of issue file" do
     source "file:///etc/issue"
     path "/tmp/issue.copy"
@@ -62,7 +62,7 @@ service "awslogs" do
 end
 
 # Copy over original /etc/issue contents in the case of Amazon Linux
-if node[:platform] == "amazon"
+if is_amazon_linux_2?
   remote_file "Copy back original issue file" do
     source "file:///tmp/issue.copy"
     path "/etc/issue"
@@ -70,4 +70,17 @@ if node[:platform] == "amazon"
     owner 'root'
     group 'root'
   end
+end
+
+def is_amazon_linux_2?
+  os_release = "/etc/os-release"
+  if File.exist?(os_release)
+    os_contents = File.open(os_release).readlines
+    os_name = os_contents.find { |line| line.start_with? "PRETTY_NAME" }.chomp
+    if os_name && os_name.match(/"(.*)"/)[1] == "Amazon Linux 2"
+      return true
+    end
+  end
+
+  false
 end
