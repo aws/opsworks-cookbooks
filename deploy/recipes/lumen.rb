@@ -149,8 +149,19 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-
-
+  template "#{deploy[:deploy_to]}/shared/config/s3.yml" do
+    source 'lumen/config/s3.yml.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+      :lumen_settings => node[:lumen_settings],
+      :lumen_env => rails_env
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
 
   template "#{deploy[:deploy_to]}/shared/config/environments/#{rails_env}.rb" do
     source 'lumen/config/environments/environment_config.rb.erb'

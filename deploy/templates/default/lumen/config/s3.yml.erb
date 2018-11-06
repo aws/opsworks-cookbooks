@@ -1,0 +1,14 @@
+<%= @lumen_env %>:
+  cache_enabled: <%= @lumen_settings[:s3][:cache_enabled] %>
+  regions:
+    <% @lumen_settings[:s3][:buckets].each do |type, data| %>
+    <%= data[:name] %>: '<%= data[:region] %>'
+    <% end %>
+  client:
+    region: <%= @lumen_settings[:s3][:bucket_region] %>
+    access_key_id: <%= @lumen_settings[:s3][:access_key_id] %>
+    secret_access_key: <%= @lumen_settings[:s3][:secret_access_key] %>
+  buckets:
+    <% @lumen_settings[:s3][:buckets].each do |type, data| %>
+    <%= type %>: <%= data[:name] %>
+    <% end %>
