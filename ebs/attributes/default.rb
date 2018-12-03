@@ -20,7 +20,7 @@ default[:ebs][:mdadm_chunk_size] = '256'
 default[:ebs][:md_read_ahead] = '65536' # 64k
 
 if BlockDevice.on_kvm?
-  skip_chars = new_device_names.size
+  skip_chars = ebs[:devices].keys.size
   ebs[:raids].each do |raid_device, config|
     new_raid_devices = BlockDevice.translate_device_names(config[:disks], skip_chars).map{|names| names[1]}
     set[:ebs][:raids][raid_device][:disks] = new_raid_devices
