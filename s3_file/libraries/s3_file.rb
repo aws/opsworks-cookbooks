@@ -4,28 +4,6 @@ require 'openssl'
 require 'base64'
 
 module S3FileLib
-  module SigV2
-    def self.sign(request, bucket, path, aws_access_key_id, aws_secret_access_key, token)
-      now = Time.now().utc.strftime('%a, %d %b %Y %H:%M:%S GMT')
-      string_to_sign = "#{request.method}\n\n\n%s\n" % [now]
-
-      string_to_sign += "x-amz-security-token:#{token}\n" if token
-
-      string_to_sign += "/%s%s" % [bucket,path]
-
-      digest = OpenSSL::Digest.new('sha1')
-      signed = OpenSSL::HMAC.digest(digest, aws_secret_access_key, string_to_sign)
-      signed_base64 = Base64.encode64(signed)
-
-      auth_string = 'AWS %s:%s' % [aws_access_key_id, signed_base64]
-
-      request["date"] = now
-      request["authorization"] = auth_string.strip
-      request["x-amz-security-token"] = token if token
-      request
-    end
-  end
-
   module SigV4
     def self.sigv4(string_to_sign, aws_secret_access_key, region, date, serviceName)
       k_date    = OpenSSL::HMAC.digest("sha256", "AWS4" + aws_secret_access_key, date)
@@ -73,38 +51,20 @@ module S3FileLib
 
   BLOCKSIZE_TO_READ = 1024 * 1000 unless const_defined?(:BLOCKSIZE_TO_READ)
 
-  def self.with_region_detect(region = nil)
-    yield(region)
-  rescue client::BadRequest => e
-    if region.nil?
-      region = e.response.headers[:x_amz_region]
-      raise if region.nil?
-      yield(region)
-    else
-      raise
-    end
-  end
-
   def self.do_request(method, url, bucket, path, aws_access_key_id, aws_secret_access_key, token, region)
     url = build_endpoint_url(bucket, region) if url.nil?
     url = "#{url}#{path}"
 
-    # do not sign requests for public endpoints 
+    # do not sign requests for public endpoints
     #
     client.reset_before_execution_procs
     return client::Request::execute(:method => method, :url => url, :raw_response => true) if is_public_s3_endpoint?(url)
 
-    with_region_detect(region) do |real_region|
-      client.reset_before_execution_procs
-      client.add_before_execution_proc do |request, params|
-        if real_region.nil?
-          SigV2.sign(request, bucket, path, aws_access_key_id, aws_secret_access_key, token)
-        else
-          SigV4.sign(request, params, real_region, aws_access_key_id, aws_secret_access_key, token)
-        end
-      end
-      client::Request.execute(:method => method, :url => url, :raw_response => true)
+    client.reset_before_execution_procs
+    client.add_before_execution_proc do |request, params|
+      SigV4.sign(request, params, region, aws_access_key_id, aws_secret_access_key, token)
     end
+    client::Request.execute(:method => method, :url => url, :raw_response => true)
   end
 
   def self.build_endpoint_url(bucket, region)
