@@ -6,8 +6,6 @@ require 'base64'
 module S3FileLib
   module SigV4
     def self.sigv4(string_to_sign, aws_secret_access_key, region, date, serviceName)
-      raise "region is missing from S3 url" if region.nil?
-
       k_date    = OpenSSL::HMAC.digest("sha256", "AWS4" + aws_secret_access_key, date)
       k_region  = OpenSSL::HMAC.digest("sha256", k_date, region)
       k_service = OpenSSL::HMAC.digest("sha256", k_region, serviceName)
