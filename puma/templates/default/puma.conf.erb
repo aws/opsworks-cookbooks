@@ -20,4 +20,14 @@ end
 
 before_fork do
   ActiveRecord::Base.connection_pool.disconnect!
+
+  require 'puma_worker_killer'
+  
+  PumaWorkerKiller.config do |config|
+    config.ram = ENV.fetch("PWK_RAM") { 1024 }
+    config.frequency = ENV.fetch("PWK_FREQUENCY") { 10 }
+    config.percent_usage = ENV.fetch("PWK_PERCENT_USAGE") { 0.4 }
+  end
+  
+  PumaWorkerKiller.start
 end
