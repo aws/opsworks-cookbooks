@@ -17,7 +17,7 @@ action :mount do
       command = "blkid -s TYPE -o value #{real_device_name}"
       cmd = Mixlib::ShellOut.new(command)
       cmd.run_command
-      cmd.error?
+      !Array(cmd.valid_exit_codes).include?(cmd.exitstatus)
     end
   end
 

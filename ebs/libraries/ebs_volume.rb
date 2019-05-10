@@ -19,7 +19,7 @@ module EbsVolumeHelpers
       cmd = Mixlib::ShellOut.new("/sbin/ebsnvme-id #{device_name}")
       cmd.run_command
 
-      if cmd.error?
+      if !Array(cmd.valid_exit_codes).include?(cmd.exitstatus)
         if cmd.stderr =~ /Not an EBS device/
           return nil
         else

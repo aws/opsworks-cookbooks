@@ -241,7 +241,7 @@ module BlockDevice
     cmd.run_command
     Chef::Log.info([cmd.stderr, cmd.stdout].join("\n"))
     Chef::Log.debug("'#{command}' returned #{cmd.exitstatus}")
-    !cmd.error?
+    Array(cmd.valid_exit_codes).include?(cmd.exitstatus)
   rescue Errno::EACCES
     Chef::Log.fatal("Permission denied on '#{command}'")
     false
