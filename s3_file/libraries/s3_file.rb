@@ -2,30 +2,9 @@ require 'rest-client'
 require 'time'
 require 'openssl'
 require 'base64'
+require 'net/http'
 
 module S3FileLib
-  module SigV2
-    def self.sign(request, bucket, path, aws_access_key_id, aws_secret_access_key, token)
-      now = Time.now().utc.strftime('%a, %d %b %Y %H:%M:%S GMT')
-      string_to_sign = "#{request.method}\n\n\n%s\n" % [now]
-
-      string_to_sign += "x-amz-security-token:#{token}\n" if token
-
-      string_to_sign += "/%s%s" % [bucket,path]
-
-      digest = OpenSSL::Digest.new('sha1')
-      signed = OpenSSL::HMAC.digest(digest, aws_secret_access_key, string_to_sign)
-      signed_base64 = Base64.encode64(signed)
-
-      auth_string = 'AWS %s:%s' % [aws_access_key_id, signed_base64]
-
-      request["date"] = now
-      request["authorization"] = auth_string.strip
-      request["x-amz-security-token"] = token if token
-      request
-    end
-  end
-
   module SigV4
     def self.sigv4(string_to_sign, aws_secret_access_key, region, date, serviceName)
       k_date    = OpenSSL::HMAC.digest("sha256", "AWS4" + aws_secret_access_key, date)
@@ -73,16 +52,44 @@ module S3FileLib
 
   BLOCKSIZE_TO_READ = 1024 * 1000 unless const_defined?(:BLOCKSIZE_TO_READ)
 
-  def self.with_region_detect(region = nil)
-    yield(region)
-  rescue client::BadRequest => e
-    if region.nil?
-      region = e.response.headers[:x_amz_region]
-      raise if region.nil?
-      yield(region)
+  def self.detect_bucket_region(bucket)
+    request = Net::HTTP::Head.new("/")
+    request['Host'] = bucket
+    response = Net::HTTP.start("s3.amazonaws.com", 80).request(request)
+
+    if response["location"]
+      _, _, _, s3_region = OpsWorks::SCM::S3.parse_uri(response["location"])
+      Chef::Log.info("Detected bucket location is #{response["location"]}, region is #{s3_region}")
+      return s3_region
     else
-      raise
+      Chef::Log.error("Could not determine the location from head request, response is #{response}")
+      return nil
     end
+  end
+
+  def self.with_region_detect(original_url, path, bucket, region)
+    Chef::Log.info("Trying to download from #{original_url} in region #{region}")
+    yield(original_url, region)
+  rescue client::BadRequest, client::MovedPermanently, client::TemporaryRedirect => e
+    region = e.response.headers[:x_amz_region] || e.response.headers[:x_amz_bucket_region]
+
+    # First attempt to determine region using redirection failed, trying to use head request
+    if region.nil?
+      Chef::Log.warn("Could not download from S3: #{e.message}, trying to determine bucket region using head request")
+      region = detect_bucket_region(bucket)
+
+      # Second attempt to determine region using head request failed, exiting the process
+      if region.nil?
+        Chef::Log.error("Could not determine the region of S3 bucket #{bucket}, please verify the S3 URL #{original_url}")
+        raise
+      end
+    end
+
+    Chef::Log.warn("First download try failed with '#{e.message}' (#{e.class}), retrying")
+
+    url = [build_endpoint_url(bucket, region), path].join()
+    Chef::Log.info("Retrying S3 download with new url #{url} in region #{region}")
+    yield(url, region)
   end
 
   def self.do_request(method, url, bucket, path, aws_access_key_id, aws_secret_access_key, token, region)
@@ -94,34 +101,20 @@ module S3FileLib
     client.reset_before_execution_procs
     return client::Request::execute(:method => method, :url => url, :raw_response => true) if is_public_s3_endpoint?(url)
 
-    with_region_detect(region) do |real_region|
+    with_region_detect(url, path, bucket, region) do |real_url, real_region|
       client.reset_before_execution_procs
       client.add_before_execution_proc do |request, params|
-        if real_region.nil?
-          SigV2.sign(request, bucket, path, aws_access_key_id, aws_secret_access_key, token)
-        else
-          SigV4.sign(request, params, real_region, aws_access_key_id, aws_secret_access_key, token)
-        end
+        SigV4.sign(request, params, real_region, aws_access_key_id, aws_secret_access_key, token)
       end
-      client::Request.execute(:method => method, :url => url, :raw_response => true)
+      client::Request.execute(:method => method, :url => real_url, :raw_response => true)
     end
   end
 
   def self.build_endpoint_url(bucket, region)
-    endpoint = if region && region != "us-east-1"
-                 "s3-#{region}.amazonaws.com"
-               else
-                 "s3.amazonaws.com"
-               end
-
-    if bucket =~ /^[a-z0-9][a-z0-9-]+[a-z0-9]$/
-      "https://#{bucket}.#{endpoint}"
-    else
-      "https://#{endpoint}/#{bucket}"
-    end
+    "https://s3-#{region}.amazonaws.com/#{bucket}"
   end
 
-  def self.get_md5_from_s3(bucket, url, path, aws_access_key_id, aws_secret_access_key, token, region = nil)
+  def self.get_md5_from_s3(bucket, url, path, aws_access_key_id, aws_secret_access_key, token, region)
     get_digests_from_s3(bucket, url, path, aws_access_key_id, aws_secret_access_key, token, region)["md5"]
   end
 
@@ -135,7 +128,7 @@ module S3FileLib
     return {"md5" => etag}.merge(digests)
   end
 
-  def self.get_from_s3(bucket, url, path, aws_access_key_id, aws_secret_access_key, token, region = nil)
+  def self.get_from_s3(bucket, url, path, aws_access_key_id, aws_secret_access_key, token, region)
     response = nil
     retries = 5
     for attempts in 0..retries
@@ -220,8 +213,8 @@ module S3FileLib
   def self.is_public_s3_endpoint?(url)
     resp = client::Request.execute(:method => "HEAD", :url => url, :raw_response => true)
     resp.code == 200
-  rescue RestClient::Forbidden
-    false
+  rescue => e
+    Chef::Log.info("Assuming S3 endpoint is not public (#{e.message})")
   end
 
   def self.client
