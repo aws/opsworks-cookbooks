@@ -96,6 +96,8 @@ Rails.application.configure do
   }
   config.action_mailer.raise_delivery_errors = true
 
+  config.pdf_tmp_folder = File.join(Rails.root, 'tmp')
+
   # Hurrican Print API
   config.hurricane_print_api = {host: '<%= @hurricane_api_settings[:hurricane_print_api][:host] %>', port: <%= @hurricane_api_settings[:hurricane_print_api][:port] %>, user: '<%= @hurricane_api_settings[:hurricane_print_api][:user] %>', password: '<%= @hurricane_api_settings[:hurricane_print_api][:password] %>'}
 end
