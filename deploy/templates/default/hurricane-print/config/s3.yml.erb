@@ -6,6 +6,7 @@
     <% end %>
   client:
     region: <%= @hurricane_print_settings[:s3][:bucket_region] %>
+    rca_region: <%= @hurricane_print_settings[:s3][:rca_region] %>
     access_key_id: <%= @hurricane_print_settings[:s3][:access_key_id] %>
     secret_access_key: <%= @hurricane_print_settings[:s3][:secret_access_key] %>
   buckets:
