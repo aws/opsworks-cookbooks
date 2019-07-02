@@ -29,6 +29,11 @@ else
     end
   end
 
+  package "Install dependencies" do
+    package_name 'libgmp3-dev'
+    action :install
+  end
+
   log "downloading" do
     message "Download and install Ruby version #{node[:ruby][:full_version]} patch #{node[:ruby][:patch]} release #{node[:ruby][:pkgrelease]}"
     level :info
