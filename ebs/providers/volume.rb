@@ -27,6 +27,15 @@ action :mount do
     mode "0755"
   end
 
+  ruby_block 'delete existing fstab entries for this mount point and device' do
+    block do
+      file = Chef::Util::FileEdit.new('/etc/fstab')
+      file.search_file_delete_line(new_resource.mount_point)
+      file.search_file_delete_line(real_device_name)
+      file.write_file
+    end
+  end
+
   mount new_resource.mount_point do
     action [:mount, :enable]
     fstype new_resource.fstype || "auto"
