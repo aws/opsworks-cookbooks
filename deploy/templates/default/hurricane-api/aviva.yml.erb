@@ -1,0 +1,167 @@
+<%= @env %>:
+  wsdl: '<%= @hurricane_api_settings[:aviva_rca][:wsdl] %>'
+  cod_utente: '<%= @hurricane_api_settings[:aviva_rca][:cod_utente] %>'
+  password: '<%= @hurricane_api_settings[:aviva_rca][:password] %>'
+  host: '<%= @hurricane_api_settings[:aviva_rca][:host] %>'
+  livello_log: 0
+  rilancia_errori: false
+  debug:
+    savon_log: false
+    print_xml: false
+    write_xml: false
+    folder: 'lib/aviva/xml'
+  pdf:
+    storages:
+      s3:
+        bucket_name: 'fit2you-rca-<%= @env %>'
+        folder: 'aviva'
+  codice:
+    convenzione: '00980'
+    nodo: '002492'
+  enums:
+    persona:
+      fisica: '1'
+      giuridica: '2'
+    sesso:
+      maschio: '1'
+      femmina: '2'
+    forma_tariffa:
+      altre: '6'
+      bonus_malus: '1'
+      fissa: '7'
+      franchigia: '2'
+      franchigia_con_bonus: '3'
+      no_claims_discount: '5'
+      pejus: '4'
+    alimentazione:
+      benzina: '1'
+      diesel: '2'
+      elettrica: '3'
+      gpl: '4'
+      ibrida: '7'
+      metano: '5'
+    dichiarazioni:
+      veicolo_gia_assicurato: '26'
+      assenza_attestato_di_rischio: '29'
+      attestato_estero: '30'
+      bersani: '27'
+      veicolo_gia_assicurato_con_bersani: '27'
+      bersani_stessa_compagnia: '28'
+      prima_immatricolazione: '20'
+      prima_immatricolazione_richiesta_bersani: '21'
+      prima_immatricolazione_richiesta_bersani_stessa_compagnia: '22'
+      voltura_cessione: '23'
+      voltura_cessione_richiesta_bersani: '24'
+      voltura_cessione_richiesta_bersani_stessa_compagnia: '25'
+    fonte_ania:
+      utente: '1'
+      ania: '2'
+      altro_portafoglio: '3'
+    tipo_targa:
+      definitiva_nuova: '1'
+      definitiva_vecchia: '2'
+      targa_prova: '3'
+      targa_estera: '4'
+      targa_provvisoria: '5'
+    tipo_di_guida:
+      esclusiva_un_guidatore: '1'
+      libera: '2'
+      esperta: '3'
+      esclusiva_due_guidatori: '4'
+    tipo_carrozzeria:
+      altre: '13.0'
+      autotelaio_cabinato: '9.0'
+      aperta: '1.0'
+      berlina_due_volumi: '3.0'
+      berlina_tre_volumi: '4.0'
+      coupe_due_volumi: '5.0'
+      coupe_tre_volumi: '6.0'
+      fuori_pick_up_hard_top: '10.0'
+      furgone: '7.0'
+      hard_top: '11.0'
+      multiuso_monovolume: '8.0'
+      multispazio: '8.0'
+      soft_top: '2.0'
+      station_wagon: '12.0'
+      fuoristrada_chiusa: '10.0'
+      fuoristrada_aperta: '10.0'
+      coupe: '5.0'
+    veicolo_nuovo:
+      'si': '1'
+      'no': '0'
+    apparecchi_audiovisivi_non_di_serie:
+      'si': '1'
+      'no': '0'
+    rifiuto_questionario:
+      'si': '1'
+      'no': '0'
+    massimale_rca:
+      '10m': '3.0'
+      '12_5m': '7.0'
+      '15m': '5.0'
+      '20m': '6.0'
+      '25m': '4.0'
+      '7_5m': '2.0'
+      '6m_5m_1m': '1.0'
+      '7_29m_6_07m_1_22m': '8.0'
+    fattori_tipo:
+      numero: 1
+      data: 2
+      stringa: 3
+    tipo_prov_altro_veicolo:
+      propr: '1'
+      propr_stessa_comp: '2'
+      familiare_conv: '3'
+      familiare_conv_stessa_comp: '4'
+    modalita_pagamento:
+      bonifico: '4'
+      carta_di_credito_mastercard: '32768'
+      carta_di_credito_visa: '65536'
+    tipo_sinistro:
+      principale: '1'
+      paritario: '2'
+      pagati: '3'
+      cose: '4'
+      persone: '5'
+    totale_sinistro:
+      na: -1
+      nd: -2
+      np: -3
+    esito_ania:
+      dati_completi: '0'
+      dati_incompleti: '1'
+      connessione_non_disponibile: '2'
+      targa_non_trovata: '3'
+    tipo_antifurto:
+      elettronico: '4.0'
+      immobilizzatore: '5.0'
+      nessuno: '1.0'
+      satellitare: '6.0'
+    classi:
+      '1': '01'
+      '2': '02'
+      '3': '03'
+      '4': '04'
+      '5': '05'
+      '6': '06'
+      '7': '07'
+      '8': '08'
+      '9': '09'
+      '10': '10'
+      '11': '11'
+      '12': '12'
+      '13': '13'
+      '14': '14'
+      '15': '15'
+      '16': '16'
+      '17': '17'
+      '18': '18'
+      '1A': '19'
+      '1B': '20'
+      '1C': '21'
+      '1D': '22'
+      '1E': '23'
+      '1F': '24'
+      '1G': '25'
+      '1H': '26'
+      '1I': '27'
