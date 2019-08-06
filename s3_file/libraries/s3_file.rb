@@ -111,7 +111,13 @@ module S3FileLib
   end
 
   def self.build_endpoint_url(bucket, region)
-    "https://s3-#{region}.amazonaws.com/#{bucket}"
+    if region == "us-east-1"
+      # Virtual Hosting style url is not supported in us-east-1
+      # https://docs.aws.amazon.com/AmazonS3/latest/dev/VirtualHosting.html
+      "https://s3.amazonaws.com/#{bucket}"
+    else
+      "https://s3-#{region}.amazonaws.com/#{bucket}"
+    end
   end
 
   def self.get_md5_from_s3(bucket, url, path, aws_access_key_id, aws_secret_access_key, token, region)
