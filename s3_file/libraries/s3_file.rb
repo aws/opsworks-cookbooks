@@ -221,6 +221,7 @@ module S3FileLib
     resp.code == 200
   rescue => e
     Chef::Log.info("Assuming S3 endpoint is not public (#{e.message})")
+    return false
   end
 
   def self.client
