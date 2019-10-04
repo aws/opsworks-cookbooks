@@ -100,4 +100,10 @@ Rails.application.configure do
 
   # Hurrican Print API
   config.hurricane_print_api = {host: '<%= @hurricane_api_settings[:hurricane_print_api][:host] %>', port: <%= @hurricane_api_settings[:hurricane_print_api][:port] %>, user: '<%= @hurricane_api_settings[:hurricane_print_api][:user] %>', password: '<%= @hurricane_api_settings[:hurricane_print_api][:password] %>'}
+
+  # Grace Landing Page
+  config.grace_landing_page_url = '<%= @hurricane_api_settings[:grace_landing_page_url] %>'
+
+  # Hurricane Payment Api
+  config.hurricane_payment_api = { base_uri: '<%= @hurricane_api_settings[:hurricane_payment_api][:base_uri] %>', user: '<%= @hurricane_api_settings[:hurricane_payment_api][:user] %>', password: '<%= @hurricane_api_settings[:hurricane_payment_api][:password] %>' }
 end
