@@ -17,6 +17,7 @@ node[:deploy].each do |application, deploy|
     user deploy[:user]
     group deploy[:group]
     path deploy[:deploy_to]
+    shared_subdirectories deploy[:shared_subdirectories]
   end
 
   opsworks_deploy do
@@ -24,4 +25,3 @@ node[:deploy].each do |application, deploy|
     app application
   end
 end
-

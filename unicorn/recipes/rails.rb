@@ -20,6 +20,7 @@ node[:deploy].each do |application, deploy|
     user deploy[:user]
     group deploy[:group]
     path deploy[:deploy_to]
+    shared_subdirectories deploy[:shared_subdirectories]
   end
 
   template "#{deploy[:deploy_to]}/shared/scripts/unicorn" do
