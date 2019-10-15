@@ -109,41 +109,6 @@ MaxKeepAliveRequests <%= node[:apache][:keepaliverequests] %>
 #
 KeepAliveTimeout <%= node[:apache][:keepalivetimeout] %>
 
-##
-## Server-Pool Size Regulation (MPM specific)
-##
-
-# prefork MPM
-# StartServers: number of server processes to start
-# MinSpareServers: minimum number of server processes which are kept spare
-# MaxSpareServers: maximum number of server processes which are kept spare
-# MaxRequestWorkers: maximum number of server processes allowed to start (was: MaxClients)
-# MaxConnectionsPerChild: maximum number of requests a server process serves (was: MaxRequestsPerChild)
-<IfModule mpm_prefork_module>
-    StartServers           <%= node[:apache][:prefork][:startservers] %>
-    MinSpareServers        <%= node[:apache][:prefork][:minspareservers] %>
-    MaxSpareServers        <%= node[:apache][:prefork][:maxspareservers] %>
-    ServerLimit            <%= node[:apache][:prefork][:serverlimit] %>
-    MaxRequestWorkers      <%= node[:apache][:prefork][:maxrequestworkers] %>
-    MaxConnectionsPerChild <%= node[:apache][:prefork][:maxconnectionsperchild] %>
-</IfModule>
-
-# worker MPM
-# StartServers: initial number of server processes to start
-# MaxRequestWorkers: maximum number of server processes allowed to start (was: MaxClients)
-# MinSpareThreads: minimum number of worker threads which are kept spare
-# MaxSpareThreads: maximum number of worker threads which are kept spare
-# ThreadsPerChild: constant number of worker threads in each server process
-# MaxConnectionsPerChild: maximum number of requests a server process serves (was: MaxRequestsPerChild)
-<IfModule mpm_worker_module>
-    StartServers           <%= node[:apache][:worker][:startservers] %>
-    MaxRequestWorkers      <%= node[:apache][:worker][:maxrequestworkers] %>
-    MinSpareThreads        <%= node[:apache][:worker][:minsparethreads] %>
-    MaxSpareThreads        <%= node[:apache][:worker][:maxsparethreads] %>
-    ThreadsPerChild        <%= node[:apache][:worker][:threadsperchild] %>
-    MaxConnectionsPerChild <%= node[:apache][:worker][:maxconnectionsperchild] %>
-</IfModule>
-
 # These need to be set in /etc/apache2/envvars
 User ${APACHE_RUN_USER}
 Group ${APACHE_RUN_GROUP}
@@ -191,6 +156,41 @@ LogLevel <%= node[:apache][:log_level] %>
 # Include module configuration:
 IncludeOptional mods-enabled/*.load
 IncludeOptional mods-enabled/*.conf
+
+##
+## Server-Pool Size Regulation (MPM specific)
+##
+
+# prefork MPM
+# StartServers: number of server processes to start
+# MinSpareServers: minimum number of server processes which are kept spare
+# MaxSpareServers: maximum number of server processes which are kept spare
+# MaxRequestWorkers: maximum number of server processes allowed to start (was: MaxClients)
+# MaxConnectionsPerChild: maximum number of requests a server process serves (was: MaxRequestsPerChild)
+<IfModule mpm_prefork_module>
+	StartServers           <%= node[:apache][:prefork][:startservers] %>
+	MinSpareServers        <%= node[:apache][:prefork][:minspareservers] %>
+	MaxSpareServers        <%= node[:apache][:prefork][:maxspareservers] %>
+	ServerLimit            <%= node[:apache][:prefork][:serverlimit] %>
+	MaxRequestWorkers      <%= node[:apache][:prefork][:maxrequestworkers] %>
+	MaxConnectionsPerChild <%= node[:apache][:prefork][:maxconnectionsperchild] %>
+</IfModule>
+
+# worker MPM
+# StartServers: initial number of server processes to start
+# MaxRequestWorkers: maximum number of server processes allowed to start (was: MaxClients)
+# MinSpareThreads: minimum number of worker threads which are kept spare
+# MaxSpareThreads: maximum number of worker threads which are kept spare
+# ThreadsPerChild: constant number of worker threads in each server process
+# MaxConnectionsPerChild: maximum number of requests a server process serves (was: MaxRequestsPerChild)
+<IfModule mpm_worker_module>
+	StartServers           <%= node[:apache][:worker][:startservers] %>
+	MaxRequestWorkers      <%= node[:apache][:worker][:maxrequestworkers] %>
+	MinSpareThreads        <%= node[:apache][:worker][:minsparethreads] %>
+	MaxSpareThreads        <%= node[:apache][:worker][:maxsparethreads] %>
+	ThreadsPerChild        <%= node[:apache][:worker][:threadsperchild] %>
+	MaxConnectionsPerChild <%= node[:apache][:worker][:maxconnectionsperchild] %>
+</IfModule>
 
 # Include list of ports to listen on
 Include ports.conf
