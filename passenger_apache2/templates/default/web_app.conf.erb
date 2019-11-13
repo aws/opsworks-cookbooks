@@ -40,7 +40,7 @@
 
   FileETag none
 
-  <% @environment.each do |key, value| %>
+  <% @params[:deploy]["environment"].each do |key, value| %>
   SetEnv "<%= key %>" "<%= value %>"
   <% end %>
 
@@ -125,7 +125,7 @@
 
   FileETag none
 
-  <% @environment.each do |key, value| %>
+  <% @params[:deploy]["environment"].each do |key, value| %>
   SetEnv "<%= key %>" "<%= value %>"
   <% end %>
 
