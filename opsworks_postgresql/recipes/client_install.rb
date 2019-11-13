@@ -12,7 +12,7 @@ else
   # old behavior for backwards compatibility
   package "postgresql-devel" do
     package_name value_for_platform(
-      ["centos","redhat","fedora","amazon"] => {"default" => "postgresql-devel"},
+      ["centos","redhat","fedora","amazon"] => {"default" => "postgresql8-devel"},
       "ubuntu" => {"default" => "libpq-dev"}
     )
     action :install
