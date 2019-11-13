@@ -5,7 +5,7 @@ module OpsWorks
         :consult_gemfile => true,
         :force => false
       }.update(options)
-      if options[:force] || app_config[:database][:adapter].blank?
+      if options[:force] || app_config[:database][:type].blank?
         Chef::Log.info("No database adapter specified for #{app_name}, guessing")
         adapter = ''
 
@@ -33,7 +33,7 @@ module OpsWorks
 
         adapter
       else
-        app_config[:database][:adapter]
+        app_config[:database][:type]
       end
     end
 
