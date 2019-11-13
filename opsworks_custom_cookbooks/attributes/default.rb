@@ -33,6 +33,7 @@ default[:opsworks_custom_cookbooks][:scm][:repository] = nil
 
 default[:opsworks_custom_cookbooks][:scm][:revision] = 'HEAD'
 default[:opsworks_custom_cookbooks][:enable_submodules] = true
+default[:opsworks_custom_cookbooks][:scm][:arguments] = '--no-auth-cache'
 
 default[:opsworks_custom_cookbooks][:gem_binary] = '/opt/aws/opsworks/local/bin/gem'
 default[:opsworks_custom_cookbooks][:gem_uninstall_options] = '--force --executables'
