@@ -51,6 +51,7 @@ default[:nginx][:gzip_types] = ["application/x-javascript",
                                 "application/xhtml+xml",
                                 "application/xml",
                                 "application/xml+rss",
+                                "application/json",
                                 "text/css",
                                 "text/javascript",
                                 "text/plain",
@@ -66,5 +67,7 @@ default[:nginx][:server_names_hash_bucket_size] = 64
 
 default[:nginx][:proxy_read_timeout] = 60
 default[:nginx][:proxy_send_timeout] = 60
+
+default[:nginx][:enable_spdy] = false
 
 include_attribute "nginx::customize"
