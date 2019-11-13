@@ -4,7 +4,7 @@ define :opsworks_deploy_dir do
   # bind mounts have been made due to a race condition
   # with the automounter
 
-  if node[:opsworks_initial_setup].attribute?(:bind_mounts)
+  if node[:opsworks_initial_setup].attribute?(:bind_mounts) && infrastructure_class?('ec2')
     node[:opsworks_initial_setup][:bind_mounts][:mounts].each do |dir, source|
       bash "Check for bind mounts before creating the deploy directory" do
         code <<-EOH
