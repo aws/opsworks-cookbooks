@@ -1,0 +1,9 @@
+<% @delayed_job[:pool].each do |key, config| %>
+<% identifier = "#{@application}-#{key}" %>
+check process delayed_job.<%= identifier %>
+  with pidfile <%= @deploy[:deploy_to] %>/shared/pids/delayed_job.<%= identifier %>.pid
+  start program = "/bin/su - <%= @deploy[:user] %> -c 'cd <%= @deploy[:current_path] %> && RAILS_ENV=<%= @deploy[:rails_env] %> bundle exec <%= @delayed_job[:path_to_script] %>/delayed_job start --identifier=<%= identifier %> <%= ("--queues=#{config['queues']}" if config['queues']) %>'"
+  stop  program = "/bin/su - <%= @deploy[:user] %> -c 'cd <%= @deploy[:current_path] %> && RAILS_ENV=<%= @deploy[:rails_env] %> bundle exec <%= @delayed_job[:path_to_script] %>/delayed_job stop --identifier=<%= identifier %>'"
+  group delayed_job_<%= @application %>_group
+
+<% end %>
