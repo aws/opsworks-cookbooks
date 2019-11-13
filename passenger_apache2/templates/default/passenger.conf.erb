@@ -2,7 +2,7 @@ PassengerRoot <%= node[:passenger][:root_path] %>
 PassengerRuby <%= File.exists?(node[:passenger][:ruby_wrapper_bin]) ? node[:passenger][:ruby_wrapper_bin] : node[:passenger][:ruby_bin] %>
 PassengerMaxPoolSize <%= node[:rails][:max_pool_size] ? node[:rails][:max_pool_size] : node[:passenger][:max_pool_size]%>
 PassengerStatThrottleRate <%= node[:passenger][:stat_throttle_rate] %>
-<% if node[:passenger][:version] =~ /^4/ %>
+<% if node[:passenger][:version] =~ /^4|^5/ %>
 PassengerMaxPreloaderIdleTime <%= node[:passenger][:rails_app_spawner_idle_time] %>
 <% else %>
 RailsAppSpawnerIdleTime <%= node[:passenger][:rails_app_spawner_idle_time] %>
