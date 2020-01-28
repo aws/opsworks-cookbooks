@@ -1,0 +1,11 @@
+default: &default
+    cache_enabled: <%= @hurricane_api_settings[:s3][:cache_enabled] %>
+    region: '<%= @hurricane_api_settings[:s3][:region] %>'
+    access_key_id: '<%= @hurricane_api_settings[:s3][:access_key_id] %>'
+    secret_access_key: '<%= @hurricane_api_settings[:s3][:secret_access_key] %>'
+
+<%= @env %>:
+    <<: *default
+
+test:
+    <<: *default
