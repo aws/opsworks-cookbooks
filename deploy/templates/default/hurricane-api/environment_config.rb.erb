@@ -84,7 +84,7 @@ Rails.application.configure do
   <% if @hurricane_api_settings[:mailer][:disable_logger] %>
   config.action_mailer.logger = nil
   <% end %>
-  config.action_mailer.default_options = { from: "Fit2You <<%= @hurricane_api_settings[:mailer][:from] %>>" }
+  config.action_mailer.default_options = { from: "Fit2You Broker <<%= @hurricane_api_settings[:mailer][:from] %>>" }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     address: "<%= @hurricane_api_settings[:mailer][:configuration][:address] %>",
