@@ -14,7 +14,7 @@ if node[:opsworks_bundler][:manage_package]
   # handle cases where the gem library is there but the executable is missing
   ruby_block "Fallback Bundler install of #{node[:opsworks_bundler][:version]}" do
     block do
-      system("gem install bundler -v=#{node[:opsworks_bundler][:version]} --no-ri --no-rdoc")
+      system("gem install bundler -v=#{node[:opsworks_bundler][:version]} --no-doc")
     end
     only_if do
       !system("gem list bundler -v=#{node[:opsworks_bundler][:version]} --installed") || !File.exists?(node[:opsworks_bundler][:executable])
