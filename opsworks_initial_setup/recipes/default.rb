@@ -21,3 +21,5 @@ include_recipe 'opsworks_initial_setup::package_ntpd'
 include_recipe 'opsworks_initial_setup::package_vim'
 include_recipe 'opsworks_initial_setup::package_sqlite'
 include_recipe 'opsworks_initial_setup::package_screen'
+
+include_recipe 'opsworks_initial_setup::ca_certificates'
