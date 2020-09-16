@@ -54,7 +54,7 @@ node[:deploy].each do |application, deploy|
 
 
   node[:senders].each do |name, vehicle_type|
-    vehicle_type.each do |conf|
+    vehicle_type.each do |_, conf|
       sender_config = JSON.parse(conf.to_hash.to_json)
       if conf.has_key?(:sftp)
         private_key_file = "/home/#{deploy[:user]}/.ssh/#{name}.pem"
