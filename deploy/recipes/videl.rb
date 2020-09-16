@@ -53,19 +53,19 @@ node[:deploy].each do |application, deploy|
   end
 
 
-  node[:senders].each do |name, conf|
-    sender_config = JSON.parse(conf.to_hash.to_json)
-    sender_config.each do |vehicle_type, vehicle_type_conf|
-      if vehicle_type_conf.has_key?(:sftp)
+  node[:senders].each do |name, vehicle_type|
+    vehicle_type.each do |conf|
+      sender_config = JSON.parse(conf.to_hash.to_json)
+      if conf.has_key?(:sftp)
         private_key_file = "/home/#{deploy[:user]}/.ssh/#{name}.pem"
         template private_key_file do
           source 'videl/sftp.pem.erb'
           mode '0600'
           owner deploy[:user]
           group deploy[:group]
-          variables :private_key => conf[vehicle_type][:sftp][:private_key_file]
+          variables :private_key => conf[:sftp][:private_key_file]
         end
-        vehicle_type_conf['sftp']['private_key_file'] = private_key_file
+        sender_config['sftp']['private_key_file'] = private_key_file
       end
     end
 
