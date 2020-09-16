@@ -53,8 +53,10 @@ node[:deploy].each do |application, deploy|
   end
 
 
-  node[:senders].each do |name, vehicle_type|
-    vehicle_type.each do |conf|
+  node[:senders].each do |name, sender_value|
+    sender_value_parsed = JSON.parse(sender_value.to_hash.to_json)
+
+    sender_value.each do |vehicle_type,conf|
       sender_config = JSON.parse(conf.to_hash.to_json)
       if conf.has_key?(:sftp)
         private_key_file = "/home/#{deploy[:user]}/.ssh/#{name}.pem"
@@ -66,6 +68,7 @@ node[:deploy].each do |application, deploy|
           variables :private_key => conf[:sftp][:private_key_file]
         end
         sender_config['sftp']['private_key_file'] = private_key_file
+        sender_value_parsed[vehicle_type] = sender_config
       end
     end
 
@@ -76,7 +79,7 @@ node[:deploy].each do |application, deploy|
       group deploy[:group]
       variables(
           :name => name,
-          :conf => sender_config,
+          :conf => sender_value_parsed,
           :videl_env => deploy[:env]
       )
       only_if do
