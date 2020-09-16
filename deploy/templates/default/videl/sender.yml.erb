@@ -1,9 +1,9 @@
 <%= @videl_env %>:
   senders:
     <%= @name %>:
-      <% %w(car motorbike).each do |vehicle_type| %>
+      <% @conf.each do |vehicle_type, vehicle_type_options| %>
         <%= vehicle_type %>:
-          <% @conf.each do |type, options| %>
+          <% vehicle_type_options.each do |type, options| %>
             <%= type %>:
               <% options.each do |key, value| %>
                 <% if value.is_a?(Array) %>
