@@ -76,7 +76,7 @@ node[:deploy].each do |application, deploy|
       group deploy[:group]
       variables(
           :name => name,
-          :conf => sender_config,
+          :conf => vehicle_type,
           :videl_env => deploy[:env]
       )
       only_if do
