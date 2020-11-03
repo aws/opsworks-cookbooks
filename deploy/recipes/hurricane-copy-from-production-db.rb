@@ -35,12 +35,7 @@ node[:deploy].first(1).each do |application, deploy|
       user deploy[:user]
       environment 'PGPASSWORD' => staging_database[:password]
       cwd dump_dir
-      disconnect_cmd = <<-SQL
-        SELECT pg_terminate_backend(pg_stat_activity.pid)
-        FROM pg_stat_activity
-        WHERE pg_stat_activity.datname = '%s'
-        AND pid <> pg_backend_pid();
-      SQL
+      disconnect_cmd = "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '%s' AND pid <> pg_backend_pid();"
       command sprintf(disconnect_cmd, staging_database[:database])
       action :run
     end
