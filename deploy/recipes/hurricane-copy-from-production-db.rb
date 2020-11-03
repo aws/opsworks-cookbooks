@@ -10,6 +10,7 @@ node[:deploy].first(1).each do |application, deploy|
 
     dump_dir = "#{deploy[:deploy_to]}/shared/dump"
     dump_file = [dump_dir, 'snapshot_production'].join('/')
+    dump_file_list = [dump_dir, 'snapshot_production.list'].join('/')
     staging_database = deploy[:database]
 
     directory dump_dir do
@@ -65,13 +66,22 @@ node[:deploy].first(1).each do |application, deploy|
       action :run
     end
 
+    execute 'exclude comments on extension' do
+      Chef::Log.debug('Exluding comments on exention')
+      user deploy[:user]
+      cwd dump_dir
+      restore_cmd = "pg_restore -l %s |  grep -v 'COMMENT - EXTENSION' > %s"
+      command sprintf(restore_cmd, dump_file, dump_file_list)
+      action :run
+    end
+
     execute 'restore into staging database' do
       Chef::Log.debug('Restore Into Staging Database')
       user deploy[:user]
       environment 'PGPASSWORD' => staging_database[:password]
       cwd dump_dir
-      restore_cmd = 'pg_restore -h %s -d %s -U %s -O %s'
-      command sprintf(restore_cmd, staging_database[:host], staging_database[:database], staging_database[:username], dump_file)
+      restore_cmd = 'pg_restore -h %s -d %s -U %s -O -L %s %s'
+      command sprintf(restore_cmd, staging_database[:host], staging_database[:database], staging_database[:username], dump_file_list, dump_file)
       action :run
     end
 
