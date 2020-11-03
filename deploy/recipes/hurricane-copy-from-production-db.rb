@@ -25,9 +25,23 @@ node[:deploy].first(1).each do |application, deploy|
       user deploy[:user]
       environment 'PGPASSWORD' => production_database[:password]
       cwd dump_dir
-      dump_cmd = 'pg_dump -h %s --data-only --no-owner --exclude-table-data=schema_migrations -x -U %s %s > %s'
       dump_cmd = 'pg_dump -h %s -d %s --no-owner -x -U %s -F c -f %s'
       command sprintf(dump_cmd, production_database[:host], production_database[:database], production_database[:username], dump_file)
+      action :run
+    end
+
+    execute 'force close connections to database' do
+      Chef::Log.debug('Closing connections')
+      user deploy[:user]
+      environment 'PGPASSWORD' => staging_database[:password]
+      cwd dump_dir
+      disconnect_cmd = <<-SQL
+        SELECT pg_terminate_backend(pg_stat_activity.pid)
+        FROM pg_stat_activity
+        WHERE pg_stat_activity.datname = '%s'
+        AND pid <> pg_backend_pid();
+      SQL
+      command sprintf(disconnect_cmd, staging_database[:database])
       action :run
     end
 
