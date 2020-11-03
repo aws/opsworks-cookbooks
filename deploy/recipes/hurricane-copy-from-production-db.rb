@@ -90,13 +90,12 @@ node[:deploy].first(1).each do |application, deploy|
       Chef::Log.debug('Updating user passowrd')
       user deploy[:user]
       environment 'PGPASSWORD' => staging_database[:password]
-      update_cmd = "UPDATE users SET encrypted_password = '$2a$10$dnweS3sLpXy2/n2Qhc16yOY9hM7ew46CertcGQW1iW8q02NzBfMs6' WHERE email = 'info@fit2you.it'"
+      update_cmd = "psql -h %s -d %s -U %s -c \"UPDATE users SET encrypted_password = '$2a$10$dnweS3sLpXy2/n2Qhc16yOY9hM7ew46CertcGQW1iW8q02NzBfMs6' WHERE email = 'info@fit2you.it'\""
       command sprintf(
-                  "psql -h %s -d %s -U %s -c '%s'",
+                  update_cmd,
                   staging_database[:host],
                   staging_database[:database],
-                  staging_database[:username],
-                  update_cmd
+                  staging_database[:username]
               )
       action :run
     end
