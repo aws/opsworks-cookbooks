@@ -9,24 +9,8 @@ node[:deploy].first(1).each do |application, deploy|
 
 
     dump_dir = "#{deploy[:deploy_to]}/shared/dump"
-    dump_file = [dump_dir, 'snapshot_production.sql'].join('/')
-    truncate_tables_sql_file = [dump_dir, 'truncate_table.sql'].join('/')
+    dump_file = [dump_dir, 'snapshot_production'].join('/')
     staging_database = deploy[:database]
-
-    sql = <<-SQL
-    do
-    $$
-    declare
-      truncate_tables_query text;
-    begin
-      select 'truncate ' || string_agg(format('%I.%I', schemaname, tablename), ',') || ' RESTART IDENTITY CASCADE'
-        into truncate_tables_query
-      from pg_tables
-      where schemaname in ('public') and tableowner = '#{staging_database[:username]}' and tablename != 'schema_migrations';
-      execute truncate_tables_query;
-    end;
-    $$
-    SQL
 
     directory dump_dir do
       mode '0770'
@@ -42,32 +26,37 @@ node[:deploy].first(1).each do |application, deploy|
       environment 'PGPASSWORD' => production_database[:password]
       cwd dump_dir
       dump_cmd = 'pg_dump -h %s --data-only --no-owner --exclude-table-data=schema_migrations -x -U %s %s > %s'
-      command sprintf(dump_cmd, production_database[:host], production_database[:username], production_database[:database], dump_file)
+      dump_cmd = 'pg_dump -h %s -d %s --no-owner -x -U %s -F c -f %s'
+      command sprintf(dump_cmd, production_database[:host], production_database[:database], production_database[:username], dump_file)
       action :run
     end
 
-    file truncate_tables_sql_file do
-      content sql
-      mode '0660'
-      owner deploy[:user]
-    end
-
-    execute 'truncate tables' do
-      Chef::Log.debug('Truncate Staging Database Tables')
+    execute 'drop current db' do
+      Chef::Log.debug('Drop Staging Database')
       user deploy[:user]
       environment 'PGPASSWORD' => staging_database[:password]
       cwd dump_dir
-      truncate_cmd = 'psql -h %s -d %s -U %s < %s'
-      command sprintf(truncate_cmd, staging_database[:host], staging_database[:database], staging_database[:username], truncate_tables_sql_file)
+      drop_cmd = 'dropdb -h %s -U %s %s'
+      command sprintf(drop_cmd, staging_database[:host], staging_database[:username], staging_database[:database])
       action :run
     end
 
-    execute 'copy into staging database' do
-      Chef::Log.debug('Copy Into Staging Database')
+    execute 'create empty db' do
+      Chef::Log.debug('Create Empty Staging Database')
       user deploy[:user]
       environment 'PGPASSWORD' => staging_database[:password]
       cwd dump_dir
-      restore_cmd = 'psql -h %s -d %s -U %s < %s'
+      create_cmd = 'createdb -h %s -U %s -T template0 %s'
+      command sprintf(create_cmd, staging_database[:host], staging_database[:username], staging_database[:database])
+      action :run
+    end
+
+    execute 'restore into staging database' do
+      Chef::Log.debug('Restore Into Staging Database')
+      user deploy[:user]
+      environment 'PGPASSWORD' => staging_database[:password]
+      cwd dump_dir
+      restore_cmd = 'pg_restore -h %s -d %s -U %s -O %s'
       command sprintf(restore_cmd, staging_database[:host], staging_database[:database], staging_database[:username], dump_file)
       action :run
     end
@@ -86,17 +75,10 @@ node[:deploy].first(1).each do |application, deploy|
                   update_cmd
               )
       action :run
-
-
     end
 
     file dump_file do
       Chef::Log.debug('Remove Sql Dump')
-      action :delete
-    end
-
-    file truncate_tables_sql_file do
-      Chef::Log.debug('Remove Sql Truncate File')
       action :delete
     end
 
