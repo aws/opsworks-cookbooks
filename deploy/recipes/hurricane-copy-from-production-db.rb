@@ -105,6 +105,11 @@ node[:deploy].first(1).each do |application, deploy|
       action :delete
     end
 
+    file dump_file_list do
+      Chef::Log.debug('Remove Sql Dump')
+      action :delete
+    end
+
     execute 'rake db:migrate' do
       Chef::Log.debug('Execute Rails Db Migrate')
       cwd "#{deploy[:deploy_to]}/current"
