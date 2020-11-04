@@ -95,8 +95,8 @@ node[:deploy].first(1).each do |application, deploy|
       user deploy[:user]
       environment 'PGPASSWORD' => staging_database[:password]
       cwd dump_dir
-      restore_cmd = 'pg_restore -h %s -d %s -U %s -O -L %s %s'
-      command sprintf(restore_cmd, staging_database[:host], staging_database[:database], staging_database[:username_dumper], dump_file_list, dump_file)
+      restore_cmd = 'pg_restore -h %s -d %s -U %s -O -L %s --role=%s %s'
+      command sprintf(restore_cmd, staging_database[:host], staging_database[:database], staging_database[:username_dumper], dump_file_list, staging_database[:username], dump_file)
       action :run
     end
 
