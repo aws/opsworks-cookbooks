@@ -35,12 +35,13 @@ node[:deploy].first(1).each do |application, deploy|
       Chef::Log.debug('Api readonly to database')
       user deploy[:user]
       environment 'PGPASSWORD' => staging_database[:password]
-      disconnect_cmd = "psql -h %s -d %s -U %s -c \"ALTER DATABASE current_database() SET default_transaction_read_only = true\""
+      disconnect_cmd = "psql -h %s -d %s -U %s -c \"ALTER DATABASE %s SET default_transaction_read_only = true\""
       command sprintf(
                   disconnect_cmd,
                   staging_database[:host],
                   staging_database[:database],
                   staging_database[:username],
+                  staging_database[:database]
               )
       action :run
     end
@@ -128,12 +129,13 @@ node[:deploy].first(1).each do |application, deploy|
       Chef::Log.debug('Api can write to database')
       user deploy[:user]
       environment 'PGPASSWORD' => staging_database[:password]
-      disconnect_cmd = "psql -h %s -d %s -U %s -c \"ALTER DATABASE current_database() SET default_transaction_read_only = false\""
+      disconnect_cmd = "psql -h %s -d %s -U %s -c \"ALTER DATABASE %s SET default_transaction_read_only = false\""
       command sprintf(
                   disconnect_cmd,
                   staging_database[:host],
                   staging_database[:database],
                   staging_database[:username],
+                  staging_database[:database]
               )
       action :run
     end
