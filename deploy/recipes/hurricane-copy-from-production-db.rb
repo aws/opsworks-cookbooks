@@ -31,127 +31,121 @@ node[:deploy].first(1).each do |application, deploy|
       action :run
     end
 
-    subset = lambda do
-      execute 'disable api connections to database' do
-        Chef::Log.debug('Disabling connections')
-        user deploy[:user]
-        environment 'PGPASSWORD' => staging_database[:password]
-        disconnect_cmd = "psql -h %s -d %s -U %s -c \"ALTER USER %s WITH NOLOGIN;\""
-        command sprintf(
-                    disconnect_cmd,
-                    staging_database[:host],
-                    staging_database[:database],
-                    staging_database[:username_dumper],
-                    staging_database[:username]
-                )
-        action :run
-      end
-    
-      execute 'force close connections to database' do
-        Chef::Log.debug('Closing connections')
-        user deploy[:user]
-        environment 'PGPASSWORD' => staging_database[:password]
-        disconnect_cmd = "psql -h %s -d %s -U %s -c \"SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '%s' AND pid <> pg_backend_pid()\""
-        command sprintf(
-                    disconnect_cmd,
-                    staging_database[:host],
-                    staging_database[:database],
-                    staging_database[:username_dumper],
-                    staging_database[:database]
-                )
-        action :run
-      end
-
-      execute 'drop current db' do
-        Chef::Log.debug('Drop Staging Database')
-        user deploy[:user]
-        environment 'PGPASSWORD' => staging_database[:password]
-        cwd dump_dir
-        drop_cmd = 'dropdb -h %s -U %s %s'
-        command sprintf(drop_cmd, staging_database[:host], staging_database[:username_dumper], staging_database[:database])
-        action :run
-      end
-
-      execute 'create empty db' do
-        Chef::Log.debug('Create Empty Staging Database')
-        user deploy[:user]
-        environment 'PGPASSWORD' => staging_database[:password]
-        cwd dump_dir
-        create_cmd = 'createdb -h %s -U %s -T template0 %s'
-        command sprintf(create_cmd, staging_database[:host], staging_database[:username_dumper], staging_database[:database])
-        action :run
-      end
-
-      execute 'exclude comments on extension' do
-        Chef::Log.debug('Exluding comments on exention')
-        user deploy[:user]
-        cwd dump_dir
-        restore_cmd = "pg_restore -l %s |  grep -v 'COMMENT - EXTENSION' > %s"
-        command sprintf(restore_cmd, dump_file, dump_file_list)
-        action :run
-      end
-
-      execute 'restore into staging database' do
-        Chef::Log.debug('Restore Into Staging Database')
-        user deploy[:user]
-        environment 'PGPASSWORD' => staging_database[:password]
-        cwd dump_dir
-        restore_cmd = 'pg_restore -h %s -d %s -U %s -O -L %s %s'
-        command sprintf(restore_cmd, staging_database[:host], staging_database[:database], staging_database[:username_dumper], dump_file_list, dump_file)
-        action :run
-      end
-
-
-      # execute 'update user dealer password' do
-      #   Chef::Log.debug('Updating user passowrd')
-      #   user deploy[:user]
-      #   environment 'PGPASSWORD' => staging_database[:password]
-      #   update_cmd = "psql -h %s -d %s -U %s -c \"UPDATE users SET encrypted_password = '$2a$10$dnweS3sLpXy2/n2Qhc16yOY9hM7ew46CertcGQW1iW8q02NzBfMs6' WHERE email = 'info@fit2you.it'\""
-      #   command sprintf(
-      #               update_cmd,
-      #               staging_database[:host],
-      #               staging_database[:database],
-      #               staging_database[:username]
-      #           )
-      #   action :run
-      # end
-
-      file dump_file do
-        Chef::Log.debug('Remove Sql Dump')
-        action :delete
-      end
-
-      file dump_file_list do
-        Chef::Log.debug('Remove Sql Dump')
-        action :delete
-      end
-
-      execute 'rake db:migrate' do
-        Chef::Log.debug('Execute Rails Db Migrate')
-        cwd "#{deploy[:deploy_to]}/current"
-        user deploy[:user]
-        command 'bundle exec rake db:migrate'
-        environment 'RAILS_ENV' => deploy[:rails_env]
-      end
+    execute 'disable api connections to database' do
+      Chef::Log.debug('Disabling connections')
+      user deploy[:user]
+      environment 'PGPASSWORD' => staging_database[:password]
+      disconnect_cmd = "psql -h %s -d %s -U %s -c \"ALTER USER %s WITH NOLOGIN;\""
+      command sprintf(
+                  disconnect_cmd,
+                  staging_database[:host],
+                  staging_database[:database],
+                  staging_database[:username_dumper],
+                  staging_database[:username]
+              )
+      action :run
+    end
+  
+    execute 'force close connections to database' do
+      Chef::Log.debug('Closing connections')
+      user deploy[:user]
+      environment 'PGPASSWORD' => staging_database[:password]
+      disconnect_cmd = "psql -h %s -d %s -U %s -c \"SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '%s' AND pid <> pg_backend_pid()\""
+      command sprintf(
+                  disconnect_cmd,
+                  staging_database[:host],
+                  staging_database[:database],
+                  staging_database[:username_dumper],
+                  staging_database[:database]
+              )
+      action :run
     end
 
-    begin
-      subset.call
-    ensure
-      execute 're enable api connections to database' do
-        Chef::Log.debug('Enabling connections')
-        user deploy[:user]
-        environment 'PGPASSWORD' => staging_database[:password]
-        disconnect_cmd = "psql -h %s -d %s -U %s -c \"ALTER USER %s WITH LOGIN;\""
-        command sprintf(
-                    disconnect_cmd,
-                    staging_database[:host],
-                    staging_database[:database],
-                    staging_database[:username_dumper],
-                    staging_database[:username]
-                )
-        action :run
-      end
+    execute 'drop current db' do
+      Chef::Log.debug('Drop Staging Database')
+      user deploy[:user]
+      environment 'PGPASSWORD' => staging_database[:password]
+      cwd dump_dir
+      drop_cmd = 'dropdb -h %s -U %s %s'
+      command sprintf(drop_cmd, staging_database[:host], staging_database[:username_dumper], staging_database[:database])
+      action :run
+    end
+
+    execute 'create empty db' do
+      Chef::Log.debug('Create Empty Staging Database')
+      user deploy[:user]
+      environment 'PGPASSWORD' => staging_database[:password]
+      cwd dump_dir
+      create_cmd = 'createdb -h %s -U %s -T template0 %s'
+      command sprintf(create_cmd, staging_database[:host], staging_database[:username_dumper], staging_database[:database])
+      action :run
+    end
+
+    execute 'exclude comments on extension' do
+      Chef::Log.debug('Exluding comments on exention')
+      user deploy[:user]
+      cwd dump_dir
+      restore_cmd = "pg_restore -l %s |  grep -v 'COMMENT - EXTENSION' > %s"
+      command sprintf(restore_cmd, dump_file, dump_file_list)
+      action :run
+    end
+
+    execute 'restore into staging database' do
+      Chef::Log.debug('Restore Into Staging Database')
+      user deploy[:user]
+      environment 'PGPASSWORD' => staging_database[:password]
+      cwd dump_dir
+      restore_cmd = 'pg_restore -h %s -d %s -U %s -O -L %s %s'
+      command sprintf(restore_cmd, staging_database[:host], staging_database[:database], staging_database[:username_dumper], dump_file_list, dump_file)
+      action :run
+    end
+
+
+    # execute 'update user dealer password' do
+    #   Chef::Log.debug('Updating user passowrd')
+    #   user deploy[:user]
+    #   environment 'PGPASSWORD' => staging_database[:password]
+    #   update_cmd = "psql -h %s -d %s -U %s -c \"UPDATE users SET encrypted_password = '$2a$10$dnweS3sLpXy2/n2Qhc16yOY9hM7ew46CertcGQW1iW8q02NzBfMs6' WHERE email = 'info@fit2you.it'\""
+    #   command sprintf(
+    #               update_cmd,
+    #               staging_database[:host],
+    #               staging_database[:database],
+    #               staging_database[:username]
+    #           )
+    #   action :run
+    # end
+
+    file dump_file do
+      Chef::Log.debug('Remove Sql Dump')
+      action :delete
+    end
+
+    file dump_file_list do
+      Chef::Log.debug('Remove Sql Dump')
+      action :delete
+    end
+
+    execute 'rake db:migrate' do
+      Chef::Log.debug('Execute Rails Db Migrate')
+      cwd "#{deploy[:deploy_to]}/current"
+      user deploy[:user]
+      command 'bundle exec rake db:migrate'
+      environment 'RAILS_ENV' => deploy[:rails_env]
+    end
+
+    execute 're enable api connections to database' do
+      Chef::Log.debug('Enabling connections')
+      user deploy[:user]
+      environment 'PGPASSWORD' => staging_database[:password]
+      disconnect_cmd = "psql -h %s -d %s -U %s -c \"ALTER USER %s WITH LOGIN;\""
+      command sprintf(
+                  disconnect_cmd,
+                  staging_database[:host],
+                  staging_database[:database],
+                  staging_database[:username_dumper],
+                  staging_database[:username]
+              )
+      action :run
     end
 
   else
