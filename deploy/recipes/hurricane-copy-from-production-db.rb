@@ -124,15 +124,7 @@ node[:deploy].first(1).each do |application, deploy|
       Chef::Log.debug('Remove Sql Dump')
       action :delete
     end
-
-    execute 'rake db:migrate' do
-      Chef::Log.debug('Execute Rails Db Migrate')
-      cwd "#{deploy[:deploy_to]}/current"
-      user deploy[:user]
-      command 'bundle exec rake db:migrate'
-      environment 'RAILS_ENV' => deploy[:rails_env]
-    end
-
+    
     execute 're enable api connections to database' do
       Chef::Log.debug('Enabling connections')
       user deploy[:user]
@@ -147,6 +139,15 @@ node[:deploy].first(1).each do |application, deploy|
               )
       action :run
     end
+
+    execute 'rake db:migrate' do
+      Chef::Log.debug('Execute Rails Db Migrate')
+      cwd "#{deploy[:deploy_to]}/current"
+      user deploy[:user]
+      command 'bundle exec rake db:migrate'
+      environment 'RAILS_ENV' => deploy[:rails_env]
+    end
+
 
   else
     Chef::Log.debug('Recipe available only in staging environment')
