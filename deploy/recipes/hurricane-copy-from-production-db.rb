@@ -31,7 +31,7 @@ node[:deploy].first(1).each do |application, deploy|
       action :run
     end
 
-    def exception
+    exception = nil
 
     begin
       execute 'disable api connections to database' do
