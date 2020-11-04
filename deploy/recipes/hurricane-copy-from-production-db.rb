@@ -42,7 +42,6 @@ node[:deploy].first(1).each do |application, deploy|
                     staging_database[:host],
                     staging_database[:database],
                     staging_database[:username_dumper],
-                    staging_database[:database],
                     staging_database[:username]
                 )
         action :run
@@ -146,7 +145,6 @@ node[:deploy].first(1).each do |application, deploy|
                     staging_database[:host],
                     staging_database[:database],
                     staging_database[:username_dumper],
-                    staging_database[:database],
                     staging_database[:username]
                 )
         action :run
