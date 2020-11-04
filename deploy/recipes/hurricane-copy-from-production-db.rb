@@ -31,7 +31,7 @@ node[:deploy].first(1).each do |application, deploy|
       action :run
     end
 
-    def subset
+    subset = lambda do
       execute 'disable api connections to database' do
         Chef::Log.debug('Disabling connections')
         user deploy[:user]
@@ -136,7 +136,7 @@ node[:deploy].first(1).each do |application, deploy|
     end
 
     begin
-      subset
+      subset.call
     ensure
       execute 're enable api connections to database' do
         Chef::Log.debug('Enabling connections')
