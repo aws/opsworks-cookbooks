@@ -69,7 +69,7 @@ node[:deploy].first(1).each do |application, deploy|
         environment 'PGPASSWORD' => staging_database[:password]
         cwd dump_dir
         drop_cmd = 'dropdb -h %s -U %s %s'
-        command sprintf(drop_cmd, staging_database[:host], staging_database[:username], staging_database[:database])
+        command sprintf(drop_cmd, staging_database[:host], staging_database[:username_dumper], staging_database[:database])
         action :run
       end
 
@@ -79,7 +79,7 @@ node[:deploy].first(1).each do |application, deploy|
         environment 'PGPASSWORD' => staging_database[:password]
         cwd dump_dir
         create_cmd = 'createdb -h %s -U %s -T template0 %s'
-        command sprintf(create_cmd, staging_database[:host], staging_database[:username], staging_database[:database])
+        command sprintf(create_cmd, staging_database[:host], staging_database[:username_dumper], staging_database[:database])
         action :run
       end
 
@@ -98,7 +98,7 @@ node[:deploy].first(1).each do |application, deploy|
         environment 'PGPASSWORD' => staging_database[:password]
         cwd dump_dir
         restore_cmd = 'pg_restore -h %s -d %s -U %s -O -L %s %s'
-        command sprintf(restore_cmd, staging_database[:host], staging_database[:database], staging_database[:username], dump_file_list, dump_file)
+        command sprintf(restore_cmd, staging_database[:host], staging_database[:database], staging_database[:username_dumper], dump_file_list, dump_file)
         action :run
       end
 
