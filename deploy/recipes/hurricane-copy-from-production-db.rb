@@ -31,6 +31,8 @@ node[:deploy].first(1).each do |application, deploy|
       action :run
     end
 
+    def exception
+
     begin
       execute 'disable api connections to database' do
         Chef::Log.debug('Disabling connections')
@@ -134,21 +136,27 @@ node[:deploy].first(1).each do |application, deploy|
         environment 'RAILS_ENV' => deploy[:rails_env]
       end
 
-    ensure
-      execute 're enable api connections to database' do
-        Chef::Log.debug('Enabling connections')
-        user deploy[:user]
-        environment 'PGPASSWORD' => staging_database[:password]
-        disconnect_cmd = "psql -h %s -d %s -U %s -c \"ALTER USER %s WITH LOGIN;\""
-        command sprintf(
-                    disconnect_cmd,
-                    staging_database[:host],
-                    staging_database[:database],
-                    staging_database[:username_dumper],
-                    staging_database[:username]
-                )
-        action :run
-      end
+    rescue  Mixlib::ShellOut::ShellCommandFailed=> e
+      exception = e
+    end
+
+    execute 're enable api connections to database' do
+      Chef::Log.debug('Enabling connections')
+      user deploy[:user]
+      environment 'PGPASSWORD' => staging_database[:password]
+      disconnect_cmd = "psql -h %s -d %s -U %s -c \"ALTER USER %s WITH LOGIN;\""
+      command sprintf(
+                  disconnect_cmd,
+                  staging_database[:host],
+                  staging_database[:database],
+                  staging_database[:username_dumper],
+                  staging_database[:username]
+              )
+      action :run
+    end
+
+    if exception
+      raise exception
     end
 
   else
