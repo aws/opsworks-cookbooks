@@ -125,8 +125,8 @@ node[:deploy].first(1).each do |application, deploy|
       action :delete
     end
     
-    execute 'api can write to database' do
-      Chef::Log.debug('Api can write to database')
+    execute 'api readonly to database' do
+      Chef::Log.debug('Api readonly to database')
       user deploy[:user]
       environment 'PGPASSWORD' => staging_database[:password]
       disconnect_cmd = "psql -h %s -d %s -U %s -c \"ALTER DATABASE %s SET default_transaction_read_only = false\""
@@ -148,6 +148,20 @@ node[:deploy].first(1).each do |application, deploy|
       environment 'RAILS_ENV' => deploy[:rails_env]
     end
 
+    execute 'force close connections to database' do
+      Chef::Log.debug('Closing connections')
+      user deploy[:user]
+      environment 'PGPASSWORD' => staging_database[:password]
+      disconnect_cmd = "psql -h %s -d %s -U %s -c \"SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '%s' AND pid <> pg_backend_pid()\""
+      command sprintf(
+                  disconnect_cmd,
+                  staging_database[:host],
+                  staging_database[:database],
+                  staging_database[:username],
+                  staging_database[:database]
+              )
+      action :run
+    end
 
   else
     Chef::Log.debug('Recipe available only in staging environment')
