@@ -103,6 +103,8 @@ Rails.application.configure do
 
   # Grace Landing Page
   config.grace_landing_page_url = '<%= @hurricane_api_settings[:grace_landing_page_url] %>'
+  config.grace_renewal_activation_url_page_url = '<%= @hurricane_api_settings[:grace_renewal_activation_url_page_url] %>'
+  config.grace_activation_page_url = '<%= @hurricane_api_settings[:grace_activation_page_url] %>'
 
   # Hurricane Payment Api
   config.hurricane_payment_api = { base_uri: '<%= @hurricane_api_settings[:hurricane_payment_api][:base_uri] %>', user: '<%= @hurricane_api_settings[:hurricane_payment_api][:user] %>', password: '<%= @hurricane_api_settings[:hurricane_payment_api][:password] %>' }
