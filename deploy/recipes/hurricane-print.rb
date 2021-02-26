@@ -113,6 +113,20 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  template "#{deploy[:deploy_to]}/shared/config/previnet.yml" do
+    source 'hurricane-print/config/previnet.yml.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+        :hurricane_print_settings => node[:hurricane_print_settings],
+        :hurricane_print_env => rails_env
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
+
   template "#{deploy[:deploy_to]}/shared/config/routes/resque_server.rb" do
     source 'hurricane-print/config/routes/resque_server.rb.erb'
     mode '0660'
