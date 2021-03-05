@@ -1,4 +1,6 @@
 default: &default
+  services_base_uri: '<%= @hurricane_api_settings[:previnet_client][:services_base_uri] %>'
+  pci_base_uri: '<%= @hurricane_api_settings[:previnet_client][:pci_base_uri] %>'
   username: '<%= @hurricane_api_settings[:previnet_client][:username] %>'
   password: '<%= @hurricane_api_settings[:previnet_client][:password] %>'
 
