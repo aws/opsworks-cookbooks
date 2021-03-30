@@ -86,6 +86,20 @@ node[:deploy].each do |application, deploy|
     end
   end
 
+  template "#{deploy[:deploy_to]}/shared/config/previnet_packets.yml" do
+    source 'hurricane-api/previnet_packets.yml.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+      :hurricane_api_settings => node[:hurricane_api_settings],
+      :env => rails_env
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
+
   template "#{deploy[:deploy_to]}/shared/config/email_checker.yml" do
     source 'hurricane-api/email_checker.yml.erb'
     mode '0660'
