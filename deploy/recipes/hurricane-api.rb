@@ -7,6 +7,8 @@ node[:deploy].each do |application, deploy|
   rails_env = deploy[:rails_env]
   current_path = deploy[:current_path]
 
+  active_job_with_resque = (node[:hurricane_api_settings][:active_job].present? && node[:hurricane_api_settings][:active_job][:adapter] == 'resque')
+
   directory "#{deploy[:deploy_to]}/shared/config/initializers" do
     mode '0770'
     owner deploy[:user]
@@ -220,6 +222,69 @@ node[:deploy].each do |application, deploy|
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config/initializers")
     end
+  end
+
+  template "#{deploy[:deploy_to]}/shared/config/routes/resque_server.rb" do
+    source 'hurricane-api/resque_server.rb.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(:hurricane_api_settings => node[:hurricane_api_settings])
+    only_if do
+      active_job_with_resque && File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
+
+  template "#{deploy[:deploy_to]}/shared/config/resque.yml" do
+    source 'hurricane-api/resque.yml.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+        :hurricane_api_settings => node[:hurricane_api_settings],
+        :hurricane_print_env => rails_env
+    )
+    only_if do
+      active_job_with_resque && File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
+
+  if active_job_with_resque
+
+    service 'monit' do
+      action :restart
+    end
+
+    queue_name = ['hurricane_api', rails_env, 'queue'].join('_')
+    pid_file_name = ['resque_worker', queue_name, '.pid'].join
+    log_file_name = ['resque_worker', queue_name, '.log'].join
+    monit_resque_rc = File.join(node[:monit][:conf_dir], 'resque.monitrc')
+
+
+    template monit_resque_rc do
+      source 'hurricane-api/resque.monitrc.erb'
+      owner 'root'
+      group 'root'
+      mode 0644
+      variables(
+          :pidfile => File.join(deploy[:deploy_to], 'shared', 'pids', pid_file_name),
+          :working_dir => deploy[:current_path],
+          :log_file => File.join(deploy[:deploy_to], 'shared', 'log', log_file_name),
+          :queue_name => queue_name,
+          :env => rails_env,
+          :home => deploy[:home],
+          :user => deploy[:user]
+      )
+      notifies :restart, "service[monit]"
+    end
+
+    execute "restart monit process #{queue_name}" do
+      ignore_failure true
+      command "monit restart #{queue_name}"
+      action :run
+    end
+
+
   end
 
   execute "restart Server" do
