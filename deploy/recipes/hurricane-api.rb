@@ -250,7 +250,7 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     variables(
         :hurricane_api_settings => node[:hurricane_api_settings],
-        :hurricane_print_env => rails_env
+        :env => rails_env
     )
     only_if do
       active_job_with_resque && File.exists?("#{deploy[:deploy_to]}/shared/config")
