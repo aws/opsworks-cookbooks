@@ -108,4 +108,12 @@ Rails.application.configure do
 
   # Hurricane Payment Api
   config.hurricane_payment_api = { base_uri: '<%= @hurricane_api_settings[:hurricane_payment_api][:base_uri] %>', user: '<%= @hurricane_api_settings[:hurricane_payment_api][:user] %>', password: '<%= @hurricane_api_settings[:hurricane_payment_api][:password] %>' }
+
+  # ActiveJob Configuration
+  <% case @hurricane_api_settings[:active_job][:adapter] %>
+    <% when 'inline' %>
+  config.active_job.queue_adapter = :inline
+    <% when 'resque' %>
+  config.active_job.queue_adapter = :resque
+  <% end %>
 end
