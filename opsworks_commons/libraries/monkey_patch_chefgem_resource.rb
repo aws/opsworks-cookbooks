@@ -22,7 +22,7 @@ class Chef
 
     class Deploy < Chef::Resource
       def depth
-        "--single-branch"
+        "2 --single-branch"
       end
     end
   end
