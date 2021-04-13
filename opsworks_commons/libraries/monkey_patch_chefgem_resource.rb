@@ -22,7 +22,7 @@ class Chef
 
     class Deploy < Chef::Resource
       def depth
-        @shallow_clone ? "1 --single-branch" : nil
+        "1 --single-branch"
       end
     end
   end
