@@ -5,13 +5,3 @@
 # "deploy/attributes/customize.rb" in your cookbook repository and
 # put the overrides in YOUR customize.rb file.
 ###
-
-class Chef
-  class Resource
-    class Deploy < Chef::Resource
-      def depth
-        @shallow_clone ? "1 --single-branch" : nil
-      end
-    end
-  end
-end

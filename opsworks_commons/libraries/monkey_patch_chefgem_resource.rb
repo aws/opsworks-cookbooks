@@ -19,5 +19,11 @@ class Chef
         set_or_return(:options,opts,:kind_of => [String,Hash])
       end
     end
+
+    class Deploy < Chef::Resource
+      def depth
+        @shallow_clone ? "1 --single-branch" : nil
+      end
+    end
   end
 end
