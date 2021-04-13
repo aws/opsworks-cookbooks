@@ -1,5 +1,15 @@
 Chef::Log.level = :debug
 
+class Chef
+  class Resource
+    class Deploy < Chef::Resource
+      def depth
+        @shallow_clone ? "1" : nil
+      end
+    end
+  end
+end
+
 define :opsworks_deploy do
   application = params[:app]
   deploy = params[:deploy_data]
