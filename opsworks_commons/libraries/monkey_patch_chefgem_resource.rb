@@ -19,11 +19,5 @@ class Chef
         set_or_return(:options,opts,:kind_of => [String,Hash])
       end
     end
-
-    class Deploy < Chef::Resource
-      def depth
-        "2 --single-branch"
-      end
-    end
   end
 end
