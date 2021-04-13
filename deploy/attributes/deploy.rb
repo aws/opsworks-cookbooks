@@ -98,7 +98,7 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:sleep_before_restart] = 0
   default[:deploy][application][:stack][:needs_reload] = true
   default[:deploy][application][:enable_submodules] = true
-  default[:deploy][application][:shallow_clone] = false
+  default[:deploy][application][:shallow_clone] = true
   default[:deploy][application][:delete_cached_copy] = true
   default[:deploy][application][:purge_before_symlink] = ['log', 'tmp/pids', 'public/system']
   default[:deploy][application][:create_dirs_before_symlink] = ['tmp', 'public', 'config']
