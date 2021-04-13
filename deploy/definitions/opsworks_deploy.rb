@@ -1,4 +1,6 @@
 class Chef
+  Log.level = :debug
+
   class Resource
     class Deploy < Chef::Resource
       def depth
@@ -7,8 +9,6 @@ class Chef
     end
   end
 end
-
-Chef::Log.level = :debug
 
 define :opsworks_deploy do
   application = params[:app]
