@@ -160,11 +160,9 @@ define :opsworks_deploy do
       end
     end
 
-    if deploy[:scm][:repository].start_with?(Dir.tmpdir)
-      directory "#{node[:deploy][application][:deploy_to]}/current/.git" do
-        recursive true
-        action :delete
-      end
+    directory "#{node[:deploy][application][:deploy_to]}/current/.git" do
+      recursive true
+      action :delete
     end
   end
 
