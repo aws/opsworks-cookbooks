@@ -30,7 +30,7 @@ when "2.6"
 when "2.3"
   default[:ruby][:major_version] = "2"
   default[:ruby][:minor_version] = "3"
-  default[:ruby][:patch_version] = "4"
+  default[:ruby][:patch_version] = "7"
   default[:ruby][:pkgrelease]    = "1"
 
   default[:ruby][:full_version] = [node[:ruby][:major_version], node[:ruby][:minor_version]].join(".")
@@ -39,7 +39,7 @@ when "2.3"
 when "2.2"
   default[:ruby][:major_version] = '2'
   default[:ruby][:minor_version] = '2'
-  default[:ruby][:patch_version] = "7"
+  default[:ruby][:patch_version] = "8"
   default[:ruby][:pkgrelease]    = '1'
 
   default[:ruby][:full_version] = [node[:ruby][:major_version], node[:ruby][:minor_version]].join(".")
