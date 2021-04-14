@@ -33,6 +33,8 @@ when /^2\.2/
   default[:passenger][:gems_path] = '/usr/local/lib/ruby/gems/2.2.0/gems'
 when /^2\.3/
   default[:passenger][:gems_path] = '/usr/local/lib/ruby/gems/2.3.0/gems'
+when /^2\.6/
+  default[:passenger][:gems_path] = '/usr/local/lib/ruby/gems/2.6.0/gems'
 else
   Chef::Log.warn "Unsupported Ruby version '#{node[:opsworks][:ruby_version]}'. Unable to set passenger gems_path."
   default[:passenger][:gems_path] = '/'

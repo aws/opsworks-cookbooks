@@ -24,7 +24,7 @@ module BlockDevice
     while time_elapsed <= timeout
       begin
         lvscan = OpsWorks::ShellOut.shellout("lvscan")
-        if lvscan.gsub(/^$\n/, "").lines.all?{|line| line.include?('ACTIVE')}
+        if lvscan.gsub(/^$\n/, "").lines.all? { |line| line.include?('ACTIVE') }
           Chef::Log.debug("All LVM volume disks seem to be active:\n#{lvscan}")
           Chef::Log.info("All LVM volume disks seem to be active")
           break
@@ -100,11 +100,11 @@ module BlockDevice
   def self.assemble_raid(raid_device, options)
     Chef::Log.info("Resuming existing RAID array #{raid_device} with #{options[:disks].size} disks, RAID level #{options[:raid_level]} at #{options[:mount_point]}")
     unless exec_command("mdadm --assemble --verbose #{raid_device} #{options[:disks].join(' ')}")
-      plain_disks = options[:disks].map{|disk| disk.gsub('/dev/', '')}
+      plain_disks = options[:disks].map { |disk| disk.gsub('/dev/', '') }
       affected_volume_groups = []
       File.readlines('/proc/mdstat').each do |line|
         md_device = nil
-        md_device = line.split.first if plain_disks.any?{|disk| line.include?(disk)}
+        md_device = line.split.first if plain_disks.any? { |disk| line.include?(disk) }
         if md_device
           begin
             physical_volume_info = OpsWorks::ShellOut.shellout("pvdisplay -c /dev/#{md_device}").lines.grep(%r{/dev/#{md_device}}).first
@@ -230,8 +230,8 @@ module BlockDevice
       false
     end
   rescue RuntimeError => e
-      Chef::Log.debug("Checking for existing LVM volume disk failed: #{e.class} - #{e.message} - #{e.backtrace.join("\n")}")
-      Chef::Log.info("Checking for existing LVM volume disk failed: #{e.message}")
+    Chef::Log.debug("Checking for existing LVM volume disk failed: #{e.class} - #{e.message} - #{e.backtrace.join("\n")}")
+    Chef::Log.info("Checking for existing LVM volume disk failed: #{e.message}")
     false
   end
 
@@ -241,7 +241,7 @@ module BlockDevice
     cmd.run_command
     Chef::Log.info([cmd.stderr, cmd.stdout].join("\n"))
     Chef::Log.debug("'#{command}' returned #{cmd.exitstatus}")
-    !cmd.error?
+    Array(cmd.valid_exit_codes).include?(cmd.exitstatus)
   rescue Errno::EACCES
     Chef::Log.fatal("Permission denied on '#{command}'")
     false
@@ -271,8 +271,8 @@ module BlockDevice
   def self.translate_device_names(devices, skip = 0)
     if on_kvm? && devices.size > 0
       Chef::Log.info("Running on QEMU/KVM: Starting at /dev/sdb skipping #{skip}")
-      new_devices = ('b'..'z').to_a[0 + skip, devices.size].each_with_index.map {|char, index| [ devices[index], "/dev/sd#{char}" ]  }
-      Chef::Log.info("Running on QEMU/KVM: Translated EBS devices #{devices.inspect} to #{new_devices.map{|d| d[1]}.inspect}")
+      new_devices = ('b'..'z').to_a[0 + skip, devices.size].each_with_index.map { |char, index| [devices[index], "/dev/sd#{char}"] }
+      Chef::Log.info("Running on QEMU/KVM: Translated EBS devices #{devices.inspect} to #{new_devices.map { |d| d[1] }.inspect}")
       new_devices
     else
       devices

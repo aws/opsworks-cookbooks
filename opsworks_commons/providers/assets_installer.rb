@@ -78,7 +78,7 @@ def local_asset
   local_asset_path = cmd.stdout.chomp
   STDERR.puts cmd.stderr
 
-  if !cmd.error? &&
+  if Array(cmd.valid_exit_codes).include?(cmd.exitstatus) &&
      ::File.file?(local_asset_path) &&
      ::File.fnmatch("#{asset_basedir}.*", ::File.dirname(local_asset_path))
 
