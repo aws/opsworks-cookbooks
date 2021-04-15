@@ -5,6 +5,7 @@ Chef::Log.level = :debug
 node[:deploy].each do |application, deploy|
 
   rails_env = deploy[:rails_env]
+  rails_env_fixed = rails_env=='preprod' ? 'staging' : rails_env
   current_path = deploy[:current_path]
 
   active_job_with_resque = (node[:hurricane_api_settings][:active_job].present? && node[:hurricane_api_settings][:active_job][:adapter] == 'resque')
@@ -61,7 +62,7 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     variables(
         :hurricane_api_settings => node[:hurricane_api_settings],
-        :env => rails_env
+        :env => rails_env_fixed
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
@@ -75,7 +76,7 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     variables(
       :hurricane_api_settings => node[:hurricane_api_settings],
-      :env => rails_env
+      :env => rails_env_fixed
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
@@ -89,7 +90,7 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     variables(
       :hurricane_api_settings => node[:hurricane_api_settings],
-      :env => rails_env
+      :env => rails_env_fixed
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
@@ -103,7 +104,7 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     variables(
         :hurricane_api_settings => node[:hurricane_api_settings],
-        :env => rails_env
+        :env => rails_env_fixed
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
@@ -117,7 +118,7 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     variables(
         :hurricane_api_settings => node[:hurricane_api_settings],
-        :env => rails_env
+        :env => rails_env_fixed
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
@@ -142,7 +143,7 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     variables(
         :hurricane_api_settings => node[:hurricane_api_settings],
-        :env => rails_env
+        :env => rails_env_fixed
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
@@ -157,7 +158,7 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     variables(
       :hurricane_api_settings => node[:hurricane_api_settings],
-      :env => rails_env
+      :env => rails_env_fixed
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
@@ -171,7 +172,7 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     variables(
         :hurricane_api_settings => node[:hurricane_api_settings],
-        :env => rails_env
+        :env => rails_env_fixed
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
@@ -185,14 +186,14 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     variables(
         :hurricane_api_settings => node[:hurricane_api_settings],
-        :env => rails_env
+        :env => rails_env_fixed
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
     end
   end
 
-  template "#{deploy[:deploy_to]}/shared/config/environments/#{rails_env}.rb" do
+  template "#{deploy[:deploy_to]}/shared/config/environments/#{rails_env_fixed}.rb" do
     source "hurricane-api/environment_config.rb.erb"
     mode '0660'
     owner deploy[:user]
@@ -236,7 +237,7 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     variables(
         :hurricane_api_settings => node[:hurricane_api_settings],
-        :env => rails_env
+        :env => rails_env_fixed
     )
     only_if do
       active_job_with_resque && File.exists?("#{deploy[:deploy_to]}/shared/config")
@@ -249,7 +250,7 @@ node[:deploy].each do |application, deploy|
       action :restart
     end
 
-    queue_name = ['hurricane_api', rails_env, 'queue'].join('_')
+    queue_name = ['hurricane_api', rails_env_fixed, 'queue'].join('_')
     pid_file_name = ['resque_worker', queue_name, '.pid'].join
     log_file_name = ['resque_worker', queue_name, '.log'].join
     monit_resque_rc = File.join(node[:monit][:conf_dir], 'resque.monitrc')
@@ -265,7 +266,7 @@ node[:deploy].each do |application, deploy|
           :working_dir => deploy[:current_path],
           :log_file => File.join(deploy[:deploy_to], 'shared', 'log', log_file_name),
           :queue_name => queue_name,
-          :env => rails_env,
+          :env => rails_env_fixed,
           :home => deploy[:home],
           :user => deploy[:user]
       )
