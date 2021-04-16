@@ -205,6 +205,13 @@ node[:deploy].each do |application, deploy|
       File.exists?("#{deploy[:deploy_to]}/shared/config/environments")
     end
   end
+  # hotfix, create preprod symlink on yet created template, so
+  link "#{current_path}/config/environments/#{rails_env}.rb"
+    to "#{deploy[:deploy_to]}/shared/config/environments/#{rails_env}.rb"
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+  end
 
   template "#{deploy[:deploy_to]}/shared/config/initializers/rollbar.rb" do
     source 'hurricane-api/rollbar.rb.erb'
