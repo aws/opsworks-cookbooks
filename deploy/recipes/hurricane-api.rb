@@ -193,7 +193,7 @@ node[:deploy].each do |application, deploy|
     end
   end
 
-  template "#{deploy[:deploy_to]}/shared/config/environments/#{rails_env_fixed}.rb" do
+  template "#{deploy[:deploy_to]}/shared/config/environments/#{rails_env}.rb" do
     source "hurricane-api/environment_config.rb.erb"
     mode '0660'
     owner deploy[:user]
