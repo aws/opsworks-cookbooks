@@ -206,7 +206,7 @@ node[:deploy].each do |application, deploy|
     end
   end
   # hotfix, create preprod symlink on yet created template, so
-  link "#{current_path}/config/environments/#{rails_env}.rb"
+  link "#{current_path}/config/environments/#{rails_env}.rb" do
     to "#{deploy[:deploy_to]}/shared/config/environments/#{rails_env}.rb"
     mode '0660'
     owner deploy[:user]
