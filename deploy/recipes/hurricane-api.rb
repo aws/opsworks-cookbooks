@@ -1,5 +1,5 @@
 include_recipe 'deploy'
-include_recipe 'deploy::prerod-environment'
+include_recipe 'deploy::preprod-environment'
 Chef::Log.level = :debug
 
 
