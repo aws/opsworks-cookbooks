@@ -1,4 +1,5 @@
 include_recipe 'deploy'
+include_recipe 'deploy::preprod-environment'
 Chef::Log.level = :debug
 
 node[:deploy].each do |application, deploy|
