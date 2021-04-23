@@ -1,4 +1,4 @@
-<% (['development', 'staging', 'preprod', 'production'] + [@environment]).uniq.each do |env| -%>
+<% (['development', 'production'] + [@environment]).uniq.each do |env| -%>
 <%= env %>:
   adapter: <%= @database[:adapter].to_s.inspect %>
   database: <%= @database[:database].to_s.inspect %>
