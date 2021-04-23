@@ -1,4 +1,3 @@
-include_recipe 'deploy'
 include_recipe 'deploy::preprod-environment'
 Chef::Log.level = :debug
 
@@ -244,6 +243,8 @@ node[:deploy].each do |application, deploy|
       active_job_with_resque && File.exists?("#{deploy[:deploy_to]}/shared/config")
     end
   end
+
+  include_recipe 'deploy'
 
   if active_job_with_resque
 
