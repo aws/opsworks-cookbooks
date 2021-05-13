@@ -116,4 +116,7 @@ Rails.application.configure do
     <% when 'resque' %>
   config.active_job.queue_adapter = :resque
   <% end %>
+
+  #Iubenda fallback
+  config.iubenda_enabled = <%= @hurricane_api_settings[:iubenda_enabled] %>
 end
