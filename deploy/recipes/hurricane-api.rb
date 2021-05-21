@@ -105,7 +105,7 @@ node[:deploy].each do |application, deploy|
   end
 
   template "#{deploy[:deploy_to]}/shared/config/hubspot/config.yml" do
-    source 'hurricane-api/hubspot/config.yml.erb'
+    source 'hurricane-api/hubspot.yml.erb'
     mode '0660'
     owner deploy[:user]
     group deploy[:group]
