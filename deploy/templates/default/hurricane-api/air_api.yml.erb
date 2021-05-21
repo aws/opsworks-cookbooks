@@ -1,7 +1,7 @@
 default: &default
-  base_uri: '<%= @hurricane_api_settings[:previnet_client][:base_uri] %>'
-  api_key: '<%= @hurricane_api_settings[:previnet_client][:api_key] %>'
-  root_path: '<%= @hurricane_api_settings[:previnet_client][:root_path] %>'
+  base_uri: '<%= @hurricane_api_settings[:air_api][:base_uri] %>'
+  api_key: '<%= @hurricane_api_settings[:air_api][:api_key] %>'
+  root_path: '<%= @hurricane_api_settings[:air_api][:root_path] %>'
 
 <%= @env %>:
     <<: *default
