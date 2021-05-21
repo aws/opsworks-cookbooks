@@ -41,6 +41,14 @@ node[:deploy].each do |application, deploy|
     recursive true
   end
 
+  directory "#{deploy[:deploy_to]}/shared/config/hubspot" do
+    mode '0770'
+    owner deploy[:user]
+    group deploy[:group]
+    action :create
+    recursive true
+  end
+
   template "#{deploy[:deploy_to]}/shared/config/secrets.yml" do
     source 'hurricane-api/secrets.yml.erb'
     mode '0660'
@@ -93,6 +101,20 @@ node[:deploy].each do |application, deploy|
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")
+    end
+  end
+
+  template "#{deploy[:deploy_to]}/shared/config/hubspot/config.yml" do
+    source 'hurricane-api/hubspot/config.yml.erb'
+    mode '0660'
+    owner deploy[:user]
+    group deploy[:group]
+    variables(
+      :hurricane_api_settings => node[:hurricane_api_settings],
+      :env => rails_env
+    )
+    only_if do
+      File.exists?("#{deploy[:deploy_to]}/shared/config/hubspot")
     end
   end
 

@@ -1,0 +1,9 @@
+default: &default
+  hapikey: '<%= @hurricane_api_settings[:hubspot][:hapikey] %>'
+  production_hapikey: '<%= @hurricane_api_settings[:hubspot][:production_hapikey] %>'
+
+<%= @env %>:
+    <<: *default
+
+test:
+    <<: *default
