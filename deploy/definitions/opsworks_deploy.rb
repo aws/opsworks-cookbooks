@@ -64,6 +64,7 @@ define :opsworks_deploy do
   # setup deployment & checkout
   if deploy[:scm] && deploy[:scm][:scm_type] != 'other'
     Chef::Log.debug("Checking out source code of application #{application} with type #{deploy[:application_type]}")
+    Chef::Log.debug("Migration control variables: running #{deploy[:migrate_command]} with env #{deploy[:environment]} and rails_env #{deploy[:rails_env]}")
     deploy deploy[:deploy_to] do
       provider Chef::Provider::Deploy.const_get(deploy[:chef_provider])
       keep_releases deploy[:keep_releases]

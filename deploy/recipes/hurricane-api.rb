@@ -55,7 +55,8 @@ node[:deploy].each do |application, deploy|
     owner deploy[:user]
     group deploy[:group]
     variables(
-        :hurricane_api_settings => node[:hurricane_api_settings]
+        :hurricane_api_settings => node[:hurricane_api_settings],
+        :env => rails_env
     )
     only_if do
       File.exists?("#{deploy[:deploy_to]}/shared/config")

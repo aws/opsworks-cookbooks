@@ -5,7 +5,7 @@ node[:deploy].first(1).each do |application, deploy|
 
   production_database = node[:hurricane_api_settings][:production_database]
 
-  if deploy[:rails_env] == 'staging'
+  if deploy[:rails_env] == 'staging' || deploy[:rails_env] == 'preprod'
 
 
     dump_dir = "#{deploy[:deploy_to]}/shared/dump"
@@ -164,7 +164,7 @@ node[:deploy].first(1).each do |application, deploy|
     end
 
   else
-    Chef::Log.debug('Recipe available only in staging environment')
+    Chef::Log.debug('Recipe available only in staging/preprod environment')
   end
 
 end
